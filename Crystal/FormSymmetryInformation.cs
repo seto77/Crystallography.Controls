@@ -6,7 +6,7 @@ using System.Drawing.Drawing2D; // 260504Cl
 using System.Drawing.Text; // 260504Cl
 using System.Text.RegularExpressions; // 260427Cl
 using System.Windows.Forms;
-using static Crystallography.L10n; // 260620Cl 追加: コード側多言語化 Loc() (方式②, §3-B)
+using static Crystallography.Localization; // 260620Cl 追加: コード側多言語化 Loc() (方式②, §3-B)
 
 namespace Crystallography.Controls;
 #endregion

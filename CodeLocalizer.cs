@@ -4,12 +4,12 @@ using System.Windows.Forms;
 
 namespace Crystallography.Controls;
 
-// 260621Cl 追加 (§2.5 横展開): L10n の中央テーブル (型名→項目) に基づき、Localizable=false の
+// 260621Cl 追加 (§2.5 横展開): Localization の中央テーブル (型名→項目) に基づき、Localizable=false の
 // フォーム/UC が Designer.cs に英語直書きした可視ラベルを実行時に現在の UI カルチャへ差し替える。
 // 対象プロパティ: Control.Text / DataGridView 列の HeaderText / ToolStripItem(メニュー)の Text。
 // FormBase.OnLoad と UserControlBase.OnLoad から Apply(this) を呼ぶ。デザイン時は何もしない。
 // 詳細は .project-guidance/ReciPro_多言語化方針.md §3-B(方式②)/§12.7。
-/// <summary>コード側多言語化テーブル (<see cref="L10n"/>) をコントロールツリーへ適用するヘルパー。</summary>
+/// <summary>コード側多言語化テーブル (<see cref="Localization"/>) をコントロールツリーへ適用するヘルパー。</summary>
 public static class CodeLocalizer
 {
     /// <summary><paramref name="root"/> (Form / UserControl) の型に登録された訳を、配下のコントロール・
@@ -18,7 +18,7 @@ public static class CodeLocalizer
     {
         if (root == null || LicenseManager.UsageMode == LicenseUsageMode.Designtime)
             return;
-        var entries = L10n.Get(root.GetType().Name);
+        var entries = Localization.Get(root.GetType().Name);
         if (entries == null)
             return;
 
