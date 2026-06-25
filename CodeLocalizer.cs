@@ -18,7 +18,10 @@ public static class CodeLocalizer
     {
         if (root == null || LicenseManager.UsageMode == LicenseUsageMode.Designtime)
             return;
-        var entries = Localization.Get(root.GetType().Name);
+        // 260625Cl: 4アプリ共有の中央レジストリで同名フォーム (PDIndexer.FormMain vs ReciPro.FormMain 等) が
+        //   衝突しないよう FullName 優先で引き、無ければ単純名へフォールバック (ReciPro 既存の単純名キーを温存)。
+        var t = root.GetType();
+        var entries = Localization.Get(t.FullName) ?? Localization.Get(t.Name);
         if (entries == null)
             return;
 
