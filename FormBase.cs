@@ -78,6 +78,17 @@ public partial class FormBase : Form
         }
     }
 
+    protected override void OnFormClosing(FormClosingEventArgs e)
+    {
+        base.OnFormClosing(e);
+
+        // 260625Ch 追加: 派生フォームの多くは通常の×ボタンで閉じずに非表示へ戻すため FormClosing で
+        // e.Cancel=true にしている。Application.Restart()/Application.Exit() 由来の終了だけはキャンセルを解除し、
+        // 言語切替の再起動や Application.Exit() を使う更新/終了経路を子フォームが止めないようにする。
+        if (e.CloseReason == CloseReason.ApplicationExitCall)
+            e.Cancel = false;
+    }
+
     //260604Cl 追加: タイトル(Text)の右端に現在の UI 言語の案内文字列を配置する (本文との間を全角スペースで詰めて右寄せ)。
     //HelpUrlResolver が未登録/空 URL を返すフォーム (他ホストアプリや設計時) には付けない。
     private void AppendHelpSuffix()
