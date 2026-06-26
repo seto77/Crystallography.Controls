@@ -152,6 +152,9 @@
   <data name="groupBoxHorizontalAxis.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="groupBoxHorizontalAxis.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>150, 0</value>
+  </data>
   <data name="$this.ToolTip" xml:space="preserve">
     <value />
   </data>
@@ -1300,7 +1303,7 @@ for energy-dispersive (white-beam) measurement.</value>
     <value>Show the time-of-flight axis in nanoseconds (ns).</value>
   </data>
   <data name="groupBoxOption.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>120, 0</value>
+    <value>150, 0</value>
   </data>
   <data name="flowLayoutPanelDspacing.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
