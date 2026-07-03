@@ -181,7 +181,7 @@
   <data name="dataGridView.ToolTip" xml:space="preserve">
     <value>已定义的键/多面体列表；选择
 某一行可在下方编辑，或直接
-切换其Enabled / Show列。</value>
+切换其启用/显示列。</value>
   </data>
   <data name="numericBoxBondAlpha.ToolTip" xml:space="preserve">
     <value>键圆柱的不透明度（0

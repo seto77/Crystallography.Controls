@@ -100,7 +100,7 @@ un pixel écran par pixel d'image).</value>
     <value>Règle le zoom d'affichage sur ×1/8 (réduction au huitième de la taille).</value>
   </data>
   <data name="checkBoxDustScratches.ToolTip" xml:space="preserve">
-    <value>Applique un filtre Dust &amp;&amp; Scratches (poussière et rayures) qui supprime
+    <value>Applique un filtre Dust &amp; Scratches (poussière et rayures) qui supprime
 les petits points et les artefacts en forme de rayure en
 remplaçant les pixels qui s'écartent trop de leurs
 voisins (régler Radius et Threshold).</value>
@@ -149,12 +149,12 @@ la valeur brute du pixel situé sous le curseur.</value>
 de l'image ; mis à jour lors du zoom ou du déplacement.</value>
   </data>
   <data name="numericBoxDustScratchesRadius.ToolTip" xml:space="preserve">
-    <value>Règle le rayon du filtre Dust &amp;&amp; Scratches en
+    <value>Règle le rayon du filtre Dust &amp; Scratches en
 pixels (0-5). Un rayon plus grand supprime des points/rayures
 plus grands mais floute davantage les détails.</value>
   </data>
   <data name="numericBoxDustScratchesThreshold.ToolTip" xml:space="preserve">
-    <value>Règle le seuil du filtre Dust &amp;&amp; Scratches (0-10).
+    <value>Règle le seuil du filtre Dust &amp; Scratches (0-10).
 Seuls les pixels qui diffèrent de leurs voisins
 de plus que cette valeur sont traités comme des défauts
 et remplacés ; une valeur plus basse en supprime davantage.</value>

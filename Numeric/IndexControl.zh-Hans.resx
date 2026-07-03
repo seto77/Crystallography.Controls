@@ -64,7 +64,7 @@
 模式）或方向指数 u（晶轴模式）。</value>
   </data>
   <data name="numericBoxI.ToolTip" xml:space="preserve">
-    <value>Miller–Bravais 第四指数 i = -(h+k)，
+    <value>米勒-布拉维第四指数 i = -(h+k)，
 用于六方 (hkil) 记法。
 只读，自动计算。</value>
   </data>

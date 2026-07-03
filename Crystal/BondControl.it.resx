@@ -150,8 +150,8 @@ con le impostazioni sottostanti.</value>
     <value>Elimina il legame/poliedro selezionato.</value>
   </data>
   <data name="colorControlEdges.ToolTip" xml:space="preserve">
-    <value>Colore degli spigoli del poliedro (il
-reticolo a fil di ferro del poliedro di coordinazione).</value>
+    <value>Colore degli spigoli del poliedro (la
+struttura a fil di ferro del poliedro di coordinazione).</value>
   </data>
   <data name="colorControlPolyhedron.ToolTip" xml:space="preserve">
     <value>Colore delle facce del poliedro (il poliedro di coordinazione).</value>

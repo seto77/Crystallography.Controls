@@ -105,7 +105,7 @@
     <value>Couleur</value>
   </data>
   <data name="label90.Text" xml:space="preserve">
-    <value>Formule brute</value>
+    <value>Formule chimique</value>
   </data>
   <data name="beamInteractionToolStripMenuItem.Text" xml:space="preserve">
     <value>Interaction du faisceau</value>
@@ -436,10 +436,10 @@ de la structure et dans les courbes de profil de diffraction.</value>
 de la structure et dans les courbes de profil de diffraction.</value>
   </data>
   <data name="textBoxFormula.ToolTip" xml:space="preserve">
-    <value>Formule brute</value>
+    <value>Formule chimique</value>
   </data>
   <data name="label90.ToolTip" xml:space="preserve">
-    <value>Formule brute</value>
+    <value>Formule chimique</value>
   </data>
   <data name="numericBoxZnumber.ToolTip" xml:space="preserve">
     <value>Z (nombre d'unités formulaires dans la maille élémentaire)</value>

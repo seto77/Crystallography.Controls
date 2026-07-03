@@ -120,7 +120,7 @@
     <value>Esporta in CIF</value>
   </data>
   <data name="revertCellConstantsToolStripMenuItem.Text" xml:space="preserve">
-    <value>Ripristina i parametri di cella</value>
+    <value>Ripristina le costanti di cella</value>
   </data>
   <data name="strainControlToolStripMenuItem.Text" xml:space="preserve">
     <value>Controllo della deformazione</value>

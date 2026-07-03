@@ -142,7 +142,7 @@
   </data>
   <data name="radioButtonXrayFs.ToolTip" xml:space="preserve">
     <value>绘制 X射线原子散射因子 f(s)——即振幅（以一个电子为单位），
-表示单个原子弹性散射的强度。
+表示单个原子弹性散射的振幅。
 横轴为 s = sin(theta)/lambda，单位 1/Angstrom，随
 衍射角增大而增大。在 s = 0 处其值等于原子序数 Z（电子总
 数）；随角度增大而下降。</value>
@@ -194,7 +194,7 @@
   </data>
   <data name="colElecA.ToolTipText" xml:space="preserve">
     <value>弹性散射截面 σ_el（NIST Mott 50 eV–36 keV；36 keV 以上为
-遮蔽 Rutherford 近似）。</value>
+屏蔽 Rutherford 近似）。</value>
   </data>
   <data name="radioButtonAttenMassMu.ToolTip" xml:space="preserve">
     <value>绘制质量衰减系数 µ/ρ（单位：cm²/g）。

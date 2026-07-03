@@ -117,7 +117,7 @@
     <value>Миллирадиан</value>
   </data>
   <data name="groupBoxOption.Text" xml:space="preserve">
-    <value>Единицы измерения</value>
+    <value>Параметры единиц</value>
   </data>
   <data name="groupBoxHorizontalAxis.Text" xml:space="preserve">
     <value>Горизонтальная ось</value>
@@ -174,7 +174,7 @@
 для энергодисперсионного (белый пучок) измерения.</value>
   </data>
   <data name="numericBoxTwoTheta.ToolTip" xml:space="preserve">
-    <value>Угол рассеяния (отбора) детектора 2θ в градусах
+    <value>Угол рассеяния (вылета) детектора 2θ в градусах
 для энергодисперсионного (белый пучок) измерения.</value>
   </data>
   <data name="radioButtonWavenumberUnitNmInv.ToolTip" xml:space="preserve">

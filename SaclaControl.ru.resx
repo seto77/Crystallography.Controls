@@ -61,7 +61,7 @@
   </resheader>
   <data name="numericBoxDistance.ToolTip" xml:space="preserve">
     <value>Задать вторую длину камеры
-(расстояние образец-детектор) в мм.</value>
+(расстояние образец-детектор) в mm.</value>
   </data>
   <data name="numericBoxFootX.ToolTip" xml:space="preserve">
     <value>Задать x-координату (в пикселях) точки падения,
@@ -80,7 +80,7 @@
 пикселей (вертикальное разрешение).</value>
   </data>
   <data name="numericBoxPixelSize.ToolTip" xml:space="preserve">
-    <value>Задать физический размер одного пикселя детектора в мм.</value>
+    <value>Задать физический размер одного пикселя детектора в mm.</value>
   </data>
   <data name="numericBoxPixelWidth.ToolTip" xml:space="preserve">
     <value>Задать ширину детектора в числе

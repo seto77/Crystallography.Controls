@@ -103,7 +103,7 @@ um pixel de tela por pixel da imagem).</value>
     <value>Aplica um filtro Dust &amp; Scratches que remove
 pequenas manchas e artefatos semelhantes a riscos
 substituindo pixels que se desviam de seus
-vizinhos (defina Radius e Threshold).</value>
+vizinhos (defina o raio e o limiar).</value>
   </data>
   <data name="checkBoxGaussianBlur.ToolTip" xml:space="preserve">
     <value>Aplica um desfoque gaussiano que suaviza a imagem com um

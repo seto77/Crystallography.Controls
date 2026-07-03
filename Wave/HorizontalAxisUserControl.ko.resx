@@ -138,7 +138,7 @@
     <value>에너지 축의 단위를 MeV (메가 전자볼트) 로 합니다.</value>
   </data>
   <data name="radioButtonEnergy.ToolTip" xml:space="preserve">
-    <value>수평 축을 광자/입자 에너지로 표시합니다
+    <value>가로축을 광자/입자 에너지로 표시합니다
 (에너지 분산·백색 빔 모드용).</value>
   </data>
   <data name="radioButtonDspacingUnitNm.ToolTip" xml:space="preserve">
@@ -161,8 +161,8 @@
 비행 경로 길이 L 을 m 단위로 설정합니다.</value>
   </data>
   <data name="radioButtonTwoTheta.ToolTip" xml:space="preserve">
-    <value>수평 축을 회절각 2θ (입사 빔과 회절 빔이
-이루는 산란각) 로 표시합니다. 단색 빔 모드용입니다.</value>
+    <value>가로축을 회절각 2θ(입사 빔과 회절 빔이
+이루는 산란각)로 표시합니다. 단색 빔 모드용입니다.</value>
   </data>
   <data name="radioButtonMonochro.ToolTip" xml:space="preserve">
     <value>단일 (단색) 파장을 사용합니다.
@@ -180,7 +180,7 @@
     <value>파수 q 축의 단위를 nm⁻¹ (역 나노미터) 로 합니다.</value>
   </data>
   <data name="radioButtonDspacing.ToolTip" xml:space="preserve">
-    <value>수평 축을 d 값 (각 반사의 격자면 간격 d-spacing) 으로 표시합니다.</value>
+    <value>가로축을 d 값(각 반사의 격자면 간격 d-spacing)으로 표시합니다.</value>
   </data>
   <data name="radioButtonTofUnitNanoSec.ToolTip" xml:space="preserve">
     <value>비행 시간 축의 시간 단위를 ns (나노초) 로 합니다.</value>
@@ -220,7 +220,7 @@
     <value>d 값 축의 길이 단위를 옹스트롬 (Å = 0.1 nm) 으로 합니다.</value>
   </data>
   <data name="groupBoxSource.ToolTip" xml:space="preserve">
-    <value>파원 선택</value>
+    <value>선원 선택</value>
   </data>
   <data name="radioButtonXray.ToolTip" xml:space="preserve">
     <value>선원을 X선으로 합니다
@@ -230,11 +230,11 @@
     <value>파수 q 축의 단위를 Å⁻¹ (역 옹스트롬) 으로 합니다.</value>
   </data>
   <data name="radioButtonWavenumber.ToolTip" xml:space="preserve">
-    <value>수평 축을 산란 파수 q = 4π·sinθ/λ (산란
-벡터의 크기) 로 표시합니다.</value>
+    <value>가로축을 산란 파수 q = 4π·sinθ/λ(산란
+벡터의 크기)로 표시합니다.</value>
   </data>
   <data name="radioButtonTOF.ToolTip" xml:space="preserve">
-    <value>수평 축을 중성자 비행 시간 (TOF), 즉 중성자가
+    <value>가로축을 중성자 비행 시간(TOF), 즉 중성자가
 비행 경로를 이동하는 시간으로 표시합니다.
 중성자 백색 빔 모드 전용입니다.</value>
   </data>

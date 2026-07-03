@@ -122,26 +122,26 @@ aggiornano i parametri di cella deformati e lo sforzo.</value>
   </data>
   <data name="numericBoxStress11.ToolTip" xml:space="preserve">
     <value>Componente di sforzo normale σ11 (in GPa) calcolata dal
-prodotto della matrice di rigidità per la deformazione (sola lettura).</value>
+prodotto della matrice di rigidezza per la deformazione (sola lettura).</value>
   </data>
   <data name="numericBoxStress12.ToolTip" xml:space="preserve">
     <value>Componente di sforzo di taglio σ12 (in GPa) calcolata dal
-prodotto della matrice di rigidità per la deformazione (sola lettura).</value>
+prodotto della matrice di rigidezza per la deformazione (sola lettura).</value>
   </data>
   <data name="numericBoxStress13.ToolTip" xml:space="preserve">
     <value>Componente di sforzo di taglio σ13 (in GPa) calcolata dal
-prodotto della matrice di rigidità per la deformazione (sola lettura).</value>
+prodotto della matrice di rigidezza per la deformazione (sola lettura).</value>
   </data>
   <data name="numericBoxStress22.ToolTip" xml:space="preserve">
     <value>Componente di sforzo normale σ22 (in GPa) calcolata dal
-prodotto della matrice di rigidità per la deformazione (sola lettura).</value>
+prodotto della matrice di rigidezza per la deformazione (sola lettura).</value>
   </data>
   <data name="numericBoxStress23.ToolTip" xml:space="preserve">
     <value>Componente di sforzo di taglio σ23 (in GPa) calcolata dal
-prodotto della matrice di rigidità per la deformazione (sola lettura).</value>
+prodotto della matrice di rigidezza per la deformazione (sola lettura).</value>
   </data>
   <data name="numericBoxStress33.ToolTip" xml:space="preserve">
     <value>Componente di sforzo normale σ33 (in GPa) calcolata dal
-prodotto della matrice di rigidità per la deformazione (sola lettura).</value>
+prodotto della matrice di rigidezza per la deformazione (sola lettura).</value>
   </data>
 </root>

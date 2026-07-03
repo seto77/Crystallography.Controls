@@ -359,7 +359,7 @@ die die Atomkugel unabhängig von jeder
 Lichtquelle leuchten lässt.</value>
   </data>
   <data name="numericBoxOccerr.ToolTip" xml:space="preserve">
-    <value>Standardunsicherheit (± Fehler) der Besetzung der Lage.</value>
+    <value>Standardunsicherheit (± Fehler) der Besetzung der Position.</value>
   </data>
   <data name="numericBoxShininess.ToolTip" xml:space="preserve">
     <value>Glanzgrad-Exponent (0–20): Schärfe des

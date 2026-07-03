@@ -63,7 +63,7 @@
     <value>Mostrar erros</value>
   </data>
   <data name="groupBoxCellConstants.Text" xml:space="preserve">
-    <value>Constantes da célula</value>
+    <value>Parâmetros da célula</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
     <value>Unidade</value>

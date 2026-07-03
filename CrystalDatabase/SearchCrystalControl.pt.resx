@@ -119,7 +119,7 @@ difração); ativa os campos de entrada de distância interplanar.</value>
   </data>
   <data name="checkBoxIgnoreScatteringFactor.ToolTip" xml:space="preserve">
     <value>Quando marcado, a pesquisa por distância interplanar ignora o
-fator de dispersão (intensidade da reflexão): cada valor de d
+fator de espalhamento (intensidade da reflexão): cada valor de d
 geometricamente permitido é calculado a partir da
 célula unitária, incluindo reflexões que seriam
 extintas (intensidade zero).</value>

@@ -180,8 +180,8 @@
   </data>
   <data name="dataGridView.ToolTip" xml:space="preserve">
     <value>정의된 결합/다면체 목록입니다. 행을 선택하면
-아래에서 편집할 수 있으며, Enabled / Show
-열을 직접 전환할 수도 있습니다.</value>
+아래에서 편집할 수 있으며, 활성화 확인란과
+표시 열(결합 / 다면체)을 직접 전환할 수도 있습니다.</value>
   </data>
   <data name="numericBoxBondAlpha.ToolTip" xml:space="preserve">
     <value>결합 원기둥의 불투명도입니다(0

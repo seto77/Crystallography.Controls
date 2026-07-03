@@ -231,7 +231,7 @@ pour le calcul de diffraction des rayons X de cet atome.</value>
   </data>
   <data name="buttonApplyToSameElement.ToolTip" xml:space="preserve">
     <value>Copie les réglages actuels (apparence sur
-l'onglet Appearance, ou paramètres de Debye–Waller /
+l'onglet Apparence, ou paramètres de Debye–Waller /
 de déplacement sur l'onglet Debye–Waller)
 vers tous les atomes du même élément.</value>
   </data>

@@ -145,7 +145,7 @@
     <value>以奈米（nm）顯示晶面間距軸。</value>
   </data>
   <data name="radioButtonAngleUnitCentiDegree.ToolTip" xml:space="preserve">
-    <value>以厘度（1/100 度）顯示 2θ 軸。</value>
+    <value>以釐度（1/100 度）顯示 2θ 軸。</value>
   </data>
   <data name="waveLengthControl.ToolTip" xml:space="preserve">
     <value>在此設定輻射波長：可直接輸入，
@@ -223,7 +223,7 @@ X射線譜線（元素＋譜線）來指定。</value>
     <value>以埃（Å，0.1 nm）顯示晶面間距軸。</value>
   </data>
   <data name="groupBoxSource.ToolTip" xml:space="preserve">
-    <value>選擇波源</value>
+    <value>選擇射源</value>
   </data>
   <data name="radioButtonXray.ToolTip" xml:space="preserve">
     <value>使用 X射線束作為輻射源

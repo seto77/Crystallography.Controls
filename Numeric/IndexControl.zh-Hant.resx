@@ -60,20 +60,20 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="numericBoxH.ToolTip" xml:space="preserve">
-    <value>第一個指數分量：Miller 指數 h（晶面
+    <value>第一個指數分量：米勒指數 h（晶面
 模式）或方向指數 u（軸向模式）。</value>
   </data>
   <data name="numericBoxI.ToolTip" xml:space="preserve">
-    <value>Miller–Bravais 第四指數 i = -(h+k)，
+    <value>米勒-布拉維第四指數 i = -(h+k)，
 用於六方（hkil）表示法。
 唯讀且自動計算。</value>
   </data>
   <data name="numericBoxK.ToolTip" xml:space="preserve">
-    <value>第二個指數分量：Miller 指數 k（晶面
+    <value>第二個指數分量：米勒指數 k（晶面
 模式）或方向指數 v（軸向模式）。</value>
   </data>
   <data name="numericBoxL.ToolTip" xml:space="preserve">
-    <value>第三個指數分量：Miller 指數 l（晶面
+    <value>第三個指數分量：米勒指數 l（晶面
 模式）或方向指數 w（軸向模式）。</value>
   </data>
 </root>

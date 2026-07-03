@@ -93,7 +93,7 @@ a partir do tensor de deformação (somente leitura).</value>
   <data name="numericBoxStrain11.ToolTip" xml:space="preserve">
     <value>Componente de deformação normal ε11 ao longo da direção a (x)
 (alongamento fracionário adimensional); alterá-lo
-atualiza os parâmetros de célula deformados e a tensão.</value>
+atualiza os parâmetros de rede deformados e a tensão.</value>
   </data>
   <data name="numericBoxStrain12.ToolTip" xml:space="preserve">
     <value>Componente de deformação cisalhante ε12 no plano a-b (x-y)
@@ -108,7 +108,7 @@ alterá-lo atualiza a rede deformada e a tensão.</value>
   <data name="numericBoxStrain22.ToolTip" xml:space="preserve">
     <value>Componente de deformação normal ε22 ao longo da direção b (y)
 (alongamento fracionário adimensional); alterá-lo
-atualiza os parâmetros de célula deformados e a tensão.</value>
+atualiza os parâmetros de rede deformados e a tensão.</value>
   </data>
   <data name="numericBoxStrain23.ToolTip" xml:space="preserve">
     <value>Componente de deformação cisalhante ε23 no plano b-c (y-z)
@@ -118,7 +118,7 @@ alterá-lo atualiza a rede deformada e a tensão.</value>
   <data name="numericBoxStrain33.ToolTip" xml:space="preserve">
     <value>Componente de deformação normal ε33 ao longo da direção c (z)
 (alongamento fracionário adimensional); alterá-lo
-atualiza os parâmetros de célula deformados e a tensão.</value>
+atualiza os parâmetros de rede deformados e a tensão.</value>
   </data>
   <data name="numericBoxStress11.ToolTip" xml:space="preserve">
     <value>Componente de tensão normal σ11 (em GPa) calculado a partir

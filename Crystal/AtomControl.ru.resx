@@ -146,7 +146,7 @@
     <value>Удалить</value>
   </data>
   <data name="labelDataGridViewTextBoxColumn.HeaderText" xml:space="preserve">
-    <value>Подпись</value>
+    <value>Метка</value>
   </data>
   <data name="occDataGridViewTextBoxColumn.HeaderText" xml:space="preserve">
     <value>Засел.</value>
@@ -155,7 +155,7 @@
     <value>Кратн.</value>
   </data>
   <data name="wyckLetDataGridViewTextBoxColumn.HeaderText" xml:space="preserve">
-    <value>Букв. Вайк.</value>
+    <value>Букв. Уайк.</value>
   </data>
   <data name="siteSymDataGridViewTextBoxColumn.HeaderText" xml:space="preserve">
     <value>Симм. поз.</value>

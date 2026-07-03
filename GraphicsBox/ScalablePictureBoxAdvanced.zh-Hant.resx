@@ -103,7 +103,7 @@
     <value>套用除塵與刮痕（Dust &amp; Scratches）濾鏡，
 將與鄰近像素差異過大的小亮點與刮痕狀雜訊
 以鄰近值取代而予以去除
-（以 Radius 與 Threshold 調整）。</value>
+（以半徑與閾值調整）。</value>
   </data>
   <data name="checkBoxGaussianBlur.ToolTip" xml:space="preserve">
     <value>套用高斯模糊（Gaussian blur），以高斯核心平滑影像以抑制

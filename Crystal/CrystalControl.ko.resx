@@ -87,7 +87,7 @@
     <value>원자 정보</value>
   </data>
   <data name="resetToolStripMenuItem.Text" xml:space="preserve">
-    <value>디바이-발러 인자를 0으로 설정</value>
+    <value>디바이-월러 인자를 0으로 설정</value>
   </data>
   <data name="tabPageBondsPolyhedra.Text" xml:space="preserve">
     <value>결합 &amp; 다면체</value>
@@ -219,7 +219,7 @@
     <value>격자 상수, 대칭성 및 기타 기본 정보</value>
   </data>
   <data name="resetToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>모든 원자의 디바이-발러 인자(열진동에 의한
+    <value>모든 원자의 디바이-월러 인자(열진동에 의한
 회절 강도 감쇠)를 0으로 설정합니다.</value>
   </data>
   <data name="tabPageAtom.ToolTip" xml:space="preserve">

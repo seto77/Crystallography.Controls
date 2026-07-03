@@ -131,10 +131,10 @@
   </data>
   <data name="textBoxMacroName.ToolTip" xml:space="preserve">
     <value>巨集的名稱。在新增或取代時用作其在清單中的
-項目名稱，以及其功能表項目名稱。</value>
+項目名稱，以及其選單項目名稱。</value>
   </data>
   <data name="label1.ToolTip" xml:space="preserve">
     <value>巨集的名稱。在新增或取代時用作其在清單中的
-項目名稱，以及其功能表項目名稱。</value>
+項目名稱，以及其選單項目名稱。</value>
   </data>
 </root>

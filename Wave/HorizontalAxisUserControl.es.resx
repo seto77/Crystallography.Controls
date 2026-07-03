@@ -108,7 +108,7 @@
     <value>Grados</value>
   </data>
   <data name="radioButtonAngleUnitCentiDegree.Text" xml:space="preserve">
-    <value>Centígrados</value>
+    <value>Centigrado</value>
   </data>
   <data name="radioButtonAngleUnitRadian.Text" xml:space="preserve">
     <value>Radianes</value>

@@ -103,7 +103,7 @@ un pixel dello schermo per ogni pixel dell'immagine).</value>
     <value>Applica un filtro Dust &amp; Scratches che rimuove
 piccole macchie e artefatti simili a graffi
 sostituendo i pixel che si discostano dai
-loro vicini (imposta Radius e Threshold).</value>
+loro vicini (imposta Radius e Soglia).</value>
   </data>
   <data name="checkBoxGaussianBlur.ToolTip" xml:space="preserve">
     <value>Applica una sfocatura gaussiana che leviga l'immagine con un

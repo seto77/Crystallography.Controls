@@ -208,24 +208,24 @@ valores maiores indicam vibração térmica mais forte.</value>
     <value>Aba de configurações do fator de Debye-Waller</value>
   </data>
   <data name="comboBoxScatteringFactorElectron.ToolTip" xml:space="preserve">
-    <value>Seleciona a entrada de fator de dispersão de elétrons
+    <value>Seleciona a entrada de fator de espalhamento de elétrons
 (estado de carga iônica e parametrização,
 ex.: "Fe2+: HF") usada para a simulação de difração /
 imagem de elétrons deste átomo.</value>
   </data>
   <data name="label4.ToolTip" xml:space="preserve">
-    <value>Seleciona a entrada de fator de dispersão de elétrons
+    <value>Seleciona a entrada de fator de espalhamento de elétrons
 (estado de carga iônica e parametrização,
 ex.: "Fe2+: HF") usada para a simulação de difração /
 imagem de elétrons deste átomo.</value>
   </data>
   <data name="comboBoxScatteringFactorXray.ToolTip" xml:space="preserve">
-    <value>Seleciona a entrada de fator de dispersão de raios X (estado
+    <value>Seleciona a entrada de fator de espalhamento de raios X (estado
 de carga iônica e parametrização, ex.: "Fe2+") usada
 para o cálculo de difração de raios X deste átomo.</value>
   </data>
   <data name="label5.ToolTip" xml:space="preserve">
-    <value>Seleciona a entrada de fator de dispersão de raios X (estado
+    <value>Seleciona a entrada de fator de espalhamento de raios X (estado
 de carga iônica e parametrização, ex.: "Fe2+") usada
 para o cálculo de difração de raios X deste átomo.</value>
   </data>
@@ -237,7 +237,7 @@ para o cálculo de difração de raios X deste átomo.</value>
   </data>
   <data name="buttonApplyToSameElement.ToolTip" xml:space="preserve">
     <value>Copia as configurações atuais (aparência na
-aba Appearance, ou parâmetros de Debye–Waller /
+aba Aparência, ou parâmetros de Debye–Waller /
 deslocamento na aba Debye–Waller)
 para todos os átomos do mesmo elemento.</value>
   </data>
@@ -506,7 +506,7 @@ todos os átomos com "Apply custom shift".</value>
   </data>
   <data name="buttonEditIsotopeAbundance.ToolTip" xml:space="preserve">
     <value>Abrir uma caixa de diálogo para editar as abundâncias isotópicas usadas
-no comprimento de dispersão de nêutrons (habilitado apenas
+no comprimento de espalhamento de nêutrons (habilitado apenas
 quando a composição isotópica personalizada está selecionada).</value>
   </data>
   <data name="checkBoxDetailsDebyeWallerError.ToolTip" xml:space="preserve">
@@ -517,7 +517,7 @@ Bij/Uij anisotrópicos), que atenuam a intensidade de
 difração devido à vibração térmica dos átomos.</value>
   </data>
   <data name="comboBoxNeutron.ToolTip" xml:space="preserve">
-    <value>Escolher se o comprimento de dispersão coerente de nêutrons
+    <value>Escolher se o comprimento de espalhamento coerente de nêutrons
 usa a abundância isotópica natural ou uma composição
 isotópica personalizada; selecionar 'Custom
 isotope abundance' habilita o botão Editar para
@@ -543,7 +543,7 @@ B isotrópico), adimensional para B anisotrópico.</value>
 (x, y, z) a ser aplicado a todos os átomos.</value>
   </data>
   <data name="label6.ToolTip" xml:space="preserve">
-    <value>Escolher se o comprimento de dispersão de nêutrons
+    <value>Escolher se o comprimento de espalhamento de nêutrons
 usa a abundância isotópica natural (padrão)
 ou uma composição isotópica personalizada.</value>
   </data>

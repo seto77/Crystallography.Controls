@@ -60,7 +60,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="textBox1.Text" xml:space="preserve">
-    <value>Se pubblica un articolo utilizzando i dati di questo database, citi il seguente riferimento o i riferimenti elencati nella pagina web corrispondente. AMCSD: Downs &amp; Hall-Wallace (2003) American Mineralogist 88, 247-250. COD: https://wiki.crystallography.net/cod/citing/</value>
+    <value>Se pubblichi un articolo utilizzando i dati di questo database, cita il seguente riferimento o i riferimenti elencati nella pagina web corrispondente. AMCSD: Downs &amp; Hall-Wallace (2003) American Mineralogist 88, 247-250. COD: https://wiki.crystallography.net/cod/citing/</value>
   </data>
   <data name="bindingNavigatorMoveFirstItem.ToolTipText" xml:space="preserve">
     <value>Va al primo record di cristallo nell'elenco.</value>

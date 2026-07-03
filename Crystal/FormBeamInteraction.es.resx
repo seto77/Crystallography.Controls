@@ -90,7 +90,7 @@
     <value>Espesor  t</value>
   </data>
   <data name="tabPageReflections.Text" xml:space="preserve">
-    <value>Reflexiones</value>
+    <value>Espejos</value>
   </data>
   <data name="colEdgeEdge.HeaderText" xml:space="preserve">
     <value>Borde</value>
@@ -266,7 +266,7 @@ En este modo, las reflexiones prohibidas y equivalentes se ocultan automáticame
   <data name="radioButtonAttenTrans.ToolTip" xml:space="preserve">
     <value>Representa la TRANSMISIÓN T = exp(−µ·t) en porcentaje: la fracción del haz de
 rayos X que atraviesa la muestra sin ser absorbida ni dispersada, para el
-espesor de muestra t definido en el cuadro 'Thickness t' de abajo.
+espesor de muestra t definido en el cuadro 'Espesor t' de abajo.
 100% = la muestra es transparente al haz; 0% = el haz queda completamente bloqueado.
 Úselo para juzgar un espesor de muestra razonable a la energía actual.</value>
   </data>

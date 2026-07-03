@@ -111,13 +111,13 @@
     <value>Tutti (normalizzati)</value>
   </data>
   <data name="radioButtonElecSigma.Text" xml:space="preserve">
-    <value>σ elastico (nm²)</value>
+    <value>σ elastica (nm²)</value>
   </data>
   <data name="radioButtonElecEMFP.Text" xml:space="preserve">
     <value>MFP elastico (nm)</value>
   </data>
   <data name="radioButtonElecRange.Text" xml:space="preserve">
-    <value>Portata CSDA (µm)</value>
+    <value>Percorso CSDA (µm)</value>
   </data>
   <data name="tabPageAttenuations.Text" xml:space="preserve">
     <value>Attenuazioni &amp;&amp; trasporto</value>
@@ -278,7 +278,7 @@ Le riflessioni proibite ed equivalenti vengono nascoste automaticamente in quest
   <data name="radioButtonAttenTrans.ToolTip" xml:space="preserve">
     <value>Traccia la TRASMISSIONE T = exp(−µ·t) in percentuale — la frazione del fascio
 di raggi X che attraversa il campione senza essere assorbita o diffusa, per lo
-spessore del campione t impostato nella casella 'Thickness t' sottostante.
+spessore del campione t impostato nella casella 'Spessore t' sottostante.
 100% = il campione è trasparente al fascio; 0% = il fascio è completamente bloccato.
 Usalo per giudicare uno spessore del campione sensato all'energia attuale.</value>
   </data>
@@ -298,7 +298,7 @@ Intervallo 0.001-1; un valore inferiore a 1 produce indici frazionari.</value>
 Intervallo 0.001-1; un valore inferiore a 1 produce indici frazionari.</value>
   </data>
   <data name="radioButtonElecDeds.ToolTip" xml:space="preserve">
-    <value>|dE/ds| — modulo del potere d'arresto: l'energia che l'elettrone perde per nanometro percorso.</value>
+    <value>|dE/ds| — modulo del potere frenante: l'energia che l'elettrone perde per nanometro percorso.</value>
   </data>
   <data name="buttonCopyClipboard.ToolTip" xml:space="preserve">
     <value>Copia l'intera tabella delle riflessioni negli appunti come testo separato da tabulazioni

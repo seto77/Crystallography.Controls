@@ -63,7 +63,7 @@
     <value>等向性</value>
   </data>
   <data name="radioButtonAnisotropy.Text" xml:space="preserve">
-    <value>非等向性</value>
+    <value>異向性</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
     <value>標籤: </value>
@@ -110,7 +110,7 @@
     <value>環境光</value>
   </data>
   <data name="label38.Text" xml:space="preserve">
-    <value>鏡面反光</value>
+    <value>鏡面反射</value>
   </data>
   <data name="label11.Text" xml:space="preserve">
     <value>漫射</value>
@@ -169,7 +169,7 @@
 會顯示於原子清單及 3D 標籤中。</value>
   </data>
   <data name="label2.ToolTip" xml:space="preserve">
-    <value>選擇此原子位置的化學元素。</value>
+    <value>此原子位置的化學元素。</value>
   </data>
   <data name="comboBoxAtom.ToolTip" xml:space="preserve">
     <value>選擇一個元素</value>
@@ -234,8 +234,8 @@ X射線散射因子條目 (離子荷電狀態與
     <value>要繪製的球體半徑</value>
   </data>
   <data name="buttonApplyToSameElement.ToolTip" xml:space="preserve">
-    <value>將目前的設定 (Appearance 分頁上的外觀，
-或 Debye–Waller 分頁上的德拜-沃勒/
+    <value>將目前的設定 (外觀分頁上的外觀，
+或德拜-沃勒因子分頁上的德拜-沃勒/
 位移參數) 複製到同一元素的
 所有原子。</value>
   </data>
@@ -248,7 +248,7 @@ X射線散射因子條目 (離子荷電狀態與
   <data name="buttonApplyToAllElements.ToolTip" xml:space="preserve">
     <value>將目前的德拜-沃勒 (原子位移)
 參數套用至清單中的每個原子
-(於 Debye–Waller 分頁可使用)。</value>
+(於德拜-沃勒因子分頁可使用)。</value>
   </data>
   <data name="buttonAtomUp.ToolTip" xml:space="preserve">
     <value>將所選原子上移</value>

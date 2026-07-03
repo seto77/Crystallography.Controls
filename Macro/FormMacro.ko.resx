@@ -96,7 +96,7 @@
     <value>선택 중인 매크로를 목록에서 한 칸 위로 이동합니다.</value>
   </data>
   <data name="checkBoxSamples.ToolTip" xml:space="preserve">
-    <value>내장된 샘플 매크로 (읽기 전용) 의
+    <value>내장된 예제 매크로 (읽기 전용) 의
 표시를 전환합니다. 직접 만든 매크로는 따로
 보관되어 체크를 해제하면 복원됩니다.</value>
   </data>

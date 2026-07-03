@@ -457,7 +457,7 @@ Strukturansicht als auch in den Beugungsprofil-Kurven.</value>
     <value>Name des Kristalls</value>
   </data>
   <data name="buttonBeamInteraction.ToolTip" xml:space="preserve">
-    <value>Beam-Interaction-Daten in einem separaten Fenster öffnen.</value>
+    <value>Daten zur Strahlwechselwirkung in einem separaten Fenster öffnen.</value>
   </data>
   <data name="buttonSymmetryInfo.ToolTip" xml:space="preserve">
     <value>Die detaillierten Symmetrieinformationen in einem separaten Fenster öffnen.</value>

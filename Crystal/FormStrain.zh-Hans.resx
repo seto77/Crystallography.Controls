@@ -64,7 +64,7 @@
 新结构并关闭此窗口。</value>
   </data>
   <data name="numericBoxA.ToolTip" xml:space="preserve">
-    <value>施加应变后晶胞的格子参数 a（单位 ångström），
+    <value>施加应变后晶胞的格子参数 a（单位 Å），
 由应变张量计算得出（只读）。</value>
   </data>
   <data name="numericBoxAlpha.ToolTip" xml:space="preserve">
@@ -73,7 +73,7 @@
 由应变张量计算得出（只读）。</value>
   </data>
   <data name="numericBoxB.ToolTip" xml:space="preserve">
-    <value>施加应变后晶胞的格子参数 b（单位 ångström），
+    <value>施加应变后晶胞的格子参数 b（单位 Å），
 由应变张量计算得出（只读）。</value>
   </data>
   <data name="numericBoxBeta.ToolTip" xml:space="preserve">
@@ -82,7 +82,7 @@
 由应变张量计算得出（只读）。</value>
   </data>
   <data name="numericBoxC.ToolTip" xml:space="preserve">
-    <value>施加应变后晶胞的格子参数 c（单位 ångström），
+    <value>施加应变后晶胞的格子参数 c（单位 Å），
 由应变张量计算得出（只读）。</value>
   </data>
   <data name="numericBoxGamma.ToolTip" xml:space="preserve">

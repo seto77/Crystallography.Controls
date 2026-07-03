@@ -87,7 +87,7 @@
     <value>Épaisseur  t</value>
   </data>
   <data name="tabPageReflections.Text" xml:space="preserve">
-    <value>Réflexions</value>
+    <value>Taches</value>
   </data>
   <data name="colEdgeElem.HeaderText" xml:space="preserve">
     <value>Élém.</value>
@@ -111,7 +111,7 @@
     <value>σ élastique (nm²)</value>
   </data>
   <data name="radioButtonElecEMFP.Text" xml:space="preserve">
-    <value>LPM élastique (nm)</value>
+    <value>MFP élastique (nm)</value>
   </data>
   <data name="radioButtonElecRange.Text" xml:space="preserve">
     <value>Portée CSDA (µm)</value>
@@ -205,7 +205,7 @@ Ensemble elles montrent comment la diffusion passe du cohérent aux petits angle
 grands angles. Désactivé lorsque xraylib n'est pas disponible.</value>
   </data>
   <data name="radioButtonElecRange.ToolTip" xml:space="preserve">
-    <value>Parcours (CSDA) — la longueur totale du chemin parcouru par l'électron avant de s'arrêter.</value>
+    <value>Portée (CSDA) — la longueur totale du chemin parcouru par l'électron avant de s'arrêter.</value>
   </data>
   <data name="label7.ToolTip" xml:space="preserve">
     <value>Plage de balayage de l'indice l en mode test : minimum, maximum et pas.</value>

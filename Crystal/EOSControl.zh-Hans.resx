@@ -156,7 +156,7 @@ K₀、K'₀ 即在该温度下定义
   </data>
   <data name="radioButtonEOS_AP2.ToolTip" xml:space="preserve">
     <value>对等温压力–体积关系使用 AP2
-（二阶 adapted polynomial / Holzapfel）
+（二阶适配多项式 / Holzapfel）
 状态方程。</value>
   </data>
   <data name="radioButtonEOS_FourthBirchMunaghan.ToolTip" xml:space="preserve">

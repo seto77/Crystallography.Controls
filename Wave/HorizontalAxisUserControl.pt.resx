@@ -93,7 +93,7 @@
     <value>2θ (ângulo)</value>
   </data>
   <data name="radioButtonDspacing.Text" xml:space="preserve">
-    <value>Distância interplanar</value>
+    <value>Distância d</value>
   </data>
   <data name="radioButtonWavenumber.Text" xml:space="preserve">
     <value>q (número de onda)</value>
@@ -123,7 +123,7 @@
     <value>Eixo horizontal</value>
   </data>
   <data name="numericBoxTofAngle.ToolTip" xml:space="preserve">
-    <value>Ângulo de dispersão 2θ do detector (graus) para
+    <value>Ângulo de espalhamento 2θ do detector (graus) para
 medição de tempo de voo (TOF) de nêutrons.</value>
   </data>
   <data name="numericBoxTofAngle.ToolTip1" xml:space="preserve">
@@ -162,7 +162,7 @@ para medição de tempo de voo (TOF) de nêutrons.</value>
   </data>
   <data name="radioButtonTwoTheta.ToolTip" xml:space="preserve">
     <value>Plota o eixo horizontal como o ângulo de difração
-2θ (ângulo de dispersão entre o feixe incidente e o
+2θ (ângulo de espalhamento entre o feixe incidente e o
 difratado); usado no modo monocromático.</value>
   </data>
   <data name="radioButtonMonochro.ToolTip" xml:space="preserve">
@@ -174,7 +174,7 @@ habilita os eixos 2θ e de distância interplanar.</value>
 para medição dispersiva em energia (feixe branco).</value>
   </data>
   <data name="numericBoxTwoTheta.ToolTip" xml:space="preserve">
-    <value>Ângulo de dispersão (de saída) 2θ do detector em graus
+    <value>Ângulo de espalhamento (de saída) 2θ do detector em graus
 para medição dispersiva em energia (feixe branco).</value>
   </data>
   <data name="radioButtonWavenumberUnitNmInv.ToolTip" xml:space="preserve">
@@ -188,7 +188,7 @@ para medição dispersiva em energia (feixe branco).</value>
     <value>Mostra o eixo de tempo de voo em nanossegundos (ns).</value>
   </data>
   <data name="radioButtonAngleUnitMilliRadian.ToolTip" xml:space="preserve">
-    <value>Mostra o eixo 2θ em miliradianos (1/1000 de radiano).</value>
+    <value>Mostra o eixo 2θ em milirradianos (1/1000 de radiano).</value>
   </data>
   <data name="radioButtonTofUnitMicroSec.ToolTip" xml:space="preserve">
     <value>Mostra o eixo de tempo de voo em microssegundos (μs).</value>
@@ -233,8 +233,8 @@ de onda/energias definido pelo usuário.</value>
     <value>Mostra o eixo do número de onda q em ångströms inversos (Å⁻¹).</value>
   </data>
   <data name="radioButtonWavenumber.ToolTip" xml:space="preserve">
-    <value>Plota o eixo horizontal como o número de onda de dispersão
-q = 4π·sinθ/λ (magnitude do vetor de dispersão).</value>
+    <value>Plota o eixo horizontal como o número de onda de espalhamento
+q = 4π·sinθ/λ (magnitude do vetor de espalhamento).</value>
   </data>
   <data name="radioButtonTOF.ToolTip" xml:space="preserve">
     <value>Plota o eixo horizontal como tempo de voo de nêutrons

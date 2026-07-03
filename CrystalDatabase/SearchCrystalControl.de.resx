@@ -93,7 +93,7 @@ in die Suche eingeschlossen oder ausgeschlossen werden müssen.</value>
   <data name="buttonSearch.ToolTip" xml:space="preserve">
     <value>Durchsucht die Kristalldatenbank mit allen aktivierten
 Kriterien (Name, Literatur, Elemente, Kristallsystem,
-Zelle, d-Wert, Dichte) kombiniert und zeigt
+Gitterkonstanten, d-Wert, Dichte) kombiniert und zeigt
 nur die übereinstimmenden Kristalle an.</value>
   </data>
   <data name="checkBoxD1.ToolTip" xml:space="preserve">
@@ -125,9 +125,9 @@ einschließlich Reflexe, die ausgelöscht wären
 (null Intensität).</value>
   </data>
   <data name="checkBoxSearchCellParameter.ToolTip" xml:space="preserve">
-    <value>Filtert nach Gitterparametern (Längen
+    <value>Filtert nach Gitterkonstanten (Längen
 a, b, c in Å und Winkel α, β, γ in °);
-aktiviert die Eingabefelder für die Gitterparameter.</value>
+aktiviert die Eingabefelder für die Gitterkonstanten.</value>
   </data>
   <data name="checkBoxSearchCrystalSystem.ToolTip" xml:space="preserve">
     <value>Filtert nach Kristallsystem (triklin …

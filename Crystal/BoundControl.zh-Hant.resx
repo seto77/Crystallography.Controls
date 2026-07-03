@@ -113,7 +113,7 @@
     <value>立即套用變更</value>
   </data>
   <data name="checkBoxEquivalency.ToolTip" xml:space="preserve">
-    <value>包含對稱等效的面</value>
+    <value>包含對稱等效的晶面</value>
   </data>
   <data name="numericBoxTranslation.ToolTip" xml:space="preserve">
     <value>沿法線方向平移此邊界面的距離（Å）；
@@ -132,7 +132,7 @@
 將新的邊界面加入清單。</value>
   </data>
   <data name="colorControl.ToolTip" xml:space="preserve">
-    <value>在結晶顯示中繪製此邊界（裁切）
+    <value>在晶體顯示中繪製此邊界（裁切）
 面所用的顏色。</value>
   </data>
   <data name="dataGridView.ToolTip" xml:space="preserve">
@@ -149,11 +149,11 @@
 倍數表示；與右側的絕對距離 (Å) 連動。</value>
   </data>
   <data name="label6.ToolTip" xml:space="preserve">
-    <value>結晶原點到邊界面的距離，可用晶面間距的
+    <value>晶體原點到邊界面的距離，可用晶面間距的
 倍數（左）或直接以 Å（右）設定。</value>
   </data>
   <data name="indexControl1.ToolTip" xml:space="preserve">
     <value>邊界面法線的米勒指數 (h k l)；定義
-裁切結晶之面的方向。</value>
+裁切晶體之面的方向。</value>
   </data>
 </root>

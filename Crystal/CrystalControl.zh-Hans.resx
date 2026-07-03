@@ -135,7 +135,7 @@
     <value>转换为超结构</value>
   </data>
   <data name="convertToAnotherSpacegroupToolStripMenuItem.Text" xml:space="preserve">
-    <value>更改坐标轴/原点设置</value>
+    <value>更改轴/原点设置</value>
   </data>
   <data name="buttonBeamInteraction.Text" xml:space="preserve">
     <value>射束相互作用</value>
@@ -474,7 +474,7 @@
     <value>按质量加权的平均原子序数：  Z = Σ(n_i·A_i·Z_i) / Σ(n_i·A_i)   (用于蒙特卡洛电子输运计算的有效 Z)</value>
   </data>
   <data name="numericBoxMeanAtomicWeight.ToolTip" xml:space="preserve">
-    <value>按数目加权的平均原子量（每个原子）：  A = Σ(n_i·A_i) / Σ n_i   (与摩尔质量不同，后者是每个化学式单元的)</value>
+    <value>按数目加权的平均原子量（每个原子）：  A = Σ(n_i·A_i) / Σ n_i   （与摩尔质量不同，后者是每个化学式单元的）</value>
   </data>
   <data name="numericBoxMeanAtomicWeight.ToolTip1" xml:space="preserve">
     <value>按数目加权的平均原子量（每个原子）：  A = Σ(n_i·A_i) / Σ n_i   (与摩尔质量不同，后者是每个化学式单元的)</value>

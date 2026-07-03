@@ -155,7 +155,7 @@
     <value>多重性</value>
   </data>
   <data name="wyckLetDataGridViewTextBoxColumn.HeaderText" xml:space="preserve">
-    <value>维科夫字母</value>
+    <value>威科夫字母</value>
   </data>
   <data name="siteSymDataGridViewTextBoxColumn.HeaderText" xml:space="preserve">
     <value>位置对称性</value>
@@ -234,8 +234,8 @@ B = 8π²·U，其中数值
     <value>要绘制的球的半径</value>
   </data>
   <data name="buttonApplyToSameElement.ToolTip" xml:space="preserve">
-    <value>将当前设置（Appearance 选项卡上的
-外观，或 Debye–Waller 选项卡上的
+    <value>将当前设置（外观选项卡上的
+外观，或德拜-沃勒因子选项卡上的
 德拜-沃勒/位移参数）
 复制到同一元素的所有原子。</value>
   </data>
@@ -248,7 +248,7 @@ B = 8π²·U，其中数值
   <data name="buttonApplyToAllElements.ToolTip" xml:space="preserve">
     <value>将当前的德拜-沃勒（原子
 位移）参数应用于列表中的每个原子
-（在 Debye–Waller 选项卡中可用）。</value>
+（在德拜-沃勒因子选项卡中可用）。</value>
   </data>
   <data name="buttonAtomUp.ToolTip" xml:space="preserve">
     <value>将所选原子上移</value>
@@ -316,7 +316,7 @@ B = 8π²·U，其中数值
   <data name="dataGridView.ToolTip" xml:space="preserve">
     <value>晶体中所有原子位置的列表。选择某一
 行可将其载入下方的编辑栏；复选框
-用于切换该原子在3D视图中的显示/隐藏。</value>
+用于切换该原子在三维视图中的显示/隐藏。</value>
   </data>
   <data name="numericBoxAlpha.ToolTip" xml:space="preserve">
     <value>原子球的不透明度（alpha值），

@@ -63,7 +63,7 @@
     <value>顯示誤差</value>
   </data>
   <data name="groupBoxCellConstants.Text" xml:space="preserve">
-    <value>晶胞常數</value>
+    <value>晶胞參數</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
     <value>單位</value>

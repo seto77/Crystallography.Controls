@@ -86,7 +86,7 @@
 표시</value>
   </data>
   <data name="tabPageDebyeWaller.Text" xml:space="preserve">
-    <value>디바이-발러 인자</value>
+    <value>디바이-월러 인자</value>
   </data>
   <data name="buttonEditIsotopeAbundance.Text" xml:space="preserve">
     <value>편집</value>
@@ -152,7 +152,7 @@
     <value>점유율</value>
   </data>
   <data name="multiDataGridViewTextBoxColumn.HeaderText" xml:space="preserve">
-    <value>중복도</value>
+    <value>다중도</value>
   </data>
   <data name="wyckLetDataGridViewTextBoxColumn.HeaderText" xml:space="preserve">
     <value>와이코프</value>
@@ -162,11 +162,11 @@
   </data>
   <data name="label1.ToolTip" xml:space="preserve">
     <value>이 원자 자리를 식별하는 이름 (예: O1, Fe2)으로,
-원자 목록과 3D 라벨로 표시됩니다.</value>
+원자 목록과 3D 레이블로 표시됩니다.</value>
   </data>
   <data name="textBoxLabel.ToolTip" xml:space="preserve">
     <value>이 원자 자리를 식별하는 이름 (예: O1, Fe2)으로,
-원자 목록과 3D 라벨로 표시됩니다.</value>
+원자 목록과 3D 레이블로 표시됩니다.</value>
   </data>
   <data name="label2.ToolTip" xml:space="preserve">
     <value>이 원자 자리의 화학 원소입니다.</value>
@@ -205,7 +205,7 @@ B = 8π²·U이며, 값이 클수록 열 진동이 강함을
 의미합니다.</value>
   </data>
   <data name="tabPageDebyeWaller.ToolTip" xml:space="preserve">
-    <value>디바이-발러 인자 설정 탭</value>
+    <value>디바이-월러 인자 설정 탭</value>
   </data>
   <data name="comboBoxScatteringFactorElectron.ToolTip" xml:space="preserve">
     <value>이 원자의 전자 회절/이미지
@@ -236,8 +236,8 @@ B = 8π²·U이며, 값이 클수록 열 진동이 강함을
     <value>그릴 구 (球)의 반지름</value>
   </data>
   <data name="buttonApplyToSameElement.ToolTip" xml:space="preserve">
-    <value>현재 설정 (Appearance 탭에서는 외관,
-Debye–Waller 탭에서는 디바이-발러/변위
+    <value>현재 설정 (외관 탭에서는 외관 설정,
+디바이-월러 인자 탭에서는 디바이-월러/변위
 파라미터)을 같은 원소의 모든 원자에
 복사합니다.</value>
   </data>
@@ -248,9 +248,9 @@ Debye–Waller 탭에서는 디바이-발러/변위
     <value>선택한 원자를 아래의 원자로 교체합니다</value>
   </data>
   <data name="buttonApplyToAllElements.ToolTip" xml:space="preserve">
-    <value>현재의 디바이-발러 (원자 변위) 파라미터를
+    <value>현재의 디바이-월러 (원자 변위) 파라미터를
 목록의 모든 원자에 적용합니다
-(Debye–Waller 탭에서 사용 가능).</value>
+(디바이-월러 인자 탭에서 사용 가능).</value>
   </data>
   <data name="buttonAtomUp.ToolTip" xml:space="preserve">
     <value>선택한 원자를 위로 이동합니다</value>
@@ -308,7 +308,7 @@ Debye–Waller 탭에서는 디바이-발러/변위
 (부호는 +/- 버튼으로 지정).</value>
   </data>
   <data name="checkBoxShowLabel.ToolTip" xml:space="preserve">
-    <value>3D 구조 화면에서 이 원자의 구 옆에 라벨
+    <value>3D 구조 화면에서 이 원자의 구 옆에 레이블
 텍스트를 그릴지 여부를 전환합니다.</value>
   </data>
   <data name="colorControlAtomColor.ToolTip" xml:space="preserve">
@@ -317,7 +317,7 @@ Debye–Waller 탭에서는 디바이-발러/변위
   </data>
   <data name="dataGridView.ToolTip" xml:space="preserve">
     <value>결정 내 모든 원자 자리의 목록입니다. 행을 선택하면
-아래 편집기에 불러오며, 체크 박스로 해당 원자의
+아래 편집기에 불러오며, 확인란으로 해당 원자의
 3D 보기에서의 표시 여부를 전환합니다.</value>
   </data>
   <data name="numericBoxAlpha.ToolTip" xml:space="preserve">
@@ -329,12 +329,12 @@ Debye–Waller 탭에서는 디바이-발러/변위
 0(완전 투명)부터 1(불투명)까지입니다.</value>
   </data>
   <data name="numericBoxAmbient.ToolTip" xml:space="preserve">
-    <value>환경광 반사 계수(0–1): 광원 방향과 무관하게
+    <value>주변광 반사 계수(0–1): 광원 방향과 무관하게
 원자 구에 균일하게 작용하는 배경 조명의
 세기입니다.</value>
   </data>
   <data name="label10.ToolTip" xml:space="preserve">
-    <value>환경광 반사 계수(0–1): 광원 방향과 무관하게
+    <value>주변광 반사 계수(0–1): 광원 방향과 무관하게
 원자 구에 균일하게 작용하는 배경 조명의
 세기입니다.</value>
   </data>
@@ -374,12 +374,12 @@ Debye–Waller 탭에서는 디바이-발러/변위
   <data name="numericBoxSpecular.ToolTip" xml:space="preserve">
     <value>정반사 계수(0–1): 원자 구 표면의
 광택 하이라이트 세기입니다
-(Shininess와 함께 작용).</value>
+(광택도와 함께 작용).</value>
   </data>
   <data name="label38.ToolTip" xml:space="preserve">
     <value>정반사 계수(0–1): 원자 구 표면의
 광택 하이라이트 세기입니다
-(Shininess와 함께 작용).</value>
+(광택도와 함께 작용).</value>
   </data>
   <data name="numericBoxXerr.ToolTip" xml:space="preserve">
     <value>a축 분율 좌표의
@@ -510,7 +510,7 @@ Uiso로 표시됩니다.</value>
 원소 조성을 선택한 경우에만 활성화됨).</value>
   </data>
   <data name="checkBoxDetailsDebyeWallerError.ToolTip" xml:space="preserve">
-    <value>디바이-발러 온도 인자(열에 의한 원자 진동으로
+    <value>디바이-월러 온도 인자(열에 의한 원자 진동으로
 회절 강도를 감쇠시키는 변위 파라미터
 Biso/Uiso 및 비등방성 Bij/Uij)의
 불확도(표준 편차) 입력란을

@@ -234,9 +234,9 @@ per il calcolo della diffrazione dei raggi X di questo atomo.</value>
   </data>
   <data name="buttonApplyToSameElement.ToolTip" xml:space="preserve">
     <value>Copia le impostazioni correnti (aspetto nella
-scheda Appearance, oppure parametri di Debye–Waller /
+scheda Aspetto, oppure parametri di Debye–Waller /
 spostamento nella scheda Debye–Waller)
-a tutti gli atomi dello stesso elemento.</value>
+su tutti gli atomi dello stesso elemento.</value>
   </data>
   <data name="buttonAddAtom.ToolTip" xml:space="preserve">
     <value>Aggiunge l'atomo sottostante all'elenco soprastante.</value>
@@ -359,24 +359,24 @@ indipendentemente da qualsiasi sorgente luminosa.</value>
     <value>Incertezza standard (± errore) dell'occupazione del sito.</value>
   </data>
   <data name="numericBoxShininess.ToolTip" xml:space="preserve">
-    <value>Esponente di brillantezza (Shininess) (0–20): nitidezza del
+    <value>Esponente di lucentezza (Shininess) (0–20): nitidezza del
 riflesso speculare; valori più grandi danno
 un riflesso più piccolo e più concentrato.</value>
   </data>
   <data name="label36.ToolTip" xml:space="preserve">
-    <value>Esponente di brillantezza (Shininess) (0–20): nitidezza del
+    <value>Esponente di lucentezza (Shininess) (0–20): nitidezza del
 riflesso speculare; valori più grandi danno
 un riflesso più piccolo e più concentrato.</value>
   </data>
   <data name="numericBoxSpecular.ToolTip" xml:space="preserve">
     <value>Coefficiente di riflessione speculare (0–1):
 intensità del riflesso lucido sulla sfera
-atomica (funziona insieme a Shininess).</value>
+atomica (funziona insieme alla lucentezza).</value>
   </data>
   <data name="label38.ToolTip" xml:space="preserve">
     <value>Coefficiente di riflessione speculare (0–1):
 intensità del riflesso lucido sulla sfera
-atomica (funziona insieme a Shininess).</value>
+atomica (funziona insieme alla lucentezza).</value>
   </data>
   <data name="numericBoxXerr.ToolTip" xml:space="preserve">
     <value>Incertezza standard (± errore) della

@@ -88,13 +88,13 @@ un píxel de pantalla por píxel de imagen).</value>
     <value>Fija el zoom de visualización a ×1/16 (reduce a 1/16 del tamaño).</value>
   </data>
   <data name="buttonMag_2.ToolTip" xml:space="preserve">
-    <value>Establece el zoom de visualización en ×1/2 (reducir a la mitad del tamaño).</value>
+    <value>Fija el zoom de visualización a ×1/2 (reduce a la mitad del tamaño).</value>
   </data>
   <data name="buttonMag_4.ToolTip" xml:space="preserve">
-    <value>Establece el zoom de visualización en ×1/4 (reducir a 1/4 del tamaño).</value>
+    <value>Fija el zoom de visualización a ×1/4 (reduce a 1/4 del tamaño).</value>
   </data>
   <data name="buttonMag_8.ToolTip" xml:space="preserve">
-    <value>Establece el zoom de visualización en ×1/8 (reducir a 1/8 del tamaño).</value>
+    <value>Fija el zoom de visualización a ×1/8 (reduce a 1/8 del tamaño).</value>
   </data>
   <data name="checkBoxDustScratches.ToolTip" xml:space="preserve">
     <value>Aplica un filtro Dust &amp; Scratches (polvo y arañazos) que elimina

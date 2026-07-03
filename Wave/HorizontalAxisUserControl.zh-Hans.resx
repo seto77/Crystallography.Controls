@@ -222,7 +222,7 @@
     <value>以埃（Å，0.1 nm）显示晶面间距轴。</value>
   </data>
   <data name="groupBoxSource.ToolTip" xml:space="preserve">
-    <value>选择波源</value>
+    <value>选择射线源</value>
   </data>
   <data name="radioButtonXray.ToolTip" xml:space="preserve">
     <value>使用 X射线束作为辐射源

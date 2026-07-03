@@ -64,7 +64,7 @@
 新結構確定並關閉此視窗。</value>
   </data>
   <data name="numericBoxA.ToolTip" xml:space="preserve">
-    <value>套用應變後晶胞的晶格參數 a（單位 ångström），
+    <value>套用應變後晶胞的晶格參數 a（單位 Å），
 由應變張量計算而得（唯讀）。</value>
   </data>
   <data name="numericBoxAlpha.ToolTip" xml:space="preserve">
@@ -73,7 +73,7 @@
 應變張量計算而得（唯讀）。</value>
   </data>
   <data name="numericBoxB.ToolTip" xml:space="preserve">
-    <value>套用應變後晶胞的晶格參數 b（單位 ångström），
+    <value>套用應變後晶胞的晶格參數 b（單位 Å），
 由應變張量計算而得（唯讀）。</value>
   </data>
   <data name="numericBoxBeta.ToolTip" xml:space="preserve">
@@ -82,7 +82,7 @@
 應變張量計算而得（唯讀）。</value>
   </data>
   <data name="numericBoxC.ToolTip" xml:space="preserve">
-    <value>套用應變後晶胞的晶格參數 c（單位 ångström），
+    <value>套用應變後晶胞的晶格參數 c（單位 Å），
 由應變張量計算而得（唯讀）。</value>
   </data>
   <data name="numericBoxGamma.ToolTip" xml:space="preserve">
@@ -93,7 +93,7 @@
   <data name="numericBoxStrain11.ToolTip" xml:space="preserve">
     <value>沿 a (x) 方向的正向應變分量 ε11
 （無量綱的相對伸長量）；變更後會
-更新受應變後的晶胞參數與應力。</value>
+更新受應變後的晶格參數與應力。</value>
   </data>
   <data name="numericBoxStrain12.ToolTip" xml:space="preserve">
     <value>a-b (x-y) 平面內的剪應變分量 ε12
@@ -108,7 +108,7 @@
   <data name="numericBoxStrain22.ToolTip" xml:space="preserve">
     <value>沿 b (y) 方向的正向應變分量 ε22
 （無量綱的相對伸長量）；變更後會
-更新受應變後的晶胞參數與應力。</value>
+更新受應變後的晶格參數與應力。</value>
   </data>
   <data name="numericBoxStrain23.ToolTip" xml:space="preserve">
     <value>b-c (y-z) 平面內的剪應變分量 ε23
@@ -118,30 +118,30 @@
   <data name="numericBoxStrain33.ToolTip" xml:space="preserve">
     <value>沿 c (z) 方向的正向應變分量 ε33
 （無量綱的相對伸長量）；變更後會
-更新受應變後的晶胞參數與應力。</value>
+更新受應變後的晶格參數與應力。</value>
   </data>
   <data name="numericBoxStress11.ToolTip" xml:space="preserve">
     <value>正向應力分量 σ11（單位 GPa），由
-剛度矩陣與應變相乘求得（唯讀）。</value>
+勁度矩陣與應變相乘求得（唯讀）。</value>
   </data>
   <data name="numericBoxStress12.ToolTip" xml:space="preserve">
     <value>剪應力分量 σ12（單位 GPa），由
-剛度矩陣與應變相乘求得（唯讀）。</value>
+勁度矩陣與應變相乘求得（唯讀）。</value>
   </data>
   <data name="numericBoxStress13.ToolTip" xml:space="preserve">
     <value>剪應力分量 σ13（單位 GPa），由
-剛度矩陣與應變相乘求得（唯讀）。</value>
+勁度矩陣與應變相乘求得（唯讀）。</value>
   </data>
   <data name="numericBoxStress22.ToolTip" xml:space="preserve">
     <value>正向應力分量 σ22（單位 GPa），由
-剛度矩陣與應變相乘求得（唯讀）。</value>
+勁度矩陣與應變相乘求得（唯讀）。</value>
   </data>
   <data name="numericBoxStress23.ToolTip" xml:space="preserve">
     <value>剪應力分量 σ23（單位 GPa），由
-剛度矩陣與應變相乘求得（唯讀）。</value>
+勁度矩陣與應變相乘求得（唯讀）。</value>
   </data>
   <data name="numericBoxStress33.ToolTip" xml:space="preserve">
     <value>正向應力分量 σ33（單位 GPa），由
-剛度矩陣與應變相乘求得（唯讀）。</value>
+勁度矩陣與應變相乘求得（唯讀）。</value>
   </data>
 </root>

@@ -234,8 +234,8 @@ para el cálculo de difracción de rayos X de este átomo.</value>
   </data>
   <data name="buttonApplyToSameElement.ToolTip" xml:space="preserve">
     <value>Copia la configuración actual (apariencia en
-la pestaña Appearance, o parámetros de Debye–Waller /
-desplazamiento en la pestaña Debye–Waller)
+la pestaña Apariencia, o parámetros de Debye–Waller /
+desplazamiento en la pestaña Factor de Debye-Waller)
 a todos los átomos del mismo elemento.</value>
   </data>
   <data name="buttonAddAtom.ToolTip" xml:space="preserve">

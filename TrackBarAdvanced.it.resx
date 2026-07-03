@@ -60,7 +60,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="numericBox.ToolTip" xml:space="preserve">
-    <value>Digita il valore esatto; questa casella di selezione è collegata
+    <value>Digita il valore esatto; questa casella numerica è collegata
 al cursore adiacente, quindi modificando l'uno o l'altro entrambi
 rimangono sincronizzati (unità/intervallo impostati dal modulo host).</value>
   </data>

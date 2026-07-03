@@ -93,8 +93,8 @@
   <data name="buttonSearch.ToolTip" xml:space="preserve">
     <value>使用所有已啟用的條件 (名稱、參考文獻、
 元素、晶系、晶胞、晶面間距、密度) 組合
-搜尋結晶資料庫，並只顯示符合
-條件的結晶。</value>
+搜尋晶體資料庫，並只顯示符合
+條件的晶體。</value>
   </data>
   <data name="checkBoxD1.ToolTip" xml:space="preserve">
     <value>啟用以第 1 個晶面間距值進行篩選；
@@ -120,7 +120,7 @@
   <data name="checkBoxIgnoreScatteringFactor.ToolTip" xml:space="preserve">
     <value>勾選時，晶面間距搜尋會忽略散射因子
 (繞射強度)：僅由晶胞計算出所有幾何上
-允許的 d 值，包含因消光則而
+允許的 d 值，包含因消光規則而
 強度為零 (禁制) 的繞射。</value>
   </data>
   <data name="checkBoxSearchCellParameter.ToolTip" xml:space="preserve">
@@ -191,7 +191,7 @@ b 軸之間)，單位 ° (0 = 忽略)。</value>
   <data name="numericBoxD1Err.ToolTip" xml:space="preserve">
     <value>第 1 個晶面間距搜尋的容許誤差，
 以 ±% 表示；d 值落在此範圍內
-的結晶會被比對符合。</value>
+的晶體會被比對符合。</value>
   </data>
   <data name="numericBoxD2.ToolTip" xml:space="preserve">
     <value>要搜尋的第 2 個晶面間距
@@ -200,7 +200,7 @@ b 軸之間)，單位 ° (0 = 忽略)。</value>
   <data name="numericBoxD2Err.ToolTip" xml:space="preserve">
     <value>第 2 個晶面間距搜尋的容許誤差，
 以 ±% 表示；d 值落在此範圍內
-的結晶會被比對符合。</value>
+的晶體會被比對符合。</value>
   </data>
   <data name="numericBoxD3.ToolTip" xml:space="preserve">
     <value>要搜尋的第 3 個晶面間距
@@ -209,7 +209,7 @@ b 軸之間)，單位 ° (0 = 忽略)。</value>
   <data name="numericBoxD3Err.ToolTip" xml:space="preserve">
     <value>第 3 個晶面間距搜尋的容許誤差，
 以 ±% 表示；d 值落在此範圍內
-的結晶會被比對符合。</value>
+的晶體會被比對符合。</value>
   </data>
   <data name="numericBoxDensity.ToolTip" xml:space="preserve">
     <value>要搜尋的目標密度，單位 g/cm³。</value>
@@ -217,7 +217,7 @@ b 軸之間)，單位 ° (0 = 忽略)。</value>
   <data name="numericBoxDensityErr.ToolTip" xml:space="preserve">
     <value>密度搜尋的容許誤差，以
 ±% 表示；密度落在此相對範圍內
-的結晶會被比對符合。</value>
+的晶體會被比對符合。</value>
   </data>
   <data name="textBoxSearchName.ToolTip" xml:space="preserve">
     <value>輸入要搜尋的礦物/化合物名稱 (部分比對、

@@ -106,42 +106,42 @@ GPa^-1（柔度）。</value>
   <data name="numericBox14.ToolTip" xml:space="preserve">
     <value>设置 c14 弹性常数（Voigt 记法）：
 视所选模式为刚度 Cij 或柔度 Sij。
-耦合垂直分量与剪切分量的非对角项
+耦合正分量与剪切分量的非对角项
 （在低对称/三方晶系中有效）；单位
 GPa（刚度）或 GPa^-1（柔度）。</value>
   </data>
   <data name="label18.ToolTip" xml:space="preserve">
     <value>设置 c14 弹性常数（Voigt 记法）：
 视所选模式为刚度 Cij 或柔度 Sij。
-耦合垂直分量与剪切分量的非对角项
+耦合正分量与剪切分量的非对角项
 （在低对称/三方晶系中有效）；单位
 GPa（刚度）或 GPa^-1（柔度）。</value>
   </data>
   <data name="numericBox15.ToolTip" xml:space="preserve">
     <value>设置 c15 弹性常数（Voigt 记法）：
 视所选模式为刚度 Cij 或柔度 Sij。
-垂直-剪切耦合的非对角项（在低对称/
+正-剪切耦合的非对角项（在低对称/
 三方晶系中有效）；单位 GPa（刚度）
 或 GPa^-1（柔度）。</value>
   </data>
   <data name="label12.ToolTip" xml:space="preserve">
     <value>设置 c15 弹性常数（Voigt 记法）：
 视所选模式为刚度 Cij 或柔度 Sij。
-垂直-剪切耦合的非对角项（在低对称/
+正-剪切耦合的非对角项（在低对称/
 三方晶系中有效）；单位 GPa（刚度）
 或 GPa^-1（柔度）。</value>
   </data>
   <data name="numericBox16.ToolTip" xml:space="preserve">
     <value>设置 c16 弹性常数（Voigt 记法）：
 视所选模式为刚度 Cij 或柔度 Sij。
-垂直-剪切耦合的非对角项
+正-剪切耦合的非对角项
 （在低对称晶系中有效）；单位
 GPa（刚度）或 GPa^-1（柔度）。</value>
   </data>
   <data name="label6.ToolTip" xml:space="preserve">
     <value>设置 c16 弹性常数（Voigt 记法）：
 视所选模式为刚度 Cij 或柔度 Sij。
-垂直-剪切耦合的非对角项
+正-剪切耦合的非对角项
 （在低对称晶系中有效）；单位
 GPa（刚度）或 GPa^-1（柔度）。</value>
   </data>
@@ -180,42 +180,42 @@ GPa^-1（柔度）。</value>
   <data name="numericBox24.ToolTip" xml:space="preserve">
     <value>设置 c24 弹性常数（Voigt 记法）：
 视所选模式为刚度 Cij 或柔度 Sij。
-垂直-剪切耦合的非对角项（在三方系
+正-剪切耦合的非对角项（在三方系
 中被设为 -c14）。单位 GPa（刚度）
 或 GPa^-1（柔度）。</value>
   </data>
   <data name="label21.ToolTip" xml:space="preserve">
     <value>设置 c24 弹性常数（Voigt 记法）：
 视所选模式为刚度 Cij 或柔度 Sij。
-垂直-剪切耦合的非对角项（在三方系
+正-剪切耦合的非对角项（在三方系
 中被设为 -c14）。单位 GPa（刚度）
 或 GPa^-1（柔度）。</value>
   </data>
   <data name="numericBox25.ToolTip" xml:space="preserve">
     <value>设置 c25 弹性常数（Voigt 记法）：
 视所选模式为刚度 Cij 或柔度 Sij。
-垂直-剪切耦合的非对角项（在三方 3/-3
+正-剪切耦合的非对角项（在三方 3/-3
 中被设为 -c15）。单位 GPa（刚度）
 或 GPa^-1（柔度）。</value>
   </data>
   <data name="label15.ToolTip" xml:space="preserve">
     <value>设置 c25 弹性常数（Voigt 记法）：
 视所选模式为刚度 Cij 或柔度 Sij。
-垂直-剪切耦合的非对角项（在三方 3/-3
+正-剪切耦合的非对角项（在三方 3/-3
 中被设为 -c15）。单位 GPa（刚度）
 或 GPa^-1（柔度）。</value>
   </data>
   <data name="numericBox26.ToolTip" xml:space="preserve">
     <value>设置 c26 弹性常数（Voigt 记法）：
 视所选模式为刚度 Cij 或柔度 Sij。
-垂直-剪切耦合的非对角项（在四方
+正-剪切耦合的非对角项（在四方
 4/-4/4/m 中被设为 -c16）。单位 GPa
 （刚度）或 GPa^-1（柔度）。</value>
   </data>
   <data name="label9.ToolTip" xml:space="preserve">
     <value>设置 c26 弹性常数（Voigt 记法）：
 视所选模式为刚度 Cij 或柔度 Sij。
-垂直-剪切耦合的非对角项（在四方
+正-剪切耦合的非对角项（在四方
 4/-4/4/m 中被设为 -c16）。单位 GPa
 （刚度）或 GPa^-1（柔度）。</value>
   </data>
@@ -236,42 +236,42 @@ GPa^-1（柔度）。</value>
   <data name="numericBox34.ToolTip" xml:space="preserve">
     <value>设置 c34 弹性常数（Voigt 记法）：
 视所选模式为刚度 Cij 或柔度 Sij。
-垂直-剪切耦合的非对角项（仅在低对称
+正-剪切耦合的非对角项（仅在低对称
 晶系中有效）。单位 GPa（刚度）或
 GPa^-1（柔度）。</value>
   </data>
   <data name="label19.ToolTip" xml:space="preserve">
     <value>设置 c34 弹性常数（Voigt 记法）：
 视所选模式为刚度 Cij 或柔度 Sij。
-垂直-剪切耦合的非对角项（仅在低对称
+正-剪切耦合的非对角项（仅在低对称
 晶系中有效）。单位 GPa（刚度）或
 GPa^-1（柔度）。</value>
   </data>
   <data name="numericBox35.ToolTip" xml:space="preserve">
     <value>设置 c35 弹性常数（Voigt 记法）：
 视所选模式为刚度 Cij 或柔度 Sij。
-垂直-剪切耦合的非对角项（仅在低对称
+正-剪切耦合的非对角项（仅在低对称
 晶系中有效）。单位 GPa（刚度）或
 GPa^-1（柔度）。</value>
   </data>
   <data name="label13.ToolTip" xml:space="preserve">
     <value>设置 c35 弹性常数（Voigt 记法）：
 视所选模式为刚度 Cij 或柔度 Sij。
-垂直-剪切耦合的非对角项（仅在低对称
+正-剪切耦合的非对角项（仅在低对称
 晶系中有效）。单位 GPa（刚度）或
 GPa^-1（柔度）。</value>
   </data>
   <data name="numericBox36.ToolTip" xml:space="preserve">
     <value>设置 c36 弹性常数（Voigt 记法）：
 视所选模式为刚度 Cij 或柔度 Sij。
-垂直-剪切耦合的非对角项（仅在低对称
+正-剪切耦合的非对角项（仅在低对称
 晶系中有效）。单位 GPa（刚度）或
 GPa^-1（柔度）。</value>
   </data>
   <data name="label7.ToolTip" xml:space="preserve">
     <value>设置 c36 弹性常数（Voigt 记法）：
 视所选模式为刚度 Cij 或柔度 Sij。
-垂直-剪切耦合的非对角项（仅在低对称
+正-剪切耦合的非对角项（仅在低对称
 晶系中有效）。单位 GPa（刚度）或
 GPa^-1（柔度）。</value>
   </data>

@@ -63,25 +63,25 @@
     <value>取消並關閉，不進行載入或儲存。</value>
   </data>
   <data name="buttonCheckAll.ToolTip" xml:space="preserve">
-    <value>勾選清單中所有結晶（已勾選的
-結晶即為載入或儲存的對象）。</value>
+    <value>勾選清單中所有晶體（已勾選的
+晶體即為載入或儲存的對象）。</value>
   </data>
   <data name="buttonExpand.ToolTip" xml:space="preserve">
-    <value>展開或摺疊顯示所選結晶
+    <value>展開或摺疊顯示所選晶體
 詳細資訊的面板。</value>
   </data>
   <data name="buttonLoadOrSave.ToolTip" xml:space="preserve">
-    <value>確認：載入或儲存已勾選的結晶。</value>
+    <value>確認：載入或儲存已勾選的晶體。</value>
   </data>
   <data name="buttonUnchekAll.ToolTip" xml:space="preserve">
-    <value>取消勾選清單中所有結晶。</value>
+    <value>取消勾選清單中所有晶體。</value>
   </data>
   <data name="checkedListBox1.ToolTip" xml:space="preserve">
-    <value>結晶清單；勾選要載入／儲存者，
+    <value>晶體清單；勾選要載入／儲存者，
 並選取某列以在右側預覽其詳細資訊。</value>
   </data>
   <data name="label1.ToolTip" xml:space="preserve">
-    <value>結晶清單；勾選要載入／儲存者，
+    <value>晶體清單；勾選要載入／儲存者，
 並選取某列以在右側預覽其詳細資訊。</value>
   </data>
 </root>

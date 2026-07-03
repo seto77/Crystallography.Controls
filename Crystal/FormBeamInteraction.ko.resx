@@ -60,7 +60,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="dataGridViewTextBoxColumnMulti.HeaderText" xml:space="preserve">
-    <value>중복도</value>
+    <value>다중도</value>
   </data>
   <data name="dataGridViewTextBoxColumnIntCondition.HeaderText" xml:space="preserve">
     <value>조건</value>
@@ -117,7 +117,7 @@
     <value>탄성 MFP (nm)</value>
   </data>
   <data name="radioButtonElecRange.Text" xml:space="preserve">
-    <value>사정거리 CSDA (µm)</value>
+    <value>비정 CSDA (µm)</value>
   </data>
   <data name="tabPageAttenuations.Text" xml:space="preserve">
     <value>감쇠 &amp;&amp; 수송</value>
@@ -201,9 +201,9 @@ X선과 중성자에서는 파장 λ(또는 광자
   </data>
   <data name="radioButtonXrayFqSq.ToolTip" xml:space="preserve">
     <value>xraylib로 두 가지 X선 양을 q = sin(θ)/λ에 대해 표시합니다:
-  F(q) - 코히어런트(탄성) 형태 인자. 굵은 곡선으로 그립니다.
-  S(q) - 비코히어런트(콤프턴) 산란 함수. 옅게 그립니다.
-이 둘은 산란이 저각의 코히어런트에서 고각의 비코히어런트로 옮겨가는 모습을 보여줍니다.
+  F(q) - 가간섭성(탄성) 형태 인자. 굵은 곡선으로 그립니다.
+  S(q) - 비간섭성(콤프턴) 산란 함수. 옅게 그립니다.
+이 둘은 산란이 저각의 가간섭성 산란에서 고각의 비간섭성 산란으로 옮겨가는 모습을 보여줍니다.
 xraylib를 사용할 수 없으면 비활성화됩니다.</value>
   </data>
   <data name="radioButtonElecRange.ToolTip" xml:space="preserve">
@@ -264,14 +264,14 @@ nm입니다.</value>
     쌍분포함수 연구에서 흔히 사용. 큰 Q = 고각.</value>
   </data>
   <data name="checkBoxBragBrentano.ToolTip" xml:space="preserve">
-    <value>일반적인 분말 X선 회절계(Bragg-Brentano 집속 기하)에서 관측되는
+    <value>일반적인 분말 X선 회절계(브래그-브렌타노 집속 기하)에서 관측되는
 강도로 표시합니다.
 구조 인자 강도에 각도 의존 로런츠-편광 인자와 중복도를 곱하므로, 원시 |F|²이
 아니라 상대 피크 높이가 실제 분말 패턴과 일치합니다.
 이 모드에서는 금지 반사와 등가 반사가 자동으로 숨겨집니다.</value>
   </data>
   <data name="radioButtonAttenTrans.ToolTip" xml:space="preserve">
-    <value>투과율 T = exp(−µ·t)를 백분율로 표시합니다 — 아래 'Thickness t' 칸에서
+    <value>투과율 T = exp(−µ·t)를 백분율로 표시합니다 — 아래 '두께 t' 칸에서
 설정한 시료 두께 t에 대해, 흡수나 산란 없이 시료를 통과하는 X선 빔의
 비율입니다.
 100% = 시료가 빔에 투명; 0% = 빔이 완전히 차단됨.
@@ -281,7 +281,7 @@ nm입니다.</value>
     <value>'금지' 반사 — 서로 다른 원자에서 산란된 파가 상쇄되어 강도가 정확히 0이 되는
 반사 — 를 숨깁니다. 이러한 계통적 소멸은 결정의 대칭성(예: 체심 또는 면심
 격자)에서 비롯됩니다.
-선택을 해제하면 이 강도 0의 반사도, 그것을 금지시키는 소멸 규칙이 별도의 열에
+선택을 해제하면 강도가 0인 이 반사들도, 그것을 금지하는 소멸 규칙이 별도의 열에
 표시된 채로 함께 나열됩니다.</value>
   </data>
   <data name="numericBoxH_step.ToolTip" xml:space="preserve">
@@ -330,7 +330,7 @@ t가 이 두께).
   </data>
   <data name="dataGridView.ToolTip" xml:space="preserve">
     <value>현재 결정과 방사선에 대한 모든 회절 반사의 표입니다.
-각 행은 밀러 지수 (h k l)로 명명된 하나의 격자면 군입니다.
+각 행은 밀러 지수 (h k l)로 명명된 하나의 격자면 족입니다.
 열에는 중복도(대칭 등가면의 수), 면간 거리 d(면 사이의 거리), 회절각 2-theta,
 구조 인자(하나의 단위 격자가 산란하는 파의 진폭), 상대 강도, 그리고 소멸
 (반사 금지) 규칙이 포함됩니다. 왼쪽의 체크 박스를 사용해 대칭 등가 반사나
@@ -340,14 +340,14 @@ t가 이 두께).
     <value>테스트 모드에서 지수 h의 주사 범위: 최소·최대·간격.</value>
   </data>
   <data name="label4.ToolTip" xml:space="preserve">
-    <value>아래의 'step' 열은 테스트 모드 주사에서 연속하는 h, k, l 값 사이의 증분(0.001~1,
+    <value>아래의 '간격(step)' 열은 테스트 모드 주사에서 연속하는 h, k, l 값 사이의 증분(0.001~1,
 1 미만이면 분수 지수)을 설정합니다.</value>
   </data>
   <data name="label1.ToolTip" xml:space="preserve">
     <value>아래의 'min' 열은 테스트 모드 주사에 사용되는 h, k, l 지수의 하한을 설정합니다.</value>
   </data>
   <data name="checkBoxDebyeWaller.ToolTip" xml:space="preserve">
-    <value>산란 인자 곡선에 디바이-발러 인자 exp(-B·s²)를 곱합니다. 이는 원자의 열진동을
+    <value>산란 인자 곡선에 디바이-월러 인자 exp(-B·s²)를 곱합니다. 이는 원자의 열진동을
 반영하는 항입니다.
 진동하는 원자는 번져 보이기 때문에 겉보기 산란능은 고각에서 더 빨리 감소합니다.
 B는 결정 데이터에서 가져온 등방성 변위 매개변수(Biso)입니다. 이를 끄면 원자는
