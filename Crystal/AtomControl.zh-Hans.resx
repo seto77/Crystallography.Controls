@@ -545,4 +545,7 @@ Biso/Uiso及各向异性Bij/Uij）的
 同位素丰度还是自定义同位素
 组成。</value>
   </data>
+  <data name="showEquivalentAtomPositionsToolStripMenuItem.Text" xml:space="preserve">
+    <value>显示等价原子位置</value>
+  </data>
 </root>

@@ -544,4 +544,7 @@ B isotropo), adimensionale per B anisotropo.</value>
 neutronica usa l'abbondanza isotopica naturale
 (standard) o una composizione isotopica personalizzata.</value>
   </data>
+  <data name="showEquivalentAtomPositionsToolStripMenuItem.Text" xml:space="preserve">
+    <value>Mostra posizioni atomiche equivalenti</value>
+  </data>
 </root>

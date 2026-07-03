@@ -547,4 +547,7 @@ isotropes B), dimensionslos für anisotropes B.</value>
 natürliche (Standard-)Isotopenhäufigkeit oder eine
 benutzerdefinierte Isotopenzusammensetzung verwendet.</value>
   </data>
+  <data name="showEquivalentAtomPositionsToolStripMenuItem.Text" xml:space="preserve">
+    <value>Äquivalente Atompositionen anzeigen</value>
+  </data>
 </root>

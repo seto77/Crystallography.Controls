@@ -662,6 +662,9 @@ U（および等方性 B）は Å²、異方性 B は無次元です。</value>
   <data name="dataGridView.Font" type="System.Drawing.Font, System.Drawing">
     <value>Yu Gothic UI, 9.75pt</value>
   </data>
+  <data name="showEquivalentAtomPositionsToolStripMenuItem.Text" xml:space="preserve">
+    <value>等価な原子位置を表示</value>
+  </data>
   <data name="panel1.Font" type="System.Drawing.Font, System.Drawing">
     <value>Yu Gothic UI, 9pt</value>
   </data>

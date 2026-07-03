@@ -525,4 +525,7 @@ U（及等向性 B）為 Å²，異向性 B 為無因次。</value>
     <value>選擇中子散射長度使用天然（標準）同位
 素豐度或自訂的同位素組成。</value>
   </data>
+  <data name="showEquivalentAtomPositionsToolStripMenuItem.Text" xml:space="preserve">
+    <value>顯示等效原子位置</value>
+  </data>
 </root>

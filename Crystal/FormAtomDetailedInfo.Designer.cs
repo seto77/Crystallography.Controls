@@ -34,6 +34,9 @@
             this.listBox = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
             this.listBox1 = new System.Windows.Forms.ListBox();
+            this.panelHeader = new System.Windows.Forms.Panel(); // 260628Ch
+            this.buttonCopy = new System.Windows.Forms.Button(); // 260628Ch
+            this.panelHeader.SuspendLayout(); // 260628Ch
             this.SuspendLayout();
             // 
             // listBox
@@ -43,10 +46,10 @@
             this.listBox.FormattingEnabled = true;
             this.listBox.IntegralHeight = false;
             this.listBox.ItemHeight = 15;
-            this.listBox.Location = new System.Drawing.Point(0, 15);
+            this.listBox.Location = new System.Drawing.Point(0, 29);
             this.listBox.Name = "listBox";
             this.toolTip.SetToolTip(this.listBox, resources.GetString("listBox.ToolTip")); // 260531Cl
-            this.listBox.Size = new System.Drawing.Size(240, 209);
+            this.listBox.Size = new System.Drawing.Size(240, 195);
             this.listBox.TabIndex = 1;
             this.listBox.SelectedIndexChanged += new System.EventHandler(this.listBox_SelectedIndexChanged);
             // 
@@ -63,14 +66,37 @@
             // 
             this.listBox1.BackColor = System.Drawing.SystemColors.Control;
             this.listBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.listBox1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.listBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 15;
             this.listBox1.Location = new System.Drawing.Point(0, 0);
             this.listBox1.Name = "listBox1";
             this.toolTip.SetToolTip(this.listBox1, resources.GetString("listBox1.ToolTip")); // 260531Cl
-            this.listBox1.Size = new System.Drawing.Size(240, 15);
+            this.listBox1.Size = new System.Drawing.Size(154, 29);
             this.listBox1.TabIndex = 3;
+            // 
+            // panelHeader
+            // 
+            this.panelHeader.Controls.Add(this.listBox1);
+            this.panelHeader.Controls.Add(this.buttonCopy);
+            this.panelHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelHeader.Location = new System.Drawing.Point(0, 0);
+            this.panelHeader.Name = "panelHeader";
+            this.panelHeader.Size = new System.Drawing.Size(240, 29);
+            this.panelHeader.TabIndex = 4;
+            // 
+            // buttonCopy
+            // 
+            this.buttonCopy.Dock = System.Windows.Forms.DockStyle.Right;
+            this.buttonCopy.Enabled = false;
+            this.buttonCopy.Location = new System.Drawing.Point(154, 0);
+            this.buttonCopy.Name = "buttonCopy";
+            this.buttonCopy.Size = new System.Drawing.Size(86, 29);
+            this.buttonCopy.TabIndex = 4;
+            this.buttonCopy.Text = "Copy";
+            this.toolTip.SetToolTip(this.buttonCopy, resources.GetString("buttonCopy.ToolTip")); // 260628Ch
+            this.buttonCopy.UseVisualStyleBackColor = true;
+            this.buttonCopy.Click += new System.EventHandler(this.buttonCopy_Click);
             // 
             // FormAtomDetailedInfo
             // 
@@ -78,7 +104,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(240, 224);
             this.Controls.Add(this.listBox);
-            this.Controls.Add(this.listBox1);
+            this.Controls.Add(this.panelHeader);
             this.Controls.Add(this.label1);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0))); // 260428Cl 修正: ((byte)(177)) Hebrew 文字セット → ((byte)(0)) デフォルト
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -86,6 +112,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Atom Positions";
             this.Load += new System.EventHandler(this.FormAtomDetailedInfo_Load);
+            this.panelHeader.ResumeLayout(false); // 260628Ch
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -98,5 +125,7 @@
         private System.Windows.Forms.ListBox listBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.Panel panelHeader; // 260628Ch
+        private System.Windows.Forms.Button buttonCopy; // 260628Ch
     }
 }

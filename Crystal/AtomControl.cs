@@ -35,6 +35,12 @@ public partial class AtomControl : UserControlBase
     public int SymmetrySeriesNumber => crystal != null ? crystal.SymmetrySeriesNumber : 0;
 
     private readonly DataSet.DataTableAtomDataTable table;
+    //260703Cl 変更前: 行 index を 3値センチネル (UseCurrentRow=-1 / NoRow=-2 / 行番号) で持ち回っていた。
+    //          行は MouseDown での CurrentCell 移動により bindingSource.Position が正となるため、必要な状態は「空白領域の右クリックだった」の 1 bit のみ。
+    //private const int AtomGridContextMenuUseCurrentRow = -1; // 260628Ch
+    //private const int AtomGridContextMenuNoRow = -2; // 260628Ch
+    //private int atomGridContextMenuRowIndex = AtomGridContextMenuUseCurrentRow; // 260628Ch
+    private bool atomGridEmptyAreaRightClick = false; // 260703Cl
 
     [Browsable(false)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -560,5 +566,60 @@ public partial class AtomControl : UserControlBase
     {
         if (dataGridView.CurrentCellAddress.X == 0 && dataGridView.IsCurrentCellDirty)
             dataGridView.CommitEdit(DataGridViewDataErrorContexts.Commit);
+    }
+
+    private void dataGridView_MouseDown(object sender, MouseEventArgs e) // 260628Ch 追加
+    {
+        if (e.Button != MouseButtons.Right) return;
+
+        //atomGridContextMenuRowIndex = AtomGridContextMenuNoRow; // 260628Ch → 260703Cl bool 1 個に縮退
+        var hit = dataGridView.HitTest(e.X, e.Y);
+        //if (hit.RowIndex < 0 || hit.RowIndex >= dataGridView.Rows.Count) return; // 260703Cl HitTest は Rows.Count 以上を返さないため後半は到達不能だった
+        atomGridEmptyAreaRightClick = hit.RowIndex < 0; // 260703Cl
+        if (atomGridEmptyAreaRightClick) return;
+
+        //atomGridContextMenuRowIndex = hit.RowIndex; // 260628Ch → 260703Cl
+        var columnIndex = hit.ColumnIndex;
+        //if (columnIndex < 0 || !dataGridView.Columns[columnIndex].Visible) // 260703Cl HitTest は非表示列をヒットしないため後半は到達不能だった (負値は行ヘッダクリック時)
+        if (columnIndex < 0)
+            columnIndex = dataGridView.Columns.Cast<DataGridViewColumn>().FirstOrDefault(c => c.Visible)?.Index ?? -1; // 260628Ch
+
+        dataGridView.ClearSelection();
+        if (columnIndex >= 0)
+            dataGridView.CurrentCell = dataGridView.Rows[hit.RowIndex].Cells[columnIndex]; // 260703Cl CurrentCell 移動で bindingSource.Position もこの行に追従する
+        dataGridView.Rows[hit.RowIndex].Selected = true;
+    }
+
+    private void contextMenuStripAtom_Opening(object sender, CancelEventArgs e) // 260628Ch 追加
+    {
+        //var rowIndex = atomGridContextMenuRowIndex == AtomGridContextMenuUseCurrentRow ? bindingSource.Position : atomGridContextMenuRowIndex; // 260628Ch → 260703Cl
+        var rowIndex = bindingSource.Position; // 260703Cl マウス開きは MouseDown で Position が追従済み・キーボード開きは常に現在行
+
+        var canShow = !atomGridEmptyAreaRightClick // 260703Cl
+            && rowIndex >= 0
+            && rowIndex < table.Rows.Count
+            && table.Get(rowIndex)?.Atom is { Length: > 0 }; // 260628Ch
+        atomGridEmptyAreaRightClick = false; // 260703Cl 消費してリセット (次にキーボード等で開いたときに現在行で動くように)
+        showEquivalentAtomPositionsToolStripMenuItem.Enabled = canShow;
+        e.Cancel = !canShow;
+        //atomGridContextMenuRowIndex = canShow ? rowIndex : AtomGridContextMenuUseCurrentRow; // 260628Ch → 260703Cl 使用後も行番号が残り、後からキーボードで開くと過去のマウス行を指す問題があった
+    }
+
+    private void showEquivalentAtomPositionsToolStripMenuItem_Click(object sender, EventArgs e) // 260628Ch 追加
+    {
+        //var rowIndex = atomGridContextMenuRowIndex >= 0 ? atomGridContextMenuRowIndex : bindingSource.Position; // 260628Ch → 260703Cl
+        var rowIndex = bindingSource.Position; // 260703Cl
+        if (rowIndex < 0 || rowIndex >= table.Rows.Count) return;
+
+        var atoms = table.Get(rowIndex);
+        if (atoms == null) return;
+
+        var form = new FormAtomDetailedInfo
+        {
+            StartPosition = FormStartPosition.Manual,
+            Location = Cursor.Position,
+        };
+        form.Atoms = atoms;
+        form.Show(this);
     }
 }

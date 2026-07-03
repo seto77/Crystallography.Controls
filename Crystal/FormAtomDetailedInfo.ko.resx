@@ -67,4 +67,7 @@
     <value>아래 원자 좌표 목록의
 열 머리글(No., x, y, z)입니다.</value>
   </data>
+  <data name="buttonCopy.ToolTip" xml:space="preserve">
+    <value>원자 위치를 탭으로 구분된 텍스트로 복사합니다.</value>
+  </data>
 </root>

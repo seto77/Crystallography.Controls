@@ -139,6 +139,8 @@
             siteSymDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             bindingSource = new System.Windows.Forms.BindingSource(components);
             dataSet = new DataSet();
+            contextMenuStripAtom = new System.Windows.Forms.ContextMenuStrip(components); // 260628Ch: 原子一覧 DataGridView の右クリックメニューを designer 管理へ追加。
+            showEquivalentAtomPositionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem(); // 260628Ch
             panel1 = new System.Windows.Forms.Panel();
             flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
@@ -162,6 +164,7 @@
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)bindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataSet).BeginInit();
+            contextMenuStripAtom.SuspendLayout(); // 260628Ch
             panel1.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
@@ -1227,6 +1230,7 @@
             dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { enabledColumn, labelDataGridViewTextBoxColumn, elementDataGridViewTextBoxColumn, xDataGridViewTextBoxColumn, yDataGridViewTextBoxColumn, zDataGridViewTextBoxColumn, occDataGridViewTextBoxColumn, multiDataGridViewTextBoxColumn, wyckLetDataGridViewTextBoxColumn, siteSymDataGridViewTextBoxColumn });
+            dataGridView.ContextMenuStrip = contextMenuStripAtom; // 260628Ch
             dataGridView.DataSource = bindingSource;
             resources.ApplyResources(dataGridView, "dataGridView");
             dataGridView.MultiSelect = false;
@@ -1237,6 +1241,7 @@
             toolTip.SetToolTip(dataGridView, resources.GetString("dataGridView.ToolTip"));
             dataGridView.CellValueChanged += dataGridViewAtom_CellValueChanged;
             dataGridView.CurrentCellDirtyStateChanged += dataGridView_CurrentCellDirtyStateChanged;
+            dataGridView.MouseDown += dataGridView_MouseDown; // 260628Ch
             // 
             // enabledColumn
             // 
@@ -1330,6 +1335,19 @@
             dataSet.DataSetName = "DataSet";
             dataSet.Namespace = "http://tempuri.org/DataSet1.xsd";
             dataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // contextMenuStripAtom
+            // 
+            contextMenuStripAtom.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { showEquivalentAtomPositionsToolStripMenuItem }); // 260628Ch
+            contextMenuStripAtom.Name = "contextMenuStripAtom";
+            resources.ApplyResources(contextMenuStripAtom, "contextMenuStripAtom");
+            contextMenuStripAtom.Opening += contextMenuStripAtom_Opening; // 260628Ch
+            // 
+            // showEquivalentAtomPositionsToolStripMenuItem
+            // 
+            showEquivalentAtomPositionsToolStripMenuItem.Name = "showEquivalentAtomPositionsToolStripMenuItem";
+            resources.ApplyResources(showEquivalentAtomPositionsToolStripMenuItem, "showEquivalentAtomPositionsToolStripMenuItem");
+            showEquivalentAtomPositionsToolStripMenuItem.Click += showEquivalentAtomPositionsToolStripMenuItem_Click; // 260628Ch
             // 
             // panel1
             // 
@@ -1429,6 +1447,7 @@
             ((System.ComponentModel.ISupportInitialize)dataGridView).EndInit();
             ((System.ComponentModel.ISupportInitialize)bindingSource).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataSet).EndInit();
+            contextMenuStripAtom.ResumeLayout(false); // 260628Ch
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             flowLayoutPanel1.ResumeLayout(false);
@@ -1563,5 +1582,7 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel7;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel8;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripAtom; // 260628Ch
+        private System.Windows.Forms.ToolStripMenuItem showEquivalentAtomPositionsToolStripMenuItem; // 260628Ch
     }
 }

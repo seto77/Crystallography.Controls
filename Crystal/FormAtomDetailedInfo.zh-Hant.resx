@@ -67,4 +67,7 @@
     <value>下方原子座標清單的
 欄位標題（No., x, y, z）。</value>
   </data>
+  <data name="buttonCopy.ToolTip" xml:space="preserve">
+    <value>以定位字元分隔的文字複製原子位置。</value>
+  </data>
 </root>

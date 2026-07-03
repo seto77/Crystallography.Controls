@@ -547,4 +547,7 @@ B 또는 U(B = 8π²·U 관계).</value>
 존재비를 사용할지 사용자 지정 동위 원소
 조성을 사용할지 선택합니다.</value>
   </data>
+  <data name="showEquivalentAtomPositionsToolStripMenuItem.Text" xml:space="preserve">
+    <value>등가 원자 위치 표시</value>
+  </data>
 </root>

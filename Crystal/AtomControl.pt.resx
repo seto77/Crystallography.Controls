@@ -547,4 +547,7 @@ B isotrópico), adimensional para B anisotrópico.</value>
 usa a abundância isotópica natural (padrão)
 ou uma composição isotópica personalizada.</value>
   </data>
+  <data name="showEquivalentAtomPositionsToolStripMenuItem.Text" xml:space="preserve">
+    <value>Mostrar posições equivalentes do átomo</value>
+  </data>
 </root>

@@ -67,4 +67,8 @@
     <value>Cabeçalho de coluna (No., x, y, z) para
 a lista de coordenadas atômicas abaixo.</value>
   </data>
+  <data name="buttonCopy.ToolTip" xml:space="preserve">
+    <value>Copiar as posições atômicas como texto
+separado por tabulações.</value>
+  </data>
 </root>

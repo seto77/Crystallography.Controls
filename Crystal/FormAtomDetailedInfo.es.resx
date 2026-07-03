@@ -67,4 +67,8 @@
     <value>Encabezado de columna (Nº, x, y, z) de
 la lista de coordenadas atómicas de abajo.</value>
   </data>
+  <data name="buttonCopy.ToolTip" xml:space="preserve">
+    <value>Copia las posiciones atómicas como texto
+separado por tabulaciones.</value>
+  </data>
 </root>

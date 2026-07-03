@@ -67,4 +67,8 @@
     <value>Spaltenüberschrift (Nr., x, y, z) für
 die Atomkoordinatenliste unten.</value>
   </data>
+  <data name="buttonCopy.ToolTip" xml:space="preserve">
+    <value>Kopiert die Atompositionen als
+tabulatorgetrennten Text.</value>
+  </data>
 </root>

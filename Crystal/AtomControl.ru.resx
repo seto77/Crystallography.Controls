@@ -547,4 +547,7 @@ isotope abundance» включает кнопку Edit, позволяя
 рассеяния природную (стандартную) распространённость
 изотопов или пользовательский изотопный состав.</value>
   </data>
+  <data name="showEquivalentAtomPositionsToolStripMenuItem.Text" xml:space="preserve">
+    <value>Показать эквивалентные позиции атома</value>
+  </data>
 </root>

@@ -125,4 +125,7 @@
     <value>Column header (No., x, y, z) for
 the atomic coordinate list below.</value>
   </data>
+  <data name="buttonCopy.ToolTip" xml:space="preserve">
+    <value>Copy the atom positions as tab-separated text.</value>
+  </data>
 </root>

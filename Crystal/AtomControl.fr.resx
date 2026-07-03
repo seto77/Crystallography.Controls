@@ -541,4 +541,7 @@ B isotrope), sans dimension pour B anisotrope.</value>
 utilise l'abondance isotopique naturelle (standard)
 ou une composition isotopique personnalisée.</value>
   </data>
+  <data name="showEquivalentAtomPositionsToolStripMenuItem.Text" xml:space="preserve">
+    <value>Afficher les positions atomiques équivalentes</value>
+  </data>
 </root>

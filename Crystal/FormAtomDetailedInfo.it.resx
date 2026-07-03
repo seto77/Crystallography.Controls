@@ -67,4 +67,8 @@
     <value>Intestazione di colonna (No., x, y, z) per
 l'elenco delle coordinate atomiche sottostante.</value>
   </data>
+  <data name="buttonCopy.ToolTip" xml:space="preserve">
+    <value>Copia le posizioni atomiche come testo
+separato da tabulazioni.</value>
+  </data>
 </root>

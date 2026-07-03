@@ -114,4 +114,7 @@
   <data name="listBox1.ToolTip" xml:space="preserve">
     <value>下の原子座標一覧の列見出し（No., x, y, z）です。</value>
   </data>
+  <data name="buttonCopy.ToolTip" xml:space="preserve">
+    <value>原子位置をタブ区切りテキストとしてコピーします。</value>
+  </data>
 </root>

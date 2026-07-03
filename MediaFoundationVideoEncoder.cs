@@ -38,8 +38,10 @@ public sealed class MediaFoundationVideoEncoder : IDisposable
     // 260530Cl ICodecAPI(レート制御)用
     private static readonly Guid IID_ICodecAPI = new("901db4c7-31ce-41a2-85dc-8fa0bf41b8da");
     private static readonly Guid CODECAPI_AVEncCommonRateControlMode = new("1c0608e9-370c-4710-8a58-cb6181c42423");
-    private static readonly Guid CODECAPI_AVEncCommonQuality = new("fcbf57a3-7ea5-4b0c-9644-69b40c39c391");
-    private const uint eAVEncCommonRateControlMode_Quality = 3;
+    //private static readonly Guid CODECAPI_AVEncCommonQuality = new("fcbf57a3-7ea5-4b0c-9644-69b40c39c391"); // (260629Ch) 変更前: 環境によって SinkWriter 経由では反映されなかった
+    private static readonly Guid CODECAPI_AVEncCommonMeanBitRate = new("f7222374-2144-4815-b550-a37f8e12ee52"); // (260629Ch)
+    //private const uint eAVEncCommonRateControlMode_Quality = 3; // (260629Ch) 変更前: Quality-VBR は指定タイミングとエンコーダ依存が大きい
+    private const uint eAVEncCommonRateControlMode_CBR = 0; // (260629Ch)
     private const ushort VT_UI4 = 19;
     #endregion
 
@@ -91,7 +93,7 @@ public sealed class MediaFoundationVideoEncoder : IDisposable
     /// <param name="height">フレーム高さ (px、偶数推奨)。</param>
     /// <param name="fps">フレームレート (frames/sec、正の値)。</param>
     /// <param name="hevc">true なら H.265(HEVC)、false なら H.264。</param>
-    /// <param name="quality">品質(1-100)。Quality レート制御モードで使用。</param>
+    /// <param name="quality">品質(1-100)。目標ビットレートの算出に使用 (CBR)。既定 70 で従来のビットレートと同等。</param><!--260703Cl 実装 (CBR+MeanBitRate) と食い違っていた説明を更新-->
     public MediaFoundationVideoEncoder(string path, int width, int height, int fps, bool hevc, int quality = 70)
     {
         // 260530Cl public ライブラリ API として境界値を検証 (再利用時の不正引数対策)
@@ -104,6 +106,7 @@ public sealed class MediaFoundationVideoEncoder : IDisposable
         int stride = width * 4;
         _frameSize = (int)frameBytes;
         _frameDurationTicks = 10_000_000L / fps;
+        var targetBitrate = AutoBitrate(width, height, fps, quality); // (260629Ch) Quality 値を平均ビットレートにも反映する
 
         IMFMediaType outType = null, inType = null;
         try
@@ -112,8 +115,10 @@ public sealed class MediaFoundationVideoEncoder : IDisposable
             Check(MFCreateMediaType(out outType), "MFCreateMediaType(out)");
             outType.SetGUID(MF_MT_MAJOR_TYPE, MFMediaType_Video);
             outType.SetGUID(MF_MT_SUBTYPE, hevc ? MFVideoFormat_HEVC : MFVideoFormat_H264);
-            // MF_MT_AVG_BITRATE は ICodecAPI が無いエンコーダ向けのフォールバック (通常は Quality モードが優先)
-            outType.SetUINT32(MF_MT_AVG_BITRATE, (int)Math.Min(AutoBitrate(width, height, fps), int.MaxValue));
+            // MF_MT_AVG_BITRATE は ICodecAPI が無いエンコーダ向けのフォールバック (260629Ch)
+            //outType.SetUINT32(MF_MT_AVG_BITRATE, (int)Math.Min(AutoBitrate(width, height, fps), int.MaxValue)); // (260629Ch) 変更前: GUI の Quality 値と無関係だった
+            //outType.SetUINT32(MF_MT_AVG_BITRATE, (int)Math.Min(targetBitrate, int.MaxValue)); // (260629Ch) → 260703Cl クランプは AutoBitrate 内に集約
+            outType.SetUINT32(MF_MT_AVG_BITRATE, (int)targetBitrate); // 260703Cl
             outType.SetUINT32(MF_MT_INTERLACE_MODE, MFVideoInterlace_Progressive);
             outType.SetUINT32(MF_MT_MPEG2_PROFILE, hevc ? eAVEncH265VProfile_Main_420 : eAVEncH264VProfile_High);
             SetUint64Pair(outType, MF_MT_FRAME_SIZE, width, height);
@@ -134,7 +139,8 @@ public sealed class MediaFoundationVideoEncoder : IDisposable
             Check(MFCreateSinkWriterFromURL(path, IntPtr.Zero, IntPtr.Zero, out _writer), "MFCreateSinkWriterFromURL");
             Check(_writer.AddStream(outType, out _streamIndex), "AddStream");
             Check(_writer.SetInputMediaType(_streamIndex, inType, IntPtr.Zero), "SetInputMediaType");
-            SetQualityRateControl(quality); // 260530Cl HEVC は MF_MT_AVG_BITRATE を見ないため Quality モードを明示 (両コーデック共通)
+            //SetQualityRateControl(quality); // (260629Ch) 変更前: AVEncCommonQuality は環境によってファイルサイズに反映されなかった
+            SetBitrateRateControl(targetBitrate); // (260629Ch) 両コーデックで Quality 値を目標ビットレートとしても伝える
             Check(_writer.BeginWriting(), "BeginWriting");
         }
         catch
@@ -192,11 +198,16 @@ public sealed class MediaFoundationVideoEncoder : IDisposable
         // MFShutdown はプロセスで対にする必要があるため、ここでは呼ばない(アプリ終了時に OS が回収)。
     }
 
-    private static long AutoBitrate(int w, int h, int fps)
+    //private static long AutoBitrate(int w, int h, int fps, int quality = 70) // (260629Ch) → 260703Cl 呼び出しは 1 箇所で常に明示指定のためデフォルト値を削除 (渡し忘れで Quality 無視が黙って再発するのを防ぐ)
+    private static long AutoBitrate(int w, int h, int fps, int quality) // 260703Cl
     {
         // 0.1 bit/pixel を目安に算出 (合成 CG の回転動画なら十分)。下限 2Mbps。
-        long bps = (long)(w * (double)h * fps * 0.1);
-        return Math.Max(bps, 2_000_000L);
+        //long bps = (long)(w * (double)h * fps * 0.1); // (260629Ch) 変更前: quality に関係なく常に同じビットレートだった
+        //return Math.Max(bps, 2_000_000L); // (260629Ch)
+        var baseBps = Math.Max((long)(w * (double)h * fps * 0.1), 2_000_000L); // (260629Ch)
+        var scale = Math.Pow(10.0, (Math.Clamp(quality, 1, 100) - 70) / 50.0); // (260629Ch) Q70=従来値、+10 で約1.6倍
+        //return Math.Max((long)(baseBps * scale), 250_000L); // (260629Ch) → 260703Cl 呼び出し側 2 箇所で行っていた int.MaxValue クランプもここに集約
+        return Math.Min(Math.Max((long)(baseBps * scale), 250_000L), int.MaxValue); // 260703Cl
     }
 
     private static void SetUint64Pair(IMFMediaType attr, Guid key, int high, int low)
@@ -209,7 +220,9 @@ public sealed class MediaFoundationVideoEncoder : IDisposable
 
     // 260530Cl エンコーダの ICodecAPI を取得し、レート制御を Quality モードに設定する (best-effort)。
     //          HEVC は MF_MT_AVG_BITRATE を見ず既定が品質ベースのため、明示しないと H.264 より大きくなる。
-    private void SetQualityRateControl(int quality)
+    // 260629Ch 変更後: Quality 値から算出した targetBitrate を CBR/MeanBitRate として設定する。
+    //private void SetQualityRateControl(int quality) // (260629Ch) 変更前: Quality モードは SinkWriter 経由で反映されない環境があった
+    private void SetBitrateRateControl(long targetBitrate) // (260629Ch)
     {
         if (_writer.GetServiceForStream(_streamIndex, Guid.Empty, IID_ICodecAPI, out var svc) < 0)
             return; // ICodecAPI 取得失敗なら既定のまま (致命的でない)
@@ -220,10 +233,14 @@ public sealed class MediaFoundationVideoEncoder : IDisposable
         }
         try
         {
-            var mode = new PROPVARIANT { vt = VT_UI4, ulVal = eAVEncCommonRateControlMode_Quality };
+            //var mode = new PROPVARIANT { vt = VT_UI4, ulVal = eAVEncCommonRateControlMode_Quality }; // (260629Ch) 変更前
+            var mode = new PROPVARIANT { vt = VT_UI4, ulVal = eAVEncCommonRateControlMode_CBR }; // (260629Ch)
             codec.SetValue(CODECAPI_AVEncCommonRateControlMode, ref mode);
-            var q = new PROPVARIANT { vt = VT_UI4, ulVal = (uint)Math.Clamp(quality, 1, 100) };
-            codec.SetValue(CODECAPI_AVEncCommonQuality, ref q);
+            //var q = new PROPVARIANT { vt = VT_UI4, ulVal = (uint)Math.Clamp(quality, 1, 100) }; // (260629Ch) 変更前
+            //codec.SetValue(CODECAPI_AVEncCommonQuality, ref q); // (260629Ch)
+            //var bitrate = new PROPVARIANT { vt = VT_UI4, ulVal = (uint)Math.Min(targetBitrate, int.MaxValue) }; // (260629Ch) → 260703Cl クランプは AutoBitrate 内に集約
+            var bitrate = new PROPVARIANT { vt = VT_UI4, ulVal = (uint)targetBitrate }; // 260703Cl
+            codec.SetValue(CODECAPI_AVEncCommonMeanBitRate, ref bitrate); // (260629Ch)
         }
         catch { /* レート制御設定の失敗は無視 (既定動作にフォールバック) */ }
         finally { Marshal.ReleaseComObject(codec); }

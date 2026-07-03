@@ -67,4 +67,7 @@
     <value>下方原子坐标一览的列标题
 （No., x, y, z）。</value>
   </data>
+  <data name="buttonCopy.ToolTip" xml:space="preserve">
+    <value>将原子位置复制为制表符分隔的文本。</value>
+  </data>
 </root>
