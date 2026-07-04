@@ -245,7 +245,7 @@ vertices (the coordinated ligand atoms).</value>
     <value>True</value>
   </data>
   <data name="label58.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 8pt</value>
+    <value>Segoe UI, 8.25pt</value>
   </data>
   <data name="label58.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -285,7 +285,7 @@ vertices (the coordinated ligand atoms).</value>
     <value>True</value>
   </data>
   <data name="label57.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 8pt</value>
+    <value>Segoe UI, 8.25pt</value>
   </data>
   <data name="label57.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
