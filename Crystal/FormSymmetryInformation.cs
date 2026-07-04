@@ -1,5 +1,6 @@
 ﻿#region using, namespace
 using System;
+using System.Collections.Generic; // 260704Cl
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D; // 260504Cl
@@ -34,7 +35,10 @@ public partial class FormSymmetryInformation : FormBase
         // 260620Cl 追加: Localizable=false で英語直書きの静的ラベルをコード側 Loc() で多言語化 (方式②)。
         // デザイナ表示は neutral 英語のままにしたいので実行時のみ適用する。
         if (LicenseManager.UsageMode != LicenseUsageMode.Designtime)
+        {
             LocalizeLabels();
+            SetupExtraTables(); // 260704Cl: Operations/Properties/Settings タブの列定義 (Loc ヘッダ) を一度だけ構築
+        }
     }
 
     /// <summary>
@@ -75,6 +79,12 @@ public partial class FormSymmetryInformation : FormBase
         tabPageGeometrics.Text = Loc(en: "Geometrics Calculation", ja: "幾何計算", de: "Geometrische Berechnung", fr: "Calculs géométriques", es: "Cálculo geométrico", pt: "Cálculo geométrico", it: "Calcoli geometrici", ru: "Геометрические расчёты", zhHans: "几何计算", zhHant: "幾何計算", ko: "기하 계산");
         tabPageWyckoff.Text = Loc(en: "Wyckoff Positions", ja: "ワイコフ位置", de: "Wyckoff-Lagen", fr: "Positions de Wyckoff", es: "Posiciones de Wyckoff", pt: "Posições de Wyckoff", it: "Posizioni di Wyckoff", ru: "Позиции Уайкоффа", zhHans: "Wyckoff 位置", zhHant: "Wyckoff 位置", ko: "와이코프 위치");
         tabPageConditions.Text = Loc(en: "Conditions", ja: "反射条件", de: "Bedingungen", fr: "Conditions", es: "Condiciones", pt: "Condições", it: "Condizioni", ru: "Условия", zhHans: "衍射条件", zhHant: "條件", ko: "조건");
+        // 260704Cl 追加: Phase 1 の新規タブ / ボタン
+        tabPageOperations.Text = Loc(en: "Operations", ja: "対称操作", de: "Operationen", fr: "Opérations", es: "Operaciones", pt: "Operações", it: "Operazioni", ru: "Операции", zhHans: "对称操作", zhHant: "對稱操作", ko: "대칭 연산");
+        tabPageProperties.Text = Loc(en: "Properties", ja: "群の性質", de: "Eigenschaften", fr: "Propriétés", es: "Propiedades", pt: "Propriedades", it: "Proprietà", ru: "Свойства", zhHans: "群性质", zhHant: "群性質", ko: "군의 성질");
+        tabPageSettings.Text = Loc(en: "Settings", ja: "設定一覧", de: "Aufstellungen", fr: "Réglages", es: "Configuraciones", pt: "Configurações", it: "Impostazioni", ru: "Установки", zhHans: "设置一览", zhHant: "設定一覽", ko: "설정 목록");
+        buttonCopyCif.Text = Loc(en: "Copy (CIF)", ja: "コピー (CIF)", de: "Kopieren (CIF)", fr: "Copier (CIF)", es: "Copiar (CIF)", pt: "Copiar (CIF)", it: "Copia (CIF)", ru: "Копировать (CIF)", zhHans: "复制 (CIF)", zhHant: "複製 (CIF)", ko: "복사 (CIF)");
+        buttonGroupRelations.Text = Loc(en: "Group Relations...", ja: "群の関係...", de: "Gruppenrelationen...", fr: "Relations de groupe...", es: "Relaciones de grupo...", pt: "Relações de grupo...", it: "Relazioni di gruppo...", ru: "Групповые отношения...", zhHans: "群关系...", zhHant: "群關係...", ko: "군 관계...");
 
         // --- Geometrics タブ: 計算結果ラベル ---
         label40.Text = Loc(en: "The axis normal to both planes", ja: "両面に垂直な軸", de: "Achse senkrecht zu beiden Ebenen", fr: "L'axe normal aux deux plans", es: "Eje normal a ambos planos", pt: "O eixo normal a ambos os planos", it: "L'asse normale a entrambi i piani", ru: "Ось, перпендикулярная обеим плоскостям", zhHans: "同时垂直于两晶面的晶轴", zhHant: "垂直於兩晶面的晶軸", ko: "두 면에 수직인 축");
@@ -279,6 +289,17 @@ public partial class FormSymmetryInformation : FormBase
                 flowLayoutPanelExtinctionRule.Controls.Add(MakeExtinctionRuleLabel(ToLatex(rule, noBar: true)));
         flowLayoutPanelExtinctionRule.ResumeLayout(true);
 
+        // 260704Cl 追加: Operations / Properties / Settings タブの再構築
+        // 260705Cl 修正: 3 表の内容は SymmetrySeriesNumber のみに依存するため、格子定数スピナーや原子編集などで
+        // CrystalChanged が連続発火しても空間群が同じなら再構築しない (変更検出ガード)。
+        if (_extraTablesSeriesNumber != Crystal.SymmetrySeriesNumber)
+        {
+            _extraTablesSeriesNumber = Crystal.SymmetrySeriesNumber;
+            SetOperationsTable();
+            SetPropertiesTable(symmetry);
+            SetSettingsTable(symmetry);
+        }
+
         // 260429Cl 追加: 対称要素・一般位置の図を再描画
         UpdateDiagrams();
     }
@@ -429,6 +450,155 @@ public partial class FormSymmetryInformation : FormBase
                 table.Rows.Add(row);
             }
         }
+    }
+    #endregion
+
+    #region Operations / Properties / Settings タブ (260704Cl 追加, Phase 1-D/E/G/H)
+
+    // 260705Cl 追加: 3 表を最後に構築した SymmetrySeriesNumber。表の内容はこれのみに依存するため、変化時だけ再構築する。
+    private int _extraTablesSeriesNumber = -1;
+
+    // 260705Cl: tooltip 行 index を控えるフィールド _propertyTooltips は SetPropertiesTable 内で完結していたため削除 (ローカル化)。
+    //private readonly List<(int Row, string Tip)> _propertyTooltips = new(4);
+
+    /// <summary>3 つの新規タブ (Operations/Properties/Settings) の列定義を一度だけ構築する。ヘッダは Loc() で多言語化 (方式②)。</summary>
+    private void SetupExtraTables()
+    {
+        const DataGridViewContentAlignment L = DataGridViewContentAlignment.MiddleLeft;
+        const DataGridViewContentAlignment R = DataGridViewContentAlignment.MiddleRight;
+        const DataGridViewContentAlignment C = DataGridViewContentAlignment.MiddleCenter;
+
+        miniTableOperations.SetColumns(
+            new MiniTable.Col("#", R),
+            new MiniTable.Col(Loc(en: "Coordinates", ja: "座標", de: "Koordinaten", fr: "Coordonnées", es: "Coordenadas", pt: "Coordenadas", it: "Coordinate", ru: "Координаты", zhHans: "坐标", zhHant: "座標", ko: "좌표"), L),
+            new MiniTable.Col("Seitz", L),
+            new MiniTable.Col(Loc(en: "Type", ja: "種類", de: "Typ", fr: "Type", es: "Tipo", pt: "Tipo", it: "Tipo", ru: "Тип", zhHans: "类型", zhHant: "類型", ko: "종류"), L, Fill: true));
+
+        miniTableProperties.SetColumns(
+            new MiniTable.Col(Loc(en: "Property", ja: "項目", de: "Eigenschaft", fr: "Propriété", es: "Propiedad", pt: "Propriedade", it: "Proprietà", ru: "Свойство", zhHans: "项目", zhHant: "項目", ko: "항목"), L),
+            new MiniTable.Col(Loc(en: "Value", ja: "値", de: "Wert", fr: "Valeur", es: "Valor", pt: "Valor", it: "Valore", ru: "Значение", zhHans: "值", zhHant: "值", ko: "값"), L, Fill: true));
+
+        miniTableSettings.SetColumns(
+            new MiniTable.Col("", C),
+            new MiniTable.Col(Loc(en: "HM symbol", ja: "HM 記号", de: "HM-Symbol", fr: "Symbole HM", es: "Símbolo HM", pt: "Símbolo HM", it: "Simbolo HM", ru: "Символ HM", zhHans: "HM 符号", zhHant: "HM 符號", ko: "HM 기호"), L),
+            new MiniTable.Col(Loc(en: "Hall symbol", ja: "Hall 記号", de: "Hall-Symbol", fr: "Symbole Hall", es: "Símbolo Hall", pt: "Símbolo Hall", it: "Simbolo Hall", ru: "Символ Hall", zhHans: "Hall 符号", zhHant: "Hall 符號", ko: "Hall 기호"), L, Fill: true));
+    }
+
+    /// <summary>現在の空間群の一般位置の全対称操作を Operations タブに流し込む (中心化展開済み)。</summary>
+    private void SetOperationsTable()
+    {
+        // 260705Cl: 「SeriesNumber 付替え展開」を TSubgroupFinder.GetExpandedOps に一本化 (buttonCopyCif_Click / SymmetryProperties と共用)。
+        //int sn = Crystal.SymmetrySeriesNumber;
+        //var raw = SymmetryStatic.WyckoffPositions[sn][0].PositionOperations;
+        //if (raw == null) { miniTableOperations.ClearRows(); return; }
+        var ops = TSubgroupFinder.GetExpandedOps(Crystal.SymmetrySeriesNumber);
+        if (ops.Length == 0) { miniTableOperations.ClearRows(); return; }
+
+        var rows = new List<object[]>(ops.Length);
+        for (int i = 0; i < ops.Length; i++)
+            rows.Add([i + 1, SeitzNotation.Triplet(ops[i]), SeitzNotation.Seitz(ops[i]), SeitzNotation.GeometricType(ops[i])]);
+        miniTableOperations.SetRows(rows);
+    }
+
+    /// <summary>群論的性質 + 物性の対称性許容を Properties タブに流し込む。物性行には 1 行説明の tooltip を付ける。</summary>
+    private void SetPropertiesTable(Symmetry symmetry)
+    {
+        var p = new SymmetryProperties(symmetry);
+
+        string yes = Loc(en: "Yes", ja: "はい", de: "Ja", fr: "Oui", es: "Sí", pt: "Sim", it: "Sì", ru: "Да", zhHans: "是", zhHant: "是", ko: "예");
+        string no = Loc(en: "No", ja: "いいえ", de: "Nein", fr: "Non", es: "No", pt: "Não", it: "No", ru: "Нет", zhHans: "否", zhHant: "否", ko: "아니오");
+        string allowed = Loc(en: "Allowed", ja: "許容", de: "Erlaubt", fr: "Autorisé", es: "Permitido", pt: "Permitido", it: "Permesso", ru: "Разрешено", zhHans: "允许", zhHant: "允許", ko: "허용");
+        string forbidden = Loc(en: "Forbidden", ja: "禁止", de: "Verboten", fr: "Interdit", es: "Prohibido", pt: "Proibido", it: "Vietato", ru: "Запрещено", zhHans: "禁止", zhHant: "禁止", ko: "금지");
+        string YN(bool b) => b ? yes : no;
+        string AF(bool b) => b ? allowed : forbidden;
+
+        // 260705Cl: Loc への単純パススルーだったローカル関数 P を削除 (Loc の引数順は en, ja, de, fr, es, pt,
+        // it, ru, zhHans, zhHant, ko で同一のため、各行から位置引数で直接呼ぶ)。
+
+        string partner = p.HasEnantiomorph ? $"No. {p.EnantiomorphPartnerNumber}" : "—";
+        string polarVal = p.IsPolar ? $"{yes} ({p.PolarDirectionStr})" : no;
+
+        object[][] rows =
+        [
+            [Loc("General-position multiplicity", "一般位置の多重度", "Zähligkeit der allg. Lage", "Multiplicité position générale", "Multiplicidad posición general", "Multiplicidade posição geral", "Molteplicità posizione generale", "Кратность общей позиции", "一般位置多重性", "一般位置多重度", "일반 위치 중복도"), p.GeneralMultiplicity],
+            [Loc("Point-group order", "点群の位数", "Ordnung der Punktgruppe", "Ordre du groupe ponctuel", "Orden del grupo puntual", "Ordem do grupo pontual", "Ordine del gruppo puntuale", "Порядок точечной группы", "点群阶数", "點群階數", "점군 위수"), p.PointGroupOrder],
+            [Loc("Centrosymmetric", "中心対称", "Zentrosymmetrisch", "Centrosymétrique", "Centrosimétrico", "Centrossimétrico", "Centrosimmetrico", "Центросимметричная", "中心对称", "中心對稱", "중심대칭"), YN(p.IsCentrosymmetric)],
+            [Loc("Sohncke (chiral) group", "Sohncke 群 (キラル)", "Sohncke-Gruppe (chiral)", "Groupe de Sohncke (chiral)", "Grupo de Sohncke (quiral)", "Grupo de Sohncke (quiral)", "Gruppo di Sohncke (chirale)", "Группа Шёнке (хиральная)", "Sohncke 群 (手性)", "Sohncke 群 (手性)", "손케 군 (카이랄)"), YN(p.IsSohncke)],
+            [Loc("Symmorphic", "Symmorphic", "Symmorph", "Symmorphique", "Simórfico", "Simórfico", "Simmorfico", "Симморфная", "简单型", "簡單型", "심모픽"), YN(p.IsSymmorphic)],
+            [Loc("Polar", "極性", "Polar", "Polaire", "Polar", "Polar", "Polare", "Полярная", "极性", "極性", "극성"), polarVal],
+            [Loc("Enantiomorphic partner", "掌性対の相手", "Enantiomorphes Paar", "Partenaire énantiomorphe", "Pareja enantiomorfa", "Par enantiomorfo", "Coppia enantiomorfa", "Энантиоморфная пара", "对映体伙伴", "對映體夥伴", "거울상 짝"), partner],
+            [Loc("Crystal family", "結晶族", "Kristallfamilie", "Famille cristalline", "Familia cristalina", "Família cristalina", "Famiglia cristallina", "Кристаллическое семейство", "晶族", "晶族", "결정족"), p.CrystalFamilyStr],
+            [Loc("Lattice system", "格子系", "Gittersystem", "Système réticulaire", "Sistema reticular", "Sistema reticular", "Sistema reticolare", "Решёточная система", "格子系", "格子系", "격자계"), p.LatticeSystemStr],
+            [Loc("Bravais type", "ブラベー型", "Bravais-Typ", "Type de Bravais", "Tipo de Bravais", "Tipo de Bravais", "Tipo di Bravais", "Тип Браве", "布拉维型", "布拉維型", "브라베 형"), p.BravaisTypeStr],
+            [Loc("Arithmetic crystal class", "算術結晶類", "Arithmetische Kristallklasse", "Classe cristalline arithmétique", "Clase cristalina aritmética", "Classe cristalina aritmética", "Classe cristallina aritmetica", "Арифметический класс", "算术晶类", "算術晶類", "산술 결정류"), p.ArithmeticCrystalClassStr],
+            [Loc("Patterson symmetry", "Patterson 対称", "Patterson-Symmetrie", "Symétrie de Patterson", "Simetría de Patterson", "Simetria de Patterson", "Simmetria di Patterson", "Симметрия Патерсона", "Patterson 对称", "Patterson 對稱", "패터슨 대칭"), p.PattersonSymmetryStr],
+            // --- 物性 (点群対称性で許容されるか) ---
+            [Loc("Pyroelectric / ferroelectric", "焦電性 / 強誘電性", "Pyroelektrisch / ferroelektrisch", "Pyroélectrique / ferroélectrique", "Piroeléctrico / ferroeléctrico", "Piroelétrico / ferroelétrico", "Piroelettrico / ferroelettrico", "Пироэлектрик / сегнетоэлектрик", "热电 / 铁电", "熱電 / 鐵電", "초전 / 강유전"), AF(p.PyroelectricAllowed)],
+            [Loc("Piezoelectric", "圧電性", "Piezoelektrisch", "Piézoélectrique", "Piezoeléctrico", "Piezoelétrico", "Piezoelettrico", "Пьезоэлектрик", "压电", "壓電", "압전"), AF(p.PiezoelectricAllowed)],
+            [Loc("Second-harmonic generation", "第二高調波発生 (SHG)", "Frequenzverdopplung (SHG)", "Génération de seconde harmonique", "Generación de segundo armónico", "Geração de segundo harmónico", "Generazione di seconda armonica", "Генерация второй гармоники", "二次谐波 (SHG)", "二次諧波 (SHG)", "제2고조파 발생"), AF(p.SHGAllowed)],
+            [Loc("Optical activity", "旋光性", "Optische Aktivität", "Activité optique", "Actividad óptica", "Atividade óptica", "Attività ottica", "Оптическая активность", "旋光性", "旋光性", "선광성"), AF(p.OpticalActivityAllowed)],
+        ];
+        miniTableProperties.SetRows(rows);
+
+        // 物性 4 行 (末尾) の value セルに 1 行説明を貼る (教育用途)。260705Cl: フィールド _propertyTooltips を廃しローカル配列で末尾 4 行に適用。
+        string[] tips =
+        [
+            Loc(en: "A non-zero spontaneous polarization is allowed only in the 10 polar point groups.", ja: "自発分極は 10 個の極性点群でのみ許容されます。", de: "Eine spontane Polarisation ist nur in den 10 polaren Punktgruppen erlaubt.", fr: "Une polarisation spontanée n'est permise que dans les 10 groupes polaires.", es: "La polarización espontánea solo se permite en los 10 grupos polares.", pt: "A polarização espontânea só é permitida nos 10 grupos polares.", it: "La polarizzazione spontanea è permessa solo nei 10 gruppi polari.", ru: "Спонтанная поляризация возможна только в 10 полярных группах.", zhHans: "自发极化仅在 10 个极性点群中允许。", zhHant: "自發極化僅在 10 個極性點群中允許。", ko: "자발 분극은 10개의 극성 점군에서만 허용됩니다."),
+            Loc(en: "Requires a non-centrosymmetric point group (except 432); 20 classes.", ja: "非中心対称の点群 (432 を除く) で許容されます。20 類。", de: "Erfordert eine nicht-zentrosymmetrische Punktgruppe (außer 432); 20 Klassen.", fr: "Nécessite un groupe non centrosymétrique (sauf 432) ; 20 classes.", es: "Requiere un grupo no centrosimétrico (excepto 432); 20 clases.", pt: "Requer um grupo não centrossimétrico (exceto 432); 20 classes.", it: "Richiede un gruppo non centrosimmetrico (tranne 432); 20 classi.", ru: "Требует нецентросимметричной группы (кроме 432); 20 классов.", zhHans: "需非中心对称点群 (432 除外)；共 20 类。", zhHant: "需非中心對稱點群 (432 除外)；共 20 類。", ko: "비중심대칭 점군(432 제외)에서 허용; 20류."),
+            Loc(en: "χ⁽²⁾ is a rank-3 polar tensor with the same symmetry condition as piezoelectricity.", ja: "χ⁽²⁾ は 3 階の極性テンソルで、許容条件は圧電性と同じです。", de: "χ⁽²⁾ ist ein polarer Tensor 3. Stufe mit derselben Bedingung wie Piezoelektrizität.", fr: "χ⁽²⁾ est un tenseur polaire de rang 3, même condition que la piézoélectricité.", es: "χ⁽²⁾ es un tensor polar de rango 3, misma condición que la piezoelectricidad.", pt: "χ⁽²⁾ é um tensor polar de posto 3, mesma condição da piezoeletricidade.", it: "χ⁽²⁾ è un tensore polare di rango 3, stessa condizione della piezoelettricità.", ru: "χ⁽²⁾ — полярный тензор 3-го ранга, условие как у пьезоэлектричества.", zhHans: "χ⁽²⁾ 为三阶极性张量，条件与压电性相同。", zhHant: "χ⁽²⁾ 為三階極性張量，條件與壓電性相同。", ko: "χ⁽²⁾는 3계 극성 텐서로 압전성과 같은 조건입니다."),
+            Loc(en: "The gyration (axial rank-2) tensor is non-zero in 15 gyrotropic point groups.", ja: "旋光テンソル (2 階軸性) は 15 個の旋光点群で非零です。", de: "Der Gyrationstensor (axial, 2. Stufe) ist in 15 gyrotropen Punktgruppen ungleich null.", fr: "Le tenseur de gyration (axial rang 2) est non nul dans 15 groupes gyrotropes.", es: "El tensor de giración (axial rango 2) es no nulo en 15 grupos girotrópicos.", pt: "O tensor de giração (axial posto 2) é não nulo em 15 grupos girotrópicos.", it: "Il tensore di girazione (assiale rango 2) è non nullo in 15 gruppi girotropi.", ru: "Тензор гирации (аксиальный 2-го ранга) ненулевой в 15 гиротропных группах.", zhHans: "旋光张量 (二阶轴性) 在 15 个旋光点群中非零。", zhHant: "旋光張量 (二階軸性) 在 15 個旋光點群中非零。", ko: "자이레이션(축성 2계) 텐서는 15개 자이로트로픽 점군에서 0이 아닙니다."),
+        ];
+        for (int i = 0; i < tips.Length; i++)
+            miniTableProperties.Rows[rows.Length - tips.Length + i].Cells[1].ToolTipText = tips[i];
+    }
+
+    /// <summary>同一空間群タイプ (同じ IT 番号) の全設定を Settings タブに一覧表示する (Phase 1 は閲覧のみ)。</summary>
+    private void SetSettingsTable(Symmetry symmetry)
+    {
+        int itno = symmetry.SpaceGroupNumber;
+        int cur = Crystal.SymmetrySeriesNumber;
+        var rows = new List<object[]>();
+        for (int s = 0; s < SymmetryStatic.TotalSpaceGroupNumber; s++)
+        {
+            var sym = SymmetryStatic.Symmetries[s];
+            if (sym.SpaceGroupNumber != itno) continue;
+            rows.Add([s == cur ? "▶" : "", SeitzNotation.PrettyHM(sym.SpaceGroupHMStr), sym.SpaceGroupHallStr]);
+        }
+        miniTableSettings.SetRows(rows);
+    }
+
+    // 260705Cl: FormGroupRelations と一字一句同一だった PrettyHM を SeitzNotation.PrettyHM へ集約 (実装は移設)。
+
+    /// <summary>Operations タブの全対称操作を CIF の _space_group_symop_operation_xyz ループとしてクリップボードへコピー。</summary>
+    private void buttonCopyCif_Click(object sender, EventArgs e)
+    {
+        // 260705Cl: 展開処理を TSubgroupFinder.GetExpandedOps に一本化。
+        //int sn = Crystal.SymmetrySeriesNumber;
+        //var raw = SymmetryStatic.WyckoffPositions[sn][0].PositionOperations;
+        //if (raw == null || raw.Length == 0) return;
+        //var ops = raw.Select(o => new SymmetryOperation(o, sn)).ToList();
+        var ops = TSubgroupFinder.GetExpandedOps(Crystal.SymmetrySeriesNumber);
+        if (ops.Length == 0) return;
+        Clipboard.SetText(SeitzNotation.ToCifSymopLoop(ops));
+    }
+
+    // 260704Cl 追加 (Phase 2): group-subgroup 関係ブラウザ。閉じても Hide されるので 1 インスタンスを再利用する。
+    private FormGroupRelations _formGroupRelations;
+
+    private void buttonGroupRelations_Click(object sender, EventArgs e) => ShowGroupRelations();
+
+    /// <summary>Crystal.SymmetrySeriesNumber で FormGroupRelations を開く (ボタン押下と --capture の crystal-dependent
+    /// 子フォーム列挙 (FormMain.EnumerateCaptureCrystalDependentForms) で共用)。260705Cl 追加。</summary>
+    public FormGroupRelations ShowGroupRelations()
+    {
+        if (_formGroupRelations == null || _formGroupRelations.IsDisposed)
+            _formGroupRelations = new FormGroupRelations();
+        _formGroupRelations.LoadSpaceGroup(Crystal.SymmetrySeriesNumber, isCurrentCrystal: true);
+        if (_formGroupRelations.WindowState == FormWindowState.Minimized)
+            _formGroupRelations.WindowState = FormWindowState.Normal;
+        _formGroupRelations.Show();
+        _formGroupRelations.BringToFront();
+        return _formGroupRelations;
     }
     #endregion
 

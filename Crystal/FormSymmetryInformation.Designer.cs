@@ -118,6 +118,15 @@
             tabPageWyckoff = new System.Windows.Forms.TabPage();
             tabPageConditions = new System.Windows.Forms.TabPage();
             flowLayoutPanelExtinctionRule = new System.Windows.Forms.FlowLayoutPanel();
+            // 260704Cl 追加: Phase 1 の Operations / Properties / Settings タブ
+            tabPageOperations = new System.Windows.Forms.TabPage();
+            miniTableOperations = new MiniTable();
+            panelOperationsBottom = new System.Windows.Forms.Panel();
+            buttonCopyCif = new System.Windows.Forms.Button();
+            tabPageProperties = new System.Windows.Forms.TabPage();
+            miniTableProperties = new MiniTable();
+            tabPageSettings = new System.Windows.Forms.TabPage();
+            miniTableSettings = new MiniTable();
             groupBoxSpaceGroup = new System.Windows.Forms.GroupBox();
             labelLaTexSG_Hall = new LabelLaTeX();
             labelLaTexSG_SF = new LabelLaTeX();
@@ -131,6 +140,7 @@
             panel2 = new System.Windows.Forms.Panel();
             labelLaTexNumber = new LabelLaTeX();
             flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
+            buttonGroupRelations = new System.Windows.Forms.Button(); // 260704Cl 追加
             label15 = new System.Windows.Forms.Label();
             flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
             flowLayoutPanel7 = new System.Windows.Forms.FlowLayoutPanel();
@@ -154,6 +164,13 @@
             flowLayoutPanel1.SuspendLayout();
             tabPageWyckoff.SuspendLayout();
             tabPageConditions.SuspendLayout();
+            tabPageOperations.SuspendLayout(); // 260704Cl
+            panelOperationsBottom.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)miniTableOperations).BeginInit();
+            tabPageProperties.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)miniTableProperties).BeginInit();
+            tabPageSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)miniTableSettings).BeginInit();
             groupBoxSpaceGroup.SuspendLayout();
             groupBoxPointGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)bindingSourceScatteringFactor).BeginInit();
@@ -1039,6 +1056,9 @@
             tabControl.Controls.Add(tabPageGeometrics);
             tabControl.Controls.Add(tabPageWyckoff);
             tabControl.Controls.Add(tabPageConditions);
+            tabControl.Controls.Add(tabPageOperations); // 260704Cl
+            tabControl.Controls.Add(tabPageProperties);
+            tabControl.Controls.Add(tabPageSettings);
             tabControl.Font = new System.Drawing.Font("Segoe UI", 9F);
             tabControl.Location = new System.Drawing.Point(337, 3);
             tabControl.Name = "tabControl";
@@ -1160,9 +1180,91 @@
             flowLayoutPanelExtinctionRule.Size = new System.Drawing.Size(673, 120);
             flowLayoutPanelExtinctionRule.TabIndex = 6;
             flowLayoutPanelExtinctionRule.WrapContents = false;
-            // 
+            //
+            // tabPageOperations (260704Cl 追加)
+            //
+            captureExtender.SetCapture(tabPageOperations, true);
+            tabPageOperations.BackColor = System.Drawing.SystemColors.Control;
+            tabPageOperations.Controls.Add(miniTableOperations);
+            tabPageOperations.Controls.Add(panelOperationsBottom);
+            tabPageOperations.Location = new System.Drawing.Point(4, 24);
+            tabPageOperations.Name = "tabPageOperations";
+            tabPageOperations.Size = new System.Drawing.Size(673, 141);
+            tabPageOperations.TabIndex = 4;
+            tabPageOperations.Text = "Operations";
+            //
+            // miniTableOperations
+            //
+            miniTableOperations.AllowVerticalScroll = true;
+            miniTableOperations.Dock = System.Windows.Forms.DockStyle.Fill;
+            miniTableOperations.Location = new System.Drawing.Point(0, 0);
+            miniTableOperations.Name = "miniTableOperations";
+            miniTableOperations.Size = new System.Drawing.Size(673, 113);
+            miniTableOperations.TabIndex = 0;
+            //
+            // panelOperationsBottom
+            //
+            panelOperationsBottom.Controls.Add(buttonCopyCif);
+            panelOperationsBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            panelOperationsBottom.Location = new System.Drawing.Point(0, 113);
+            panelOperationsBottom.Name = "panelOperationsBottom";
+            panelOperationsBottom.Size = new System.Drawing.Size(673, 28);
+            panelOperationsBottom.TabIndex = 1;
+            //
+            // buttonCopyCif
+            //
+            buttonCopyCif.AutoSize = true;
+            buttonCopyCif.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            buttonCopyCif.Location = new System.Drawing.Point(3, 2);
+            buttonCopyCif.Name = "buttonCopyCif";
+            buttonCopyCif.Size = new System.Drawing.Size(100, 23);
+            buttonCopyCif.TabIndex = 0;
+            buttonCopyCif.Text = "Copy (CIF)";
+            buttonCopyCif.UseVisualStyleBackColor = true;
+            buttonCopyCif.Click += buttonCopyCif_Click;
+            //
+            // tabPageProperties (260704Cl 追加)
+            //
+            captureExtender.SetCapture(tabPageProperties, true);
+            tabPageProperties.BackColor = System.Drawing.SystemColors.Control;
+            tabPageProperties.Controls.Add(miniTableProperties);
+            tabPageProperties.Location = new System.Drawing.Point(4, 24);
+            tabPageProperties.Name = "tabPageProperties";
+            tabPageProperties.Size = new System.Drawing.Size(673, 141);
+            tabPageProperties.TabIndex = 5;
+            tabPageProperties.Text = "Properties";
+            //
+            // miniTableProperties
+            //
+            miniTableProperties.AllowVerticalScroll = true;
+            miniTableProperties.Dock = System.Windows.Forms.DockStyle.Fill;
+            miniTableProperties.Location = new System.Drawing.Point(0, 0);
+            miniTableProperties.Name = "miniTableProperties";
+            miniTableProperties.Size = new System.Drawing.Size(673, 141);
+            miniTableProperties.TabIndex = 0;
+            //
+            // tabPageSettings (260704Cl 追加)
+            //
+            captureExtender.SetCapture(tabPageSettings, true);
+            tabPageSettings.BackColor = System.Drawing.SystemColors.Control;
+            tabPageSettings.Controls.Add(miniTableSettings);
+            tabPageSettings.Location = new System.Drawing.Point(4, 24);
+            tabPageSettings.Name = "tabPageSettings";
+            tabPageSettings.Size = new System.Drawing.Size(673, 141);
+            tabPageSettings.TabIndex = 6;
+            tabPageSettings.Text = "Settings";
+            //
+            // miniTableSettings
+            //
+            miniTableSettings.AllowVerticalScroll = true;
+            miniTableSettings.Dock = System.Windows.Forms.DockStyle.Fill;
+            miniTableSettings.Location = new System.Drawing.Point(0, 0);
+            miniTableSettings.Name = "miniTableSettings";
+            miniTableSettings.Size = new System.Drawing.Size(673, 141);
+            miniTableSettings.TabIndex = 0;
+            //
             // groupBoxSpaceGroup
-            // 
+            //
             groupBoxSpaceGroup.Controls.Add(labelLaTexSG_Hall);
             groupBoxSpaceGroup.Controls.Add(labelLaTexSG_SF);
             groupBoxSpaceGroup.Controls.Add(labelLaTexHM_full);
@@ -1312,6 +1414,7 @@
             flowLayoutPanel4.Controls.Add(radioButtonDirectionC);
             flowLayoutPanel4.Controls.Add(label12);
             flowLayoutPanel4.Controls.Add(flowLayoutPanel5);
+            flowLayoutPanel4.Controls.Add(buttonGroupRelations); // 260704Cl 追加
             flowLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Bottom;
             flowLayoutPanel4.Location = new System.Drawing.Point(4, 744);
             flowLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
@@ -1329,9 +1432,21 @@
             label15.Size = new System.Drawing.Size(57, 17);
             label15.TabIndex = 6;
             label15.Text = "Options";
-            // 
+            //
+            // buttonGroupRelations (260704Cl 追加)
+            //
+            buttonGroupRelations.AutoSize = true;
+            buttonGroupRelations.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            buttonGroupRelations.Margin = new System.Windows.Forms.Padding(24, 0, 3, 0);
+            buttonGroupRelations.Name = "buttonGroupRelations";
+            buttonGroupRelations.Size = new System.Drawing.Size(120, 23);
+            buttonGroupRelations.TabIndex = 8;
+            buttonGroupRelations.Text = "Group Relations...";
+            buttonGroupRelations.UseVisualStyleBackColor = true;
+            buttonGroupRelations.Click += buttonGroupRelations_Click;
+            //
             // flowLayoutPanel5
-            // 
+            //
             flowLayoutPanel5.AutoSize = true;
             flowLayoutPanel5.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             flowLayoutPanel5.Controls.Add(radioButtonEmf);
@@ -1413,6 +1528,14 @@
             tabPageWyckoff.ResumeLayout(false);
             tabPageConditions.ResumeLayout(false);
             tabPageConditions.PerformLayout();
+            tabPageOperations.ResumeLayout(false); // 260704Cl
+            panelOperationsBottom.ResumeLayout(false);
+            panelOperationsBottom.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)miniTableOperations).EndInit();
+            tabPageProperties.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)miniTableProperties).EndInit();
+            tabPageSettings.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)miniTableSettings).EndInit();
             groupBoxSpaceGroup.ResumeLayout(false);
             groupBoxSpaceGroup.PerformLayout();
             groupBoxPointGroup.ResumeLayout(false);
@@ -1448,6 +1571,16 @@
         private System.Windows.Forms.TabPage tabPageConditions;
         private System.Windows.Forms.Label label49;
         private System.Windows.Forms.TabPage tabPageWyckoff;
+        // 260704Cl 追加: Phase 1 の Operations / Properties / Settings タブ
+        private System.Windows.Forms.TabPage tabPageOperations;
+        private MiniTable miniTableOperations;
+        private System.Windows.Forms.Panel panelOperationsBottom;
+        private System.Windows.Forms.Button buttonCopyCif;
+        private System.Windows.Forms.TabPage tabPageProperties;
+        private MiniTable miniTableProperties;
+        private System.Windows.Forms.TabPage tabPageSettings;
+        private MiniTable miniTableSettings;
+        private System.Windows.Forms.Button buttonGroupRelations; // 260704Cl 追加 (Phase 2 起動)
         private Crystallography.Controls.NumericBox numericBoxAnglePlaneAxis2;
         private System.Windows.Forms.TextBox textBoxZonePlane;
         private Crystallography.Controls.NumericBox numericBoxLengthPlane1;
