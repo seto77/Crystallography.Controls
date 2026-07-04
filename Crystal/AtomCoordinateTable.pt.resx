@@ -79,17 +79,7 @@ alvo, ordenados por distância crescente.</value>
 em angstroms (Å); apenas átomos dentro deste
 raio do átomo alvo são listados.</value>
   </data>
-  <data name="label3.ToolTip" xml:space="preserve">
-    <value>Distância interatômica máxima a pesquisar,
-em angstroms (Å); apenas átomos dentro deste
-raio do átomo alvo são listados.</value>
-  </data>
   <data name="numericUpDownWidth.ToolTip" xml:space="preserve">
-    <value>Meia-largura das barras do histograma
-de distâncias, em angstroms (Å); valores maiores
-alargam cada barra, de modo que picos próximos se fundem.</value>
-  </data>
-  <data name="label2.ToolTip" xml:space="preserve">
     <value>Meia-largura das barras do histograma
 de distâncias, em angstroms (Å); valores maiores
 alargam cada barra, de modo que picos próximos se fundem.</value>

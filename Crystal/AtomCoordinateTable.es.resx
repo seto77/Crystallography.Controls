@@ -79,17 +79,7 @@ objetivo, ordenados por distancia creciente.</value>
 en ángstroms (Å); solo se enumeran los átomos dentro
 de este radio respecto al átomo objetivo.</value>
   </data>
-  <data name="label3.ToolTip" xml:space="preserve">
-    <value>Distancia interatómica máxima de búsqueda,
-en ángstroms (Å); solo se enumeran los átomos dentro
-de este radio respecto al átomo objetivo.</value>
-  </data>
   <data name="numericUpDownWidth.ToolTip" xml:space="preserve">
-    <value>Semianchura de las barras del histograma de
-distancias, en ángstroms (Å); valores mayores
-ensanchan cada barra de modo que los picos próximos se fusionan.</value>
-  </data>
-  <data name="label2.ToolTip" xml:space="preserve">
     <value>Semianchura de las barras del histograma de
 distancias, en ángstroms (Å); valores mayores
 ensanchan cada barra de modo que los picos próximos se fusionan.</value>

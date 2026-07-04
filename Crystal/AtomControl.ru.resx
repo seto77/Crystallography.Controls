@@ -315,6 +315,10 @@
     <value>Нажмите, чтобы выбрать цвет отображения сферы
 этого атома в 3D-виде структуры.</value>
   </data>
+  <data name="colorControlAtomColor.ToolTip1" xml:space="preserve">
+    <value>Нажмите, чтобы выбрать цвет отображения сферы
+этого атома в 3D-виде структуры.</value>
+  </data>
   <data name="dataGridView.ToolTip" xml:space="preserve">
     <value>Список всех атомных позиций в кристалле. Выберите
 строку, чтобы загрузить её в редактор ниже; флажок

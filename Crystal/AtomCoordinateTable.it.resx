@@ -79,17 +79,7 @@ ordinati per distanza crescente.</value>
 in angstrom (Å); vengono elencati solo gli atomi entro questo
 raggio dall'atomo bersaglio.</value>
   </data>
-  <data name="label3.ToolTip" xml:space="preserve">
-    <value>Distanza interatomica massima da cercare,
-in angstrom (Å); vengono elencati solo gli atomi entro questo
-raggio dall'atomo bersaglio.</value>
-  </data>
   <data name="numericUpDownWidth.ToolTip" xml:space="preserve">
-    <value>Semi-larghezza delle barre dell'istogramma
-delle distanze, in angstrom (Å); valori più grandi
-allargano ogni barra facendo fondere i picchi vicini.</value>
-  </data>
-  <data name="label2.ToolTip" xml:space="preserve">
     <value>Semi-larghezza delle barre dell'istogramma
 delle distanze, in angstrom (Å); valori più grandi
 allargano ogni barra facendo fondere i picchi vicini.</value>

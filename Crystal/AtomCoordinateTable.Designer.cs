@@ -27,245 +27,218 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AtomCoordinateTable)); // 260531Cl
-            components = new System.ComponentModel.Container(); // (260531Ch)
-            toolTip = new System.Windows.Forms.ToolTip(components); // (260531Ch)
-            toolTip.IsBalloon = true; // 260531Cl 追加: バルーン表示に統一
-            toolTip.AutoPopDelay = 10000; // 260601Cl 追加: 長文表示時間を延長(共通標準値)
-            toolTip.InitialDelay = 500; // 260601Cl 追加
-            toolTip.ReshowDelay = 100; // 260601Cl 追加
-            this.comboBox = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            // this.dataGridView = new System.Windows.Forms.DataGridView(); // 260518Cl 旧実装: DPI変更時に列幅が追従しない
-            this.dataGridView = new DpiAwareDataGridView(); // 260518Cl
-            this.atomLabelDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.lengthÅDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataSet = new System.Data.DataSet();
-            this.dataTable1 = new System.Data.DataTable();
-            this.dataColumn1 = new System.Data.DataColumn();
-            this.dataColumn2 = new System.Data.DataColumn();
-            this.pictureBox = new System.Windows.Forms.PictureBox();
-            this.numericUpDownWidth = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownMaxLength = new System.Windows.Forms.NumericUpDown();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataSet)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataTable1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownWidth)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxLength)).BeginInit();
-            this.SuspendLayout();
+            components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            toolTip = new System.Windows.Forms.ToolTip(components);
+            comboBox = new System.Windows.Forms.ComboBox();
+            label1 = new System.Windows.Forms.Label();
+            dataGridView = new DpiAwareDataGridView();
+            atomLabelDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            lengthÅDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            dataSet = new System.Data.DataSet();
+            dataTable1 = new System.Data.DataTable();
+            dataColumn1 = new System.Data.DataColumn();
+            dataColumn2 = new System.Data.DataColumn();
+            numericUpDownWidth = new NumericBox();
+            numericUpDownMaxLength = new NumericBox();
+            pictureBox = new System.Windows.Forms.PictureBox();
+            flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataSet).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataTable1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
+            flowLayoutPanel1.SuspendLayout();
+            SuspendLayout();
+            // 
+            // toolTip
+            // 
+            toolTip.AutoPopDelay = 10000;
+            toolTip.InitialDelay = 500;
+            toolTip.IsBalloon = true;
+            toolTip.ReshowDelay = 100;
             // 
             // comboBox
             // 
-            this.comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox.FormattingEnabled = true;
-            this.comboBox.Location = new System.Drawing.Point(82, 1);
-            this.comboBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.comboBox.Name = "comboBox";
-            this.toolTip.SetToolTip(this.comboBox, resources.GetString("comboBox.ToolTip")); // 260531Cl
-            this.comboBox.Size = new System.Drawing.Size(121, 23);
-            this.comboBox.TabIndex = 0;
-            this.comboBox.SelectedIndexChanged += new System.EventHandler(this.comboBox_SelectedIndexChanged);
+            comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            comboBox.FormattingEnabled = true;
+            comboBox.Location = new System.Drawing.Point(86, 3);
+            comboBox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 4);
+            comboBox.Name = "comboBox";
+            comboBox.Size = new System.Drawing.Size(121, 23);
+            comboBox.TabIndex = 0;
+            toolTip.SetToolTip(comboBox, "Select the target atom; neighboring\r\natoms and their interatomic distances\r\nare listed and plotted around this atom.");
+            comboBox.SelectedIndexChanged += comboBox_SelectedIndexChanged;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 5);
-            this.label1.Name = "label1";
-            this.toolTip.SetToolTip(this.label1, resources.GetString("label1.ToolTip")); // 260531Cl
-            this.label1.Size = new System.Drawing.Size(71, 15);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Target Atom";
+            label1.AutoSize = true;
+            label1.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            label1.Location = new System.Drawing.Point(3, 6);
+            label1.Margin = new System.Windows.Forms.Padding(3, 6, 3, 0);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(80, 17);
+            label1.TabIndex = 1;
+            label1.Text = "Target Atom";
+            toolTip.SetToolTip(label1, "Select the target atom; neighboring\r\natoms and their interatomic distances\r\nare listed and plotted around this atom.");
             // 
             // dataGridView
             // 
-            this.dataGridView.AllowUserToAddRows = false;
-            this.dataGridView.AllowUserToDeleteRows = false;
-            this.dataGridView.AllowUserToResizeColumns = false;
-            this.dataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.dataGridView.AutoGenerateColumns = false;
-            this.dataGridView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.atomLabelDataGridViewTextBoxColumn,
-            this.lengthÅDataGridViewTextBoxColumn});
-            this.dataGridView.DataMember = "Table1";
-            this.dataGridView.DataSource = this.dataSet;
-            this.dataGridView.Location = new System.Drawing.Point(3, 30);
-            this.dataGridView.Name = "dataGridView";
-            this.toolTip.SetToolTip(this.dataGridView, resources.GetString("dataGridView.ToolTip")); // 260531Cl
-            this.dataGridView.ReadOnly = true;
-            this.dataGridView.RowHeadersVisible = false;
-            //this.dataGridView.RowTemplate.Height = 21;                                                                                              // 260413Cl DPIスケーリング対応のため削除
-            this.dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView.Size = new System.Drawing.Size(224, 164);
-            this.dataGridView.TabIndex = 2;
+            dataGridView.AllowUserToAddRows = false;
+            dataGridView.AllowUserToDeleteRows = false;
+            dataGridView.AllowUserToResizeColumns = false;
+            dataGridView.AutoGenerateColumns = false;
+            dataGridView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { atomLabelDataGridViewTextBoxColumn, lengthÅDataGridViewTextBoxColumn });
+            dataGridView.DataMember = "Table1";
+            dataGridView.DataSource = dataSet;
+            dataGridView.Dock = System.Windows.Forms.DockStyle.Left;
+            dataGridView.Location = new System.Drawing.Point(0, 30);
+            dataGridView.Name = "dataGridView";
+            dataGridView.ReadOnly = true;
+            dataGridView.RowHeadersVisible = false;
+            dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            dataGridView.Size = new System.Drawing.Size(224, 171);
+            dataGridView.TabIndex = 2;
+            toolTip.SetToolTip(dataGridView, "List of neighboring atoms with their\r\ndistance (in angstroms, Å) from the target\r\natom, sorted by increasing distance.");
             // 
             // atomLabelDataGridViewTextBoxColumn
             // 
-            this.atomLabelDataGridViewTextBoxColumn.DataPropertyName = "Atom Label";
-            this.atomLabelDataGridViewTextBoxColumn.HeaderText = "Atom Label";
-            this.atomLabelDataGridViewTextBoxColumn.Name = "atomLabelDataGridViewTextBoxColumn";
-            this.atomLabelDataGridViewTextBoxColumn.ReadOnly = true;
+            atomLabelDataGridViewTextBoxColumn.DataPropertyName = "Atom Label";
+            atomLabelDataGridViewTextBoxColumn.HeaderText = "Atom Label";
+            atomLabelDataGridViewTextBoxColumn.Name = "atomLabelDataGridViewTextBoxColumn";
+            atomLabelDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // lengthÅDataGridViewTextBoxColumn
             // 
-            this.lengthÅDataGridViewTextBoxColumn.DataPropertyName = "Length (Å)";
-            this.lengthÅDataGridViewTextBoxColumn.HeaderText = "Length (Å)";
-            this.lengthÅDataGridViewTextBoxColumn.Name = "lengthÅDataGridViewTextBoxColumn";
-            this.lengthÅDataGridViewTextBoxColumn.ReadOnly = true;
+            lengthÅDataGridViewTextBoxColumn.DataPropertyName = "Length (Å)";
+            lengthÅDataGridViewTextBoxColumn.HeaderText = "Length (Å)";
+            lengthÅDataGridViewTextBoxColumn.Name = "lengthÅDataGridViewTextBoxColumn";
+            lengthÅDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // dataSet
             // 
-            this.dataSet.DataSetName = "NewDataSet";
-            this.dataSet.Tables.AddRange(new System.Data.DataTable[] {
-            this.dataTable1});
+            dataSet.DataSetName = "NewDataSet";
+            dataSet.Tables.AddRange(new System.Data.DataTable[] { dataTable1 });
             // 
             // dataTable1
             // 
-            this.dataTable1.Columns.AddRange(new System.Data.DataColumn[] {
-            this.dataColumn1,
-            this.dataColumn2});
-            this.dataTable1.TableName = "Table1";
+            dataTable1.Columns.AddRange(new System.Data.DataColumn[] { dataColumn1, dataColumn2 });
+            dataTable1.TableName = "Table1";
             // 
             // dataColumn1
             // 
-            this.dataColumn1.ColumnName = "Atom Label";
+            dataColumn1.ColumnName = "Atom Label";
             // 
             // dataColumn2
             // 
-            this.dataColumn2.ColumnName = "Length (Å)";
-            // 
-            // pictureBox
-            // 
-            this.pictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox.BackColor = System.Drawing.Color.White;
-            this.pictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pictureBox.Location = new System.Drawing.Point(233, 30);
-            this.pictureBox.Name = "pictureBox";
-            this.pictureBox.Size = new System.Drawing.Size(319, 166);
-            this.pictureBox.TabIndex = 3;
-            this.pictureBox.TabStop = false;
+            dataColumn2.ColumnName = "Length (Å)";
             // 
             // numericUpDownWidth
             // 
-            this.numericUpDownWidth.DecimalPlaces = 2;
-            this.numericUpDownWidth.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.numericUpDownWidth.Location = new System.Drawing.Point(293, 5);
-            this.numericUpDownWidth.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.numericUpDownWidth.Name = "numericUpDownWidth";
-            this.toolTip.SetToolTip(this.numericUpDownWidth, resources.GetString("numericUpDownWidth.ToolTip")); // 260531Cl
-            this.numericUpDownWidth.Size = new System.Drawing.Size(58, 21);
-            this.numericUpDownWidth.TabIndex = 4;
-            this.numericUpDownWidth.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.numericUpDownWidth.ValueChanged += new System.EventHandler(this.numericUpDownWidth_ValueChanged);
+            numericUpDownWidth.BackColor = System.Drawing.Color.Transparent;
+            numericUpDownWidth.DecimalPlaces = 2;
+            numericUpDownWidth.FooterPadding = new System.Windows.Forms.Padding(0, 4, 0, 0);
+            numericUpDownWidth.FooterText = "Å";
+            numericUpDownWidth.HeaderPadding = new System.Windows.Forms.Padding(0, 4, 0, 0);
+            numericUpDownWidth.HeaderText = "Bar Width"; // 260704Cl 旧 label2 由来の誤字 "Bar Wdth" を修正
+            numericUpDownWidth.Location = new System.Drawing.Point(214, 0);
+            numericUpDownWidth.Margin = new System.Windows.Forms.Padding(4, 0, 0, 0);
+            numericUpDownWidth.Maximum = 100D;
+            numericUpDownWidth.MaximumSize = new System.Drawing.Size(1000, 100);
+            numericUpDownWidth.Minimum = 0.01D;
+            numericUpDownWidth.MinimumSize = new System.Drawing.Size(10, 20);
+            numericUpDownWidth.Name = "numericUpDownWidth";
+            numericUpDownWidth.RadianValue = 0.0017453292519943296D;
+            numericUpDownWidth.ShowUpDown = true;
+            numericUpDownWidth.Size = new System.Drawing.Size(139, 25);
+            numericUpDownWidth.TabIndex = 4;
+            toolTip.SetToolTip(numericUpDownWidth, "Half-width of the distance-histogram\r\nbars, in angstroms (Å); larger values\r\nbroaden each bar so nearby peaks merge.");
+            numericUpDownWidth.UpDown_Increment = 0.01D;
+            numericUpDownWidth.Value = 0.1D;
+            numericUpDownWidth.ValueBoxWidth = 45;
+            numericUpDownWidth.ValueChanged += numericUpDownWidth_ValueChanged;
             // 
             // numericUpDownMaxLength
             // 
-            this.numericUpDownMaxLength.DecimalPlaces = 1;
-            this.numericUpDownMaxLength.Increment = new decimal(new int[] {
-            5,
-            0,
-            0,
-            65536});
-            this.numericUpDownMaxLength.Location = new System.Drawing.Point(466, 5);
-            this.numericUpDownMaxLength.Name = "numericUpDownMaxLength";
-            this.toolTip.SetToolTip(this.numericUpDownMaxLength, resources.GetString("numericUpDownMaxLength.ToolTip")); // 260531Cl
-            this.numericUpDownMaxLength.Size = new System.Drawing.Size(56, 21);
-            this.numericUpDownMaxLength.TabIndex = 4;
-            this.numericUpDownMaxLength.Value = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            this.numericUpDownMaxLength.ValueChanged += new System.EventHandler(this.numericUpDownMaxLength_ValueChanged);
+            numericUpDownMaxLength.BackColor = System.Drawing.Color.Transparent;
+            numericUpDownMaxLength.DecimalPlaces = 1;
+            numericUpDownMaxLength.FooterPadding = new System.Windows.Forms.Padding(0, 4, 0, 0);
+            numericUpDownMaxLength.FooterText = "Å";
+            numericUpDownMaxLength.HeaderPadding = new System.Windows.Forms.Padding(0, 4, 0, 0);
+            numericUpDownMaxLength.HeaderText = "Max. distance";
+            numericUpDownMaxLength.Location = new System.Drawing.Point(357, 0);
+            numericUpDownMaxLength.Margin = new System.Windows.Forms.Padding(4, 0, 0, 0);
+            numericUpDownMaxLength.Maximum = 100D;
+            numericUpDownMaxLength.MaximumSize = new System.Drawing.Size(1000, 100);
+            numericUpDownMaxLength.Minimum = 0D;
+            numericUpDownMaxLength.MinimumSize = new System.Drawing.Size(10, 20);
+            numericUpDownMaxLength.Name = "numericUpDownMaxLength";
+            numericUpDownMaxLength.RadianValue = 0.087266462599716474D;
+            numericUpDownMaxLength.ShowUpDown = true;
+            numericUpDownMaxLength.Size = new System.Drawing.Size(161, 25);
+            numericUpDownMaxLength.TabIndex = 4;
+            toolTip.SetToolTip(numericUpDownMaxLength, "Maximum interatomic distance to search,\r\nin angstroms (Å); only atoms within this\r\nradius of the target atom are listed.");
+            numericUpDownMaxLength.UpDown_Increment = 0.5D;
+            numericUpDownMaxLength.Value = 5D;
+            numericUpDownMaxLength.ValueBoxWidth = 40;
+            numericUpDownMaxLength.ValueChanged += numericUpDownMaxLength_ValueChanged;
             // 
-            // label2
+            // pictureBox
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(230, 8);
-            this.label2.Name = "label2";
-            this.toolTip.SetToolTip(this.label2, resources.GetString("label2.ToolTip")); // 260531Cl
-            this.label2.Size = new System.Drawing.Size(57, 15);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "Bar Wdth";
+            pictureBox.BackColor = System.Drawing.Color.White;
+            pictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            pictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            pictureBox.Location = new System.Drawing.Point(224, 30);
+            pictureBox.Name = "pictureBox";
+            pictureBox.Padding = new System.Windows.Forms.Padding(3);
+            pictureBox.Size = new System.Drawing.Size(331, 171);
+            pictureBox.TabIndex = 3;
+            pictureBox.TabStop = false;
             // 
-            // label3
+            // flowLayoutPanel1
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(379, 8);
-            this.label3.Name = "label3";
-            this.toolTip.SetToolTip(this.label3, resources.GetString("label3.ToolTip")); // 260531Cl
-            this.label3.Size = new System.Drawing.Size(81, 15);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "Max. distance";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(528, 6);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(15, 15);
-            this.label4.TabIndex = 5;
-            this.label4.Text = "Å";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(357, 7);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(15, 15);
-            this.label5.TabIndex = 5;
-            this.label5.Text = "Å";
+            flowLayoutPanel1.AutoSize = true;
+            flowLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            flowLayoutPanel1.Controls.Add(label1);
+            flowLayoutPanel1.Controls.Add(comboBox);
+            flowLayoutPanel1.Controls.Add(numericUpDownWidth);
+            flowLayoutPanel1.Controls.Add(numericUpDownMaxLength);
+            flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
+            flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            flowLayoutPanel1.Name = "flowLayoutPanel1";
+            flowLayoutPanel1.Size = new System.Drawing.Size(555, 30);
+            flowLayoutPanel1.TabIndex = 5;
+            flowLayoutPanel1.WrapContents = false;
             // 
             // AtomCoordinateTable
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.numericUpDownMaxLength);
-            this.Controls.Add(this.numericUpDownWidth);
-            this.Controls.Add(this.pictureBox);
-            this.Controls.Add(this.dataGridView);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.comboBox);
-            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.Name = "AtomCoordinateTable";
-            this.Size = new System.Drawing.Size(555, 201);
-            this.Resize += new System.EventHandler(this.AtomCoordinateTable_Resize_1);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataSet)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataTable1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownWidth)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxLength)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            Controls.Add(pictureBox);
+            Controls.Add(dataGridView);
+            Controls.Add(flowLayoutPanel1);
+            Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            Name = "AtomCoordinateTable";
+            Size = new System.Drawing.Size(555, 201);
+            Resize += AtomCoordinateTable_Resize_1;
+            ((System.ComponentModel.ISupportInitialize)dataGridView).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataSet).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataTable1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox).EndInit();
+            flowLayoutPanel1.ResumeLayout(false);
+            flowLayoutPanel1.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
 
         }
 
@@ -284,11 +257,10 @@
         private System.Data.DataColumn dataColumn1;
         private System.Data.DataColumn dataColumn2;
         private System.Windows.Forms.PictureBox pictureBox;
-        private System.Windows.Forms.NumericUpDown numericUpDownWidth;
-        private System.Windows.Forms.NumericUpDown numericUpDownMaxLength;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
+        //private System.Windows.Forms.NumericUpDown numericUpDownWidth; // 260704Cl 旧実装: NumericUpDown → NumericBox 置換
+        private NumericBox numericUpDownWidth; // 260704Cl
+        //private System.Windows.Forms.NumericUpDown numericUpDownMaxLength; // 260704Cl 旧実装
+        private NumericBox numericUpDownMaxLength; // 260704Cl
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
     }
 }

@@ -15,7 +15,15 @@ public partial class AtomCoordinateTable : UserControlBase
     private readonly ReaderWriterLockSlim rwLock = new();
     private bool skipEvent { get; set; } = false;
 
-    public AtomCoordinateTable() => InitializeComponent();
+    //public AtomCoordinateTable() => InitializeComponent(); // 260704Cl 変更前
+    public AtomCoordinateTable() // 260704Cl VS デザイナ保存時に Designer.cs の resx 間接参照 (GetString) が英語直書きへ巻き戻るため、翻訳ツールチップはコード側で適用する
+    {
+        InitializeComponent();
+        var resources = new ComponentResourceManager(typeof(AtomCoordinateTable));
+        foreach (var target in new Control[] { comboBox, dataGridView, label1, numericUpDownMaxLength, numericUpDownWidth })
+            if (resources.GetString($"{target.Name}.ToolTip") is { Length: > 0 } tip) // 言語 resx に翻訳がある場合のみ上書き (EN は Designer.cs の直書き文言)
+                toolTip.SetToolTip(target, tip);
+    }
 
     private Crystal crystal;
 
@@ -27,6 +35,7 @@ public partial class AtomCoordinateTable : UserControlBase
         set
         {
             crystal = value;
+            lastAtoms = null; // 260704Cl 追加: 結晶切替時にキャッシュ失効 (原子ゼロ結晶で early return しても stale な再描画をしない)
             if (crystal?.Atoms == null || crystal.Atoms.Length == 0) return;
             skipEvent = true;
             comboBox.Items.Clear();
@@ -68,14 +77,25 @@ public partial class AtomCoordinateTable : UserControlBase
         RefreshTable();
     }
 
+    private List<(string Label, double Distance)> lastAtoms; // 260704Cl 追加: 探索結果キャッシュ (バー幅変更・リサイズ時の全並列再探索を回避)
+
     private void RefreshTable()
     {
         if (!HasAtomsAndValidIndex) return;
-        var atoms = Search(Crystal, Atom, (double)numericUpDownMaxLength.Value);
+        //var atoms = Search(Crystal, Atom, (double)numericUpDownMaxLength.Value); // 260704Cl 旧: NumericUpDown (decimal) 時代のキャスト
+        var atoms = Search(Crystal, Atom, numericUpDownMaxLength.Value); // 260704Cl NumericBox.Value は double のためキャスト不要
+        lastAtoms = atoms; // 260704Cl 追加
         dataSet.Tables[0].Clear();
         foreach (var (label, distance) in atoms)
             dataSet.Tables[0].Rows.Add([label, distance]);
         DrawGraph(atoms);
+    }
+
+    // 260704Cl 追加: 探索結果を変えない操作 (バー幅変更・リサイズ) 用。キャッシュ未生成時のみ全更新へフォールバック
+    private void RedrawGraph()
+    {
+        if (lastAtoms != null) DrawGraph(lastAtoms);
+        else RefreshTable();
     }
 
     public List<(string Label, double Distance)> Search(Crystal crystal, Atoms targetAtom, double maxLengthAngstrom)
@@ -130,16 +150,20 @@ public partial class AtomCoordinateTable : UserControlBase
         if (pictureBox.Width <= 0 || pictureBox.Height <= 0 || atoms.Count == 0) return;
         // 前回の bmp/g を破棄してリーク防止 (pictureBox.Image にも握られているため Image を先に外す)
         pictureBox.Image = null;
-        //bmp?.Dispose(); g?.Dispose(); // (260611Ch) 旧: Graphics より先に Bitmap を破棄していた
-        g?.Dispose(); // (260611Ch)
-        bmp?.Dispose(); // (260611Ch)
-        bmp = new Bitmap(pictureBox.Width, pictureBox.Height);
-        g = Graphics.FromImage(bmp);
+        if (bmp == null || bmp.Width != pictureBox.Width || bmp.Height != pictureBox.Height) // 260704Cl 追加: 同サイズなら Bitmap/Graphics を再利用 (バー幅連打・リサイズ時の LOH churn 回避)
+        {
+            //bmp?.Dispose(); g?.Dispose(); // (260611Ch) 旧: Graphics より先に Bitmap を破棄していた
+            g?.Dispose(); // (260611Ch)
+            bmp?.Dispose(); // (260611Ch)
+            bmp = new Bitmap(pictureBox.Width, pictureBox.Height);
+            g = Graphics.FromImage(bmp);
+        }
         g.Clear(Color.White);
         g.SmoothingMode = SmoothingMode.AntiAlias;
         DoubleBuffered = true;
 
-        double width = (double)numericUpDownWidth.Value;
+        //double width = (double)numericUpDownWidth.Value; // 260704Cl 旧: NumericUpDown (decimal) 時代のキャスト
+        double width = numericUpDownWidth.Value; // 260704Cl NumericBox.Value は double のためキャスト不要
         LowerX = 0;
         UpperX = atoms[^1].Distance + width * 2;
         LowerY = 0;
@@ -269,7 +293,9 @@ public partial class AtomCoordinateTable : UserControlBase
     private PointF ConvToPicBoxCoord(PointD p) => ConvToPicBoxCoord(p.X, p.Y);
     #endregion
 
-    private void numericUpDownWidth_ValueChanged(object sender, EventArgs e) => RefreshTable();
+    //private void numericUpDownWidth_ValueChanged(object sender, EventArgs e) => RefreshTable(); // 260704Cl 変更前: 描画にしか影響しないバー幅変更/リサイズでも全並列探索+表再構築を払い直していた
+    private void numericUpDownWidth_ValueChanged(object sender, EventArgs e) => RedrawGraph(); // 260704Cl バー幅は描画のみに影響
     private void numericUpDownMaxLength_ValueChanged(object sender, EventArgs e) => RefreshTable();
-    private void AtomCoordinateTable_Resize_1(object sender, EventArgs e) => RefreshTable();
+    //private void AtomCoordinateTable_Resize_1(object sender, EventArgs e) => RefreshTable(); // 260704Cl 変更前
+    private void AtomCoordinateTable_Resize_1(object sender, EventArgs e) => RedrawGraph(); // 260704Cl リサイズは再描画のみ
 }

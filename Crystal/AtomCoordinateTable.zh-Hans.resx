@@ -79,17 +79,7 @@
 以埃为单位（Å）；仅列出目标
 原子此半径范围内的原子。</value>
   </data>
-  <data name="label3.ToolTip" xml:space="preserve">
-    <value>搜索的最大原子间距离，
-以埃为单位（Å）；仅列出目标
-原子此半径范围内的原子。</value>
-  </data>
   <data name="numericUpDownWidth.ToolTip" xml:space="preserve">
-    <value>距离直方图柱条的半宽，
-以埃为单位（Å）；数值越大
-柱条越宽，使邻近峰相互合并。</value>
-  </data>
-  <data name="label2.ToolTip" xml:space="preserve">
     <value>距离直方图柱条的半宽，
 以埃为单位（Å）；数值越大
 柱条越宽，使邻近峰相互合并。</value>

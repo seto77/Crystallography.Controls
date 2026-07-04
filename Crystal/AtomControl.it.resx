@@ -312,6 +312,10 @@ atomo accanto alla sua sfera nella vista 3D della struttura.</value>
     <value>Clicca per scegliere il colore di visualizzazione della
 sfera di questo atomo nella vista 3D della struttura.</value>
   </data>
+  <data name="colorControlAtomColor.ToolTip1" xml:space="preserve">
+    <value>Clicca per scegliere il colore di visualizzazione della
+sfera di questo atomo nella vista 3D della struttura.</value>
+  </data>
   <data name="dataGridView.ToolTip" xml:space="preserve">
     <value>Elenco di tutti i siti atomici nel cristallo. Selezionare una
 riga per caricarla nell'editor sottostante; la casella

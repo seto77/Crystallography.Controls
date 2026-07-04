@@ -94,7 +94,7 @@ public partial class BondInputControl : UserControlBase
     #endregion
 
     private void checkBoxShowPolyhedron_CheckedChanged(object sender, EventArgs e) => groupBoxPolyhedron.Enabled = checkBoxShowPolyhedron.Checked;
-    private void checkBoxShowEdges_CheckedChanged(object sender, EventArgs e) => groupBoxEdge.Enabled = checkBoxShowEdges.Checked;
+    private void checkBoxShowEdges_CheckedChanged(object sender, EventArgs e) => numericBoxEdgeWidth.Enabled = checkBoxShowEdges.Checked;
     private void checkBoxShowBonds_CheckedChanged(object sender, EventArgs e) => groupBoxBonds.Enabled = checkBoxShowBonds.Checked;
 
     #region データベース操作

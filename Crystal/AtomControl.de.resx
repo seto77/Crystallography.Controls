@@ -315,6 +315,10 @@ neben seiner Kugel in der 3D-Strukturansicht um.</value>
     <value>Klicken Sie, um die Anzeigefarbe der Kugel dieses
 Atoms in der 3D-Strukturansicht auszuwählen.</value>
   </data>
+  <data name="colorControlAtomColor.ToolTip1" xml:space="preserve">
+    <value>Klicken Sie, um die Anzeigefarbe der Kugel dieses
+Atoms in der 3D-Strukturansicht auszuwählen.</value>
+  </data>
   <data name="dataGridView.ToolTip" xml:space="preserve">
     <value>Liste aller Atompositionen im Kristall. Wählen Sie
 eine Zeile, um sie in den Editor darunter zu laden;

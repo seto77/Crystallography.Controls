@@ -290,13 +290,10 @@
             // 
             // numericBoxVolumeAng
             // 
-            resources.ApplyResources(numericBoxVolumeAng, "numericBoxVolumeAng");
             numericBoxVolumeAng.BackColor = System.Drawing.SystemColors.Control;
             numericBoxVolumeAng.DecimalPlaces = 4;
-            numericBoxVolumeAng.FooterBackColor = System.Drawing.SystemColors.Control;
-            numericBoxVolumeAng.HeaderBackColor = System.Drawing.SystemColors.Control;
+            resources.ApplyResources(numericBoxVolumeAng, "numericBoxVolumeAng");
             numericBoxVolumeAng.Name = "numericBoxVolumeAng";
-            numericBoxVolumeAng.ValueBoxWidth = 76; // 260622Cl 追加: 長ラベル言語(ru等)で値欄が痩せ数値クリップする回帰の修正 (DefaultValueBoxWidth=54 撤去後の明示幅)
             numericBoxVolumeAng.ReadOnly = true;
             numericBoxVolumeAng.RestrictLimitValue = false;
             numericBoxVolumeAng.SkipEventDuringInput = false;
@@ -304,17 +301,15 @@
             numericBoxVolumeAng.TabStop = false;
             toolTip.SetToolTip(numericBoxVolumeAng, resources.GetString("numericBoxVolumeAng.ToolTip"));
             numericBoxVolumeAng.ValueBackColor = System.Drawing.SystemColors.Control;
+            numericBoxVolumeAng.ValueBoxWidth = 60;
             numericBoxVolumeAng.ValueFontSize = 9F;
             // 
             // numericBoxCellVolumeNm
             // 
-            resources.ApplyResources(numericBoxCellVolumeNm, "numericBoxCellVolumeNm");
             numericBoxCellVolumeNm.BackColor = System.Drawing.SystemColors.Control;
             numericBoxCellVolumeNm.DecimalPlaces = 7;
-            numericBoxCellVolumeNm.FooterBackColor = System.Drawing.SystemColors.Control;
-            numericBoxCellVolumeNm.HeaderBackColor = System.Drawing.SystemColors.Control;
+            resources.ApplyResources(numericBoxCellVolumeNm, "numericBoxCellVolumeNm");
             numericBoxCellVolumeNm.Name = "numericBoxCellVolumeNm";
-            numericBoxCellVolumeNm.ValueBoxWidth = 76; // 260622Cl 追加: 長ラベル言語(ru等)で値欄が痩せ数値クリップする回帰の修正 (DefaultValueBoxWidth=54 撤去後の明示幅)
             numericBoxCellVolumeNm.ReadOnly = true;
             numericBoxCellVolumeNm.RestrictLimitValue = false;
             numericBoxCellVolumeNm.SkipEventDuringInput = false;
@@ -322,17 +317,15 @@
             numericBoxCellVolumeNm.TabStop = false;
             toolTip.SetToolTip(numericBoxCellVolumeNm, resources.GetString("numericBoxCellVolumeNm.ToolTip"));
             numericBoxCellVolumeNm.ValueBackColor = System.Drawing.SystemColors.Control;
+            numericBoxCellVolumeNm.ValueBoxWidth = 60;
             numericBoxCellVolumeNm.ValueFontSize = 9F;
             // 
             // numericBoxCellMass
             // 
-            resources.ApplyResources(numericBoxCellMass, "numericBoxCellMass");
             numericBoxCellMass.BackColor = System.Drawing.SystemColors.Control;
             numericBoxCellMass.DecimalPlaces = 4;
-            numericBoxCellMass.FooterBackColor = System.Drawing.SystemColors.Control;
-            numericBoxCellMass.HeaderBackColor = System.Drawing.SystemColors.Control;
+            resources.ApplyResources(numericBoxCellMass, "numericBoxCellMass");
             numericBoxCellMass.Name = "numericBoxCellMass";
-            numericBoxCellMass.ValueBoxWidth = 76; // 260622Cl 追加: 長ラベル言語(ru等)で値欄が痩せ数値クリップする回帰の修正 (DefaultValueBoxWidth=54 撤去後の明示幅)
             numericBoxCellMass.ReadOnly = true;
             numericBoxCellMass.RestrictLimitValue = false;
             numericBoxCellMass.SkipEventDuringInput = false;
@@ -340,17 +333,15 @@
             numericBoxCellMass.TabStop = false;
             toolTip.SetToolTip(numericBoxCellMass, resources.GetString("numericBoxCellMass.ToolTip"));
             numericBoxCellMass.ValueBackColor = System.Drawing.SystemColors.Control;
+            numericBoxCellMass.ValueBoxWidth = 60;
             numericBoxCellMass.ValueFontSize = 9F;
             // 
             // numericBoxMolarVolume
             // 
-            resources.ApplyResources(numericBoxMolarVolume, "numericBoxMolarVolume");
             numericBoxMolarVolume.BackColor = System.Drawing.SystemColors.Control;
             numericBoxMolarVolume.DecimalPlaces = 4;
-            numericBoxMolarVolume.FooterBackColor = System.Drawing.SystemColors.Control;
-            numericBoxMolarVolume.HeaderBackColor = System.Drawing.SystemColors.Control;
+            resources.ApplyResources(numericBoxMolarVolume, "numericBoxMolarVolume");
             numericBoxMolarVolume.Name = "numericBoxMolarVolume";
-            numericBoxMolarVolume.ValueBoxWidth = 76; // 260622Cl 追加: 長ラベル言語(ru等)で値欄が痩せ数値クリップする回帰の修正 (DefaultValueBoxWidth=54 撤去後の明示幅)
             numericBoxMolarVolume.ReadOnly = true;
             numericBoxMolarVolume.RestrictLimitValue = false;
             numericBoxMolarVolume.SkipEventDuringInput = false;
@@ -358,17 +349,15 @@
             numericBoxMolarVolume.TabStop = false;
             toolTip.SetToolTip(numericBoxMolarVolume, resources.GetString("numericBoxMolarVolume.ToolTip"));
             numericBoxMolarVolume.ValueBackColor = System.Drawing.SystemColors.Control;
+            numericBoxMolarVolume.ValueBoxWidth = 60;
             numericBoxMolarVolume.ValueFontSize = 9F;
             // 
             // numericBoxMolarMass
             // 
-            resources.ApplyResources(numericBoxMolarMass, "numericBoxMolarMass");
             numericBoxMolarMass.BackColor = System.Drawing.SystemColors.Control;
             numericBoxMolarMass.DecimalPlaces = 4;
-            numericBoxMolarMass.FooterBackColor = System.Drawing.SystemColors.Control;
-            numericBoxMolarMass.HeaderBackColor = System.Drawing.SystemColors.Control;
+            resources.ApplyResources(numericBoxMolarMass, "numericBoxMolarMass");
             numericBoxMolarMass.Name = "numericBoxMolarMass";
-            numericBoxMolarMass.ValueBoxWidth = 76; // 260622Cl 追加: 長ラベル言語(ru等)で値欄が痩せ数値クリップする回帰の修正 (DefaultValueBoxWidth=54 撤去後の明示幅)
             numericBoxMolarMass.ReadOnly = true;
             numericBoxMolarMass.RestrictLimitValue = false;
             numericBoxMolarMass.SkipEventDuringInput = false;
@@ -376,15 +365,15 @@
             numericBoxMolarMass.TabStop = false;
             toolTip.SetToolTip(numericBoxMolarMass, resources.GetString("numericBoxMolarMass.ToolTip"));
             numericBoxMolarMass.ValueBackColor = System.Drawing.SystemColors.Control;
+            numericBoxMolarMass.ValueBoxWidth = 60;
             numericBoxMolarMass.ValueFontSize = 9F;
             // 
             // numericBoxDensity
             // 
-            resources.ApplyResources(numericBoxDensity, "numericBoxDensity");
             numericBoxDensity.BackColor = System.Drawing.Color.Transparent;
             numericBoxDensity.DecimalPlaces = 4;
+            resources.ApplyResources(numericBoxDensity, "numericBoxDensity");
             numericBoxDensity.Name = "numericBoxDensity";
-            numericBoxDensity.ValueBoxWidth = 76; // 260622Cl 追加: 長ラベル言語(ru等)で値欄が痩せ数値クリップする回帰の修正 (DefaultValueBoxWidth=54 撤去後の明示幅)
             numericBoxDensity.ReadOnly = true;
             numericBoxDensity.SkipEventDuringInput = false;
             numericBoxDensity.SmartIncrement = true;
@@ -392,17 +381,15 @@
             numericBoxDensity.ThousandsSeparator = true;
             toolTip.SetToolTip(numericBoxDensity, resources.GetString("numericBoxDensity.ToolTip"));
             numericBoxDensity.ValueBackColor = System.Drawing.SystemColors.Control;
+            numericBoxDensity.ValueBoxWidth = 60;
             numericBoxDensity.ValueFontSize = 9F;
             // 
             // numericBoxMeanZnumber
             // 
-            resources.ApplyResources(numericBoxMeanZnumber, "numericBoxMeanZnumber");
             numericBoxMeanZnumber.BackColor = System.Drawing.SystemColors.Control;
             numericBoxMeanZnumber.DecimalPlaces = 3;
-            numericBoxMeanZnumber.FooterBackColor = System.Drawing.SystemColors.Control;
-            numericBoxMeanZnumber.HeaderBackColor = System.Drawing.SystemColors.Control;
+            resources.ApplyResources(numericBoxMeanZnumber, "numericBoxMeanZnumber");
             numericBoxMeanZnumber.Name = "numericBoxMeanZnumber";
-            numericBoxMeanZnumber.ValueBoxWidth = 76; // 260622Cl 追加: 長ラベル言語(ru等)で値欄が痩せ数値クリップする回帰の修正 (DefaultValueBoxWidth=54 撤去後の明示幅)
             numericBoxMeanZnumber.ReadOnly = true;
             numericBoxMeanZnumber.RestrictLimitValue = false;
             numericBoxMeanZnumber.SkipEventDuringInput = false;
@@ -410,17 +397,15 @@
             numericBoxMeanZnumber.TabStop = false;
             toolTip.SetToolTip(numericBoxMeanZnumber, resources.GetString("numericBoxMeanZnumber.ToolTip"));
             numericBoxMeanZnumber.ValueBackColor = System.Drawing.SystemColors.Control;
+            numericBoxMeanZnumber.ValueBoxWidth = 60;
             numericBoxMeanZnumber.ValueFontSize = 9F;
             // 
             // numericBoxMeanZmass
             // 
-            resources.ApplyResources(numericBoxMeanZmass, "numericBoxMeanZmass");
             numericBoxMeanZmass.BackColor = System.Drawing.SystemColors.Control;
             numericBoxMeanZmass.DecimalPlaces = 3;
-            numericBoxMeanZmass.FooterBackColor = System.Drawing.SystemColors.Control;
-            numericBoxMeanZmass.HeaderBackColor = System.Drawing.SystemColors.Control;
+            resources.ApplyResources(numericBoxMeanZmass, "numericBoxMeanZmass");
             numericBoxMeanZmass.Name = "numericBoxMeanZmass";
-            numericBoxMeanZmass.ValueBoxWidth = 76; // 260622Cl 追加: 長ラベル言語(ru等)で値欄が痩せ数値クリップする回帰の修正 (DefaultValueBoxWidth=54 撤去後の明示幅)
             numericBoxMeanZmass.ReadOnly = true;
             numericBoxMeanZmass.RestrictLimitValue = false;
             numericBoxMeanZmass.SkipEventDuringInput = false;
@@ -428,17 +413,15 @@
             numericBoxMeanZmass.TabStop = false;
             toolTip.SetToolTip(numericBoxMeanZmass, resources.GetString("numericBoxMeanZmass.ToolTip"));
             numericBoxMeanZmass.ValueBackColor = System.Drawing.SystemColors.Control;
+            numericBoxMeanZmass.ValueBoxWidth = 60;
             numericBoxMeanZmass.ValueFontSize = 9F;
-            //
+            // 
             // numericBoxMeanAtomicWeight
-            //
-            resources.ApplyResources(numericBoxMeanAtomicWeight, "numericBoxMeanAtomicWeight");
+            // 
             numericBoxMeanAtomicWeight.BackColor = System.Drawing.SystemColors.Control;
             numericBoxMeanAtomicWeight.DecimalPlaces = 4;
-            numericBoxMeanAtomicWeight.FooterBackColor = System.Drawing.SystemColors.Control;
-            numericBoxMeanAtomicWeight.HeaderBackColor = System.Drawing.SystemColors.Control;
+            resources.ApplyResources(numericBoxMeanAtomicWeight, "numericBoxMeanAtomicWeight");
             numericBoxMeanAtomicWeight.Name = "numericBoxMeanAtomicWeight";
-            numericBoxMeanAtomicWeight.ValueBoxWidth = 76; // 260622Cl 追加: 長ラベル言語(ru等)で値欄が痩せ数値クリップする回帰の修正 (DefaultValueBoxWidth=54 撤去後の明示幅)
             numericBoxMeanAtomicWeight.ReadOnly = true;
             numericBoxMeanAtomicWeight.RestrictLimitValue = false;
             numericBoxMeanAtomicWeight.SkipEventDuringInput = false;
@@ -446,17 +429,15 @@
             numericBoxMeanAtomicWeight.TabStop = false;
             toolTip.SetToolTip(numericBoxMeanAtomicWeight, resources.GetString("numericBoxMeanAtomicWeight.ToolTip"));
             numericBoxMeanAtomicWeight.ValueBackColor = System.Drawing.SystemColors.Control;
+            numericBoxMeanAtomicWeight.ValueBoxWidth = 60;
             numericBoxMeanAtomicWeight.ValueFontSize = 9F;
-            //
+            // 
             // numericBoxAtomicNumberDensity
             // 
-            resources.ApplyResources(numericBoxAtomicNumberDensity, "numericBoxAtomicNumberDensity");
             numericBoxAtomicNumberDensity.BackColor = System.Drawing.SystemColors.Control;
             numericBoxAtomicNumberDensity.DecimalPlaces = 4;
-            numericBoxAtomicNumberDensity.FooterBackColor = System.Drawing.SystemColors.Control;
-            numericBoxAtomicNumberDensity.HeaderBackColor = System.Drawing.SystemColors.Control;
+            resources.ApplyResources(numericBoxAtomicNumberDensity, "numericBoxAtomicNumberDensity");
             numericBoxAtomicNumberDensity.Name = "numericBoxAtomicNumberDensity";
-            numericBoxAtomicNumberDensity.ValueBoxWidth = 76; // 260622Cl 追加: 長ラベル言語(ru等)で値欄が痩せ数値クリップする回帰の修正 (DefaultValueBoxWidth=54 撤去後の明示幅)
             numericBoxAtomicNumberDensity.ReadOnly = true;
             numericBoxAtomicNumberDensity.RestrictLimitValue = false;
             numericBoxAtomicNumberDensity.SkipEventDuringInput = false;
@@ -465,17 +446,15 @@
             numericBoxAtomicNumberDensity.ThousandsSeparator = true;
             toolTip.SetToolTip(numericBoxAtomicNumberDensity, resources.GetString("numericBoxAtomicNumberDensity.ToolTip"));
             numericBoxAtomicNumberDensity.ValueBackColor = System.Drawing.SystemColors.Control;
+            numericBoxAtomicNumberDensity.ValueBoxWidth = 60;
             numericBoxAtomicNumberDensity.ValueFontSize = 9F;
             // 
             // numericBoxElectronDensity
             // 
-            resources.ApplyResources(numericBoxElectronDensity, "numericBoxElectronDensity");
             numericBoxElectronDensity.BackColor = System.Drawing.SystemColors.Control;
             numericBoxElectronDensity.DecimalPlaces = 3;
-            numericBoxElectronDensity.FooterBackColor = System.Drawing.SystemColors.Control;
-            numericBoxElectronDensity.HeaderBackColor = System.Drawing.SystemColors.Control;
+            resources.ApplyResources(numericBoxElectronDensity, "numericBoxElectronDensity");
             numericBoxElectronDensity.Name = "numericBoxElectronDensity";
-            numericBoxElectronDensity.ValueBoxWidth = 76; // 260622Cl 追加: 長ラベル言語(ru等)で値欄が痩せ数値クリップする回帰の修正 (DefaultValueBoxWidth=54 撤去後の明示幅)
             numericBoxElectronDensity.ReadOnly = true;
             numericBoxElectronDensity.RestrictLimitValue = false;
             numericBoxElectronDensity.SkipEventDuringInput = false;
@@ -484,6 +463,7 @@
             numericBoxElectronDensity.ThousandsSeparator = true;
             toolTip.SetToolTip(numericBoxElectronDensity, resources.GetString("numericBoxElectronDensity.ToolTip"));
             numericBoxElectronDensity.ValueBackColor = System.Drawing.SystemColors.Control;
+            numericBoxElectronDensity.ValueBoxWidth = 60;
             numericBoxElectronDensity.ValueFontSize = 9F;
             // 
             // flowLayoutPanelSymmetryActions
@@ -674,147 +654,123 @@
             // 
             // numericBoxStress33
             // 
-            resources.ApplyResources(numericBoxStress33, "numericBoxStress33");
             numericBoxStress33.BackColor = System.Drawing.SystemColors.Control;
-            numericBoxStress33.FooterBackColor = System.Drawing.SystemColors.Control;
-            numericBoxStress33.HeaderBackColor = System.Drawing.SystemColors.Control;
+            resources.ApplyResources(numericBoxStress33, "numericBoxStress33");
             numericBoxStress33.Name = "numericBoxStress33";
             numericBoxStress33.RestrictLimitValue = false;
             numericBoxStress33.SkipEventDuringInput = false;
             numericBoxStress33.SmartIncrement = true;
-            toolTip.SetToolTip(numericBoxStress33, resources.GetString("numericBoxStress33.ToolTip1"));
+            toolTip.SetToolTip(numericBoxStress33, resources.GetString("numericBoxStress33.ToolTip"));
             // 
             // numericBoxStress22
             // 
-            resources.ApplyResources(numericBoxStress22, "numericBoxStress22");
             numericBoxStress22.BackColor = System.Drawing.SystemColors.Control;
-            numericBoxStress22.FooterBackColor = System.Drawing.SystemColors.Control;
-            numericBoxStress22.HeaderBackColor = System.Drawing.SystemColors.Control;
+            resources.ApplyResources(numericBoxStress22, "numericBoxStress22");
             numericBoxStress22.Name = "numericBoxStress22";
             numericBoxStress22.RestrictLimitValue = false;
             numericBoxStress22.SkipEventDuringInput = false;
             numericBoxStress22.SmartIncrement = true;
-            toolTip.SetToolTip(numericBoxStress22, resources.GetString("numericBoxStress22.ToolTip1"));
+            toolTip.SetToolTip(numericBoxStress22, resources.GetString("numericBoxStress22.ToolTip"));
             // 
             // numericBoxStress11
             // 
-            resources.ApplyResources(numericBoxStress11, "numericBoxStress11");
             numericBoxStress11.BackColor = System.Drawing.SystemColors.Control;
-            numericBoxStress11.FooterBackColor = System.Drawing.SystemColors.Control;
-            numericBoxStress11.HeaderBackColor = System.Drawing.SystemColors.Control;
+            resources.ApplyResources(numericBoxStress11, "numericBoxStress11");
             numericBoxStress11.Name = "numericBoxStress11";
             numericBoxStress11.RestrictLimitValue = false;
             numericBoxStress11.SkipEventDuringInput = false;
             numericBoxStress11.SmartIncrement = true;
-            toolTip.SetToolTip(numericBoxStress11, resources.GetString("numericBoxStress11.ToolTip1"));
+            toolTip.SetToolTip(numericBoxStress11, resources.GetString("numericBoxStress11.ToolTip"));
             // 
             // numericBoxStress23
             // 
-            resources.ApplyResources(numericBoxStress23, "numericBoxStress23");
             numericBoxStress23.BackColor = System.Drawing.SystemColors.Control;
-            numericBoxStress23.FooterBackColor = System.Drawing.SystemColors.Control;
-            numericBoxStress23.HeaderBackColor = System.Drawing.SystemColors.Control;
+            resources.ApplyResources(numericBoxStress23, "numericBoxStress23");
             numericBoxStress23.Name = "numericBoxStress23";
             numericBoxStress23.RestrictLimitValue = false;
             numericBoxStress23.SkipEventDuringInput = false;
             numericBoxStress23.SmartIncrement = true;
-            toolTip.SetToolTip(numericBoxStress23, resources.GetString("numericBoxStress23.ToolTip1"));
+            toolTip.SetToolTip(numericBoxStress23, resources.GetString("numericBoxStress23.ToolTip"));
             // 
             // numericBoxStress13
             // 
-            resources.ApplyResources(numericBoxStress13, "numericBoxStress13");
             numericBoxStress13.BackColor = System.Drawing.SystemColors.Control;
-            numericBoxStress13.FooterBackColor = System.Drawing.SystemColors.Control;
-            numericBoxStress13.HeaderBackColor = System.Drawing.SystemColors.Control;
+            resources.ApplyResources(numericBoxStress13, "numericBoxStress13");
             numericBoxStress13.Name = "numericBoxStress13";
             numericBoxStress13.RestrictLimitValue = false;
             numericBoxStress13.SkipEventDuringInput = false;
             numericBoxStress13.SmartIncrement = true;
-            toolTip.SetToolTip(numericBoxStress13, resources.GetString("numericBoxStress13.ToolTip1"));
+            toolTip.SetToolTip(numericBoxStress13, resources.GetString("numericBoxStress13.ToolTip"));
             // 
             // numericBoxStress12
             // 
-            resources.ApplyResources(numericBoxStress12, "numericBoxStress12");
             numericBoxStress12.BackColor = System.Drawing.SystemColors.Control;
-            numericBoxStress12.FooterBackColor = System.Drawing.SystemColors.Control;
-            numericBoxStress12.HeaderBackColor = System.Drawing.SystemColors.Control;
+            resources.ApplyResources(numericBoxStress12, "numericBoxStress12");
             numericBoxStress12.Name = "numericBoxStress12";
             numericBoxStress12.RestrictLimitValue = false;
             numericBoxStress12.SkipEventDuringInput = false;
             numericBoxStress12.SmartIncrement = true;
-            toolTip.SetToolTip(numericBoxStress12, resources.GetString("numericBoxStress12.ToolTip1"));
+            toolTip.SetToolTip(numericBoxStress12, resources.GetString("numericBoxStress12.ToolTip"));
             // 
             // numericBoxStrain33
             // 
-            resources.ApplyResources(numericBoxStrain33, "numericBoxStrain33");
             numericBoxStrain33.BackColor = System.Drawing.SystemColors.Control;
-            numericBoxStrain33.FooterBackColor = System.Drawing.SystemColors.Control;
-            numericBoxStrain33.HeaderBackColor = System.Drawing.SystemColors.Control;
+            resources.ApplyResources(numericBoxStrain33, "numericBoxStrain33");
             numericBoxStrain33.Name = "numericBoxStrain33";
             numericBoxStrain33.RestrictLimitValue = false;
             numericBoxStrain33.SkipEventDuringInput = false;
             numericBoxStrain33.SmartIncrement = true;
-            toolTip.SetToolTip(numericBoxStrain33, resources.GetString("numericBoxStrain33.ToolTip1"));
+            toolTip.SetToolTip(numericBoxStrain33, resources.GetString("numericBoxStrain33.ToolTip"));
             // 
             // numericBoxStrain11
             // 
-            resources.ApplyResources(numericBoxStrain11, "numericBoxStrain11");
             numericBoxStrain11.BackColor = System.Drawing.SystemColors.Control;
-            numericBoxStrain11.FooterBackColor = System.Drawing.SystemColors.Control;
-            numericBoxStrain11.HeaderBackColor = System.Drawing.SystemColors.Control;
+            resources.ApplyResources(numericBoxStrain11, "numericBoxStrain11");
             numericBoxStrain11.Name = "numericBoxStrain11";
             numericBoxStrain11.RestrictLimitValue = false;
             numericBoxStrain11.SkipEventDuringInput = false;
             numericBoxStrain11.SmartIncrement = true;
-            toolTip.SetToolTip(numericBoxStrain11, resources.GetString("numericBoxStrain11.ToolTip1"));
+            toolTip.SetToolTip(numericBoxStrain11, resources.GetString("numericBoxStrain11.ToolTip"));
             // 
             // numericBoxStrain22
             // 
-            resources.ApplyResources(numericBoxStrain22, "numericBoxStrain22");
             numericBoxStrain22.BackColor = System.Drawing.SystemColors.Control;
-            numericBoxStrain22.FooterBackColor = System.Drawing.SystemColors.Control;
-            numericBoxStrain22.HeaderBackColor = System.Drawing.SystemColors.Control;
+            resources.ApplyResources(numericBoxStrain22, "numericBoxStrain22");
             numericBoxStrain22.Name = "numericBoxStrain22";
             numericBoxStrain22.RestrictLimitValue = false;
             numericBoxStrain22.SkipEventDuringInput = false;
             numericBoxStrain22.SmartIncrement = true;
-            toolTip.SetToolTip(numericBoxStrain22, resources.GetString("numericBoxStrain22.ToolTip1"));
+            toolTip.SetToolTip(numericBoxStrain22, resources.GetString("numericBoxStrain22.ToolTip"));
             // 
             // numericBoxStrain12
             // 
-            resources.ApplyResources(numericBoxStrain12, "numericBoxStrain12");
             numericBoxStrain12.BackColor = System.Drawing.SystemColors.Control;
-            numericBoxStrain12.FooterBackColor = System.Drawing.SystemColors.Control;
-            numericBoxStrain12.HeaderBackColor = System.Drawing.SystemColors.Control;
+            resources.ApplyResources(numericBoxStrain12, "numericBoxStrain12");
             numericBoxStrain12.Name = "numericBoxStrain12";
             numericBoxStrain12.RestrictLimitValue = false;
             numericBoxStrain12.SkipEventDuringInput = false;
             numericBoxStrain12.SmartIncrement = true;
-            toolTip.SetToolTip(numericBoxStrain12, resources.GetString("numericBoxStrain12.ToolTip1"));
+            toolTip.SetToolTip(numericBoxStrain12, resources.GetString("numericBoxStrain12.ToolTip"));
             // 
             // numericBoxStrain23
             // 
-            resources.ApplyResources(numericBoxStrain23, "numericBoxStrain23");
             numericBoxStrain23.BackColor = System.Drawing.SystemColors.Control;
-            numericBoxStrain23.FooterBackColor = System.Drawing.SystemColors.Control;
-            numericBoxStrain23.HeaderBackColor = System.Drawing.SystemColors.Control;
+            resources.ApplyResources(numericBoxStrain23, "numericBoxStrain23");
             numericBoxStrain23.Name = "numericBoxStrain23";
             numericBoxStrain23.RestrictLimitValue = false;
             numericBoxStrain23.SkipEventDuringInput = false;
             numericBoxStrain23.SmartIncrement = true;
-            toolTip.SetToolTip(numericBoxStrain23, resources.GetString("numericBoxStrain23.ToolTip1"));
+            toolTip.SetToolTip(numericBoxStrain23, resources.GetString("numericBoxStrain23.ToolTip"));
             // 
             // numericBoxStrain13
             // 
-            resources.ApplyResources(numericBoxStrain13, "numericBoxStrain13");
             numericBoxStrain13.BackColor = System.Drawing.SystemColors.Control;
-            numericBoxStrain13.FooterBackColor = System.Drawing.SystemColors.Control;
-            numericBoxStrain13.HeaderBackColor = System.Drawing.SystemColors.Control;
+            resources.ApplyResources(numericBoxStrain13, "numericBoxStrain13");
             numericBoxStrain13.Name = "numericBoxStrain13";
             numericBoxStrain13.RestrictLimitValue = false;
             numericBoxStrain13.SkipEventDuringInput = false;
             numericBoxStrain13.SmartIncrement = true;
-            toolTip.SetToolTip(numericBoxStrain13, resources.GetString("numericBoxStrain13.ToolTip1"));
+            toolTip.SetToolTip(numericBoxStrain13, resources.GetString("numericBoxStrain13.ToolTip"));
             // 
             // labelLaTex6
             // 
@@ -904,16 +860,14 @@
             // 
             // numericBoxHill
             // 
-            resources.ApplyResources(numericBoxHill, "numericBoxHill");
             numericBoxHill.BackColor = System.Drawing.SystemColors.Control;
-            numericBoxHill.FooterBackColor = System.Drawing.SystemColors.Control;
-            numericBoxHill.HeaderBackColor = System.Drawing.SystemColors.Control;
+            resources.ApplyResources(numericBoxHill, "numericBoxHill");
             numericBoxHill.Name = "numericBoxHill";
             numericBoxHill.RadianValue = 0.017453292519943295D;
             numericBoxHill.RestrictLimitValue = false;
             numericBoxHill.SkipEventDuringInput = false;
             numericBoxHill.SmartIncrement = true;
-            toolTip.SetToolTip(numericBoxHill, resources.GetString("numericBoxHill.ToolTip1"));
+            toolTip.SetToolTip(numericBoxHill, resources.GetString("numericBoxHill.ToolTip"));
             numericBoxHill.Value = 1D;
             // 
             // label117
@@ -1133,15 +1087,15 @@
             // 
             // numericBoxZnumber
             // 
-            resources.ApplyResources(numericBoxZnumber, "numericBoxZnumber");
             numericBoxZnumber.BackColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(numericBoxZnumber, "numericBoxZnumber");
             numericBoxZnumber.Name = "numericBoxZnumber";
             numericBoxZnumber.ReadOnly = true;
             numericBoxZnumber.SkipEventDuringInput = false;
             numericBoxZnumber.SmartIncrement = true;
             numericBoxZnumber.TabStop = false;
             numericBoxZnumber.ThousandsSeparator = true;
-            toolTip.SetToolTip(numericBoxZnumber, resources.GetString("numericBoxZnumber.ToolTip1"));
+            toolTip.SetToolTip(numericBoxZnumber, resources.GetString("numericBoxZnumber.ToolTip"));
             numericBoxZnumber.ValueBackColor = System.Drawing.SystemColors.Control;
             numericBoxZnumber.ValueFontSize = 9F;
             // 
@@ -1311,6 +1265,7 @@
             panelSymmetryInfo.ResumeLayout(false);
             panelSymmetryInfo.PerformLayout();
             flowLayoutPanelCellProperties.ResumeLayout(false);
+            flowLayoutPanelCellProperties.PerformLayout();
             flowLayoutPanelSymmetryActions.ResumeLayout(false);
             flowLayoutPanelSymmetryActions.PerformLayout();
             tabPageAtom.ResumeLayout(false);

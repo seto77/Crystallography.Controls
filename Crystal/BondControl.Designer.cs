@@ -35,24 +35,30 @@
             label39 = new System.Windows.Forms.Label();
             label40 = new System.Windows.Forms.Label();
             groupBoxPolyhedron = new System.Windows.Forms.GroupBox();
+            flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
+            flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            checkBoxShowInnerBonds = new System.Windows.Forms.CheckBox();
+            checkBoxShowCenterAtom = new System.Windows.Forms.CheckBox();
+            checkBoxShowVertexAtoms = new System.Windows.Forms.CheckBox();
+            flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             numericBoxPolyhedronAlpha = new NumericBox();
             checkBoxShowEdges = new System.Windows.Forms.CheckBox();
-            groupBoxEdge = new System.Windows.Forms.GroupBox();
             numericBoxEdgeWidth = new NumericBox();
-            checkBoxShowInnerBonds = new System.Windows.Forms.CheckBox();
-            checkBoxShowVertexAtoms = new System.Windows.Forms.CheckBox();
-            checkBoxShowCenterAtom = new System.Windows.Forms.CheckBox();
             groupBoxBonds = new System.Windows.Forms.GroupBox();
-            numericBoxBondAlpha = new NumericBox();
+            flowLayoutPanel8 = new System.Windows.Forms.FlowLayoutPanel();
             numericBoxBondRadius = new NumericBox();
-            numericBoxBondMaxLength = new NumericBox();
+            numericBoxBondAlpha = new NumericBox();
+            flowLayoutPanel7 = new System.Windows.Forms.FlowLayoutPanel();
             numericBoxBondMinLength = new NumericBox();
+            numericBoxBondMaxLength = new NumericBox();
+            flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
+            flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
+            flowLayoutPanel6 = new System.Windows.Forms.FlowLayoutPanel();
             checkBoxShowBonds = new System.Windows.Forms.CheckBox();
             buttonAddBond = new System.Windows.Forms.Button();
             buttonChangeBond = new System.Windows.Forms.Button();
             buttonDeleteBond = new System.Windows.Forms.Button();
-            // dataGridView = new System.Windows.Forms.DataGridView(); // 260518Cl 旧実装: DPI変更時に列幅が追従しない
-            dataGridView = new DpiAwareDataGridView(); // 260518Cl
+            dataGridView = new DpiAwareDataGridView();
             enabledDataGridViewCheckBoxColumn1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             centerDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             vertexDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -63,35 +69,37 @@
             bindingSource = new System.Windows.Forms.BindingSource(components);
             dataSet = new DataSet();
             panel1 = new System.Windows.Forms.Panel();
-            colorControlEdges = new ColorControl();
+            flowLayoutPanel10 = new System.Windows.Forms.FlowLayoutPanel();
             colorControlPolyhedron = new ColorControl();
             colorControlBond = new ColorControl();
+            colorControlEdges = new ColorControl();
             panel2 = new System.Windows.Forms.Panel();
-            Enabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            Center = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            Vertex = new System.Windows.Forms.DataGridViewTextBoxColumn();
             toolTip = new System.Windows.Forms.ToolTip(components);
-            toolTip.IsBalloon = true; // 260531Cl 追加: バルーン表示に統一
-            toolTip.AutoPopDelay = 10000; // 260601Cl 追加: 長文表示時間を延長(共通標準値)
-            toolTip.InitialDelay = 500; // 260601Cl 追加
-            toolTip.ReshowDelay = 100; // 260601Cl 追加
             groupBoxPolyhedron.SuspendLayout();
-            groupBoxEdge.SuspendLayout();
+            flowLayoutPanel3.SuspendLayout();
+            flowLayoutPanel1.SuspendLayout();
+            flowLayoutPanel2.SuspendLayout();
             groupBoxBonds.SuspendLayout();
+            flowLayoutPanel8.SuspendLayout();
+            flowLayoutPanel7.SuspendLayout();
+            flowLayoutPanel4.SuspendLayout();
+            flowLayoutPanel5.SuspendLayout();
+            flowLayoutPanel6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)bindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataSet).BeginInit();
             panel1.SuspendLayout();
+            flowLayoutPanel10.SuspendLayout();
             panel2.SuspendLayout();
             SuspendLayout();
             // 
             // checkBoxShowPolyhedron
             // 
             resources.ApplyResources(checkBoxShowPolyhedron, "checkBoxShowPolyhedron");
-            toolTip.SetToolTip(checkBoxShowPolyhedron, resources.GetString("checkBoxShowPolyhedron.ToolTip")); // 260531Cl
             checkBoxShowPolyhedron.Checked = true;
             checkBoxShowPolyhedron.CheckState = System.Windows.Forms.CheckState.Checked;
             checkBoxShowPolyhedron.Name = "checkBoxShowPolyhedron";
+            toolTip.SetToolTip(checkBoxShowPolyhedron, resources.GetString("checkBoxShowPolyhedron.ToolTip"));
             checkBoxShowPolyhedron.UseVisualStyleBackColor = true;
             checkBoxShowPolyhedron.CheckedChanged += checkBoxShowPolyhedron_CheckedChanged;
             // 
@@ -113,47 +121,89 @@
             // label58
             // 
             resources.ApplyResources(label58, "label58");
-            toolTip.SetToolTip(label58, resources.GetString("label58.ToolTip")); // 260531Cl
             label58.Name = "label58";
+            toolTip.SetToolTip(label58, resources.GetString("label58.ToolTip"));
             // 
             // label57
             // 
             resources.ApplyResources(label57, "label57");
-            toolTip.SetToolTip(label57, resources.GetString("label57.ToolTip")); // 260531Cl
             label57.Name = "label57";
+            toolTip.SetToolTip(label57, resources.GetString("label57.ToolTip"));
             // 
             // label39
             // 
             resources.ApplyResources(label39, "label39");
-            toolTip.SetToolTip(label39, resources.GetString("label39.ToolTip")); // 260531Cl
             label39.Name = "label39";
+            toolTip.SetToolTip(label39, resources.GetString("label39.ToolTip"));
             // 
             // label40
             // 
             resources.ApplyResources(label40, "label40");
-            toolTip.SetToolTip(label40, resources.GetString("label40.ToolTip")); // 260531Cl
             label40.Name = "label40";
+            toolTip.SetToolTip(label40, resources.GetString("label40.ToolTip"));
             // 
             // groupBoxPolyhedron
             // 
-            groupBoxPolyhedron.Controls.Add(numericBoxPolyhedronAlpha);
-            groupBoxPolyhedron.Controls.Add(checkBoxShowEdges);
-            groupBoxPolyhedron.Controls.Add(groupBoxEdge);
-            groupBoxPolyhedron.Controls.Add(checkBoxShowInnerBonds);
-            groupBoxPolyhedron.Controls.Add(checkBoxShowVertexAtoms);
-            groupBoxPolyhedron.Controls.Add(checkBoxShowCenterAtom);
+            groupBoxPolyhedron.Controls.Add(flowLayoutPanel3);
             resources.ApplyResources(groupBoxPolyhedron, "groupBoxPolyhedron");
             groupBoxPolyhedron.Name = "groupBoxPolyhedron";
             groupBoxPolyhedron.TabStop = false;
             // 
+            // flowLayoutPanel3
+            // 
+            flowLayoutPanel3.Controls.Add(flowLayoutPanel1);
+            flowLayoutPanel3.Controls.Add(flowLayoutPanel2);
+            resources.ApplyResources(flowLayoutPanel3, "flowLayoutPanel3");
+            flowLayoutPanel3.Name = "flowLayoutPanel3";
+            // 
+            // flowLayoutPanel1
+            // 
+            resources.ApplyResources(flowLayoutPanel1, "flowLayoutPanel1");
+            flowLayoutPanel1.Controls.Add(checkBoxShowInnerBonds);
+            flowLayoutPanel1.Controls.Add(checkBoxShowCenterAtom);
+            flowLayoutPanel1.Controls.Add(checkBoxShowVertexAtoms);
+            flowLayoutPanel1.Name = "flowLayoutPanel1";
+            // 
+            // checkBoxShowInnerBonds
+            // 
+            resources.ApplyResources(checkBoxShowInnerBonds, "checkBoxShowInnerBonds");
+            checkBoxShowInnerBonds.Checked = true;
+            checkBoxShowInnerBonds.CheckState = System.Windows.Forms.CheckState.Checked;
+            checkBoxShowInnerBonds.Name = "checkBoxShowInnerBonds";
+            toolTip.SetToolTip(checkBoxShowInnerBonds, resources.GetString("checkBoxShowInnerBonds.ToolTip"));
+            checkBoxShowInnerBonds.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxShowCenterAtom
+            // 
+            resources.ApplyResources(checkBoxShowCenterAtom, "checkBoxShowCenterAtom");
+            checkBoxShowCenterAtom.Checked = true;
+            checkBoxShowCenterAtom.CheckState = System.Windows.Forms.CheckState.Checked;
+            checkBoxShowCenterAtom.Name = "checkBoxShowCenterAtom";
+            toolTip.SetToolTip(checkBoxShowCenterAtom, resources.GetString("checkBoxShowCenterAtom.ToolTip"));
+            checkBoxShowCenterAtom.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxShowVertexAtoms
+            // 
+            resources.ApplyResources(checkBoxShowVertexAtoms, "checkBoxShowVertexAtoms");
+            checkBoxShowVertexAtoms.Checked = true;
+            checkBoxShowVertexAtoms.CheckState = System.Windows.Forms.CheckState.Checked;
+            checkBoxShowVertexAtoms.Name = "checkBoxShowVertexAtoms";
+            toolTip.SetToolTip(checkBoxShowVertexAtoms, resources.GetString("checkBoxShowVertexAtoms.ToolTip"));
+            checkBoxShowVertexAtoms.UseVisualStyleBackColor = true;
+            // 
+            // flowLayoutPanel2
+            // 
+            resources.ApplyResources(flowLayoutPanel2, "flowLayoutPanel2");
+            flowLayoutPanel2.Controls.Add(numericBoxPolyhedronAlpha);
+            flowLayoutPanel2.Controls.Add(checkBoxShowEdges);
+            flowLayoutPanel2.Controls.Add(numericBoxEdgeWidth);
+            flowLayoutPanel2.Name = "flowLayoutPanel2";
+            // 
             // numericBoxPolyhedronAlpha
             // 
-            resources.ApplyResources(numericBoxPolyhedronAlpha, "numericBoxPolyhedronAlpha");
-            toolTip.SetToolTip(numericBoxPolyhedronAlpha, resources.GetString("numericBoxPolyhedronAlpha.ToolTip")); // 260531Cl
             numericBoxPolyhedronAlpha.BackColor = System.Drawing.SystemColors.Control;
             numericBoxPolyhedronAlpha.DecimalPlaces = 1;
-            numericBoxPolyhedronAlpha.FooterBackColor = System.Drawing.SystemColors.Control;
-            numericBoxPolyhedronAlpha.HeaderBackColor = System.Drawing.SystemColors.Control;
+            resources.ApplyResources(numericBoxPolyhedronAlpha, "numericBoxPolyhedronAlpha");
             numericBoxPolyhedronAlpha.Maximum = 1D;
             numericBoxPolyhedronAlpha.Minimum = 0D;
             numericBoxPolyhedronAlpha.Name = "numericBoxPolyhedronAlpha";
@@ -162,34 +212,27 @@
             numericBoxPolyhedronAlpha.SkipEventDuringInput = false;
             numericBoxPolyhedronAlpha.SmartIncrement = true;
             numericBoxPolyhedronAlpha.ThousandsSeparator = true;
+            toolTip.SetToolTip(numericBoxPolyhedronAlpha, resources.GetString("numericBoxPolyhedronAlpha.ToolTip"));
             numericBoxPolyhedronAlpha.UpDown_Increment = 0.1D;
             numericBoxPolyhedronAlpha.Value = 0.7D;
+            numericBoxPolyhedronAlpha.ValueBoxWidth = 35;
+            numericBoxPolyhedronAlpha.ValueFontSize = 9F;
             // 
             // checkBoxShowEdges
             // 
             resources.ApplyResources(checkBoxShowEdges, "checkBoxShowEdges");
-            toolTip.SetToolTip(checkBoxShowEdges, resources.GetString("checkBoxShowEdges.ToolTip")); // 260531Cl
             checkBoxShowEdges.Checked = true;
             checkBoxShowEdges.CheckState = System.Windows.Forms.CheckState.Checked;
             checkBoxShowEdges.Name = "checkBoxShowEdges";
+            toolTip.SetToolTip(checkBoxShowEdges, resources.GetString("checkBoxShowEdges.ToolTip"));
             checkBoxShowEdges.UseVisualStyleBackColor = true;
             checkBoxShowEdges.CheckedChanged += checkBoxShowEdges_CheckedChanged;
             // 
-            // groupBoxEdge
-            // 
-            groupBoxEdge.Controls.Add(numericBoxEdgeWidth);
-            resources.ApplyResources(groupBoxEdge, "groupBoxEdge");
-            groupBoxEdge.Name = "groupBoxEdge";
-            groupBoxEdge.TabStop = false;
-            // 
             // numericBoxEdgeWidth
             // 
-            resources.ApplyResources(numericBoxEdgeWidth, "numericBoxEdgeWidth");
-            toolTip.SetToolTip(numericBoxEdgeWidth, resources.GetString("numericBoxEdgeWidth.ToolTip")); // 260531Cl
             numericBoxEdgeWidth.BackColor = System.Drawing.SystemColors.Control;
             numericBoxEdgeWidth.DecimalPlaces = 1;
-            numericBoxEdgeWidth.FooterBackColor = System.Drawing.SystemColors.Control;
-            numericBoxEdgeWidth.HeaderBackColor = System.Drawing.SystemColors.Control;
+            resources.ApplyResources(numericBoxEdgeWidth, "numericBoxEdgeWidth");
             numericBoxEdgeWidth.Maximum = 1D;
             numericBoxEdgeWidth.Minimum = 0D;
             numericBoxEdgeWidth.Name = "numericBoxEdgeWidth";
@@ -198,78 +241,33 @@
             numericBoxEdgeWidth.SkipEventDuringInput = false;
             numericBoxEdgeWidth.SmartIncrement = true;
             numericBoxEdgeWidth.ThousandsSeparator = true;
+            toolTip.SetToolTip(numericBoxEdgeWidth, resources.GetString("numericBoxEdgeWidth.ToolTip"));
             numericBoxEdgeWidth.UpDown_Increment = 0.1D;
             numericBoxEdgeWidth.Value = 0.7D;
-            // 
-            // checkBoxShowInnerBonds
-            // 
-            resources.ApplyResources(checkBoxShowInnerBonds, "checkBoxShowInnerBonds");
-            toolTip.SetToolTip(checkBoxShowInnerBonds, resources.GetString("checkBoxShowInnerBonds.ToolTip")); // 260531Cl
-            checkBoxShowInnerBonds.Checked = true;
-            checkBoxShowInnerBonds.CheckState = System.Windows.Forms.CheckState.Checked;
-            checkBoxShowInnerBonds.Name = "checkBoxShowInnerBonds";
-            checkBoxShowInnerBonds.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxShowVertexAtoms
-            // 
-            resources.ApplyResources(checkBoxShowVertexAtoms, "checkBoxShowVertexAtoms");
-            toolTip.SetToolTip(checkBoxShowVertexAtoms, resources.GetString("checkBoxShowVertexAtoms.ToolTip")); // 260531Cl
-            checkBoxShowVertexAtoms.Checked = true;
-            checkBoxShowVertexAtoms.CheckState = System.Windows.Forms.CheckState.Checked;
-            checkBoxShowVertexAtoms.Name = "checkBoxShowVertexAtoms";
-            checkBoxShowVertexAtoms.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxShowCenterAtom
-            // 
-            resources.ApplyResources(checkBoxShowCenterAtom, "checkBoxShowCenterAtom");
-            toolTip.SetToolTip(checkBoxShowCenterAtom, resources.GetString("checkBoxShowCenterAtom.ToolTip")); // 260531Cl
-            checkBoxShowCenterAtom.Checked = true;
-            checkBoxShowCenterAtom.CheckState = System.Windows.Forms.CheckState.Checked;
-            checkBoxShowCenterAtom.Name = "checkBoxShowCenterAtom";
-            checkBoxShowCenterAtom.UseVisualStyleBackColor = true;
+            numericBoxEdgeWidth.ValueBoxWidth = 40;
+            numericBoxEdgeWidth.ValueFontSize = 9F;
             // 
             // groupBoxBonds
             // 
-            groupBoxBonds.Controls.Add(comboBoxBondingAtom1);
-            groupBoxBonds.Controls.Add(numericBoxBondAlpha);
-            groupBoxBonds.Controls.Add(numericBoxBondRadius);
-            groupBoxBonds.Controls.Add(label39);
-            groupBoxBonds.Controls.Add(numericBoxBondMaxLength);
-            groupBoxBonds.Controls.Add(numericBoxBondMinLength);
-            groupBoxBonds.Controls.Add(comboBoxBondingAtom2);
-            groupBoxBonds.Controls.Add(label40);
-            groupBoxBonds.Controls.Add(label57);
-            groupBoxBonds.Controls.Add(label58);
+            groupBoxBonds.Controls.Add(flowLayoutPanel8);
+            groupBoxBonds.Controls.Add(flowLayoutPanel7);
+            groupBoxBonds.Controls.Add(flowLayoutPanel4);
             resources.ApplyResources(groupBoxBonds, "groupBoxBonds");
             groupBoxBonds.Name = "groupBoxBonds";
             groupBoxBonds.TabStop = false;
             // 
-            // numericBoxBondAlpha
+            // flowLayoutPanel8
             // 
-            resources.ApplyResources(numericBoxBondAlpha, "numericBoxBondAlpha");
-            toolTip.SetToolTip(numericBoxBondAlpha, resources.GetString("numericBoxBondAlpha.ToolTip")); // 260531Cl
-            numericBoxBondAlpha.BackColor = System.Drawing.SystemColors.Control;
-            numericBoxBondAlpha.DecimalPlaces = 1;
-            numericBoxBondAlpha.FooterBackColor = System.Drawing.SystemColors.Control;
-            numericBoxBondAlpha.HeaderBackColor = System.Drawing.SystemColors.Control;
-            numericBoxBondAlpha.Maximum = 1D;
-            numericBoxBondAlpha.Minimum = 0D;
-            numericBoxBondAlpha.Name = "numericBoxBondAlpha";
-            numericBoxBondAlpha.RadianValue = 0.012217304763960306D;
-            numericBoxBondAlpha.ShowUpDown = true;
-            numericBoxBondAlpha.SkipEventDuringInput = false;
-            numericBoxBondAlpha.SmartIncrement = true;
-            numericBoxBondAlpha.ThousandsSeparator = true;
-            numericBoxBondAlpha.UpDown_Increment = 0.1D;
-            numericBoxBondAlpha.Value = 0.7D;
+            resources.ApplyResources(flowLayoutPanel8, "flowLayoutPanel8");
+            flowLayoutPanel8.Controls.Add(numericBoxBondRadius);
+            flowLayoutPanel8.Controls.Add(numericBoxBondAlpha);
+            flowLayoutPanel8.Name = "flowLayoutPanel8";
             // 
             // numericBoxBondRadius
             // 
-            resources.ApplyResources(numericBoxBondRadius, "numericBoxBondRadius");
             numericBoxBondRadius.BackColor = System.Drawing.SystemColors.Control;
             numericBoxBondRadius.DecimalPlaces = 3;
-            numericBoxBondRadius.FooterBackColor = System.Drawing.SystemColors.Control;
-            numericBoxBondRadius.HeaderBackColor = System.Drawing.SystemColors.Control;
+            resources.ApplyResources(numericBoxBondRadius, "numericBoxBondRadius");
             numericBoxBondRadius.Maximum = 9.9D;
             numericBoxBondRadius.Minimum = 0.1D;
             numericBoxBondRadius.Name = "numericBoxBondRadius";
@@ -281,34 +279,40 @@
             toolTip.SetToolTip(numericBoxBondRadius, resources.GetString("numericBoxBondRadius.ToolTip"));
             numericBoxBondRadius.UpDown_Increment = 0.02D;
             numericBoxBondRadius.Value = 0.1D;
+            numericBoxBondRadius.ValueBoxWidth = 40;
+            numericBoxBondRadius.ValueFontSize = 9F;
             // 
-            // numericBoxBondMaxLength
+            // numericBoxBondAlpha
             // 
-            resources.ApplyResources(numericBoxBondMaxLength, "numericBoxBondMaxLength");
-            toolTip.SetToolTip(numericBoxBondMaxLength, resources.GetString("numericBoxBondMaxLength.ToolTip")); // 260531Cl
-            numericBoxBondMaxLength.BackColor = System.Drawing.SystemColors.Control;
-            numericBoxBondMaxLength.DecimalPlaces = 3;
-            numericBoxBondMaxLength.FooterBackColor = System.Drawing.SystemColors.Control;
-            numericBoxBondMaxLength.HeaderBackColor = System.Drawing.SystemColors.Control;
-            numericBoxBondMaxLength.Maximum = 9.9D;
-            numericBoxBondMaxLength.Minimum = 0.1D;
-            numericBoxBondMaxLength.Name = "numericBoxBondMaxLength";
-            numericBoxBondMaxLength.RadianValue = 0.027925268031909273D;
-            numericBoxBondMaxLength.ShowUpDown = true;
-            numericBoxBondMaxLength.SkipEventDuringInput = false;
-            numericBoxBondMaxLength.SmartIncrement = true;
-            numericBoxBondMaxLength.ThousandsSeparator = true;
-            numericBoxBondMaxLength.UpDown_Increment = 0.1D;
-            numericBoxBondMaxLength.Value = 1.6D;
+            numericBoxBondAlpha.BackColor = System.Drawing.SystemColors.Control;
+            numericBoxBondAlpha.DecimalPlaces = 1;
+            resources.ApplyResources(numericBoxBondAlpha, "numericBoxBondAlpha");
+            numericBoxBondAlpha.Maximum = 1D;
+            numericBoxBondAlpha.Minimum = 0D;
+            numericBoxBondAlpha.Name = "numericBoxBondAlpha";
+            numericBoxBondAlpha.RadianValue = 0.012217304763960306D;
+            numericBoxBondAlpha.ShowUpDown = true;
+            numericBoxBondAlpha.SkipEventDuringInput = false;
+            numericBoxBondAlpha.SmartIncrement = true;
+            numericBoxBondAlpha.ThousandsSeparator = true;
+            toolTip.SetToolTip(numericBoxBondAlpha, resources.GetString("numericBoxBondAlpha.ToolTip"));
+            numericBoxBondAlpha.UpDown_Increment = 0.1D;
+            numericBoxBondAlpha.Value = 0.7D;
+            numericBoxBondAlpha.ValueBoxWidth = 40;
+            numericBoxBondAlpha.ValueFontSize = 9F;
+            // 
+            // flowLayoutPanel7
+            // 
+            resources.ApplyResources(flowLayoutPanel7, "flowLayoutPanel7");
+            flowLayoutPanel7.Controls.Add(numericBoxBondMinLength);
+            flowLayoutPanel7.Controls.Add(numericBoxBondMaxLength);
+            flowLayoutPanel7.Name = "flowLayoutPanel7";
             // 
             // numericBoxBondMinLength
             // 
-            resources.ApplyResources(numericBoxBondMinLength, "numericBoxBondMinLength");
-            toolTip.SetToolTip(numericBoxBondMinLength, resources.GetString("numericBoxBondMinLength.ToolTip")); // 260531Cl
             numericBoxBondMinLength.BackColor = System.Drawing.SystemColors.Control;
             numericBoxBondMinLength.DecimalPlaces = 3;
-            numericBoxBondMinLength.FooterBackColor = System.Drawing.SystemColors.Control;
-            numericBoxBondMinLength.HeaderBackColor = System.Drawing.SystemColors.Control;
+            resources.ApplyResources(numericBoxBondMinLength, "numericBoxBondMinLength");
             numericBoxBondMinLength.Maximum = 9.9D;
             numericBoxBondMinLength.Minimum = 0D;
             numericBoxBondMinLength.Name = "numericBoxBondMinLength";
@@ -317,16 +321,61 @@
             numericBoxBondMinLength.SkipEventDuringInput = false;
             numericBoxBondMinLength.SmartIncrement = true;
             numericBoxBondMinLength.ThousandsSeparator = true;
+            toolTip.SetToolTip(numericBoxBondMinLength, resources.GetString("numericBoxBondMinLength.ToolTip"));
             numericBoxBondMinLength.UpDown_Increment = 0.1D;
             numericBoxBondMinLength.Value = 0.1D;
+            numericBoxBondMinLength.ValueBoxWidth = 45;
+            numericBoxBondMinLength.ValueFontSize = 9F;
+            // 
+            // numericBoxBondMaxLength
+            // 
+            numericBoxBondMaxLength.BackColor = System.Drawing.SystemColors.Control;
+            numericBoxBondMaxLength.DecimalPlaces = 3;
+            resources.ApplyResources(numericBoxBondMaxLength, "numericBoxBondMaxLength");
+            numericBoxBondMaxLength.Maximum = 9.9D;
+            numericBoxBondMaxLength.Minimum = 0.1D;
+            numericBoxBondMaxLength.Name = "numericBoxBondMaxLength";
+            numericBoxBondMaxLength.RadianValue = 0.027925268031909273D;
+            numericBoxBondMaxLength.ShowUpDown = true;
+            numericBoxBondMaxLength.SkipEventDuringInput = false;
+            numericBoxBondMaxLength.SmartIncrement = true;
+            numericBoxBondMaxLength.ThousandsSeparator = true;
+            toolTip.SetToolTip(numericBoxBondMaxLength, resources.GetString("numericBoxBondMaxLength.ToolTip"));
+            numericBoxBondMaxLength.UpDown_Increment = 0.1D;
+            numericBoxBondMaxLength.Value = 1.6D;
+            numericBoxBondMaxLength.ValueBoxWidth = 45;
+            numericBoxBondMaxLength.ValueFontSize = 9F;
+            // 
+            // flowLayoutPanel4
+            // 
+            resources.ApplyResources(flowLayoutPanel4, "flowLayoutPanel4");
+            flowLayoutPanel4.Controls.Add(label39);
+            flowLayoutPanel4.Controls.Add(flowLayoutPanel5);
+            flowLayoutPanel4.Controls.Add(label40);
+            flowLayoutPanel4.Controls.Add(flowLayoutPanel6);
+            flowLayoutPanel4.Name = "flowLayoutPanel4";
+            // 
+            // flowLayoutPanel5
+            // 
+            resources.ApplyResources(flowLayoutPanel5, "flowLayoutPanel5");
+            flowLayoutPanel5.Controls.Add(label57);
+            flowLayoutPanel5.Controls.Add(comboBoxBondingAtom1);
+            flowLayoutPanel5.Name = "flowLayoutPanel5";
+            // 
+            // flowLayoutPanel6
+            // 
+            resources.ApplyResources(flowLayoutPanel6, "flowLayoutPanel6");
+            flowLayoutPanel6.Controls.Add(label58);
+            flowLayoutPanel6.Controls.Add(comboBoxBondingAtom2);
+            flowLayoutPanel6.Name = "flowLayoutPanel6";
             // 
             // checkBoxShowBonds
             // 
             resources.ApplyResources(checkBoxShowBonds, "checkBoxShowBonds");
-            toolTip.SetToolTip(checkBoxShowBonds, resources.GetString("checkBoxShowBonds.ToolTip")); // 260531Cl
             checkBoxShowBonds.Checked = true;
             checkBoxShowBonds.CheckState = System.Windows.Forms.CheckState.Checked;
             checkBoxShowBonds.Name = "checkBoxShowBonds";
+            toolTip.SetToolTip(checkBoxShowBonds, resources.GetString("checkBoxShowBonds.ToolTip"));
             checkBoxShowBonds.UseVisualStyleBackColor = true;
             checkBoxShowBonds.CheckedChanged += checkBoxShowBonds_CheckedChanged;
             // 
@@ -367,10 +416,8 @@
             dataGridView.AllowUserToResizeColumns = false;
             dataGridView.AllowUserToResizeRows = false;
             dataGridView.AutoGenerateColumns = false;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            //260516Cl resx の dataGridView.Font を継承するため Font 設定を廃止
-            //dataGridViewCellStyle1.Font = new System.Drawing.Font("BIZ UDPGothic", 9F);
             dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -380,11 +427,11 @@
             dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { enabledDataGridViewCheckBoxColumn1, centerDataGridViewTextBoxColumn1, vertexDataGridViewTextBoxColumn1, minLenDataGridViewTextBoxColumn1, maxLenDataGridViewTextBoxColumn1, showBondsDataGridViewCheckBoxColumn, showPolyhedronDataGridViewCheckBoxColumn });
             dataGridView.DataSource = bindingSource;
             resources.ApplyResources(dataGridView, "dataGridView");
-            toolTip.SetToolTip(dataGridView, resources.GetString("dataGridView.ToolTip")); // 260531Cl
             dataGridView.MultiSelect = false;
             dataGridView.Name = "dataGridView";
             dataGridView.RowHeadersVisible = false;
             dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            toolTip.SetToolTip(dataGridView, resources.GetString("dataGridView.ToolTip"));
             dataGridView.CellValueChanged += dataGridView_CellValueChanged;
             dataGridView.CurrentCellDirtyStateChanged += dataGridView_CurrentCellDirtyStateChanged;
             // 
@@ -453,21 +500,20 @@
             // 
             // panel1
             // 
-            panel1.Controls.Add(buttonAddBond);
-            panel1.Controls.Add(colorControlEdges);
-            panel1.Controls.Add(colorControlPolyhedron);
-            panel1.Controls.Add(colorControlBond);
-            panel1.Controls.Add(buttonChangeBond);
-            panel1.Controls.Add(buttonDeleteBond);
             resources.ApplyResources(panel1, "panel1");
+            panel1.Controls.Add(buttonDeleteBond);
+            panel1.Controls.Add(buttonChangeBond);
+            panel1.Controls.Add(buttonAddBond);
+            panel1.Controls.Add(flowLayoutPanel10);
             panel1.Name = "panel1";
             // 
-            // colorControlEdges
+            // flowLayoutPanel10
             // 
-            resources.ApplyResources(colorControlEdges, "colorControlEdges");
-            colorControlEdges.BackColor = System.Drawing.SystemColors.Control;
-            colorControlEdges.BoxSize = new System.Drawing.Size(20, 20);
-            colorControlEdges.Name = "colorControlEdges";
+            resources.ApplyResources(flowLayoutPanel10, "flowLayoutPanel10");
+            flowLayoutPanel10.Controls.Add(colorControlPolyhedron);
+            flowLayoutPanel10.Controls.Add(colorControlBond);
+            flowLayoutPanel10.Controls.Add(colorControlEdges);
+            flowLayoutPanel10.Name = "flowLayoutPanel10";
             // 
             // colorControlPolyhedron
             // 
@@ -483,6 +529,13 @@
             colorControlBond.BoxSize = new System.Drawing.Size(20, 20);
             colorControlBond.Name = "colorControlBond";
             // 
+            // colorControlEdges
+            // 
+            resources.ApplyResources(colorControlEdges, "colorControlEdges");
+            colorControlEdges.BackColor = System.Drawing.SystemColors.Control;
+            colorControlEdges.BoxSize = new System.Drawing.Size(20, 20);
+            colorControlEdges.Name = "colorControlEdges";
+            // 
             // panel2
             // 
             panel2.Controls.Add(checkBoxShowBonds);
@@ -492,25 +545,12 @@
             resources.ApplyResources(panel2, "panel2");
             panel2.Name = "panel2";
             // 
-            // Enabled
+            // toolTip
             // 
-            Enabled.DataPropertyName = "Enabled";
-            resources.ApplyResources(Enabled, "Enabled");
-            Enabled.Name = "Enabled";
-            // 
-            // Center
-            // 
-            Center.DataPropertyName = "Center";
-            resources.ApplyResources(Center, "Center");
-            Center.Name = "Center";
-            Center.ReadOnly = true;
-            // 
-            // Vertex
-            // 
-            Vertex.DataPropertyName = "Vertex";
-            resources.ApplyResources(Vertex, "Vertex");
-            Vertex.Name = "Vertex";
-            Vertex.ReadOnly = true;
+            toolTip.AutoPopDelay = 10000;
+            toolTip.InitialDelay = 500;
+            toolTip.IsBalloon = true;
+            toolTip.ReshowDelay = 100;
             // 
             // BondInputControl
             // 
@@ -521,15 +561,31 @@
             Controls.Add(panel2);
             Name = "BondInputControl";
             groupBoxPolyhedron.ResumeLayout(false);
-            groupBoxPolyhedron.PerformLayout();
-            groupBoxEdge.ResumeLayout(false);
+            flowLayoutPanel3.ResumeLayout(false);
+            flowLayoutPanel3.PerformLayout();
+            flowLayoutPanel1.ResumeLayout(false);
+            flowLayoutPanel1.PerformLayout();
+            flowLayoutPanel2.ResumeLayout(false);
+            flowLayoutPanel2.PerformLayout();
             groupBoxBonds.ResumeLayout(false);
             groupBoxBonds.PerformLayout();
+            flowLayoutPanel8.ResumeLayout(false);
+            flowLayoutPanel8.PerformLayout();
+            flowLayoutPanel7.ResumeLayout(false);
+            flowLayoutPanel7.PerformLayout();
+            flowLayoutPanel4.ResumeLayout(false);
+            flowLayoutPanel4.PerformLayout();
+            flowLayoutPanel5.ResumeLayout(false);
+            flowLayoutPanel5.PerformLayout();
+            flowLayoutPanel6.ResumeLayout(false);
+            flowLayoutPanel6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView).EndInit();
             ((System.ComponentModel.ISupportInitialize)bindingSource).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataSet).EndInit();
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
+            flowLayoutPanel10.ResumeLayout(false);
+            flowLayoutPanel10.PerformLayout();
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
             ResumeLayout(false);
@@ -549,7 +605,6 @@
         private System.Windows.Forms.GroupBox groupBoxPolyhedron;
         private ColorControl colorControlPolyhedron;
         private System.Windows.Forms.CheckBox checkBoxShowEdges;
-        private System.Windows.Forms.GroupBox groupBoxEdge;
         private ColorControl colorControlEdges;
         private System.Windows.Forms.CheckBox checkBoxShowInnerBonds;
         private System.Windows.Forms.CheckBox checkBoxShowVertexAtoms;
@@ -571,10 +626,16 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.CheckBox checkBoxShowBonds;
-        new private System.Windows.Forms.DataGridViewCheckBoxColumn Enabled;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Center;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Vertex;
         private System.Windows.Forms.ToolTip toolTip;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel7;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel4;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel5;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel6;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel8;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel10;
         private System.Windows.Forms.DataGridViewCheckBoxColumn enabledDataGridViewCheckBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn centerDataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn vertexDataGridViewTextBoxColumn1;

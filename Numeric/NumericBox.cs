@@ -404,7 +404,9 @@ public partial class NumericBox : UserControlBase
     public int ValueInteger { get => (int)numericalValue; }
 
     /// <summary>Radianとして値を入力/取得</summary>
-    [DefaultValue(0.0)]
+    //[DefaultValue(0.0)] // 260704Cl 変更前: Value の派生エイリアスなのに直列化対象で、Value≠0 の全インスタンスへ冗長な RadianValue 行 (可読性ゼロの radian 定数) が Designer.cs に出力されていた
+    [Browsable(false)] // 260704Cl 追加: Value と二重指定になるためプロパティグリッドから隠す
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] // 260704Cl 追加: 書込のみ抑止 (コードからの利用は不変)
     [Category("Value")]
     public double RadianValue { set => Value = value * 180.0 / Math.PI; get => Value / 180.0 * Math.PI; }
 
@@ -869,6 +871,11 @@ public partial class NumericBox : UserControlBase
         if (!double.IsNaN(d))
         {
             skipTextChangeEvent = true;
+            if (RestrictLimitValue) // 260704Cl 追加: 数式評価 (Ctrl/Shift+Enter) も Value setter と同じ Min/Max clamp を通す (従来は範囲外値が直接入った)
+            {
+                if (d > Maximum) d = Maximum;
+                if (d < Minimum) d = Minimum;
+            }
             this.numericalValue = d;
             if (textBox.Multiline)
             {

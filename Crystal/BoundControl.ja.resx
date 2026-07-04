@@ -175,6 +175,10 @@
     <value>境界面を法線方向に平行移動させる量
 (Å)。正の値で原点から遠ざかります。</value>
   </data>
+  <data name="numericBoxTranslation.ToolTip1" xml:space="preserve">
+    <value>境界面を法線方向に平行移動させる量
+(Å)。正の値で原点から遠ざかります。</value>
+  </data>
   <data name="label6.Text" xml:space="preserve">
     <value>原点からの距離</value>
   </data>

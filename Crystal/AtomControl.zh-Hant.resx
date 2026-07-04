@@ -313,6 +313,10 @@ X射線散射因子條目 (離子荷電狀態與
     <value>按一下以選擇此原子球體在 3D 結構
 視圖中的顯示顏色。</value>
   </data>
+  <data name="colorControlAtomColor.ToolTip1" xml:space="preserve">
+    <value>按一下以選擇此原子球體在 3D 結構
+視圖中的顯示顏色。</value>
+  </data>
   <data name="dataGridView.ToolTip" xml:space="preserve">
     <value>結晶中所有原子位置的清單。選取某一
 列即可將其載入下方的編輯欄；核取方

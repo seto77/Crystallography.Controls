@@ -79,17 +79,7 @@ nach zunehmendem Abstand sortiert.</value>
 in Ångström (Å); nur Atome innerhalb dieses
 Radius um das Zielatom werden aufgelistet.</value>
   </data>
-  <data name="label3.ToolTip" xml:space="preserve">
-    <value>Maximaler interatomarer Abstand für die Suche,
-in Ångström (Å); nur Atome innerhalb dieses
-Radius um das Zielatom werden aufgelistet.</value>
-  </data>
   <data name="numericUpDownWidth.ToolTip" xml:space="preserve">
-    <value>Halbbreite der Balken im Abstandshistogramm,
-in Ångström (Å); größere Werte
-verbreitern jeden Balken, sodass nahe Peaks verschmelzen.</value>
-  </data>
-  <data name="label2.ToolTip" xml:space="preserve">
     <value>Halbbreite der Balken im Abstandshistogramm,
 in Ångström (Å); größere Werte
 verbreitern jeden Balken, sodass nahe Peaks verschmelzen.</value>

@@ -25,6 +25,12 @@ namespace Crystallography.Controls
         {
             InitializeComponent();
 
+            // 260704Cl 追加: VS デザイナ保存時に Designer.cs の resx 間接参照 (GetString) が英語直書きへ巻き戻るため、翻訳ツールチップはコード側で適用する
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPeriodicTable));
+            foreach (var target in new Control[] { buttonLa, buttonAc, labelLa, labelAc, buttonMustInclude, buttonMustExclude, buttonMayInclude, label3, label4, label5 })
+                if (resources.GetString($"{target.Name}.ToolTip") is { Length: > 0 } tip) // 言語 resx に翻訳がある場合のみ上書き (EN は Designer.cs の直書き文言)
+                    toolTip.SetToolTip(target, tip);
+
             for (int i = 0; i < 112; i++)
             {
                 button.Add(new Button());

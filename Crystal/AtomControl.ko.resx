@@ -315,6 +315,10 @@ B = 8π²·U이며, 값이 클수록 열 진동이 강함을
     <value>클릭하여 3D 구조 화면에서 이 원자 구의
 표시 색을 선택합니다.</value>
   </data>
+  <data name="colorControlAtomColor.ToolTip1" xml:space="preserve">
+    <value>클릭하여 3D 구조 화면에서 이 원자 구의
+표시 색을 선택합니다.</value>
+  </data>
   <data name="dataGridView.ToolTip" xml:space="preserve">
     <value>결정 내 모든 원자 자리의 목록입니다. 행을 선택하면
 아래 편집기에 불러오며, 확인란으로 해당 원자의

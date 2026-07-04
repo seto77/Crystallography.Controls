@@ -33,6 +33,7 @@ public partial class ColorControl : UserControlBase
     [Localizable(true)]
     [Browsable(false)] // 260531Cl 追加: デザイナのプロパティグリッドから隠す(標準 ToolTip 拡張子と二重表示の混乱を解消)。Localizable は残すので既存 resx 値は従来通り pictureBox に適用され hover も維持
     [EditorBrowsable(EditorBrowsableState.Never)] // 260531Cl 追加: IntelliSense からも隠す(廃止予定プロパティ)
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] // 260704Cl 追加: フォーム側 ToolTip 拡張子との resx キー衝突 (.ToolTip1 増殖・保存のたび正規化が巻き戻る) を根絶。Hidden は書込のみ抑止し、ApplyResources による既存 resx 値の読込/内部子への配布(hover)には影響しない (NumericBox.ToolTip 260607Cl と同作法)
     public string ToolTip { set => toolTip.SetToolTip(pictureBox, value); get => toolTip.GetToolTip(pictureBox); }
 
     // 260531Cl 追加: 配置先 Form が標準 ToolTip でこの ColorControl 本体にチップを設定した場合の配布先 (内部子)。

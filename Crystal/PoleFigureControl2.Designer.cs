@@ -24,21 +24,17 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container(); // (260531Ch)
-            toolTip = new System.Windows.Forms.ToolTip(components); // (260531Ch)
-            toolTip.IsBalloon = true; // 260531Cl 追加: バルーン表示に統一
-            toolTip.AutoPopDelay = 10000; // 260601Cl 追加: 長文表示時間を延長(共通標準値)
-            toolTip.InitialDelay = 500; // 260601Cl 追加
-            toolTip.ReshowDelay = 100; // 260601Cl 追加
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PoleFigureControl2));
-            pictureBox = new System.Windows.Forms.PictureBox();
-            pictureBox1 = new System.Windows.Forms.PictureBox();
+            toolTip = new System.Windows.Forms.ToolTip(components);
             numericBoxResolution = new NumericBox();
             label9 = new System.Windows.Forms.Label();
             comboBoxColor = new System.Windows.Forms.ComboBox();
             numericBoxMax = new NumericBox();
             numericBoxMin = new NumericBox();
             label1 = new System.Windows.Forms.Label();
+            pictureBox = new System.Windows.Forms.PictureBox();
+            pictureBox1 = new System.Windows.Forms.PictureBox();
             panel1 = new System.Windows.Forms.Panel();
             flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
@@ -46,6 +42,82 @@
             panel1.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
             SuspendLayout();
+            // 
+            // toolTip
+            // 
+            toolTip.AutoPopDelay = 10000;
+            toolTip.InitialDelay = 500;
+            toolTip.IsBalloon = true;
+            toolTip.ReshowDelay = 100;
+            // 
+            // numericBoxResolution
+            // 
+            numericBoxResolution.BackColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(numericBoxResolution, "numericBoxResolution");
+            numericBoxResolution.HeaderWidth = 70;
+            numericBoxResolution.Maximum = 30D;
+            numericBoxResolution.Minimum = 1D;
+            numericBoxResolution.Name = "numericBoxResolution";
+            numericBoxResolution.RadianValue = 0.10471975511965977D;
+            numericBoxResolution.ShowUpDown = true;
+            numericBoxResolution.SmartIncrement = true;
+            toolTip.SetToolTip(numericBoxResolution, resources.GetString("numericBoxResolution.ToolTip"));
+            numericBoxResolution.Value = 6D;
+            numericBoxResolution.ValueBoxWidth = 35;
+            numericBoxResolution.ValueChanged += numericUpDownResolution_Click;
+            // 
+            // label9
+            // 
+            resources.ApplyResources(label9, "label9");
+            label9.Name = "label9";
+            toolTip.SetToolTip(label9, resources.GetString("label9.ToolTip"));
+            // 
+            // comboBoxColor
+            // 
+            comboBoxColor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            resources.ApplyResources(comboBoxColor, "comboBoxColor");
+            comboBoxColor.FormattingEnabled = true;
+            comboBoxColor.Items.AddRange(new object[] { resources.GetString("comboBoxColor.Items"), resources.GetString("comboBoxColor.Items1") });
+            comboBoxColor.Name = "comboBoxColor";
+            toolTip.SetToolTip(comboBoxColor, resources.GetString("comboBoxColor.ToolTip"));
+            comboBoxColor.SelectedIndexChanged += Combobox_SelectedIndexChanged;
+            // 
+            // numericBoxMax
+            // 
+            numericBoxMax.BackColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(numericBoxMax, "numericBoxMax");
+            numericBoxMax.Maximum = 100000000D;
+            numericBoxMax.Minimum = 0D;
+            numericBoxMax.Name = "numericBoxMax";
+            numericBoxMax.RadianValue = 1.7453292519943295D;
+            numericBoxMax.ShowTrigonomeric = true;
+            numericBoxMax.ShowUpDown = true;
+            numericBoxMax.SmartIncrement = true;
+            toolTip.SetToolTip(numericBoxMax, resources.GetString("numericBoxMax.ToolTip"));
+            numericBoxMax.Value = 100D;
+            numericBoxMax.ValueBoxWidth = 60;
+            numericBoxMax.ValueChanged += numericBoxMax_ValueChanged;
+            // 
+            // numericBoxMin
+            // 
+            numericBoxMin.BackColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(numericBoxMin, "numericBoxMin");
+            numericBoxMin.Maximum = 10000D;
+            numericBoxMin.Minimum = 0D;
+            numericBoxMin.Name = "numericBoxMin";
+            numericBoxMin.ShowTrigonomeric = true;
+            numericBoxMin.ShowUpDown = true;
+            numericBoxMin.SmartIncrement = true;
+            toolTip.SetToolTip(numericBoxMin, resources.GetString("numericBoxMin.ToolTip"));
+            numericBoxMin.ValueBoxWidth = 60;
+            numericBoxMin.ValueChanged += numericBoxMax_ValueChanged;
+            // 
+            // label1
+            // 
+            resources.ApplyResources(label1, "label1");
+            label1.BackColor = System.Drawing.Color.White;
+            label1.Name = "label1";
+            toolTip.SetToolTip(label1, resources.GetString("label1.ToolTip"));
             // 
             // pictureBox
             // 
@@ -59,73 +131,6 @@
             resources.ApplyResources(pictureBox1, "pictureBox1");
             pictureBox1.Name = "pictureBox1";
             pictureBox1.TabStop = false;
-            // 
-            // numericBoxResolution
-            // 
-            numericBoxResolution.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(numericBoxResolution, "numericBoxResolution");
-            toolTip.SetToolTip(numericBoxResolution, resources.GetString("numericBoxResolution.ToolTip")); // 260531Cl
-            numericBoxResolution.Maximum = 30D;
-            numericBoxResolution.Minimum = 1D;
-            numericBoxResolution.Name = "numericBoxResolution";
-            numericBoxResolution.RadianValue = 0.10471975511965977D;
-            numericBoxResolution.ShowUpDown = true;
-            numericBoxResolution.SmartIncrement = true;
-            numericBoxResolution.Value = 6D;
-            numericBoxResolution.HeaderWidth = 70; // 260622Cl 追加: ru「Разрешение」ヘッダ確保
-            numericBoxResolution.ValueBoxWidth = 35; // 260622Cl 追加: 値欄固定+本体AutoSizeで内部つぶれ回避(2行目単独配置で300px余裕)
-            numericBoxResolution.ValueChanged += numericUpDownResolution_Click;
-            // 
-            // label9
-            // 
-            resources.ApplyResources(label9, "label9");
-            toolTip.SetToolTip(label9, resources.GetString("label9.ToolTip")); // 260531Cl
-            label9.Name = "label9";
-            // 
-            // comboBoxColor
-            // 
-            comboBoxColor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            resources.ApplyResources(comboBoxColor, "comboBoxColor");
-            toolTip.SetToolTip(comboBoxColor, resources.GetString("comboBoxColor.ToolTip")); // 260531Cl
-            comboBoxColor.FormattingEnabled = true;
-            comboBoxColor.Items.AddRange(new object[] { resources.GetString("comboBoxColor.Items"), resources.GetString("comboBoxColor.Items1") });
-            comboBoxColor.Name = "comboBoxColor";
-            comboBoxColor.SelectedIndexChanged += Combobox_SelectedIndexChanged;
-            // 
-            // numericBoxMax
-            // 
-            numericBoxMax.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(numericBoxMax, "numericBoxMax");
-            toolTip.SetToolTip(numericBoxMax, resources.GetString("numericBoxMax.ToolTip")); // 260531Cl
-            numericBoxMax.Maximum = 100000000D;
-            numericBoxMax.Minimum = 0D;
-            numericBoxMax.Name = "numericBoxMax";
-            numericBoxMax.RadianValue = 1.7453292519943295D;
-            numericBoxMax.ShowTrigonomeric = true;
-            numericBoxMax.ShowUpDown = true;
-            numericBoxMax.SmartIncrement = true;
-            numericBoxMax.Value = 100D;
-            numericBoxMax.ValueChanged += numericBoxMax_ValueChanged;
-            // 
-            // numericBoxMin
-            // 
-            numericBoxMin.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(numericBoxMin, "numericBoxMin");
-            toolTip.SetToolTip(numericBoxMin, resources.GetString("numericBoxMin.ToolTip")); // 260531Cl
-            numericBoxMin.Maximum = 10000D;
-            numericBoxMin.Minimum = 0D;
-            numericBoxMin.Name = "numericBoxMin";
-            numericBoxMin.ShowTrigonomeric = true;
-            numericBoxMin.ShowUpDown = true;
-            numericBoxMin.SmartIncrement = true;
-            numericBoxMin.ValueChanged += numericBoxMax_ValueChanged;
-            // 
-            // label1
-            // 
-            resources.ApplyResources(label1, "label1");
-            toolTip.SetToolTip(label1, resources.GetString("label1.ToolTip")); // 260531Cl
-            label1.BackColor = System.Drawing.Color.White;
-            label1.Name = "label1";
             // 
             // panel1
             // 
@@ -146,7 +151,6 @@
             // PoleFigureControl2
             // 
             resources.ApplyResources(this, "$this");
-            AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             Controls.Add(pictureBox);
             Controls.Add(pictureBox1);

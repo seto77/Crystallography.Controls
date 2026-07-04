@@ -75,16 +75,7 @@
     <value>搜尋的最大原子間距離，以埃（Å）為單位；
 僅列出目標原子此半徑範圍內的原子。</value>
   </data>
-  <data name="label3.ToolTip" xml:space="preserve">
-    <value>搜尋的最大原子間距離，以埃（Å）為單位；
-僅列出目標原子此半徑範圍內的原子。</value>
-  </data>
   <data name="numericUpDownWidth.ToolTip" xml:space="preserve">
-    <value>距離直方圖長條的半寬，以埃（Å）為單位；
-數值越大會使每根長條變寬，使鄰近的
-峰彼此合併。</value>
-  </data>
-  <data name="label2.ToolTip" xml:space="preserve">
     <value>距離直方圖長條的半寬，以埃（Å）為單位；
 數值越大會使每根長條變寬，使鄰近的
 峰彼此合併。</value>

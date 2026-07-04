@@ -79,17 +79,7 @@ cible, triée par distance croissante.</value>
 en angströms (Å) ; seuls les atomes situés dans
 ce rayon autour de l'atome cible sont listés.</value>
   </data>
-  <data name="label3.ToolTip" xml:space="preserve">
-    <value>Distance interatomique maximale de recherche,
-en angströms (Å) ; seuls les atomes situés dans
-ce rayon autour de l'atome cible sont listés.</value>
-  </data>
   <data name="numericUpDownWidth.ToolTip" xml:space="preserve">
-    <value>Demi-largeur des barres de l'histogramme
-des distances, en angströms (Å) ; des valeurs plus grandes
-élargissent chaque barre de sorte que les pics proches fusionnent.</value>
-  </data>
-  <data name="label2.ToolTip" xml:space="preserve">
     <value>Demi-largeur des barres de l'histogramme
 des distances, en angströms (Å) ; des valeurs plus grandes
 élargissent chaque barre de sorte que les pics proches fusionnent.</value>

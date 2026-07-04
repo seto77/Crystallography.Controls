@@ -149,7 +149,7 @@
     <value>Isotropy</value>
   </data>
   <metadata name="toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>157, 17</value>
+    <value>335, 17</value>
   </metadata>
   <data name="radioButtonIsotoropy.ToolTip" xml:space="preserve">
     <value>Use the isotropic displacement model (a single value
@@ -214,30 +214,6 @@ described by a 6-component tensor B11…B23).</value>
   <data name="flowLayoutPanelIso.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
   </data>
-  <data name="flowLayoutPanelIso.Location" type="System.Drawing.Point, System.Drawing">
-    <value>31, 28</value>
-  </data>
-  <data name="flowLayoutPanelIso.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="flowLayoutPanelIso.Size" type="System.Drawing.Size, System.Drawing">
-    <value>134, 24</value>
-  </data>
-  <data name="flowLayoutPanelIso.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanelIso.Name" xml:space="preserve">
-    <value>flowLayoutPanelIso</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanelIso.Type" xml:space="preserve">
-    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanelIso.Parent" xml:space="preserve">
-    <value>tabPageDebyeWaller</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanelIso.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="numericBoxBiso.FooterFont" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
   </data>
@@ -269,7 +245,7 @@ described by a 6-component tensor B11…B23).</value>
     <value>1, 1, 1, 1</value>
   </data>
   <data name="numericBoxBiso.Size" type="System.Drawing.Size, System.Drawing">
-    <value>74, 24</value>
+    <value>45, 24</value>
   </data>
   <data name="numericBoxBiso.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -308,7 +284,7 @@ as Biso or Uiso per the chosen notation.</value>
     <value>±</value>
   </data>
   <data name="numericBoxBisoerr.Location" type="System.Drawing.Point, System.Drawing">
-    <value>74, 0</value>
+    <value>45, 0</value>
   </data>
   <data name="numericBoxBisoerr.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -320,7 +296,7 @@ as Biso or Uiso per the chosen notation.</value>
     <value>1, 18</value>
   </data>
   <data name="numericBoxBisoerr.Size" type="System.Drawing.Size, System.Drawing">
-    <value>60, 24</value>
+    <value>45, 24</value>
   </data>
   <data name="numericBoxBisoerr.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -340,6 +316,30 @@ displacement parameter Biso/Uiso (Å²).</value>
   </data>
   <data name="&gt;&gt;numericBoxBisoerr.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="flowLayoutPanelIso.Location" type="System.Drawing.Point, System.Drawing">
+    <value>31, 28</value>
+  </data>
+  <data name="flowLayoutPanelIso.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="flowLayoutPanelIso.Size" type="System.Drawing.Size, System.Drawing">
+    <value>90, 24</value>
+  </data>
+  <data name="flowLayoutPanelIso.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanelIso.Name" xml:space="preserve">
+    <value>flowLayoutPanelIso</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanelIso.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanelIso.Parent" xml:space="preserve">
+    <value>tabPageDebyeWaller</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanelIso.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="labelX_.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -880,13 +880,13 @@ fields for the atomic coordinates and occupancy.</value>
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="numericBoxOccerr.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
+    <value>0, 5, 0, 0</value>
   </data>
   <data name="numericBoxOccerr.HeaderFont" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="numericBoxOccerr.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
+    <value>0, 5, 0, 0</value>
   </data>
   <data name="numericBoxOccerr.HeaderText" xml:space="preserve">
     <value>±</value>
@@ -931,13 +931,13 @@ fields for the atomic coordinates and occupancy.</value>
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="numericBoxOcc.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
+    <value>0, 5, 0, 0</value>
   </data>
   <data name="numericBoxOcc.HeaderFont" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="numericBoxOcc.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
+    <value>0, 5, 0, 0</value>
   </data>
   <data name="numericBoxOcc.HeaderText" xml:space="preserve">
     <value>Occ</value>
@@ -986,13 +986,13 @@ by the atom (0 = empty, 1 = fully occupied).</value>
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="numericBoxZ.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
+    <value>0, 5, 0, 0</value>
   </data>
   <data name="numericBoxZ.HeaderFont" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="numericBoxZ.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
+    <value>0, 5, 0, 0</value>
   </data>
   <data name="numericBoxZ.HeaderText" xml:space="preserve">
     <value>Z:</value>
@@ -1034,13 +1034,13 @@ by the atom (0 = empty, 1 = fully occupied).</value>
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="numericBoxYerr.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
+    <value>0, 5, 0, 0</value>
   </data>
   <data name="numericBoxYerr.HeaderFont" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="numericBoxYerr.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
+    <value>0, 5, 0, 0</value>
   </data>
   <data name="numericBoxYerr.HeaderText" xml:space="preserve">
     <value>±</value>
@@ -1083,13 +1083,13 @@ the fractional b-axis coordinate.</value>
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="numericBoxXerr.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
+    <value>0, 5, 0, 0</value>
   </data>
   <data name="numericBoxXerr.HeaderFont" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="numericBoxXerr.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
+    <value>0, 5, 0, 0</value>
   </data>
   <data name="numericBoxXerr.HeaderText" xml:space="preserve">
     <value>±</value>
@@ -1135,13 +1135,13 @@ the fractional a-axis coordinate.</value>
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="numericBoxY.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
+    <value>0, 5, 0, 0</value>
   </data>
   <data name="numericBoxY.HeaderFont" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="numericBoxY.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
+    <value>0, 5, 0, 0</value>
   </data>
   <data name="numericBoxY.HeaderText" xml:space="preserve">
     <value>Y:</value>
@@ -1186,13 +1186,13 @@ the fractional a-axis coordinate.</value>
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="numericBoxX.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
+    <value>0, 5, 0, 0</value>
   </data>
   <data name="numericBoxX.HeaderFont" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="numericBoxX.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
+    <value>0, 5, 0, 0</value>
   </data>
   <data name="numericBoxX.HeaderText" xml:space="preserve">
     <value>X:</value>
@@ -1234,13 +1234,13 @@ the fractional a-axis coordinate.</value>
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="numericBoxZerr.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
+    <value>0, 5, 0, 0</value>
   </data>
   <data name="numericBoxZerr.HeaderFont" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="numericBoxZerr.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
+    <value>0, 5, 0, 0</value>
   </data>
   <data name="numericBoxZerr.HeaderText" xml:space="preserve">
     <value>±</value>
@@ -1904,6 +1904,233 @@ to every atom's fractional coordinates
   <data name="&gt;&gt;flowLayoutPanel3.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="buttonOriginShiftCustom.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="buttonOriginShiftCustom.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="buttonOriginShiftCustom.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="buttonOriginShiftCustom.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="buttonOriginShiftCustom.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopCenter</value>
+  </data>
+  <data name="buttonOriginShiftCustom.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="buttonOriginShiftCustom.Location" type="System.Drawing.Point, System.Drawing">
+    <value>27, 0</value>
+  </data>
+  <data name="buttonOriginShiftCustom.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="buttonOriginShiftCustom.Size" type="System.Drawing.Size, System.Drawing">
+    <value>117, 25</value>
+  </data>
+  <data name="buttonOriginShiftCustom.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="buttonOriginShiftCustom.Text" xml:space="preserve">
+    <value>Apply custom shift</value>
+  </data>
+  <data name="buttonOriginShiftCustom.ToolTip" xml:space="preserve">
+    <value>Shift the fractional coordinates of all atoms
+by the custom (x, y, z) values entered below,
+then regenerate symmetry-equivalent positions.</value>
+  </data>
+  <data name="&gt;&gt;buttonOriginShiftCustom.Name" xml:space="preserve">
+    <value>buttonOriginShiftCustom</value>
+  </data>
+  <data name="&gt;&gt;buttonOriginShiftCustom.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;buttonOriginShiftCustom.Parent" xml:space="preserve">
+    <value>flowLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;buttonOriginShiftCustom.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="flowLayoutPanel2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="numericBoxOriginShiftX.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="numericBoxOriginShiftX.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 3, 0, 0</value>
+  </data>
+  <data name="numericBoxOriginShiftX.HeaderFont" type="System.Drawing.Font, System.Drawing">
+    <value>Tahoma, 9.75pt</value>
+  </data>
+  <data name="numericBoxOriginShiftX.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxOriginShiftX.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="numericBoxOriginShiftX.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="numericBoxOriginShiftX.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1000, 28</value>
+  </data>
+  <data name="numericBoxOriginShiftX.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 18</value>
+  </data>
+  <data name="numericBoxOriginShiftX.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>1, 1, 1, 1</value>
+  </data>
+  <data name="numericBoxOriginShiftX.Size" type="System.Drawing.Size, System.Drawing">
+    <value>46, 25</value>
+  </data>
+  <data name="numericBoxOriginShiftX.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="numericBoxOriginShiftX.ToolTip" xml:space="preserve">
+    <value>Origin shift along a (x), in fractional
+coordinates (range -1 to 1); applied to
+all atoms with "Apply custom shift".</value>
+  </data>
+  <data name="&gt;&gt;numericBoxOriginShiftX.Name" xml:space="preserve">
+    <value>numericBoxOriginShiftX</value>
+  </data>
+  <data name="&gt;&gt;numericBoxOriginShiftX.Type" xml:space="preserve">
+    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;numericBoxOriginShiftX.Parent" xml:space="preserve">
+    <value>flowLayoutPanel2</value>
+  </data>
+  <data name="&gt;&gt;numericBoxOriginShiftX.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="numericBoxOriginShiftY.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="numericBoxOriginShiftY.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 3, 0, 0</value>
+  </data>
+  <data name="numericBoxOriginShiftY.HeaderFont" type="System.Drawing.Font, System.Drawing">
+    <value>Tahoma, 9.75pt</value>
+  </data>
+  <data name="numericBoxOriginShiftY.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxOriginShiftY.Location" type="System.Drawing.Point, System.Drawing">
+    <value>46, 0</value>
+  </data>
+  <data name="numericBoxOriginShiftY.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="numericBoxOriginShiftY.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1000, 28</value>
+  </data>
+  <data name="numericBoxOriginShiftY.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 18</value>
+  </data>
+  <data name="numericBoxOriginShiftY.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>1, 1, 1, 1</value>
+  </data>
+  <data name="numericBoxOriginShiftY.Size" type="System.Drawing.Size, System.Drawing">
+    <value>46, 25</value>
+  </data>
+  <data name="numericBoxOriginShiftY.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="numericBoxOriginShiftY.ToolTip" xml:space="preserve">
+    <value>Origin shift along b (y), in fractional
+coordinates (range -1 to 1); applied to
+all atoms with "Apply custom shift".</value>
+  </data>
+  <data name="&gt;&gt;numericBoxOriginShiftY.Name" xml:space="preserve">
+    <value>numericBoxOriginShiftY</value>
+  </data>
+  <data name="&gt;&gt;numericBoxOriginShiftY.Type" xml:space="preserve">
+    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;numericBoxOriginShiftY.Parent" xml:space="preserve">
+    <value>flowLayoutPanel2</value>
+  </data>
+  <data name="&gt;&gt;numericBoxOriginShiftY.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="numericBoxOriginShiftZ.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="numericBoxOriginShiftZ.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 3, 0, 0</value>
+  </data>
+  <data name="numericBoxOriginShiftZ.HeaderFont" type="System.Drawing.Font, System.Drawing">
+    <value>Tahoma, 9.75pt</value>
+  </data>
+  <data name="numericBoxOriginShiftZ.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxOriginShiftZ.Location" type="System.Drawing.Point, System.Drawing">
+    <value>92, 0</value>
+  </data>
+  <data name="numericBoxOriginShiftZ.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="numericBoxOriginShiftZ.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1000, 28</value>
+  </data>
+  <data name="numericBoxOriginShiftZ.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 18</value>
+  </data>
+  <data name="numericBoxOriginShiftZ.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>1, 1, 1, 1</value>
+  </data>
+  <data name="numericBoxOriginShiftZ.Size" type="System.Drawing.Size, System.Drawing">
+    <value>46, 25</value>
+  </data>
+  <data name="numericBoxOriginShiftZ.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="numericBoxOriginShiftZ.ToolTip" xml:space="preserve">
+    <value>Origin shift along c (z), in fractional
+coordinates (range -1 to 1); applied to
+all atoms with "Apply custom shift".</value>
+  </data>
+  <data name="&gt;&gt;numericBoxOriginShiftZ.Name" xml:space="preserve">
+    <value>numericBoxOriginShiftZ</value>
+  </data>
+  <data name="&gt;&gt;numericBoxOriginShiftZ.Type" xml:space="preserve">
+    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;numericBoxOriginShiftZ.Parent" xml:space="preserve">
+    <value>flowLayoutPanel2</value>
+  </data>
+  <data name="&gt;&gt;numericBoxOriginShiftZ.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="flowLayoutPanel2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 28</value>
+  </data>
+  <data name="flowLayoutPanel2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>138, 25</value>
+  </data>
+  <data name="flowLayoutPanel2.TabIndex" type="System.Int32, mscorlib">
+    <value>207</value>
+  </data>
+  <data name="flowLayoutPanel2.WrapContents" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel2.Name" xml:space="preserve">
+    <value>flowLayoutPanel2</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel2.Parent" xml:space="preserve">
+    <value>flowLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel2.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="flowLayoutPanel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Right</value>
   </data>
@@ -1958,389 +2185,710 @@ to every atom's fractional coordinates
   <data name="&gt;&gt;tabPageOriginShift.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="tabPageDebyeWaller.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 24</value>
+  <data name="checkBoxDetailsDebyeWallerError.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
-  <data name="tabPageDebyeWaller.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
+  <data name="checkBoxDetailsDebyeWallerError.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Right</value>
   </data>
-  <data name="tabPageDebyeWaller.Size" type="System.Drawing.Size, System.Drawing">
-    <value>568, 75</value>
+  <data name="checkBoxDetailsDebyeWallerError.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
   </data>
-  <data name="tabPageDebyeWaller.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+  <data name="checkBoxDetailsDebyeWallerError.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
-  <data name="tabPageDebyeWaller.Text" xml:space="preserve">
-    <value>Debye-Waller Factor</value>
+  <data name="checkBoxDetailsDebyeWallerError.Location" type="System.Drawing.Point, System.Drawing">
+    <value>510, 25</value>
   </data>
-  <data name="tabPageDebyeWaller.ToolTip" xml:space="preserve">
-    <value>Settings tab for the Debye-Waller factor</value>
+  <data name="checkBoxDetailsDebyeWallerError.Size" type="System.Drawing.Size, System.Drawing">
+    <value>55, 47</value>
   </data>
-  <data name="&gt;&gt;tabPageDebyeWaller.Name" xml:space="preserve">
+  <data name="checkBoxDetailsDebyeWallerError.TabIndex" type="System.Int32, mscorlib">
+    <value>306</value>
+  </data>
+  <data name="checkBoxDetailsDebyeWallerError.Text" xml:space="preserve">
+    <value>Show
+Error</value>
+  </data>
+  <data name="checkBoxDetailsDebyeWallerError.ToolTip" xml:space="preserve">
+    <value>Show the uncertainty (standard-deviation) input
+fields for the Debye–Waller temperature factors
+(thermal displacement parameters Biso/Uiso and
+anisotropic Bij/Uij), which damp diffraction
+intensity from thermal atomic vibration.</value>
+  </data>
+  <data name="&gt;&gt;checkBoxDetailsDebyeWallerError.Name" xml:space="preserve">
+    <value>checkBoxDetailsDebyeWallerError</value>
+  </data>
+  <data name="&gt;&gt;checkBoxDetailsDebyeWallerError.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBoxDetailsDebyeWallerError.Parent" xml:space="preserve">
     <value>tabPageDebyeWaller</value>
   </data>
-  <data name="&gt;&gt;tabPageDebyeWaller.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabPageDebyeWaller.Parent" xml:space="preserve">
-    <value>tabControl</value>
-  </data>
-  <data name="&gt;&gt;tabPageDebyeWaller.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="tabPageScatteringFactor.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 24</value>
-  </data>
-  <data name="tabPageScatteringFactor.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="tabPageScatteringFactor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>568, 75</value>
-  </data>
-  <data name="tabPageScatteringFactor.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="tabPageScatteringFactor.Text" xml:space="preserve">
-    <value>Scattering Factor</value>
-  </data>
-  <data name="&gt;&gt;tabPageScatteringFactor.Name" xml:space="preserve">
-    <value>tabPageScatteringFactor</value>
-  </data>
-  <data name="&gt;&gt;tabPageScatteringFactor.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabPageScatteringFactor.Parent" xml:space="preserve">
-    <value>tabControl</value>
-  </data>
-  <data name="&gt;&gt;tabPageScatteringFactor.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="tabPageAppearance.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 24</value>
-  </data>
-  <data name="tabPageAppearance.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="tabPageAppearance.Size" type="System.Drawing.Size, System.Drawing">
-    <value>568, 75</value>
-  </data>
-  <data name="tabPageAppearance.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="tabPageAppearance.Text" xml:space="preserve">
-    <value>Appearance</value>
-  </data>
-  <data name="&gt;&gt;tabPageAppearance.Name" xml:space="preserve">
-    <value>tabPageAppearance</value>
-  </data>
-  <data name="&gt;&gt;tabPageAppearance.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabPageAppearance.Parent" xml:space="preserve">
-    <value>tabControl</value>
-  </data>
-  <data name="&gt;&gt;tabPageAppearance.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="tabControl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Bottom</value>
-  </data>
-  <data name="tabControl.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="tabControl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 247</value>
-  </data>
-  <data name="tabControl.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="tabControl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>576, 103</value>
-  </data>
-  <data name="tabControl.TabIndex" type="System.Int32, mscorlib">
-    <value>125</value>
-  </data>
-  <data name="&gt;&gt;tabControl.Name" xml:space="preserve">
-    <value>tabControl</value>
-  </data>
-  <data name="&gt;&gt;tabControl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabControl.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;tabControl.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="buttonOriginShiftCustom.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="buttonOriginShiftCustom.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="buttonOriginShiftCustom.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
-  </data>
-  <data name="buttonOriginShiftCustom.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="buttonOriginShiftCustom.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>TopCenter</value>
-  </data>
-  <data name="buttonOriginShiftCustom.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="buttonOriginShiftCustom.Location" type="System.Drawing.Point, System.Drawing">
-    <value>27, 0</value>
-  </data>
-  <data name="buttonOriginShiftCustom.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="buttonOriginShiftCustom.Size" type="System.Drawing.Size, System.Drawing">
-    <value>117, 25</value>
-  </data>
-  <data name="buttonOriginShiftCustom.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="buttonOriginShiftCustom.Text" xml:space="preserve">
-    <value>Apply custom shift</value>
-  </data>
-  <data name="buttonOriginShiftCustom.ToolTip" xml:space="preserve">
-    <value>Shift the fractional coordinates of all atoms
-by the custom (x, y, z) values entered below,
-then regenerate symmetry-equivalent positions.</value>
-  </data>
-  <data name="&gt;&gt;buttonOriginShiftCustom.Name" xml:space="preserve">
-    <value>buttonOriginShiftCustom</value>
-  </data>
-  <data name="&gt;&gt;buttonOriginShiftCustom.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;buttonOriginShiftCustom.Parent" xml:space="preserve">
-    <value>flowLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;buttonOriginShiftCustom.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="numericBoxOriginShiftZ.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="numericBoxOriginShiftZ.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 0</value>
-  </data>
-  <data name="numericBoxOriginShiftZ.HeaderFont" type="System.Drawing.Font, System.Drawing">
-    <value>Tahoma, 9.75pt</value>
-  </data>
-  <data name="numericBoxOriginShiftZ.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxOriginShiftZ.Location" type="System.Drawing.Point, System.Drawing">
-    <value>92, 0</value>
-  </data>
-  <data name="numericBoxOriginShiftZ.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="numericBoxOriginShiftZ.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 28</value>
-  </data>
-  <data name="numericBoxOriginShiftZ.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 18</value>
-  </data>
-  <data name="numericBoxOriginShiftZ.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>1, 1, 1, 1</value>
-  </data>
-  <data name="numericBoxOriginShiftZ.Size" type="System.Drawing.Size, System.Drawing">
-    <value>46, 25</value>
-  </data>
-  <data name="numericBoxOriginShiftZ.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="numericBoxOriginShiftZ.ToolTip" xml:space="preserve">
-    <value>Origin shift along c (z), in fractional
-coordinates (range -1 to 1); applied to
-all atoms with "Apply custom shift".</value>
-  </data>
-  <data name="numericBoxOriginShiftY.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="numericBoxOriginShiftY.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 0</value>
-  </data>
-  <data name="numericBoxOriginShiftY.HeaderFont" type="System.Drawing.Font, System.Drawing">
-    <value>Tahoma, 9.75pt</value>
-  </data>
-  <data name="numericBoxOriginShiftY.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxOriginShiftY.Location" type="System.Drawing.Point, System.Drawing">
-    <value>46, 0</value>
-  </data>
-  <data name="numericBoxOriginShiftY.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="numericBoxOriginShiftY.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 28</value>
-  </data>
-  <data name="numericBoxOriginShiftY.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 18</value>
-  </data>
-  <data name="numericBoxOriginShiftY.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>1, 1, 1, 1</value>
-  </data>
-  <data name="numericBoxOriginShiftY.Size" type="System.Drawing.Size, System.Drawing">
-    <value>46, 25</value>
-  </data>
-  <data name="numericBoxOriginShiftY.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="numericBoxOriginShiftY.ToolTip" xml:space="preserve">
-    <value>Origin shift along b (y), in fractional
-coordinates (range -1 to 1); applied to
-all atoms with "Apply custom shift".</value>
-  </data>
-  <data name="numericBoxOriginShiftX.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="numericBoxOriginShiftX.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 0</value>
-  </data>
-  <data name="numericBoxOriginShiftX.HeaderFont" type="System.Drawing.Font, System.Drawing">
-    <value>Tahoma, 9.75pt</value>
-  </data>
-  <data name="numericBoxOriginShiftX.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxOriginShiftX.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="numericBoxOriginShiftX.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="numericBoxOriginShiftX.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 28</value>
-  </data>
-  <data name="numericBoxOriginShiftX.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 18</value>
-  </data>
-  <data name="numericBoxOriginShiftX.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>1, 1, 1, 1</value>
-  </data>
-  <data name="numericBoxOriginShiftX.Size" type="System.Drawing.Size, System.Drawing">
-    <value>46, 25</value>
-  </data>
-  <data name="numericBoxOriginShiftX.TabIndex" type="System.Int32, mscorlib">
+  <data name="&gt;&gt;checkBoxDetailsDebyeWallerError.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="numericBoxOriginShiftX.ToolTip" xml:space="preserve">
-    <value>Origin shift along a (x), in fractional
-coordinates (range -1 to 1); applied to
-all atoms with "Apply custom shift".</value>
-  </data>
-  <data name="flowLayoutPanel6.AutoSize" type="System.Boolean, mscorlib">
+  <data name="flowLayoutPanelAniso2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="flowLayoutPanel6.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+  <data name="flowLayoutPanelAniso2.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
   </data>
-  <data name="flowLayoutPanel6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>335, 3</value>
-  </data>
-  <data name="flowLayoutPanel6.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 0</value>
-  </data>
-  <data name="flowLayoutPanel6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 15</value>
-  </data>
-  <data name="flowLayoutPanel6.TabIndex" type="System.Int32, mscorlib">
-    <value>309</value>
-  </data>
-  <data name="label14.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label14.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="numericBoxB22.FooterFont" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
   </data>
-  <data name="label14.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="numericBoxB22.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
   </data>
-  <data name="label14.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="numericBoxB22.HeaderFont" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="numericBoxB22.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxB22.HeaderText" xml:space="preserve">
+    <value>B12</value>
+  </data>
+  <data name="numericBoxB22.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="label14.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="numericBoxB22.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 15</value>
+  <data name="numericBoxB22.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1000, 28</value>
   </data>
-  <data name="label14.TabIndex" type="System.Int32, mscorlib">
-    <value>308</value>
+  <data name="numericBoxB22.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 18</value>
   </data>
-  <data name="label14.Text" xml:space="preserve">
-    <value>Dimension: </value>
+  <data name="numericBoxB22.Size" type="System.Drawing.Size, System.Drawing">
+    <value>45, 24</value>
   </data>
-  <data name="label14.ToolTip" xml:space="preserve">
-    <value>Physical dimension (unit) of the displacement
-parameter for the current notation: Å² for U (and
-isotropic B), dimensionless for anisotropic B.</value>
-  </data>
-  <data name="&gt;&gt;label14.Name" xml:space="preserve">
-    <value>label14</value>
-  </data>
-  <data name="&gt;&gt;label14.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label14.Parent" xml:space="preserve">
-    <value>flowLayoutPanel6</value>
-  </data>
-  <data name="&gt;&gt;label14.ZOrder" xml:space="preserve">
+  <data name="numericBoxB22.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="labelDimension.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="numericBoxB22.ToolTip" xml:space="preserve">
+    <value>Anisotropic atomic displacement parameter, component
+22 (Å²) — direction-dependent thermal vibration;
+shown as B22 or U22 per the chosen notation.</value>
   </data>
-  <data name="labelDimension.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="&gt;&gt;numericBoxB22.Name" xml:space="preserve">
+    <value>numericBoxB22</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB22.Type" xml:space="preserve">
+    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB22.Parent" xml:space="preserve">
+    <value>flowLayoutPanelAniso2</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB22.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="numericBoxB22err.FooterFont" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
   </data>
-  <data name="labelDimension.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="numericBoxB22err.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
   </data>
-  <data name="labelDimension.Location" type="System.Drawing.Point, System.Drawing">
-    <value>405, 3</value>
+  <data name="numericBoxB22err.HeaderFont" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
   </data>
-  <data name="labelDimension.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 0</value>
+  <data name="numericBoxB22err.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
   </data>
-  <data name="labelDimension.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 15</value>
+  <data name="numericBoxB22err.HeaderText" xml:space="preserve">
+    <value>±</value>
   </data>
-  <data name="labelDimension.TabIndex" type="System.Int32, mscorlib">
-    <value>308</value>
+  <data name="numericBoxB22err.Location" type="System.Drawing.Point, System.Drawing">
+    <value>45, 0</value>
   </data>
-  <data name="labelDimension.Text" xml:space="preserve">
-    <value>None</value>
+  <data name="numericBoxB22err.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
   </data>
-  <data name="labelDimension.ToolTip" xml:space="preserve">
-    <value>Current unit of the displacement
-parameter: Å² for U (and isotropic B);
-"None" (dimensionless) for anisotropic B.</value>
+  <data name="numericBoxB22err.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1000, 28</value>
+  </data>
+  <data name="numericBoxB22err.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 18</value>
+  </data>
+  <data name="numericBoxB22err.Size" type="System.Drawing.Size, System.Drawing">
+    <value>45, 24</value>
+  </data>
+  <data name="numericBoxB22err.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="numericBoxB22err.ToolTip" xml:space="preserve">
+    <value>Standard deviation (error) of the 22 component
+of the anisotropic displacement parameter (Å²).</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB22err.Name" xml:space="preserve">
+    <value>numericBoxB22err</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB22err.Type" xml:space="preserve">
+    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB22err.Parent" xml:space="preserve">
+    <value>flowLayoutPanelAniso2</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB22err.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="numericBoxB23.FooterFont" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="numericBoxB23.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxB23.HeaderFont" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="numericBoxB23.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxB23.HeaderText" xml:space="preserve">
+    <value>B23</value>
+  </data>
+  <data name="numericBoxB23.Location" type="System.Drawing.Point, System.Drawing">
+    <value>95, 0</value>
+  </data>
+  <data name="numericBoxB23.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 0, 0, 0</value>
+  </data>
+  <data name="numericBoxB23.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1000, 28</value>
+  </data>
+  <data name="numericBoxB23.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 18</value>
+  </data>
+  <data name="numericBoxB23.Size" type="System.Drawing.Size, System.Drawing">
+    <value>45, 24</value>
+  </data>
+  <data name="numericBoxB23.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="numericBoxB23.ToolTip" xml:space="preserve">
+    <value>Anisotropic atomic displacement parameter, component
+23 (Å²) — direction-dependent thermal vibration;
+shown as B23 or U23 per the chosen notation.</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB23.Name" xml:space="preserve">
+    <value>numericBoxB23</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB23.Type" xml:space="preserve">
+    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB23.Parent" xml:space="preserve">
+    <value>flowLayoutPanelAniso2</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB23.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="numericBoxB23err.FooterFont" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="numericBoxB23err.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxB23err.HeaderFont" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="numericBoxB23err.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxB23err.HeaderText" xml:space="preserve">
+    <value>±</value>
+  </data>
+  <data name="numericBoxB23err.Location" type="System.Drawing.Point, System.Drawing">
+    <value>140, 0</value>
+  </data>
+  <data name="numericBoxB23err.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="numericBoxB23err.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1000, 28</value>
+  </data>
+  <data name="numericBoxB23err.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 18</value>
+  </data>
+  <data name="numericBoxB23err.Size" type="System.Drawing.Size, System.Drawing">
+    <value>45, 24</value>
+  </data>
+  <data name="numericBoxB23err.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="numericBoxB23err.ToolTip" xml:space="preserve">
+    <value>Standard deviation (error) of the 23 component
+of the anisotropic displacement parameter (Å²).</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB23err.Name" xml:space="preserve">
+    <value>numericBoxB23err</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB23err.Type" xml:space="preserve">
+    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB23err.Parent" xml:space="preserve">
+    <value>flowLayoutPanelAniso2</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB23err.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="numericBoxB33.FooterFont" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="numericBoxB33.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxB33.HeaderFont" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="numericBoxB33.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxB33.HeaderText" xml:space="preserve">
+    <value>B31</value>
+  </data>
+  <data name="numericBoxB33.Location" type="System.Drawing.Point, System.Drawing">
+    <value>190, 0</value>
+  </data>
+  <data name="numericBoxB33.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 0, 0, 0</value>
+  </data>
+  <data name="numericBoxB33.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1000, 28</value>
+  </data>
+  <data name="numericBoxB33.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 18</value>
+  </data>
+  <data name="numericBoxB33.Size" type="System.Drawing.Size, System.Drawing">
+    <value>45, 24</value>
+  </data>
+  <data name="numericBoxB33.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="numericBoxB33.ToolTip" xml:space="preserve">
+    <value>Anisotropic atomic displacement parameter, component
+33 (Å²) — direction-dependent thermal vibration;
+shown as B33 or U33 per the chosen notation.</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB33.Name" xml:space="preserve">
+    <value>numericBoxB33</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB33.Type" xml:space="preserve">
+    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB33.Parent" xml:space="preserve">
+    <value>flowLayoutPanelAniso2</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB33.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="numericBoxB33err.FooterFont" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="numericBoxB33err.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxB33err.HeaderFont" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="numericBoxB33err.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxB33err.HeaderText" xml:space="preserve">
+    <value>±</value>
+  </data>
+  <data name="numericBoxB33err.Location" type="System.Drawing.Point, System.Drawing">
+    <value>235, 0</value>
+  </data>
+  <data name="numericBoxB33err.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="numericBoxB33err.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1000, 28</value>
+  </data>
+  <data name="numericBoxB33err.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 18</value>
+  </data>
+  <data name="numericBoxB33err.Size" type="System.Drawing.Size, System.Drawing">
+    <value>45, 24</value>
+  </data>
+  <data name="numericBoxB33err.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="numericBoxB33err.ToolTip" xml:space="preserve">
+    <value>Standard deviation (error) of the 33 component
+of the anisotropic displacement parameter (Å²).</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB33err.Name" xml:space="preserve">
+    <value>numericBoxB33err</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB33err.Type" xml:space="preserve">
+    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB33err.Parent" xml:space="preserve">
+    <value>flowLayoutPanelAniso2</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB33err.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="flowLayoutPanelAniso2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>32, 50</value>
+  </data>
+  <data name="flowLayoutPanelAniso2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>280, 24</value>
+  </data>
+  <data name="flowLayoutPanelAniso2.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanelAniso2.Name" xml:space="preserve">
+    <value>flowLayoutPanelAniso2</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanelAniso2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanelAniso2.Parent" xml:space="preserve">
+    <value>tabPageDebyeWaller</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanelAniso2.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="flowLayoutPanelAniso1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="flowLayoutPanelAniso1.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="numericBoxB11.FooterFont" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="numericBoxB11.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxB11.HeaderFont" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="numericBoxB11.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxB11.HeaderText" xml:space="preserve">
+    <value>B11</value>
+  </data>
+  <data name="numericBoxB11.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="numericBoxB11.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="numericBoxB11.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1000, 28</value>
+  </data>
+  <data name="numericBoxB11.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 18</value>
+  </data>
+  <data name="numericBoxB11.Size" type="System.Drawing.Size, System.Drawing">
+    <value>45, 24</value>
+  </data>
+  <data name="numericBoxB11.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="numericBoxB11.ToolTip" xml:space="preserve">
+    <value>Anisotropic atomic displacement parameter,
+component 11 (Å²) — describes the
+direction-dependent thermal vibration of this
+atom; shown as B11 or U11 per the chosen notation.</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB11.Name" xml:space="preserve">
+    <value>numericBoxB11</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB11.Type" xml:space="preserve">
+    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB11.Parent" xml:space="preserve">
+    <value>flowLayoutPanelAniso1</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB11.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="numericBoxB11err.FooterFont" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="numericBoxB11err.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxB11err.HeaderFont" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="numericBoxB11err.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxB11err.HeaderText" xml:space="preserve">
+    <value>±</value>
+  </data>
+  <data name="numericBoxB11err.Location" type="System.Drawing.Point, System.Drawing">
+    <value>45, 0</value>
+  </data>
+  <data name="numericBoxB11err.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="numericBoxB11err.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1000, 28</value>
+  </data>
+  <data name="numericBoxB11err.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 18</value>
+  </data>
+  <data name="numericBoxB11err.Size" type="System.Drawing.Size, System.Drawing">
+    <value>45, 24</value>
+  </data>
+  <data name="numericBoxB11err.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="numericBoxB11err.ToolTip" xml:space="preserve">
+    <value>Standard deviation (error) of the 11 component
+of the anisotropic displacement parameter (Å²).</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB11err.Name" xml:space="preserve">
+    <value>numericBoxB11err</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB11err.Type" xml:space="preserve">
+    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB11err.Parent" xml:space="preserve">
+    <value>flowLayoutPanelAniso1</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB11err.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="numericBoxB12.FooterFont" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="numericBoxB12.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxB12.HeaderFont" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="numericBoxB12.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxB12.HeaderText" xml:space="preserve">
+    <value>B22</value>
+  </data>
+  <data name="numericBoxB12.Location" type="System.Drawing.Point, System.Drawing">
+    <value>95, 0</value>
+  </data>
+  <data name="numericBoxB12.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 0, 0, 0</value>
+  </data>
+  <data name="numericBoxB12.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1000, 28</value>
+  </data>
+  <data name="numericBoxB12.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 18</value>
+  </data>
+  <data name="numericBoxB12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>45, 24</value>
+  </data>
+  <data name="numericBoxB12.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="numericBoxB12.ToolTip" xml:space="preserve">
+    <value>Anisotropic atomic displacement parameter, component
+12 (Å²) — direction-dependent thermal vibration;
+shown as B12 or U12 per the chosen notation.</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB12.Name" xml:space="preserve">
+    <value>numericBoxB12</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB12.Type" xml:space="preserve">
+    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB12.Parent" xml:space="preserve">
+    <value>flowLayoutPanelAniso1</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB12.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="numericBoxB12err.FooterFont" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="numericBoxB12err.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxB12err.HeaderFont" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="numericBoxB12err.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxB12err.HeaderText" xml:space="preserve">
+    <value>±</value>
+  </data>
+  <data name="numericBoxB12err.Location" type="System.Drawing.Point, System.Drawing">
+    <value>140, 0</value>
+  </data>
+  <data name="numericBoxB12err.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="numericBoxB12err.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1000, 28</value>
+  </data>
+  <data name="numericBoxB12err.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 18</value>
+  </data>
+  <data name="numericBoxB12err.Size" type="System.Drawing.Size, System.Drawing">
+    <value>45, 24</value>
+  </data>
+  <data name="numericBoxB12err.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="numericBoxB12err.ToolTip" xml:space="preserve">
+    <value>Standard deviation (error) of the 12 component
+of the anisotropic displacement parameter (Å²).</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB12err.Name" xml:space="preserve">
+    <value>numericBoxB12err</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB12err.Type" xml:space="preserve">
+    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB12err.Parent" xml:space="preserve">
+    <value>flowLayoutPanelAniso1</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB12err.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="numericBoxB13.FooterFont" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="numericBoxB13.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxB13.HeaderFont" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="numericBoxB13.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxB13.HeaderText" xml:space="preserve">
+    <value>B11</value>
+  </data>
+  <data name="numericBoxB13.Location" type="System.Drawing.Point, System.Drawing">
+    <value>190, 0</value>
+  </data>
+  <data name="numericBoxB13.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 0, 0, 0</value>
+  </data>
+  <data name="numericBoxB13.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1000, 28</value>
+  </data>
+  <data name="numericBoxB13.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 18</value>
+  </data>
+  <data name="numericBoxB13.Size" type="System.Drawing.Size, System.Drawing">
+    <value>45, 24</value>
+  </data>
+  <data name="numericBoxB13.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="numericBoxB13.ToolTip" xml:space="preserve">
+    <value>Anisotropic atomic displacement parameter, component
+13 (Å²) — direction-dependent thermal vibration;
+shown as B13 or U13 per the chosen notation.</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB13.Name" xml:space="preserve">
+    <value>numericBoxB13</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB13.Type" xml:space="preserve">
+    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB13.Parent" xml:space="preserve">
+    <value>flowLayoutPanelAniso1</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB13.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="numericBoxB13err.FooterFont" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="numericBoxB13err.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxB13err.HeaderFont" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="numericBoxB13err.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxB13err.HeaderText" xml:space="preserve">
+    <value>±</value>
+  </data>
+  <data name="numericBoxB13err.Location" type="System.Drawing.Point, System.Drawing">
+    <value>235, 0</value>
+  </data>
+  <data name="numericBoxB13err.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="numericBoxB13err.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1000, 28</value>
+  </data>
+  <data name="numericBoxB13err.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 18</value>
+  </data>
+  <data name="numericBoxB13err.Size" type="System.Drawing.Size, System.Drawing">
+    <value>45, 24</value>
+  </data>
+  <data name="numericBoxB13err.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="numericBoxB13err.ToolTip" xml:space="preserve">
+    <value>Standard deviation (error) of the 13 component
+of the anisotropic displacement parameter (Å²).</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB13err.Name" xml:space="preserve">
+    <value>numericBoxB13err</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB13err.Type" xml:space="preserve">
+    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB13err.Parent" xml:space="preserve">
+    <value>flowLayoutPanelAniso1</value>
+  </data>
+  <data name="&gt;&gt;numericBoxB13err.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="flowLayoutPanelAniso1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>32, 27</value>
+  </data>
+  <data name="flowLayoutPanelAniso1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>280, 24</value>
+  </data>
+  <data name="flowLayoutPanelAniso1.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanelAniso1.Name" xml:space="preserve">
+    <value>flowLayoutPanelAniso1</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanelAniso1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanelAniso1.Parent" xml:space="preserve">
+    <value>tabPageDebyeWaller</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanelAniso1.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="flowLayoutPanel8.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="flowLayoutPanel8.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="flowLayoutPanel5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="flowLayoutPanel5.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
-  </data>
-  <data name="flowLayoutPanel5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 0</value>
-  </data>
-  <data name="flowLayoutPanel5.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 0, 3, 3</value>
-  </data>
-  <data name="flowLayoutPanel5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>125, 19</value>
-  </data>
-  <data name="flowLayoutPanel5.TabIndex" type="System.Int32, mscorlib">
-    <value>307</value>
   </data>
   <data name="label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2464,23 +3012,35 @@ larger values mean stronger thermal vibration.</value>
   <data name="&gt;&gt;radioButtonDebyeWallerTypeB.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="flowLayoutPanel5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 0</value>
+  </data>
+  <data name="flowLayoutPanel5.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 0, 3, 3</value>
+  </data>
+  <data name="flowLayoutPanel5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>125, 19</value>
+  </data>
+  <data name="flowLayoutPanel5.TabIndex" type="System.Int32, mscorlib">
+    <value>307</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel5.Name" xml:space="preserve">
+    <value>flowLayoutPanel5</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel5.Parent" xml:space="preserve">
+    <value>flowLayoutPanel8</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel5.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="flowLayoutPanel4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="flowLayoutPanel4.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
-  </data>
-  <data name="flowLayoutPanel4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>134, 0</value>
-  </data>
-  <data name="flowLayoutPanel4.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 0, 3, 3</value>
-  </data>
-  <data name="flowLayoutPanel4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 19</value>
-  </data>
-  <data name="flowLayoutPanel4.TabIndex" type="System.Int32, mscorlib">
-    <value>307</value>
   </data>
   <data name="label13.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2523,698 +3083,195 @@ for direction-dependent thermal vibration).</value>
   <data name="&gt;&gt;label13.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="checkBoxDetailsDebyeWallerError.AutoSize" type="System.Boolean, mscorlib">
+  <data name="flowLayoutPanel4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>134, 0</value>
+  </data>
+  <data name="flowLayoutPanel4.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 0, 3, 3</value>
+  </data>
+  <data name="flowLayoutPanel4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>198, 19</value>
+  </data>
+  <data name="flowLayoutPanel4.TabIndex" type="System.Int32, mscorlib">
+    <value>307</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel4.Name" xml:space="preserve">
+    <value>flowLayoutPanel4</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel4.Parent" xml:space="preserve">
+    <value>flowLayoutPanel8</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel4.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="flowLayoutPanel6.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="checkBoxDetailsDebyeWallerError.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Right</value>
+  <data name="flowLayoutPanel6.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
-  <data name="checkBoxDetailsDebyeWallerError.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="label14.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label14.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
   </data>
-  <data name="checkBoxDetailsDebyeWallerError.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="label14.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="checkBoxDetailsDebyeWallerError.Location" type="System.Drawing.Point, System.Drawing">
-    <value>510, 25</value>
-  </data>
-  <data name="checkBoxDetailsDebyeWallerError.Size" type="System.Drawing.Size, System.Drawing">
-    <value>55, 47</value>
-  </data>
-  <data name="checkBoxDetailsDebyeWallerError.TabIndex" type="System.Int32, mscorlib">
-    <value>306</value>
-  </data>
-  <data name="checkBoxDetailsDebyeWallerError.Text" xml:space="preserve">
-    <value>Show
-Error</value>
-  </data>
-  <data name="checkBoxDetailsDebyeWallerError.ToolTip" xml:space="preserve">
-    <value>Show the uncertainty (standard-deviation) input
-fields for the Debye–Waller temperature factors
-(thermal displacement parameters Biso/Uiso and
-anisotropic Bij/Uij), which damp diffraction
-intensity from thermal atomic vibration.</value>
-  </data>
-  <data name="&gt;&gt;checkBoxDetailsDebyeWallerError.Name" xml:space="preserve">
-    <value>checkBoxDetailsDebyeWallerError</value>
-  </data>
-  <data name="&gt;&gt;checkBoxDetailsDebyeWallerError.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;checkBoxDetailsDebyeWallerError.Parent" xml:space="preserve">
-    <value>tabPageDebyeWaller</value>
-  </data>
-  <data name="&gt;&gt;checkBoxDetailsDebyeWallerError.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="flowLayoutPanelAniso2.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="flowLayoutPanelAniso2.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
-  </data>
-  <data name="flowLayoutPanelAniso2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>32, 50</value>
-  </data>
-  <data name="flowLayoutPanelAniso2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>403, 24</value>
-  </data>
-  <data name="flowLayoutPanelAniso2.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanelAniso2.Name" xml:space="preserve">
-    <value>flowLayoutPanelAniso2</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanelAniso2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanelAniso2.Parent" xml:space="preserve">
-    <value>tabPageDebyeWaller</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanelAniso2.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="numericBoxB22.FooterFont" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="numericBoxB22.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxB22.HeaderFont" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="numericBoxB22.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxB22.HeaderText" xml:space="preserve">
-    <value>B12</value>
-  </data>
-  <data name="numericBoxB22.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="label14.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="numericBoxB22.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="label14.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="numericBoxB22.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 28</value>
+  <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
+    <value>70, 15</value>
   </data>
-  <data name="numericBoxB22.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 18</value>
+  <data name="label14.TabIndex" type="System.Int32, mscorlib">
+    <value>308</value>
   </data>
-  <data name="numericBoxB22.Size" type="System.Drawing.Size, System.Drawing">
-    <value>71, 24</value>
+  <data name="label14.Text" xml:space="preserve">
+    <value>Dimension: </value>
   </data>
-  <data name="numericBoxB22.TabIndex" type="System.Int32, mscorlib">
+  <data name="label14.ToolTip" xml:space="preserve">
+    <value>Physical dimension (unit) of the displacement
+parameter for the current notation: Å² for U (and
+isotropic B), dimensionless for anisotropic B.</value>
+  </data>
+  <data name="&gt;&gt;label14.Name" xml:space="preserve">
+    <value>label14</value>
+  </data>
+  <data name="&gt;&gt;label14.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label14.Parent" xml:space="preserve">
+    <value>flowLayoutPanel6</value>
+  </data>
+  <data name="&gt;&gt;label14.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="numericBoxB22.ToolTip" xml:space="preserve">
-    <value>Anisotropic atomic displacement parameter, component
-22 (Å²) — direction-dependent thermal vibration;
-shown as B22 or U22 per the chosen notation.</value>
+  <data name="flowLayoutPanel6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>335, 3</value>
   </data>
-  <data name="&gt;&gt;numericBoxB22.Name" xml:space="preserve">
-    <value>numericBoxB22</value>
+  <data name="flowLayoutPanel6.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 3, 0, 0</value>
   </data>
-  <data name="&gt;&gt;numericBoxB22.Type" xml:space="preserve">
-    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
+  <data name="flowLayoutPanel6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>70, 15</value>
   </data>
-  <data name="&gt;&gt;numericBoxB22.Parent" xml:space="preserve">
-    <value>flowLayoutPanelAniso2</value>
+  <data name="flowLayoutPanel6.TabIndex" type="System.Int32, mscorlib">
+    <value>309</value>
   </data>
-  <data name="&gt;&gt;numericBoxB22.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="&gt;&gt;flowLayoutPanel6.Name" xml:space="preserve">
+    <value>flowLayoutPanel6</value>
   </data>
-  <data name="numericBoxB22err.FooterFont" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="numericBoxB22err.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxB22err.HeaderFont" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="numericBoxB22err.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxB22err.HeaderText" xml:space="preserve">
-    <value>±</value>
-  </data>
-  <data name="numericBoxB22err.Location" type="System.Drawing.Point, System.Drawing">
-    <value>71, 0</value>
-  </data>
-  <data name="numericBoxB22err.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="numericBoxB22err.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 28</value>
-  </data>
-  <data name="numericBoxB22err.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 18</value>
-  </data>
-  <data name="numericBoxB22err.Size" type="System.Drawing.Size, System.Drawing">
-    <value>60, 24</value>
-  </data>
-  <data name="numericBoxB22err.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="numericBoxB22err.ToolTip" xml:space="preserve">
-    <value>Standard deviation (error) of the 22 component
-of the anisotropic displacement parameter (Å²).</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB22err.Name" xml:space="preserve">
-    <value>numericBoxB22err</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB22err.Type" xml:space="preserve">
-    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB22err.Parent" xml:space="preserve">
-    <value>flowLayoutPanelAniso2</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB22err.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="numericBoxB23.FooterFont" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="numericBoxB23.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxB23.HeaderFont" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="numericBoxB23.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxB23.HeaderText" xml:space="preserve">
-    <value>B23</value>
-  </data>
-  <data name="numericBoxB23.Location" type="System.Drawing.Point, System.Drawing">
-    <value>136, 0</value>
-  </data>
-  <data name="numericBoxB23.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>5, 0, 0, 0</value>
-  </data>
-  <data name="numericBoxB23.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 28</value>
-  </data>
-  <data name="numericBoxB23.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 18</value>
-  </data>
-  <data name="numericBoxB23.Size" type="System.Drawing.Size, System.Drawing">
-    <value>71, 24</value>
-  </data>
-  <data name="numericBoxB23.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="numericBoxB23.ToolTip" xml:space="preserve">
-    <value>Anisotropic atomic displacement parameter, component
-23 (Å²) — direction-dependent thermal vibration;
-shown as B23 or U23 per the chosen notation.</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB23.Name" xml:space="preserve">
-    <value>numericBoxB23</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB23.Type" xml:space="preserve">
-    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB23.Parent" xml:space="preserve">
-    <value>flowLayoutPanelAniso2</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB23.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="numericBoxB23err.FooterFont" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="numericBoxB23err.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxB23err.HeaderFont" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="numericBoxB23err.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxB23err.HeaderText" xml:space="preserve">
-    <value>±</value>
-  </data>
-  <data name="numericBoxB23err.Location" type="System.Drawing.Point, System.Drawing">
-    <value>207, 0</value>
-  </data>
-  <data name="numericBoxB23err.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="numericBoxB23err.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 28</value>
-  </data>
-  <data name="numericBoxB23err.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 18</value>
-  </data>
-  <data name="numericBoxB23err.Size" type="System.Drawing.Size, System.Drawing">
-    <value>60, 24</value>
-  </data>
-  <data name="numericBoxB23err.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="numericBoxB23err.ToolTip" xml:space="preserve">
-    <value>Standard deviation (error) of the 23 component
-of the anisotropic displacement parameter (Å²).</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB23err.Name" xml:space="preserve">
-    <value>numericBoxB23err</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB23err.Type" xml:space="preserve">
-    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB23err.Parent" xml:space="preserve">
-    <value>flowLayoutPanelAniso2</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB23err.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="numericBoxB33.FooterFont" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="numericBoxB33.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxB33.HeaderFont" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="numericBoxB33.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxB33.HeaderText" xml:space="preserve">
-    <value>B31</value>
-  </data>
-  <data name="numericBoxB33.Location" type="System.Drawing.Point, System.Drawing">
-    <value>272, 0</value>
-  </data>
-  <data name="numericBoxB33.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>5, 0, 0, 0</value>
-  </data>
-  <data name="numericBoxB33.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 28</value>
-  </data>
-  <data name="numericBoxB33.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 18</value>
-  </data>
-  <data name="numericBoxB33.Size" type="System.Drawing.Size, System.Drawing">
-    <value>71, 24</value>
-  </data>
-  <data name="numericBoxB33.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="numericBoxB33.ToolTip" xml:space="preserve">
-    <value>Anisotropic atomic displacement parameter, component
-33 (Å²) — direction-dependent thermal vibration;
-shown as B33 or U33 per the chosen notation.</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB33.Name" xml:space="preserve">
-    <value>numericBoxB33</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB33.Type" xml:space="preserve">
-    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB33.Parent" xml:space="preserve">
-    <value>flowLayoutPanelAniso2</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB33.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="numericBoxB33err.FooterFont" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="numericBoxB33err.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxB33err.HeaderFont" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="numericBoxB33err.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxB33err.HeaderText" xml:space="preserve">
-    <value>±</value>
-  </data>
-  <data name="numericBoxB33err.Location" type="System.Drawing.Point, System.Drawing">
-    <value>343, 0</value>
-  </data>
-  <data name="numericBoxB33err.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="numericBoxB33err.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 28</value>
-  </data>
-  <data name="numericBoxB33err.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 18</value>
-  </data>
-  <data name="numericBoxB33err.Size" type="System.Drawing.Size, System.Drawing">
-    <value>60, 24</value>
-  </data>
-  <data name="numericBoxB33err.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="numericBoxB33err.ToolTip" xml:space="preserve">
-    <value>Standard deviation (error) of the 33 component
-of the anisotropic displacement parameter (Å²).</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB33err.Name" xml:space="preserve">
-    <value>numericBoxB33err</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB33err.Type" xml:space="preserve">
-    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB33err.Parent" xml:space="preserve">
-    <value>flowLayoutPanelAniso2</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB33err.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="flowLayoutPanelAniso1.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="flowLayoutPanelAniso1.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
-  </data>
-  <data name="flowLayoutPanelAniso1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>32, 27</value>
-  </data>
-  <data name="flowLayoutPanelAniso1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>403, 24</value>
-  </data>
-  <data name="flowLayoutPanelAniso1.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanelAniso1.Name" xml:space="preserve">
-    <value>flowLayoutPanelAniso1</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanelAniso1.Type" xml:space="preserve">
+  <data name="&gt;&gt;flowLayoutPanel6.Type" xml:space="preserve">
     <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;flowLayoutPanelAniso1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;flowLayoutPanel6.Parent" xml:space="preserve">
+    <value>flowLayoutPanel8</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel6.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="labelDimension.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="labelDimension.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="labelDimension.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="labelDimension.Location" type="System.Drawing.Point, System.Drawing">
+    <value>405, 3</value>
+  </data>
+  <data name="labelDimension.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 3, 0, 0</value>
+  </data>
+  <data name="labelDimension.Size" type="System.Drawing.Size, System.Drawing">
+    <value>36, 15</value>
+  </data>
+  <data name="labelDimension.TabIndex" type="System.Int32, mscorlib">
+    <value>308</value>
+  </data>
+  <data name="labelDimension.Text" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="labelDimension.ToolTip" xml:space="preserve">
+    <value>Current unit of the displacement
+parameter: Å² for U (and isotropic B);
+"None" (dimensionless) for anisotropic B.</value>
+  </data>
+  <data name="&gt;&gt;labelDimension.Name" xml:space="preserve">
+    <value>labelDimension</value>
+  </data>
+  <data name="&gt;&gt;labelDimension.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelDimension.Parent" xml:space="preserve">
+    <value>flowLayoutPanel8</value>
+  </data>
+  <data name="&gt;&gt;labelDimension.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="flowLayoutPanel8.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="flowLayoutPanel8.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="flowLayoutPanel8.Size" type="System.Drawing.Size, System.Drawing">
+    <value>562, 22</value>
+  </data>
+  <data name="flowLayoutPanel8.TabIndex" type="System.Int32, mscorlib">
+    <value>310</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel8.Name" xml:space="preserve">
+    <value>flowLayoutPanel8</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel8.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel8.Parent" xml:space="preserve">
     <value>tabPageDebyeWaller</value>
   </data>
-  <data name="&gt;&gt;flowLayoutPanelAniso1.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="numericBoxB11.FooterFont" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="numericBoxB11.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxB11.HeaderFont" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="numericBoxB11.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxB11.HeaderText" xml:space="preserve">
-    <value>B11</value>
-  </data>
-  <data name="numericBoxB11.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="numericBoxB11.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="numericBoxB11.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 28</value>
-  </data>
-  <data name="numericBoxB11.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 18</value>
-  </data>
-  <data name="numericBoxB11.Size" type="System.Drawing.Size, System.Drawing">
-    <value>71, 24</value>
-  </data>
-  <data name="numericBoxB11.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="numericBoxB11.ToolTip" xml:space="preserve">
-    <value>Anisotropic atomic displacement parameter,
-component 11 (Å²) — describes the
-direction-dependent thermal vibration of this
-atom; shown as B11 or U11 per the chosen notation.</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB11.Name" xml:space="preserve">
-    <value>numericBoxB11</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB11.Type" xml:space="preserve">
-    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB11.Parent" xml:space="preserve">
-    <value>flowLayoutPanelAniso1</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB11.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="numericBoxB11err.FooterFont" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="numericBoxB11err.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxB11err.HeaderFont" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="numericBoxB11err.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxB11err.HeaderText" xml:space="preserve">
-    <value>±</value>
-  </data>
-  <data name="numericBoxB11err.Location" type="System.Drawing.Point, System.Drawing">
-    <value>71, 0</value>
-  </data>
-  <data name="numericBoxB11err.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="numericBoxB11err.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 28</value>
-  </data>
-  <data name="numericBoxB11err.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 18</value>
-  </data>
-  <data name="numericBoxB11err.Size" type="System.Drawing.Size, System.Drawing">
-    <value>60, 24</value>
-  </data>
-  <data name="numericBoxB11err.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="numericBoxB11err.ToolTip" xml:space="preserve">
-    <value>Standard deviation (error) of the 11 component
-of the anisotropic displacement parameter (Å²).</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB11err.Name" xml:space="preserve">
-    <value>numericBoxB11err</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB11err.Type" xml:space="preserve">
-    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB11err.Parent" xml:space="preserve">
-    <value>flowLayoutPanelAniso1</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB11err.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="numericBoxB12.FooterFont" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="numericBoxB12.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxB12.HeaderFont" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="numericBoxB12.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxB12.HeaderText" xml:space="preserve">
-    <value>B22</value>
-  </data>
-  <data name="numericBoxB12.Location" type="System.Drawing.Point, System.Drawing">
-    <value>136, 0</value>
-  </data>
-  <data name="numericBoxB12.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>5, 0, 0, 0</value>
-  </data>
-  <data name="numericBoxB12.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 28</value>
-  </data>
-  <data name="numericBoxB12.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 18</value>
-  </data>
-  <data name="numericBoxB12.Size" type="System.Drawing.Size, System.Drawing">
-    <value>71, 24</value>
-  </data>
-  <data name="numericBoxB12.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="numericBoxB12.ToolTip" xml:space="preserve">
-    <value>Anisotropic atomic displacement parameter, component
-12 (Å²) — direction-dependent thermal vibration;
-shown as B12 or U12 per the chosen notation.</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB12.Name" xml:space="preserve">
-    <value>numericBoxB12</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB12.Type" xml:space="preserve">
-    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB12.Parent" xml:space="preserve">
-    <value>flowLayoutPanelAniso1</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB12.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="numericBoxB12err.FooterFont" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="numericBoxB12err.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxB12err.HeaderFont" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="numericBoxB12err.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxB12err.HeaderText" xml:space="preserve">
-    <value>±</value>
-  </data>
-  <data name="numericBoxB12err.Location" type="System.Drawing.Point, System.Drawing">
-    <value>207, 0</value>
-  </data>
-  <data name="numericBoxB12err.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="numericBoxB12err.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 28</value>
-  </data>
-  <data name="numericBoxB12err.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 18</value>
-  </data>
-  <data name="numericBoxB12err.Size" type="System.Drawing.Size, System.Drawing">
-    <value>60, 24</value>
-  </data>
-  <data name="numericBoxB12err.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="numericBoxB12err.ToolTip" xml:space="preserve">
-    <value>Standard deviation (error) of the 12 component
-of the anisotropic displacement parameter (Å²).</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB12err.Name" xml:space="preserve">
-    <value>numericBoxB12err</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB12err.Type" xml:space="preserve">
-    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB12err.Parent" xml:space="preserve">
-    <value>flowLayoutPanelAniso1</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB12err.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="numericBoxB13.FooterFont" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="numericBoxB13.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxB13.HeaderFont" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="numericBoxB13.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxB13.HeaderText" xml:space="preserve">
-    <value>B11</value>
-  </data>
-  <data name="numericBoxB13.Location" type="System.Drawing.Point, System.Drawing">
-    <value>272, 0</value>
-  </data>
-  <data name="numericBoxB13.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>5, 0, 0, 0</value>
-  </data>
-  <data name="numericBoxB13.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 28</value>
-  </data>
-  <data name="numericBoxB13.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 18</value>
-  </data>
-  <data name="numericBoxB13.Size" type="System.Drawing.Size, System.Drawing">
-    <value>71, 24</value>
-  </data>
-  <data name="numericBoxB13.TabIndex" type="System.Int32, mscorlib">
+  <data name="&gt;&gt;flowLayoutPanel8.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="numericBoxB13.ToolTip" xml:space="preserve">
-    <value>Anisotropic atomic displacement parameter, component
-13 (Å²) — direction-dependent thermal vibration;
-shown as B13 or U13 per the chosen notation.</value>
+  <data name="tabPageDebyeWaller.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 24</value>
   </data>
-  <data name="&gt;&gt;numericBoxB13.Name" xml:space="preserve">
-    <value>numericBoxB13</value>
+  <data name="tabPageDebyeWaller.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
   </data>
-  <data name="&gt;&gt;numericBoxB13.Type" xml:space="preserve">
-    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
+  <data name="tabPageDebyeWaller.Size" type="System.Drawing.Size, System.Drawing">
+    <value>568, 75</value>
   </data>
-  <data name="&gt;&gt;numericBoxB13.Parent" xml:space="preserve">
-    <value>flowLayoutPanelAniso1</value>
+  <data name="tabPageDebyeWaller.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
-  <data name="&gt;&gt;numericBoxB13.ZOrder" xml:space="preserve">
-    <value>4</value>
+  <data name="tabPageDebyeWaller.Text" xml:space="preserve">
+    <value>Debye-Waller Factor</value>
   </data>
-  <data name="numericBoxB13err.FooterFont" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
+  <data name="tabPageDebyeWaller.ToolTip" xml:space="preserve">
+    <value>Settings tab for the Debye-Waller factor</value>
   </data>
-  <data name="numericBoxB13err.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
+  <data name="&gt;&gt;tabPageDebyeWaller.Name" xml:space="preserve">
+    <value>tabPageDebyeWaller</value>
   </data>
-  <data name="numericBoxB13err.HeaderFont" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
+  <data name="&gt;&gt;tabPageDebyeWaller.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="numericBoxB13err.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
+  <data name="&gt;&gt;tabPageDebyeWaller.Parent" xml:space="preserve">
+    <value>tabControl</value>
   </data>
-  <data name="numericBoxB13err.HeaderText" xml:space="preserve">
-    <value>±</value>
-  </data>
-  <data name="numericBoxB13err.Location" type="System.Drawing.Point, System.Drawing">
-    <value>343, 0</value>
-  </data>
-  <data name="numericBoxB13err.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="numericBoxB13err.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 28</value>
-  </data>
-  <data name="numericBoxB13err.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 18</value>
-  </data>
-  <data name="numericBoxB13err.Size" type="System.Drawing.Size, System.Drawing">
-    <value>60, 24</value>
-  </data>
-  <data name="numericBoxB13err.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="numericBoxB13err.ToolTip" xml:space="preserve">
-    <value>Standard deviation (error) of the 13 component
-of the anisotropic displacement parameter (Å²).</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB13err.Name" xml:space="preserve">
-    <value>numericBoxB13err</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB13err.Type" xml:space="preserve">
-    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB13err.Parent" xml:space="preserve">
-    <value>flowLayoutPanelAniso1</value>
-  </data>
-  <data name="&gt;&gt;numericBoxB13err.ZOrder" xml:space="preserve">
-    <value>5</value>
+  <data name="&gt;&gt;tabPageDebyeWaller.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="richTextBoxIsotope.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -3556,194 +3613,79 @@ diffraction / image simulation of this atom.</value>
   <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
-  <data name="numericBoxAlpha.FooterFont" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
+  <data name="tabPageScatteringFactor.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 24</value>
   </data>
-  <data name="numericBoxAlpha.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
+  <data name="tabPageScatteringFactor.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
   </data>
-  <data name="numericBoxAlpha.HeaderFont" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
+  <data name="tabPageScatteringFactor.Size" type="System.Drawing.Size, System.Drawing">
+    <value>568, 75</value>
   </data>
-  <data name="numericBoxAlpha.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
+  <data name="tabPageScatteringFactor.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
   </data>
-  <data name="numericBoxAlpha.Location" type="System.Drawing.Point, System.Drawing">
-    <value>300, 15</value>
+  <data name="tabPageScatteringFactor.Text" xml:space="preserve">
+    <value>Scattering Factor</value>
   </data>
-  <data name="numericBoxAlpha.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
+  <data name="&gt;&gt;tabPageScatteringFactor.Name" xml:space="preserve">
+    <value>tabPageScatteringFactor</value>
   </data>
-  <data name="numericBoxAlpha.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 28</value>
+  <data name="&gt;&gt;tabPageScatteringFactor.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="numericBoxAlpha.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 18</value>
+  <data name="&gt;&gt;tabPageScatteringFactor.Parent" xml:space="preserve">
+    <value>tabControl</value>
   </data>
-  <data name="numericBoxAlpha.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 1, 0</value>
-  </data>
-  <data name="numericBoxAlpha.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 25</value>
-  </data>
-  <data name="numericBoxAlpha.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="numericBoxAlpha.ToolTip" xml:space="preserve">
-    <value>Opacity (alpha) of the atom sphere,
-0 (fully transparent) to 1 (opaque).</value>
-  </data>
-  <data name="numericBoxEmission.FooterFont" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="numericBoxEmission.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxEmission.HeaderFont" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="numericBoxEmission.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxEmission.Location" type="System.Drawing.Point, System.Drawing">
-    <value>240, 15</value>
-  </data>
-  <data name="numericBoxEmission.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="numericBoxEmission.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 28</value>
-  </data>
-  <data name="numericBoxEmission.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 18</value>
-  </data>
-  <data name="numericBoxEmission.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 1, 0</value>
-  </data>
-  <data name="numericBoxEmission.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 25</value>
-  </data>
-  <data name="numericBoxEmission.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="numericBoxEmission.ToolTip" xml:space="preserve">
-    <value>Emission coefficient (0–1): self-illumination
-that makes the atom sphere appear to glow
-independently of any light source.</value>
-  </data>
-  <data name="numericBoxShininess.FooterFont" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="numericBoxShininess.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxShininess.HeaderFont" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="numericBoxShininess.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxShininess.Location" type="System.Drawing.Point, System.Drawing">
-    <value>178, 15</value>
-  </data>
-  <data name="numericBoxShininess.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="numericBoxShininess.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 28</value>
-  </data>
-  <data name="numericBoxShininess.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 18</value>
-  </data>
-  <data name="numericBoxShininess.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 1, 0</value>
-  </data>
-  <data name="numericBoxShininess.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 25</value>
-  </data>
-  <data name="numericBoxShininess.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="numericBoxShininess.ToolTip" xml:space="preserve">
-    <value>Shininess exponent (0–20): sharpness of
-the specular highlight; larger values
-give a smaller, tighter highlight.</value>
-  </data>
-  <data name="numericBoxSpecular.FooterFont" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="numericBoxSpecular.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxSpecular.HeaderFont" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="numericBoxSpecular.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxSpecular.Location" type="System.Drawing.Point, System.Drawing">
-    <value>120, 15</value>
-  </data>
-  <data name="numericBoxSpecular.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="numericBoxSpecular.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 28</value>
-  </data>
-  <data name="numericBoxSpecular.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 18</value>
-  </data>
-  <data name="numericBoxSpecular.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 1, 0</value>
-  </data>
-  <data name="numericBoxSpecular.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 25</value>
-  </data>
-  <data name="numericBoxSpecular.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="numericBoxSpecular.ToolTip" xml:space="preserve">
-    <value>Specular reflection coefficient (0–1):
-strength of the glossy highlight on the
-atom sphere (works together with Shininess).</value>
-  </data>
-  <data name="numericBoxDiffusion.FooterFont" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="numericBoxDiffusion.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxDiffusion.HeaderFont" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="numericBoxDiffusion.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxDiffusion.Location" type="System.Drawing.Point, System.Drawing">
-    <value>59, 15</value>
-  </data>
-  <data name="numericBoxDiffusion.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="numericBoxDiffusion.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 28</value>
-  </data>
-  <data name="numericBoxDiffusion.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 18</value>
-  </data>
-  <data name="numericBoxDiffusion.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 1, 0</value>
-  </data>
-  <data name="numericBoxDiffusion.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 25</value>
-  </data>
-  <data name="numericBoxDiffusion.TabIndex" type="System.Int32, mscorlib">
+  <data name="&gt;&gt;tabPageScatteringFactor.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="numericBoxDiffusion.ToolTip" xml:space="preserve">
-    <value>Diffuse reflection coefficient (0–1): matte
-reflection that varies with light direction
-(brightness of the lit side of the sphere).</value>
+  <data name="tableLayoutPanel2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="tableLayoutPanel2.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="tableLayoutPanel2.ColumnCount" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="label10.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label10.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="label10.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label10.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 0</value>
+  </data>
+  <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
+    <value>53, 15</value>
+  </data>
+  <data name="label10.TabIndex" type="System.Int32, mscorlib">
+    <value>88</value>
+  </data>
+  <data name="label10.Text" xml:space="preserve">
+    <value>Ambient</value>
+  </data>
+  <data name="label10.ToolTip" xml:space="preserve">
+    <value>Ambient reflection coefficient (0–1): strength
+of uniform background lighting on the atom
+sphere, independent of light direction.</value>
+  </data>
+  <data name="&gt;&gt;label10.Name" xml:space="preserve">
+    <value>label10</value>
+  </data>
+  <data name="&gt;&gt;label10.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label10.Parent" xml:space="preserve">
+    <value>tableLayoutPanel2</value>
+  </data>
+  <data name="&gt;&gt;label10.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="numericBoxAmbient.FooterFont" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
@@ -3773,7 +3715,7 @@ reflection that varies with light direction
     <value>4, 0, 1, 0</value>
   </data>
   <data name="numericBoxAmbient.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 25</value>
+    <value>30, 25</value>
   </data>
   <data name="numericBoxAmbient.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -3783,107 +3725,66 @@ reflection that varies with light direction
 of uniform background lighting on the atom
 sphere, independent of light direction.</value>
   </data>
-  <data name="checkBoxShowLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="&gt;&gt;numericBoxAmbient.Name" xml:space="preserve">
+    <value>numericBoxAmbient</value>
   </data>
-  <data name="checkBoxShowLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="&gt;&gt;numericBoxAmbient.Type" xml:space="preserve">
+    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="checkBoxShowLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>187, 3</value>
+  <data name="&gt;&gt;numericBoxAmbient.Parent" xml:space="preserve">
+    <value>tableLayoutPanel2</value>
   </data>
-  <data name="checkBoxShowLabel.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>8, 0, 0, 0</value>
+  <data name="&gt;&gt;numericBoxAmbient.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
-  <data name="checkBoxShowLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>99, 19</value>
-  </data>
-  <data name="checkBoxShowLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>89</value>
-  </data>
-  <data name="checkBoxShowLabel.Text" xml:space="preserve">
-    <value>Show Labels</value>
-  </data>
-  <data name="checkBoxShowLabel.ToolTip" xml:space="preserve">
-    <value>Toggle drawing of this atom's label text
-beside its sphere in the 3D structure view.</value>
-  </data>
-  <data name="label10.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label10.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="numericBoxAlpha.FooterFont" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
   </data>
-  <data name="label10.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="numericBoxAlpha.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
   </data>
-  <data name="label10.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 0</value>
-  </data>
-  <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
-    <value>53, 15</value>
-  </data>
-  <data name="label10.TabIndex" type="System.Int32, mscorlib">
-    <value>88</value>
-  </data>
-  <data name="label10.Text" xml:space="preserve">
-    <value>Ambient</value>
-  </data>
-  <data name="label10.ToolTip" xml:space="preserve">
-    <value>Ambient reflection coefficient (0–1): strength
-of uniform background lighting on the atom
-sphere, independent of light direction.</value>
-  </data>
-  <data name="label37.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label37.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="numericBoxAlpha.HeaderFont" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
   </data>
-  <data name="label37.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="numericBoxAlpha.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
   </data>
-  <data name="label37.Location" type="System.Drawing.Point, System.Drawing">
-    <value>303, 0</value>
+  <data name="numericBoxAlpha.Location" type="System.Drawing.Point, System.Drawing">
+    <value>300, 15</value>
   </data>
-  <data name="label37.Size" type="System.Drawing.Size, System.Drawing">
-    <value>38, 15</value>
+  <data name="numericBoxAlpha.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
   </data>
-  <data name="label37.TabIndex" type="System.Int32, mscorlib">
-    <value>88</value>
+  <data name="numericBoxAlpha.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1000, 28</value>
   </data>
-  <data name="label37.Text" xml:space="preserve">
-    <value>Alpha</value>
+  <data name="numericBoxAlpha.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 18</value>
   </data>
-  <data name="label37.ToolTip" xml:space="preserve">
+  <data name="numericBoxAlpha.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 1, 0</value>
+  </data>
+  <data name="numericBoxAlpha.Size" type="System.Drawing.Size, System.Drawing">
+    <value>30, 25</value>
+  </data>
+  <data name="numericBoxAlpha.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="numericBoxAlpha.ToolTip" xml:space="preserve">
     <value>Opacity (alpha) of the atom sphere,
 0 (fully transparent) to 1 (opaque).</value>
   </data>
-  <data name="label38.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="&gt;&gt;numericBoxAlpha.Name" xml:space="preserve">
+    <value>numericBoxAlpha</value>
   </data>
-  <data name="label38.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
+  <data name="&gt;&gt;numericBoxAlpha.Type" xml:space="preserve">
+    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="label38.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="&gt;&gt;numericBoxAlpha.Parent" xml:space="preserve">
+    <value>tableLayoutPanel2</value>
   </data>
-  <data name="label38.Location" type="System.Drawing.Point, System.Drawing">
-    <value>123, 0</value>
-  </data>
-  <data name="label38.Size" type="System.Drawing.Size, System.Drawing">
-    <value>52, 15</value>
-  </data>
-  <data name="label38.TabIndex" type="System.Int32, mscorlib">
-    <value>88</value>
-  </data>
-  <data name="label38.Text" xml:space="preserve">
-    <value>Specular</value>
-  </data>
-  <data name="label38.ToolTip" xml:space="preserve">
-    <value>Specular reflection coefficient (0–1):
-strength of the glossy highlight on the
-atom sphere (works together with Shininess).</value>
+  <data name="&gt;&gt;numericBoxAlpha.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="label11.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -3911,6 +3812,205 @@ atom sphere (works together with Shininess).</value>
 reflection that varies with light direction
 (brightness of the lit side of the sphere).</value>
   </data>
+  <data name="&gt;&gt;label11.Name" xml:space="preserve">
+    <value>label11</value>
+  </data>
+  <data name="&gt;&gt;label11.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label11.Parent" xml:space="preserve">
+    <value>tableLayoutPanel2</value>
+  </data>
+  <data name="&gt;&gt;label11.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="numericBoxEmission.FooterFont" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="numericBoxEmission.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxEmission.HeaderFont" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="numericBoxEmission.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxEmission.Location" type="System.Drawing.Point, System.Drawing">
+    <value>240, 15</value>
+  </data>
+  <data name="numericBoxEmission.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="numericBoxEmission.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1000, 28</value>
+  </data>
+  <data name="numericBoxEmission.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 18</value>
+  </data>
+  <data name="numericBoxEmission.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 1, 0</value>
+  </data>
+  <data name="numericBoxEmission.Size" type="System.Drawing.Size, System.Drawing">
+    <value>30, 25</value>
+  </data>
+  <data name="numericBoxEmission.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="numericBoxEmission.ToolTip" xml:space="preserve">
+    <value>Emission coefficient (0–1): self-illumination
+that makes the atom sphere appear to glow
+independently of any light source.</value>
+  </data>
+  <data name="&gt;&gt;numericBoxEmission.Name" xml:space="preserve">
+    <value>numericBoxEmission</value>
+  </data>
+  <data name="&gt;&gt;numericBoxEmission.Type" xml:space="preserve">
+    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;numericBoxEmission.Parent" xml:space="preserve">
+    <value>tableLayoutPanel2</value>
+  </data>
+  <data name="&gt;&gt;numericBoxEmission.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="numericBoxDiffusion.FooterFont" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="numericBoxDiffusion.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxDiffusion.HeaderFont" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="numericBoxDiffusion.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxDiffusion.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 15</value>
+  </data>
+  <data name="numericBoxDiffusion.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="numericBoxDiffusion.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1000, 28</value>
+  </data>
+  <data name="numericBoxDiffusion.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 18</value>
+  </data>
+  <data name="numericBoxDiffusion.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 1, 0</value>
+  </data>
+  <data name="numericBoxDiffusion.Size" type="System.Drawing.Size, System.Drawing">
+    <value>30, 25</value>
+  </data>
+  <data name="numericBoxDiffusion.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="numericBoxDiffusion.ToolTip" xml:space="preserve">
+    <value>Diffuse reflection coefficient (0–1): matte
+reflection that varies with light direction
+(brightness of the lit side of the sphere).</value>
+  </data>
+  <data name="&gt;&gt;numericBoxDiffusion.Name" xml:space="preserve">
+    <value>numericBoxDiffusion</value>
+  </data>
+  <data name="&gt;&gt;numericBoxDiffusion.Type" xml:space="preserve">
+    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;numericBoxDiffusion.Parent" xml:space="preserve">
+    <value>tableLayoutPanel2</value>
+  </data>
+  <data name="&gt;&gt;numericBoxDiffusion.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="label37.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label37.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="label37.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label37.Location" type="System.Drawing.Point, System.Drawing">
+    <value>303, 0</value>
+  </data>
+  <data name="label37.Size" type="System.Drawing.Size, System.Drawing">
+    <value>38, 15</value>
+  </data>
+  <data name="label37.TabIndex" type="System.Int32, mscorlib">
+    <value>88</value>
+  </data>
+  <data name="label37.Text" xml:space="preserve">
+    <value>Alpha</value>
+  </data>
+  <data name="label37.ToolTip" xml:space="preserve">
+    <value>Opacity (alpha) of the atom sphere,
+0 (fully transparent) to 1 (opaque).</value>
+  </data>
+  <data name="&gt;&gt;label37.Name" xml:space="preserve">
+    <value>label37</value>
+  </data>
+  <data name="&gt;&gt;label37.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label37.Parent" xml:space="preserve">
+    <value>tableLayoutPanel2</value>
+  </data>
+  <data name="&gt;&gt;label37.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="numericBoxShininess.FooterFont" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="numericBoxShininess.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxShininess.HeaderFont" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="numericBoxShininess.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxShininess.Location" type="System.Drawing.Point, System.Drawing">
+    <value>178, 15</value>
+  </data>
+  <data name="numericBoxShininess.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="numericBoxShininess.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1000, 28</value>
+  </data>
+  <data name="numericBoxShininess.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 18</value>
+  </data>
+  <data name="numericBoxShininess.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 1, 0</value>
+  </data>
+  <data name="numericBoxShininess.Size" type="System.Drawing.Size, System.Drawing">
+    <value>30, 25</value>
+  </data>
+  <data name="numericBoxShininess.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="numericBoxShininess.ToolTip" xml:space="preserve">
+    <value>Shininess exponent (0–20): sharpness of
+the specular highlight; larger values
+give a smaller, tighter highlight.</value>
+  </data>
+  <data name="&gt;&gt;numericBoxShininess.Name" xml:space="preserve">
+    <value>numericBoxShininess</value>
+  </data>
+  <data name="&gt;&gt;numericBoxShininess.Type" xml:space="preserve">
+    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;numericBoxShininess.Parent" xml:space="preserve">
+    <value>tableLayoutPanel2</value>
+  </data>
+  <data name="&gt;&gt;numericBoxShininess.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
   <data name="label35.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -3936,6 +4036,106 @@ reflection that varies with light direction
     <value>Emission coefficient (0–1): self-illumination
 that makes the atom sphere appear to glow
 independently of any light source.</value>
+  </data>
+  <data name="&gt;&gt;label35.Name" xml:space="preserve">
+    <value>label35</value>
+  </data>
+  <data name="&gt;&gt;label35.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label35.Parent" xml:space="preserve">
+    <value>tableLayoutPanel2</value>
+  </data>
+  <data name="&gt;&gt;label35.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="label38.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label38.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="label38.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label38.Location" type="System.Drawing.Point, System.Drawing">
+    <value>123, 0</value>
+  </data>
+  <data name="label38.Size" type="System.Drawing.Size, System.Drawing">
+    <value>52, 15</value>
+  </data>
+  <data name="label38.TabIndex" type="System.Int32, mscorlib">
+    <value>88</value>
+  </data>
+  <data name="label38.Text" xml:space="preserve">
+    <value>Specular</value>
+  </data>
+  <data name="label38.ToolTip" xml:space="preserve">
+    <value>Specular reflection coefficient (0–1):
+strength of the glossy highlight on the
+atom sphere (works together with Shininess).</value>
+  </data>
+  <data name="&gt;&gt;label38.Name" xml:space="preserve">
+    <value>label38</value>
+  </data>
+  <data name="&gt;&gt;label38.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label38.Parent" xml:space="preserve">
+    <value>tableLayoutPanel2</value>
+  </data>
+  <data name="&gt;&gt;label38.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="numericBoxSpecular.FooterFont" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="numericBoxSpecular.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxSpecular.HeaderFont" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="numericBoxSpecular.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxSpecular.Location" type="System.Drawing.Point, System.Drawing">
+    <value>120, 15</value>
+  </data>
+  <data name="numericBoxSpecular.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="numericBoxSpecular.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1000, 28</value>
+  </data>
+  <data name="numericBoxSpecular.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 18</value>
+  </data>
+  <data name="numericBoxSpecular.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 1, 0</value>
+  </data>
+  <data name="numericBoxSpecular.Size" type="System.Drawing.Size, System.Drawing">
+    <value>30, 25</value>
+  </data>
+  <data name="numericBoxSpecular.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="numericBoxSpecular.ToolTip" xml:space="preserve">
+    <value>Specular reflection coefficient (0–1):
+strength of the glossy highlight on the
+atom sphere (works together with Shininess).</value>
+  </data>
+  <data name="&gt;&gt;numericBoxSpecular.Name" xml:space="preserve">
+    <value>numericBoxSpecular</value>
+  </data>
+  <data name="&gt;&gt;numericBoxSpecular.Type" xml:space="preserve">
+    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;numericBoxSpecular.Parent" xml:space="preserve">
+    <value>tableLayoutPanel2</value>
+  </data>
+  <data name="&gt;&gt;numericBoxSpecular.ZOrder" xml:space="preserve">
+    <value>10</value>
   </data>
   <data name="label36.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -3963,11 +4163,56 @@ independently of any light source.</value>
 the specular highlight; larger values
 give a smaller, tighter highlight.</value>
   </data>
+  <data name="&gt;&gt;label36.Name" xml:space="preserve">
+    <value>label36</value>
+  </data>
+  <data name="&gt;&gt;label36.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label36.Parent" xml:space="preserve">
+    <value>tableLayoutPanel2</value>
+  </data>
+  <data name="&gt;&gt;label36.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="tableLayoutPanel2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="tableLayoutPanel2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 28</value>
+  </data>
+  <data name="tableLayoutPanel2.RowCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tableLayoutPanel2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>562, 40</value>
+  </data>
+  <data name="tableLayoutPanel2.TabIndex" type="System.Int32, mscorlib">
+    <value>91</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel2.Name" xml:space="preserve">
+    <value>tableLayoutPanel2</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel2.Parent" xml:space="preserve">
+    <value>tabPageAppearance</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel2.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel2.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="label10" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="numericBoxAmbient" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="numericBoxAlpha" Row="1" RowSpan="1" Column="5" ColumnSpan="1" /&gt;&lt;Control Name="label11" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="numericBoxEmission" Row="1" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="numericBoxDiffusion" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label37" Row="0" RowSpan="1" Column="5" ColumnSpan="1" /&gt;&lt;Control Name="numericBoxShininess" Row="1" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="label35" Row="0" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="label38" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="numericBoxSpecular" Row="1" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="label36" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="flowLayoutPanel7.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
   <data name="numericBoxAtomRadius.FooterFont" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="numericBoxAtomRadius.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 0</value>
+    <value>0, 5, 0, 0</value>
   </data>
   <data name="numericBoxAtomRadius.FooterText" xml:space="preserve">
     <value>Å</value>
@@ -3976,7 +4221,7 @@ give a smaller, tighter highlight.</value>
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="numericBoxAtomRadius.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 0</value>
+    <value>0, 5, 0, 0</value>
   </data>
   <data name="numericBoxAtomRadius.HeaderText" xml:space="preserve">
     <value>Radius</value>
@@ -4005,6 +4250,18 @@ give a smaller, tighter highlight.</value>
   <data name="numericBoxAtomRadius.ToolTip" xml:space="preserve">
     <value>Radius of the sphere to be drawn</value>
   </data>
+  <data name="&gt;&gt;numericBoxAtomRadius.Name" xml:space="preserve">
+    <value>numericBoxAtomRadius</value>
+  </data>
+  <data name="&gt;&gt;numericBoxAtomRadius.Type" xml:space="preserve">
+    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;numericBoxAtomRadius.Parent" xml:space="preserve">
+    <value>flowLayoutPanel7</value>
+  </data>
+  <data name="&gt;&gt;numericBoxAtomRadius.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="colorControlAtomColor.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -4015,6 +4272,9 @@ give a smaller, tighter highlight.</value>
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="colorControlAtomColor.FooterFont" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="colorControlAtomColor.HeaderFont" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="colorControlAtomColor.HeaderMargin" type="System.Windows.Forms.Padding, System.Windows.Forms">
@@ -4033,7 +4293,7 @@ give a smaller, tighter highlight.</value>
     <value>8, 0, 0, 0</value>
   </data>
   <data name="colorControlAtomColor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 20</value>
+    <value>56, 20</value>
   </data>
   <data name="colorControlAtomColor.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -4045,6 +4305,139 @@ atom's sphere in the 3D structure view.</value>
   <data name="colorControlAtomColor.ToolTip1" xml:space="preserve">
     <value>Click to choose the display color of this
 atom's sphere in the 3D structure view.</value>
+  </data>
+  <data name="&gt;&gt;colorControlAtomColor.Name" xml:space="preserve">
+    <value>colorControlAtomColor</value>
+  </data>
+  <data name="&gt;&gt;colorControlAtomColor.Type" xml:space="preserve">
+    <value>Crystallography.Controls.ColorControl, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;colorControlAtomColor.Parent" xml:space="preserve">
+    <value>flowLayoutPanel7</value>
+  </data>
+  <data name="&gt;&gt;colorControlAtomColor.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="checkBoxShowLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBoxShowLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="checkBoxShowLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>179, 3</value>
+  </data>
+  <data name="checkBoxShowLabel.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>8, 0, 0, 0</value>
+  </data>
+  <data name="checkBoxShowLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 19</value>
+  </data>
+  <data name="checkBoxShowLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>89</value>
+  </data>
+  <data name="checkBoxShowLabel.Text" xml:space="preserve">
+    <value>Show Labels</value>
+  </data>
+  <data name="checkBoxShowLabel.ToolTip" xml:space="preserve">
+    <value>Toggle drawing of this atom's label text
+beside its sphere in the 3D structure view.</value>
+  </data>
+  <data name="&gt;&gt;checkBoxShowLabel.Name" xml:space="preserve">
+    <value>checkBoxShowLabel</value>
+  </data>
+  <data name="&gt;&gt;checkBoxShowLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBoxShowLabel.Parent" xml:space="preserve">
+    <value>flowLayoutPanel7</value>
+  </data>
+  <data name="&gt;&gt;checkBoxShowLabel.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="flowLayoutPanel7.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="flowLayoutPanel7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="flowLayoutPanel7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>562, 25</value>
+  </data>
+  <data name="flowLayoutPanel7.TabIndex" type="System.Int32, mscorlib">
+    <value>90</value>
+  </data>
+  <data name="flowLayoutPanel7.WrapContents" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel7.Name" xml:space="preserve">
+    <value>flowLayoutPanel7</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel7.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel7.Parent" xml:space="preserve">
+    <value>tabPageAppearance</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel7.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tabPageAppearance.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 24</value>
+  </data>
+  <data name="tabPageAppearance.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="tabPageAppearance.Size" type="System.Drawing.Size, System.Drawing">
+    <value>568, 75</value>
+  </data>
+  <data name="tabPageAppearance.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="tabPageAppearance.Text" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+  <data name="&gt;&gt;tabPageAppearance.Name" xml:space="preserve">
+    <value>tabPageAppearance</value>
+  </data>
+  <data name="&gt;&gt;tabPageAppearance.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabPageAppearance.Parent" xml:space="preserve">
+    <value>tabControl</value>
+  </data>
+  <data name="&gt;&gt;tabPageAppearance.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="tabControl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Bottom</value>
+  </data>
+  <data name="tabControl.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="tabControl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 247</value>
+  </data>
+  <data name="tabControl.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="tabControl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>576, 103</value>
+  </data>
+  <data name="tabControl.TabIndex" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
+  <data name="&gt;&gt;tabControl.Name" xml:space="preserve">
+    <value>tabControl</value>
+  </data>
+  <data name="&gt;&gt;tabControl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabControl.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;tabControl.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <data name="buttonApplyToSameElement.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -4450,8 +4843,29 @@ the list (available on the Debye–Waller tab).</value>
   <data name="siteSymDataGridViewTextBoxColumn.Width" type="System.Int32, mscorlib">
     <value>68</value>
   </data>
+  <metadata name="contextMenuStripAtom.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>157, 17</value>
+  </metadata>
+  <data name="showEquivalentAtomPositionsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>242, 22</value>
+  </data>
+  <data name="showEquivalentAtomPositionsToolStripMenuItem.Text" xml:space="preserve">
+    <value>Show equivalent atom positions</value>
+  </data>
+  <data name="contextMenuStripAtom.Size" type="System.Drawing.Size, System.Drawing">
+    <value>243, 26</value>
+  </data>
+  <data name="&gt;&gt;contextMenuStripAtom.Name" xml:space="preserve">
+    <value>contextMenuStripAtom</value>
+  </data>
+  <data name="&gt;&gt;contextMenuStripAtom.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <metadata name="bindingSource.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>248, 17</value>
+    <value>426, 17</value>
+  </metadata>
+  <metadata name="dataSet.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>557, 17</value>
   </metadata>
   <data name="dataGridView.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -4489,11 +4903,8 @@ box toggles the atom's visibility in the 3D view.</value>
     <value>$this</value>
   </data>
   <data name="&gt;&gt;dataGridView.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
-  <metadata name="dataSet.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>379, 17</value>
-  </metadata>
   <data name="panel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Bottom</value>
   </data>
@@ -4522,410 +4933,11 @@ box toggles the atom's visibility in the 3D view.</value>
     <value>$this</value>
   </data>
   <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="flowLayoutPanel2.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="&gt;&gt;numericBoxOriginShiftX.Name" xml:space="preserve">
-    <value>numericBoxOriginShiftX</value>
-  </data>
-  <data name="&gt;&gt;numericBoxOriginShiftX.Type" xml:space="preserve">
-    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;numericBoxOriginShiftX.Parent" xml:space="preserve">
-    <value>flowLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;numericBoxOriginShiftX.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;numericBoxOriginShiftY.Name" xml:space="preserve">
-    <value>numericBoxOriginShiftY</value>
-  </data>
-  <data name="&gt;&gt;numericBoxOriginShiftY.Type" xml:space="preserve">
-    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;numericBoxOriginShiftY.Parent" xml:space="preserve">
-    <value>flowLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;numericBoxOriginShiftY.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;numericBoxOriginShiftZ.Name" xml:space="preserve">
-    <value>numericBoxOriginShiftZ</value>
-  </data>
-  <data name="&gt;&gt;numericBoxOriginShiftZ.Type" xml:space="preserve">
-    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;numericBoxOriginShiftZ.Parent" xml:space="preserve">
-    <value>flowLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;numericBoxOriginShiftZ.ZOrder" xml:space="preserve">
     <value>2</value>
-  </data>
-  <data name="flowLayoutPanel2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 28</value>
-  </data>
-  <data name="flowLayoutPanel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>138, 25</value>
-  </data>
-  <data name="flowLayoutPanel2.TabIndex" type="System.Int32, mscorlib">
-    <value>207</value>
-  </data>
-  <data name="flowLayoutPanel2.WrapContents" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel2.Name" xml:space="preserve">
-    <value>flowLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel2.Parent" xml:space="preserve">
-    <value>flowLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel2.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="flowLayoutPanel7.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="&gt;&gt;numericBoxAtomRadius.Name" xml:space="preserve">
-    <value>numericBoxAtomRadius</value>
-  </data>
-  <data name="&gt;&gt;numericBoxAtomRadius.Type" xml:space="preserve">
-    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;numericBoxAtomRadius.Parent" xml:space="preserve">
-    <value>flowLayoutPanel7</value>
-  </data>
-  <data name="&gt;&gt;numericBoxAtomRadius.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;colorControlAtomColor.Name" xml:space="preserve">
-    <value>colorControlAtomColor</value>
-  </data>
-  <data name="&gt;&gt;colorControlAtomColor.Type" xml:space="preserve">
-    <value>Crystallography.Controls.ColorControl, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;colorControlAtomColor.Parent" xml:space="preserve">
-    <value>flowLayoutPanel7</value>
-  </data>
-  <data name="&gt;&gt;colorControlAtomColor.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;checkBoxShowLabel.Name" xml:space="preserve">
-    <value>checkBoxShowLabel</value>
-  </data>
-  <data name="&gt;&gt;checkBoxShowLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;checkBoxShowLabel.Parent" xml:space="preserve">
-    <value>flowLayoutPanel7</value>
-  </data>
-  <data name="&gt;&gt;checkBoxShowLabel.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="flowLayoutPanel7.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
-  </data>
-  <data name="flowLayoutPanel7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
-  </data>
-  <data name="flowLayoutPanel7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>562, 25</value>
-  </data>
-  <data name="flowLayoutPanel7.TabIndex" type="System.Int32, mscorlib">
-    <value>90</value>
-  </data>
-  <data name="flowLayoutPanel7.WrapContents" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel7.Name" xml:space="preserve">
-    <value>flowLayoutPanel7</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel7.Type" xml:space="preserve">
-    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel7.Parent" xml:space="preserve">
-    <value>tabPageAppearance</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel7.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="tableLayoutPanel2.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="tableLayoutPanel2.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
-  </data>
-  <data name="tableLayoutPanel2.ColumnCount" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;label10.Name" xml:space="preserve">
-    <value>label10</value>
-  </data>
-  <data name="&gt;&gt;label10.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label10.Parent" xml:space="preserve">
-    <value>tableLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;label10.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;numericBoxAmbient.Name" xml:space="preserve">
-    <value>numericBoxAmbient</value>
-  </data>
-  <data name="&gt;&gt;numericBoxAmbient.Type" xml:space="preserve">
-    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;numericBoxAmbient.Parent" xml:space="preserve">
-    <value>tableLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;numericBoxAmbient.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;numericBoxAlpha.Name" xml:space="preserve">
-    <value>numericBoxAlpha</value>
-  </data>
-  <data name="&gt;&gt;numericBoxAlpha.Type" xml:space="preserve">
-    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;numericBoxAlpha.Parent" xml:space="preserve">
-    <value>tableLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;numericBoxAlpha.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;label11.Name" xml:space="preserve">
-    <value>label11</value>
-  </data>
-  <data name="&gt;&gt;label11.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label11.Parent" xml:space="preserve">
-    <value>tableLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;label11.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;numericBoxEmission.Name" xml:space="preserve">
-    <value>numericBoxEmission</value>
-  </data>
-  <data name="&gt;&gt;numericBoxEmission.Type" xml:space="preserve">
-    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;numericBoxEmission.Parent" xml:space="preserve">
-    <value>tableLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;numericBoxEmission.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;numericBoxDiffusion.Name" xml:space="preserve">
-    <value>numericBoxDiffusion</value>
-  </data>
-  <data name="&gt;&gt;numericBoxDiffusion.Type" xml:space="preserve">
-    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;numericBoxDiffusion.Parent" xml:space="preserve">
-    <value>tableLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;numericBoxDiffusion.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;label37.Name" xml:space="preserve">
-    <value>label37</value>
-  </data>
-  <data name="&gt;&gt;label37.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label37.Parent" xml:space="preserve">
-    <value>tableLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;label37.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;numericBoxShininess.Name" xml:space="preserve">
-    <value>numericBoxShininess</value>
-  </data>
-  <data name="&gt;&gt;numericBoxShininess.Type" xml:space="preserve">
-    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;numericBoxShininess.Parent" xml:space="preserve">
-    <value>tableLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;numericBoxShininess.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;label35.Name" xml:space="preserve">
-    <value>label35</value>
-  </data>
-  <data name="&gt;&gt;label35.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label35.Parent" xml:space="preserve">
-    <value>tableLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;label35.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;label38.Name" xml:space="preserve">
-    <value>label38</value>
-  </data>
-  <data name="&gt;&gt;label38.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label38.Parent" xml:space="preserve">
-    <value>tableLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;label38.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;numericBoxSpecular.Name" xml:space="preserve">
-    <value>numericBoxSpecular</value>
-  </data>
-  <data name="&gt;&gt;numericBoxSpecular.Type" xml:space="preserve">
-    <value>Crystallography.Controls.NumericBox, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;numericBoxSpecular.Parent" xml:space="preserve">
-    <value>tableLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;numericBoxSpecular.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="&gt;&gt;label36.Name" xml:space="preserve">
-    <value>label36</value>
-  </data>
-  <data name="&gt;&gt;label36.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label36.Parent" xml:space="preserve">
-    <value>tableLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;label36.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="tableLayoutPanel2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
-  </data>
-  <data name="tableLayoutPanel2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 28</value>
-  </data>
-  <data name="tableLayoutPanel2.RowCount" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="tableLayoutPanel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>562, 40</value>
-  </data>
-  <data name="tableLayoutPanel2.TabIndex" type="System.Int32, mscorlib">
-    <value>91</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel2.Name" xml:space="preserve">
-    <value>tableLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel2.Parent" xml:space="preserve">
-    <value>tabPageAppearance</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel2.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="tableLayoutPanel2.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="label10" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="numericBoxAmbient" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="numericBoxAlpha" Row="1" RowSpan="1" Column="5" ColumnSpan="1" /&gt;&lt;Control Name="label11" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="numericBoxEmission" Row="1" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="numericBoxDiffusion" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label37" Row="0" RowSpan="1" Column="5" ColumnSpan="1" /&gt;&lt;Control Name="numericBoxShininess" Row="1" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="label35" Row="0" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="label38" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="numericBoxSpecular" Row="1" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="label36" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="flowLayoutPanel8.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="flowLayoutPanel8.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel5.Name" xml:space="preserve">
-    <value>flowLayoutPanel5</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel5.Parent" xml:space="preserve">
-    <value>flowLayoutPanel8</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel5.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel4.Name" xml:space="preserve">
-    <value>flowLayoutPanel4</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel4.Parent" xml:space="preserve">
-    <value>flowLayoutPanel8</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel4.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel6.Name" xml:space="preserve">
-    <value>flowLayoutPanel6</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel6.Parent" xml:space="preserve">
-    <value>flowLayoutPanel8</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel6.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;labelDimension.Name" xml:space="preserve">
-    <value>labelDimension</value>
-  </data>
-  <data name="&gt;&gt;labelDimension.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;labelDimension.Parent" xml:space="preserve">
-    <value>flowLayoutPanel8</value>
-  </data>
-  <data name="&gt;&gt;labelDimension.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="flowLayoutPanel8.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
-  </data>
-  <data name="flowLayoutPanel8.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
-  </data>
-  <data name="flowLayoutPanel8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>562, 22</value>
-  </data>
-  <data name="flowLayoutPanel8.TabIndex" type="System.Int32, mscorlib">
-    <value>310</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel8.Name" xml:space="preserve">
-    <value>flowLayoutPanel8</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel8.Type" xml:space="preserve">
-    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel8.Parent" xml:space="preserve">
-    <value>tabPageDebyeWaller</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel8.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <metadata name="contextMenuStripAtom.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <data name="showEquivalentAtomPositionsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>239, 22</value>
-  </data>
-  <data name="showEquivalentAtomPositionsToolStripMenuItem.Text" xml:space="preserve">
-    <value>Show equivalent atom positions</value>
-  </data>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>96, 96</value>
   </data>
@@ -5013,6 +5025,12 @@ box toggles the atom's visibility in the 3D view.</value>
   <data name="&gt;&gt;siteSymDataGridViewTextBoxColumn.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;showEquivalentAtomPositionsToolStripMenuItem.Name" xml:space="preserve">
+    <value>showEquivalentAtomPositionsToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;showEquivalentAtomPositionsToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;bindingSource.Name" xml:space="preserve">
     <value>bindingSource</value>
   </data>
@@ -5024,18 +5042,6 @@ box toggles the atom's visibility in the 3D view.</value>
   </data>
   <data name="&gt;&gt;dataSet.Type" xml:space="preserve">
     <value>Crystallography.Controls.DataSet, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;contextMenuStripAtom.Name" xml:space="preserve">
-    <value>contextMenuStripAtom</value>
-  </data>
-  <data name="&gt;&gt;contextMenuStripAtom.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;showEquivalentAtomPositionsToolStripMenuItem.Name" xml:space="preserve">
-    <value>showEquivalentAtomPositionsToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;showEquivalentAtomPositionsToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>AtomControl</value>

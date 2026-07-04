@@ -311,6 +311,9 @@ Debye–Waller タブでは原子変位パラメータ）
   <data name="colorControlAtomColor.ToolTip" xml:space="preserve">
     <value>クリックして、3D構造表示でのこの原子球の表示色を選択します。</value>
   </data>
+  <data name="colorControlAtomColor.ToolTip1" xml:space="preserve">
+    <value>クリックして、3D構造表示でのこの原子球の表示色を選択します。</value>
+  </data>
   <data name="dataGridView.ToolTip" xml:space="preserve">
     <value>結晶中の全原子サイトの一覧。行を選ぶと
 下の編集欄に読み込まれ、チェックボックス
