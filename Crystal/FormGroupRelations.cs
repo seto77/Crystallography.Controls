@@ -29,11 +29,12 @@ public partial class FormGroupRelations : FormBase
     private readonly Stack<int> _back = new();
     private readonly Stack<int> _forward = new();
 
-    // 現在閲覧中の群の関係 (グラフ・詳細タブ共有)。
-    private TSubgroup[] _subs = [];
-    private IReadOnlyList<TSubgroupFinder.TSupergroup> _supers = [];
+    // 現在閲覧中の群の関係 (グラフ・詳細タブ共有)。260705Cl: TSubgroup/TSubgroupFinder.TSupergroup を
+    // 統合した共通 DTO GroupRelation に置換 (Phase 2e)。
+    private GroupRelation[] _subs = [];
+    private IReadOnlyList<GroupRelation> _supers = [];
     private bool _supersPending; // 260705Cl 追加: 超群索引をバックグラウンド構築中 (ツリーに「計算中…」を表示)
-    private TSubgroup _selectedRelation;   // ツリー/グラフで選択中の t-部分群 (null 可)
+    private GroupRelation _selectedRelation;   // ツリー/グラフで選択中の関係 (null 可)
 
     // グラフのヒットテスト用ノード矩形 (画面座標) と対応 series。
     private readonly List<(Rectangle Rect, int Series)> _graphNodes = [];
@@ -79,18 +80,30 @@ public partial class FormGroupRelations : FormBase
     #endregion
 
     #region --capture 用 (GuiCapture の代表状態撮影) 260705Cl 追加
-    /// <summary>--capture 用: 最初の t-部分群ノードを選択する (AfterSelect 経由で詳細タブ全部が populate される)。
-    /// プレースホルダ「ツリーから選択してください」でなく実データの見た目を確認できるようにする。</summary>
+    /// <summary>--capture 用: ノードを選択する (AfterSelect 経由で詳細タブ全部が populate される)。
+    /// プレースホルダ「ツリーから選択してください」でなく実データの見た目を確認できるようにする。
+    /// 260705Cl 修正 (Phase 2e): 超群 (Minimal supergroups、(P,p)⁻¹ 表示の新機能) を優先的に選ぶ。索引が
+    /// バックグラウンド構築中なら最大 10 秒待つ (通常のフォームオープンでは待たない、--capture 専用の同期待ち)。</summary>
     public void PrepareCaptureForGuiAudit()
     {
+        var sw = System.Diagnostics.Stopwatch.StartNew();
+        while (!TSubgroupFinder.SupergroupIndexReady && sw.ElapsedMilliseconds < 10000)
+        {
+            System.Threading.Thread.Sleep(100);
+            Application.DoEvents(); // ContinueWith (TaskScheduler.FromCurrentSynchronizationContext) をポンプする
+        }
+
+        TreeNode fallback = null;
         foreach (TreeNode root in treeRelations.Nodes)
             foreach (TreeNode category in root.Nodes)
                 foreach (TreeNode leaf in category.Nodes)
-                    if (leaf.Tag is NodeTag { Relation: not null })
+                    if (leaf.Tag is NodeTag { Relation: not null } tag)
                     {
-                        treeRelations.SelectedNode = leaf;
-                        return;
+                        if (tag.Kind == NodeKind.Supergroup) { treeRelations.SelectedNode = leaf; return; }
+                        fallback ??= leaf;
                     }
+        if (fallback != null)
+            treeRelations.SelectedNode = fallback;
     }
 
     /// <summary>--capture 用: Diagram タブ (Bärnighausen グラフ) へのクロップ撮影のためタブ切替を公開する。</summary>
@@ -240,12 +253,10 @@ public partial class FormGroupRelations : FormBase
         else if (_supers.Count == 0)
             tsNode.Nodes.Add(NoneNode());
         else
+            // 260705Cl 修正: GroupRelation 統合により超群側も P/p/Operations 等の全データを持つため、
+            // MakeSubNode と同様に Relation を Tag へ積んでツリー選択可能にする (Phase 2e)。
             foreach (var s in _supers)
-            {
-                var n = new TreeNode($"{SeitzNotation.PrettyHM(SymmetryStatic.Symmetries[s.SupergroupSeriesNumber].SpaceGroupHMStr)}   [{s.Index}]   No.{SymmetryStatic.Symmetries[s.SupergroupSeriesNumber].SpaceGroupNumber}")
-                { Tag = new NodeTag { Kind = NodeKind.Supergroup, TargetSeries = s.SupergroupSeriesNumber } };
-                tsNode.Nodes.Add(n);
-            }
+                tsNode.Nodes.Add(MakeSuperNode(s));
         var ksNode = superRoot.Nodes.Add("k — klassengleiche");
         ksNode.Nodes.Add(PendingNode());
 
@@ -253,13 +264,23 @@ public partial class FormGroupRelations : FormBase
         subRoot.Expand(); tNode.Expand(); superRoot.Expand(); tsNode.Expand();
     }
 
-    private TreeNode MakeSubNode(TSubgroup s)
+    private TreeNode MakeSubNode(GroupRelation s)
     {
         string conj = s.ConjugateCount > 1 ? $" ×{s.ConjugateCount}" : "";
         string label = s.ChildSeriesNumber >= 0
             ? $"{SeitzNotation.PrettyHM(s.ChildLabel)}   [{s.Index}]{conj}   No.{SymmetryStatic.Symmetries[s.ChildSeriesNumber].SpaceGroupNumber}"
             : $"{s.PointGroupHM}   [{s.Index}]{conj}   " + Loc(en: "(unresolved)", ja: "(未同定)", de: "(ungelöst)", fr: "(non résolu)", es: "(sin resolver)", pt: "(não resolvido)", it: "(non risolto)", ru: "(не определено)", zhHans: "(未识别)", zhHant: "(未識別)", ko: "(미확인)");
         return new TreeNode(label) { Tag = new NodeTag { Kind = NodeKind.Subgroup, Relation = s, TargetSeries = s.ChildSeriesNumber } };
+    }
+
+    /// <summary>260705Cl 追加 (Phase 2e): 超群ノード。GroupRelation 統合により全データを持つため MakeSubNode 同様に選択可能。
+    /// TargetSeries = ParentSeriesNumber (= その超群自身。dblclick でそこへ遷移)。</summary>
+    private TreeNode MakeSuperNode(GroupRelation s)
+    {
+        string conj = s.ConjugateCount > 1 ? $" ×{s.ConjugateCount}" : "";
+        var sup = SymmetryStatic.Symmetries[s.ParentSeriesNumber];
+        string label = $"{SeitzNotation.PrettyHM(sup.SpaceGroupHMStr)}   [{s.Index}]{conj}   No.{sup.SpaceGroupNumber}";
+        return new TreeNode(label) { Tag = new NodeTag { Kind = NodeKind.Supergroup, Relation = s, TargetSeries = s.ParentSeriesNumber } };
     }
 
     private TreeNode PendingNode() => new(Loc(en: "Phase 2 data pending", ja: "Phase 2 データ待ち", de: "Phase-2-Daten ausstehend", fr: "Données Phase 2 à venir", es: "Datos de Fase 2 pendientes", pt: "Dados da Fase 2 pendentes", it: "Dati Fase 2 in attesa", ru: "Данные фазы 2 ожидаются", zhHans: "Phase 2 数据待补", zhHant: "Phase 2 資料待補", ko: "Phase 2 데이터 대기")) { ForeColor = SystemColors.GrayText };
@@ -270,15 +291,15 @@ public partial class FormGroupRelations : FormBase
     private sealed class NodeTag
     {
         public NodeKind Kind;
-        public TSubgroup Relation;   // Subgroup のみ
+        public GroupRelation Relation;   // Subgroup/Supergroup 共通 (260705Cl: 超群側も選択可能化。Phase 2 データ待ちの Pending/None/Computing ノードは null)
         public int TargetSeries = -1;
     }
 
     private void treeRelations_AfterSelect(object sender, TreeViewEventArgs e)
     {
-        if (e.Node.Tag is NodeTag tag && tag.Kind == NodeKind.Subgroup && tag.Relation != null)
+        // 260705Cl 修正: 超群ノードも GroupRelation を持つため選択可能にする (Kind 判定を廃し Relation の有無だけで分岐)。
+        if (e.Node.Tag is NodeTag { Relation: not null } tag)
         {
-            //_selectedRelation = tag.Relation; // 260705Cl: 直後の ShowRelationDetail が設定するため冗長
             ShowRelationDetail(tag.Relation);
             RenderGraph(); // 選択ノードのハイライト更新
         }
@@ -292,8 +313,10 @@ public partial class FormGroupRelations : FormBase
     #endregion
 
     #region 詳細タブの流し込み
-    /// <summary>選択された t-部分群関係の詳細を各タブに表示する。null なら空表示。</summary>
-    private void ShowRelationDetail(TSubgroup s)
+    /// <summary>選択された部分群/超群関係の詳細を各タブに表示する。null なら空表示。260705Cl 修正 (Phase 2e):
+    /// 超群 (Minimal supergroups) 側の関係は s.ParentSeriesNumber が _currentSeries と異なる (= 超群自身)。
+    /// この場合は「子基準系から見た」向きに変換を反転表示する (viewFromChild)。</summary>
+    private void ShowRelationDetail(GroupRelation s)
     {
         _selectedRelation = s;
         if (s == null)
@@ -307,26 +330,40 @@ public partial class FormGroupRelations : FormBase
             return;
         }
 
+        bool viewFromChild = s.ParentSeriesNumber != _currentSeries; // true = Minimal supergroups 側から選択
         var parent = SymmetryStatic.Symmetries[_currentSeries];
-        string childName = s.ChildSeriesNumber >= 0 ? SeitzNotation.PrettyHM(s.ChildLabel) : s.PointGroupHM;
-        labelRelTitle.Text = $"{SeitzNotation.PrettyHM(parent.SpaceGroupHMStr)}  →  {childName}    ·    t, index {s.Index}";
+        string otherName = viewFromChild
+            ? SeitzNotation.PrettyHM(SymmetryStatic.Symmetries[s.ParentSeriesNumber].SpaceGroupHMStr)
+            : (s.ChildSeriesNumber >= 0 ? SeitzNotation.PrettyHM(s.ChildLabel) : s.PointGroupHM);
+        string arrow = viewFromChild ? "←" : "→";
+        string supergroupTag = viewFromChild ? "  " + Loc(en: "(supergroup)", ja: "(超群)", de: "(Obergruppe)", fr: "(supergroupe)", es: "(supergrupo)", pt: "(supergrupo)", it: "(supergruppo)", ru: "(надгруппа)", zhHans: "(超群)", zhHant: "(超群)", ko: "(초군)") : "";
+        labelRelTitle.Text = $"{SeitzNotation.PrettyHM(parent.SpaceGroupHMStr)}  {arrow}  {otherName}{supergroupTag}    ·    t, index {s.Index}";
 
-        FillMatrixTab(s);
+        FillMatrixTab(s, viewFromChild);
         FillOrbitTab(s);
         FillDomainsTab(s);
         FillReflectionsTab(s);
     }
 
-    private void FillMatrixTab(TSubgroup s)
+    private void FillMatrixTab(GroupRelation s, bool viewFromChild)
     {
         var sb = new StringBuilder();
-        if (s.TransformP != null)
+        // 260705Cl 修正 (Phase 2e): Minimal supergroups 側から選択した場合は (P,p)⁻¹ を表示する
+        // (格納値は逆引き元である supergroup 自身の部分群表のもの = 子基準系→親基準系の向き)。
+        var (P, p) = viewFromChild ? s.GetInverseTransform() : (s.TransformP, s.TransformShift);
+        if (P != null)
         {
-            var P = s.TransformP; var p = s.TransformShift;
-            sb.AppendLine(Loc(en: "Transformation to child basis  (a',b',c') = (a,b,c)·P", ja: "子基底への変換  (a',b',c') = (a,b,c)·P", de: "Transformation zur Kindbasis  (a',b',c') = (a,b,c)·P", fr: "Transformation vers la base fille  (a',b',c') = (a,b,c)·P", es: "Transformación a base hija  (a',b',c') = (a,b,c)·P", pt: "Transformação para base filha  (a',b',c') = (a,b,c)·P", it: "Trasformazione alla base figlia  (a',b',c') = (a,b,c)·P", ru: "Преобразование к базису подгруппы  (a',b',c') = (a,b,c)·P", zhHans: "到子基底的变换  (a',b',c') = (a,b,c)·P", zhHant: "到子基底的變換  (a',b',c') = (a,b,c)·P", ko: "자식 기저 변환  (a',b',c') = (a,b,c)·P"));
+            sb.AppendLine(viewFromChild
+                ? Loc(en: "Transformation to supergroup basis  (a',b',c') = (a,b,c)·P⁻¹  (derived from the supergroup's own subgroup table)", ja: "超群基底への変換  (a',b',c') = (a,b,c)·P⁻¹  (超群自身の部分群表から算出)", de: "Transformation zur Obergruppenbasis  (a',b',c') = (a,b,c)·P⁻¹  (aus der eigenen Untergruppentabelle der Obergruppe abgeleitet)", fr: "Transformation vers la base du supergroupe  (a',b',c') = (a,b,c)·P⁻¹  (dérivée de la table des sous-groupes du supergroupe)", es: "Transformación a la base del supergrupo  (a',b',c') = (a,b,c)·P⁻¹  (derivada de la tabla de subgrupos del propio supergrupo)", pt: "Transformação para a base do supergrupo  (a',b',c') = (a,b,c)·P⁻¹  (derivada da tabela de subgrupos do próprio supergrupo)", it: "Trasformazione alla base del supergruppo  (a',b',c') = (a,b,c)·P⁻¹  (derivata dalla tabella dei sottogruppi del supergruppo stesso)", ru: "Преобразование к базису надгруппы  (a',b',c') = (a,b,c)·P⁻¹  (получено из таблицы подгрупп самой надгруппы)", zhHans: "到超群基底的变换  (a',b',c') = (a,b,c)·P⁻¹  (由超群自身的子群表推得)", zhHant: "到超群基底的變換  (a',b',c') = (a,b,c)·P⁻¹  (由超群自身的子群表推得)", ko: "초군 기저 변환  (a',b',c') = (a,b,c)·P⁻¹  (초군 자체의 부분군 표에서 산출)")
+                : Loc(en: "Transformation to child basis  (a',b',c') = (a,b,c)·P", ja: "子基底への変換  (a',b',c') = (a,b,c)·P", de: "Transformation zur Kindbasis  (a',b',c') = (a,b,c)·P", fr: "Transformation vers la base fille  (a',b',c') = (a,b,c)·P", es: "Transformación a base hija  (a',b',c') = (a,b,c)·P", pt: "Transformação para base filha  (a',b',c') = (a,b,c)·P", it: "Trasformazione alla base figlia  (a',b',c') = (a,b,c)·P", ru: "Преобразование к базису подгруппы  (a',b',c') = (a,b,c)·P", zhHans: "到子基底的变换  (a',b',c') = (a,b,c)·P", zhHant: "到子基底的變換  (a',b',c') = (a,b,c)·P", ko: "자식 기저 변환  (a',b',c') = (a,b,c)·P"));
             sb.AppendLine();
             for (int r = 0; r < 3; r++)
                 sb.AppendLine($"   | {Frac(P[r * 3]),6}  {Frac(P[r * 3 + 1]),6}  {Frac(P[r * 3 + 2]),6} |     p{(r == 1 ? " =" : "  ")} {Frac(p[r]),6}");
+            if (viewFromChild)
+            {
+                sb.AppendLine();
+                sb.AppendLine(Loc(en: "Operations below are expressed in the supergroup's own setting.", ja: "以下の操作は超群自身の設定で表示しています。", de: "Die Operationen unten sind in der eigenen Aufstellung der Obergruppe angegeben.", fr: "Les opérations ci-dessous sont exprimées dans le repère propre du supergroupe.", es: "Las operaciones siguientes se expresan en el propio ajuste del supergrupo.", pt: "As operações abaixo são expressas na própria configuração do supergrupo.", it: "Le operazioni sottostanti sono espresse nella impostazione propria del supergruppo.", ru: "Операции ниже приведены в собственной установке надгруппы.", zhHans: "以下操作以超群自身的设置表示。", zhHant: "以下操作以超群自身的設定表示。", ko: "아래 연산은 초군 자체의 설정으로 표시됩니다."));
+            }
         }
         else
         {
@@ -347,14 +384,16 @@ public partial class FormGroupRelations : FormBase
         miniTableGenerators.SetRows(rows);
     }
 
-    private void FillOrbitTab(TSubgroup s)
+    private void FillOrbitTab(GroupRelation s)
     {
         labelOrbitInfo.Text = s.ChildSeriesNumber >= 0
             ? Loc(en: "How each Wyckoff orbit of the parent splits (sampled with a generic point).", ja: "親の各 Wyckoff 軌道の分裂 (generic 点でのサンプル計算)。", de: "Aufspaltung jeder Wyckoff-Lage des Elters (Stichprobe mit generischem Punkt).", fr: "Éclatement de chaque orbite de Wyckoff du parent (échantillon, point générique).", es: "División de cada órbita de Wyckoff del padre (muestreo con punto genérico).", pt: "Divisão de cada órbita de Wyckoff do pai (amostragem com ponto genérico).", it: "Suddivisione di ogni orbita di Wyckoff del genitore (campione, punto generico).", ru: "Расщепление каждой орбиты Уайкоффа родителя (выборка, общая точка).", zhHans: "母群各 Wyckoff 轨道的分裂 (通用点采样)。", zhHant: "母群各 Wyckoff 軌道的分裂 (通用點取樣)。", ko: "부모의 각 Wyckoff 궤도 분열 (일반점 샘플링).")
             : Loc(en: "Child type unresolved — orbit letters unavailable.", ja: "子の型が未同定のため Wyckoff 文字は表示できません。", de: "Kindtyp ungelöst — keine Lagesymbole.", fr: "Type fille non résolu — lettres indisponibles.", es: "Tipo hija sin resolver — letras no disponibles.", pt: "Tipo filho não resolvido — letras indisponíveis.", it: "Tipo figlio non risolto — lettere non disponibili.", ru: "Тип подгруппы не определён — буквы недоступны.", zhHans: "子类型未识别 — 无法显示字母。", zhHant: "子類型未識別 — 無法顯示字母。", ko: "자식 유형 미확인 — 문자 표시 불가.");
 
-        var wycks = SymmetryStatic.WyckoffPositions[_currentSeries];
-        var split = TSubgroupFinder.GetOrbitSplitting(_currentSeries, s);
+        // 260705Cl 修正 (Phase 2e): _currentSeries でなく s.ParentSeriesNumber を使う。Maximal subgroups 側では
+        // 常に一致するが、Minimal supergroups 側では s.ParentSeriesNumber (= 超群自身) が正しい分裂元になる。
+        var wycks = SymmetryStatic.WyckoffPositions[s.ParentSeriesNumber];
+        var split = TSubgroupFinder.GetOrbitSplitting(s.ParentSeriesNumber, s);
         var rows = new List<object[]>();
         for (int w = 0; w < wycks.Length; w++)
         {
@@ -369,7 +408,7 @@ public partial class FormGroupRelations : FormBase
         miniTableOrbit.SetRows(rows);
     }
 
-    private void FillDomainsTab(TSubgroup s)
+    private void FillDomainsTab(GroupRelation s)
     {
         // 260705Cl 修正: t-部分群は並進を失わないため、反位相 (並進) ドメインは定義上常に 1 で、全ドメイン状態が
         // 方位 (双晶) 状態。旧実装の Index/ConjugateCount は「同一部分群 H を共有する状態数」(normalizer 因子。
@@ -397,9 +436,10 @@ public partial class FormGroupRelations : FormBase
         miniTableTwins.SetRows(rows);
     }
 
-    private void FillReflectionsTab(TSubgroup s)
+    private void FillReflectionsTab(GroupRelation s)
     {
-        var refl = TSubgroupFinder.GetNewReflections(_currentSeries, s, 4);
+        // 260705Cl 修正 (Phase 2e): FillOrbitTab と同じ理由で s.ParentSeriesNumber を使う。
+        var refl = TSubgroupFinder.GetNewReflections(s.ParentSeriesNumber, s, 4);
         labelReflInfo.Text = refl.Length == 0
             // 260705Cl 修正: t-部分群は格子周期を変えないため「超構造(superstructure)」反射ではない
             // (真の超格子反射は k-部分群で初めて生じる。codex レビューで指摘)。全言語でタブ見出し (New reflections)
@@ -468,7 +508,12 @@ public partial class FormGroupRelations : FormBase
 
         // nodes
         for (int i = 0; i < superRects.Count; i++)
-            DrawNode(g, superRects[i], SymmetryStatic.Symmetries[superList[i].SupergroupSeriesNumber], false, false, superList[i].SupergroupSeriesNumber);
+        {
+            // 260705Cl 修正 (Phase 2e): SupergroupSeriesNumber → ParentSeriesNumber (GroupRelation 統合)。
+            // 超群も選択可能になったため sel ハイライトを部分群と同様に付ける。
+            bool selSuper = _selectedRelation != null && ReferenceEquals(_selectedRelation, superList[i]);
+            DrawNode(g, superRects[i], SymmetryStatic.Symmetries[superList[i].ParentSeriesNumber], false, selSuper, superList[i].ParentSeriesNumber);
+        }
         for (int i = 0; i < subRects.Count; i++)
         {
             bool sel = _selectedRelation != null && ReferenceEquals(_selectedRelation, subList[i]);
@@ -559,8 +604,10 @@ public partial class FormGroupRelations : FormBase
     {
         int series = HitTestGraph(e.Location);
         if (series < 0 || series == _currentSeries) return;
-        // クリック = その関係を選択 (詳細タブ更新)。部分群ノードなら関係も特定。
-        var rel = _subs.FirstOrDefault(s => s.ChildSeriesNumber == series);
+        // クリック = その関係を選択 (詳細タブ更新)。260705Cl 修正 (Phase 2e): 部分群 (_subs) だけでなく
+        // 超群 (_supers, ParentSeriesNumber で識別) ノードも選択可能にする。
+        GroupRelation rel = _subs.FirstOrDefault(s => s.ChildSeriesNumber == series)
+            ?? _supers.FirstOrDefault(s => s.ParentSeriesNumber == series);
         if (rel != null) { ShowRelationDetail(rel); RenderGraph(); }
     }
 
