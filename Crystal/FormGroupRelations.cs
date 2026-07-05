@@ -32,6 +32,9 @@ public partial class FormGroupRelations : FormBase
     // 現在閲覧中の群の関係 (グラフ・詳細タブ共有)。260705Cl: TSubgroup/TSubgroupFinder.TSupergroup を
     // 統合した共通 DTO GroupRelation に置換 (Phase 2e)。
     private GroupRelation[] _subs = [];
+    /// <summary>260705Cl 追加 (Phase 2c Step4): 現在閲覧中の群の maximal k-部分群 (klassengleiche)。
+    /// t- (_subs) と異なり Orbit splitting / New reflections タブは未対応 (ShowRelationDetail でガード表示)。</summary>
+    private GroupRelation[] _ksubs = [];
     private IReadOnlyList<GroupRelation> _supers = [];
     private bool _supersPending; // 260705Cl 追加: 超群索引をバックグラウンド構築中 (ツリーに「計算中…」を表示)
     private GroupRelation _selectedRelation;   // ツリー/グラフで選択中の関係 (null 可)
@@ -131,6 +134,7 @@ public partial class FormGroupRelations : FormBase
 
         var sym = SymmetryStatic.Symmetries[seriesNumber];
         _subs = TSubgroupFinder.GetMaximalTSubgroups(seriesNumber);
+        _ksubs = KSubgroupFinder.GetMaximalKSubgroups(seriesNumber); // 260705Cl 追加 (Phase 2c Step4)
         // 260705Cl 修正: 超群逆引きは初回呼び出しで全 230 タイプの部分群索引を同期構築し (Release 実測 ~8 s)、
         // フォーム初回オープンで UI をブロックしていた。未構築ならバックグラウンドで構築し、完了時に
         // まだ同じ群を表示していればツリーとグラフだけ差し替える。構築済みなら従来どおり即時取得。
@@ -245,9 +249,13 @@ public partial class FormGroupRelations : FormBase
         var tNode = subRoot.Nodes.Add("t — translationengleiche");
         foreach (var s in _subs)
             tNode.Nodes.Add(MakeSubNode(s));
-        // k / isomorphic は Phase 2 データ待ち
+        // 260705Cl 修正 (Phase 2c Step4): k- (klassengleiche) を実データ化。isomorphic はまだ Phase 2 データ待ち。
         var kNode = subRoot.Nodes.Add("k — klassengleiche");
-        kNode.Nodes.Add(PendingNode());
+        if (_ksubs.Length == 0)
+            kNode.Nodes.Add(NoneNode());
+        else
+            foreach (var s in _ksubs)
+                kNode.Nodes.Add(MakeSubNode(s));
         var iNode = subRoot.Nodes.Add(Loc(en: "isomorphic (series)", ja: "同型 (系列)", de: "isomorph (Serie)", fr: "isomorphes (série)", es: "isomorfos (serie)", pt: "isomorfos (série)", it: "isomorfi (serie)", ru: "изоморфные (серия)", zhHans: "同型 (系列)", zhHant: "同型 (系列)", ko: "동형 (계열)"));
         iNode.Nodes.Add(PendingNode());
 
@@ -343,7 +351,8 @@ public partial class FormGroupRelations : FormBase
             : (s.ChildSeriesNumber >= 0 ? SeitzNotation.PrettyHM(s.ChildLabel) : s.PointGroupHM);
         string arrow = viewFromChild ? "←" : "→";
         string supergroupTag = viewFromChild ? "  " + Loc(en: "(supergroup)", ja: "(超群)", de: "(Obergruppe)", fr: "(supergroupe)", es: "(supergrupo)", pt: "(supergrupo)", it: "(supergruppo)", ru: "(надгруппа)", zhHans: "(超群)", zhHant: "(超群)", ko: "(초군)") : "";
-        labelRelTitle.Text = $"{SeitzNotation.PrettyHM(parent.SpaceGroupHMStr)}  {arrow}  {otherName}{supergroupTag}    ·    t, index {s.Index}";
+        string kindTag = s.Kind == GroupRelationKind.K ? "k" : "t"; // 260705Cl 追加 (Phase 2c Step4)
+        labelRelTitle.Text = $"{SeitzNotation.PrettyHM(parent.SpaceGroupHMStr)}  {arrow}  {otherName}{supergroupTag}    ·    {kindTag}, index {s.Index}";
 
         FillMatrixTab(s, viewFromChild);
         FillOrbitTab(s);
@@ -390,8 +399,19 @@ public partial class FormGroupRelations : FormBase
         miniTableGenerators.SetRows(rows);
     }
 
+    /// <summary>k-部分群 (Kind=K) は Orbit splitting / Domains / New reflections タブが未対応
+    /// (親胞 mod1 の近似では並進格子が粗くなる k- を正しく扱えないため、専用ロジックが必要。
+    /// codex レビュー指摘、Phase 2d 以降の課題)。260705Cl 追加 (Phase 2c Step4)。</summary>
+    private static string KNotSupportedMessage() => Loc(en: "Not yet available for klassengleiche (k-) relations — needs dedicated logic for the coarser translation lattice (planned for a later phase).", ja: "klassengleiche (k-) 関係ではまだ未対応です (並進格子が粗くなるため専用ロジックが必要、今後のPhaseで対応予定)。", de: "Für klassengleiche (k-) Beziehungen noch nicht verfügbar (erfordert eigene Logik für das gröbere Translationsgitter, für eine spätere Phase geplant).", fr: "Pas encore disponible pour les relations klassengleiche (k) — nécessite une logique dédiée pour le réseau de translation plus grossier (prévu pour une phase ultérieure).", es: "Aún no disponible para relaciones klassengleiche (k) — requiere lógica dedicada para la red de traslación más gruesa (planificado para una fase posterior).", pt: "Ainda não disponível para relações klassengleiche (k) — requer lógica dedicada para a rede de translação mais grosseira (planejado para uma fase posterior).", it: "Non ancora disponibile per le relazioni klassengleiche (k) — richiede una logica dedicata per il reticolo di traslazione più grossolano (pianificato per una fase successiva).", ru: "Пока недоступно для klassengleiche (k-) отношений — требуется отдельная логика для более грубой трансляционной решётки (запланировано на более позднюю фазу).", zhHans: "klassengleiche (k-) 关系尚不支持 — 需要针对更粗平移格子的专用逻辑 (计划在后续阶段实现)。", zhHant: "klassengleiche (k-) 關係尚不支援 — 需要針對更粗平移格子的專用邏輯 (計畫在後續階段實現)。", ko: "klassengleiche (k-) 관계는 아직 지원되지 않습니다 — 더 성긴 병진 격자를 위한 전용 로직이 필요합니다 (추후 단계에서 지원 예정).");
+
     private void FillOrbitTab(GroupRelation s)
     {
+        if (s.Kind != GroupRelationKind.T)
+        {
+            labelOrbitInfo.Text = KNotSupportedMessage();
+            miniTableOrbit.ClearRows();
+            return;
+        }
         labelOrbitInfo.Text = s.ChildSeriesNumber >= 0
             ? Loc(en: "How each Wyckoff orbit of the parent splits (sampled with a generic point).", ja: "親の各 Wyckoff 軌道の分裂 (generic 点でのサンプル計算)。", de: "Aufspaltung jeder Wyckoff-Lage des Elters (Stichprobe mit generischem Punkt).", fr: "Éclatement de chaque orbite de Wyckoff du parent (échantillon, point générique).", es: "División de cada órbita de Wyckoff del padre (muestreo con punto genérico).", pt: "Divisão de cada órbita de Wyckoff do pai (amostragem com ponto genérico).", it: "Suddivisione di ogni orbita di Wyckoff del genitore (campione, punto generico).", ru: "Расщепление каждой орбиты Уайкоффа родителя (выборка, общая точка).", zhHans: "母群各 Wyckoff 轨道的分裂 (通用点采样)。", zhHant: "母群各 Wyckoff 軌道的分裂 (通用點取樣)。", ko: "부모의 각 Wyckoff 궤도 분열 (일반점 샘플링).")
             : Loc(en: "Child type unresolved — orbit letters unavailable.", ja: "子の型が未同定のため Wyckoff 文字は表示できません。", de: "Kindtyp ungelöst — keine Lagesymbole.", fr: "Type fille non résolu — lettres indisponibles.", es: "Tipo hija sin resolver — letras no disponibles.", pt: "Tipo filho não resolvido — letras indisponíveis.", it: "Tipo figlio non risolto — lettere non disponibili.", ru: "Тип подгруппы не определён — буквы недоступны.", zhHans: "子类型未识别 — 无法显示字母。", zhHant: "子類型未識別 — 無法顯示字母。", ko: "자식 유형 미확인 — 문자 표시 불가.");
@@ -416,6 +436,14 @@ public partial class FormGroupRelations : FormBase
 
     private void FillDomainsTab(GroupRelation s)
     {
+        if (s.Kind != GroupRelationKind.T)
+        {
+            // 260705Cl 追加 (Phase 2c Step4): k- は並進を失うため反位相 (並進) ドメインが 1 を超えうる。
+            // 正しいドメイン計数式は Phase 2d の課題 (codex 指摘)。誤った t- 前提の式を流用しない。
+            labelDomains.Text = KNotSupportedMessage();
+            miniTableTwins.ClearRows();
+            return;
+        }
         // 260705Cl 修正: t-部分群は並進を失わないため、反位相 (並進) ドメインは定義上常に 1 で、全ドメイン状態が
         // 方位 (双晶) 状態。旧実装の Index/ConjugateCount は「同一部分群 H を共有する状態数」(normalizer 因子。
         // 例: Pm-3m→P4mm の +P/−P 180° ドメイン) であり、反位相ドメイン数ではない。
@@ -444,6 +472,15 @@ public partial class FormGroupRelations : FormBase
 
     private void FillReflectionsTab(GroupRelation s)
     {
+        if (s.Kind != GroupRelationKind.T)
+        {
+            // 260705Cl 追加 (Phase 2c Step4): k- の New reflections (分数次反射) は q_parent=P⁻ᵀ·h の
+            // 非整数判定を伴う専用ロジックが必要 (計画書 §5「3 分類」)。t- 用の GetNewReflections は
+            // 親と同じ並進格子を前提にしており流用不可。
+            labelReflInfo.Text = KNotSupportedMessage();
+            miniTableReflections.ClearRows();
+            return;
+        }
         // 260705Cl 修正 (Phase 2e): FillOrbitTab と同じ理由で s.ParentSeriesNumber を使う。
         var refl = TSubgroupFinder.GetNewReflections(s.ParentSeriesNumber, s, 4);
         labelReflInfo.Text = refl.Length == 0
