@@ -93,6 +93,12 @@ public partial class FormGroupRelations : FormBase
             Application.DoEvents(); // ContinueWith (TaskScheduler.FromCurrentSynchronizationContext) をポンプする
         }
 
+        // 260705Cl 追加: 代表結晶 (spinel Fd-3m) 自身に t-超群が無いため、素通しだと超群ビューが一度も撮れない。
+        // 実際の dblclick と同じ経路で部分群へ一段下り、超群一覧に確実にデータが載る状態にする
+        // (索引は全 230 タイプ共通で構築済みなので追加の待ちは不要)。
+        if (_supers.Count == 0 && _subs.Length > 0 && _subs[0].ChildSeriesNumber >= 0)
+            NavigateTo(_subs[0].ChildSeriesNumber);
+
         TreeNode fallback = null;
         foreach (TreeNode root in treeRelations.Nodes)
             foreach (TreeNode category in root.Nodes)
