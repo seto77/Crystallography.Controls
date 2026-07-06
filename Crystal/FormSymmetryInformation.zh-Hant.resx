@@ -67,12 +67,6 @@
     <value>以選取的格式（emf 向量或 bmp 點陣）
 將一般位置圖複製到剪貼簿。</value>
   </data>
-  <data name="dataGridView1.ToolTip" xml:space="preserve">
-    <value>此空間群的維科夫位置：每一列
-列出一組對稱等效的原子位置，
-並顯示其多重度、維科夫字母、位置
-對稱性與分數座標（唯讀）。</value>
-  </data>
   <data name="indexControlAxis1.ToolTip" xml:space="preserve">
     <value>輸入軸 1 的方向指數 (u₁ v₁ w₁)；
 會更新其長度、軸間夾角

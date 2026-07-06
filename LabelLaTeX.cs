@@ -189,15 +189,16 @@ public class LabelLaTeX : Control
 
         try
         {
-            var parser = WpfTeXFormulaParser.Instance;
-            var formula = parser.Parse(latex);
-            var scale = Math.Max(1.0, Font.SizeInPoints * 96.0 / 72.0);
-            var dpi = Math.Max(96.0, DeviceDpi);
-            var brush = ToWpfBrush(ForeColor);
-            var environment = WpfTeXEnvironment.Create(texStyle, scale, Font.FontFamily.Name, brush, null);
-            renderedBitmap = thickness <= 0.0
-                ? ToDrawingBitmap(formula.RenderToBitmap(environment, scale, 0.0, 0.0, dpi), dpi)
-                : RenderGeometryBitmap(formula, environment, scale, dpi, brush, thickness); // (260427Ch) 細い数式を必要時だけ stroke で太らせる。
+            //var parser = WpfTeXFormulaParser.Instance; // 260706Ch: MiniTable からも使える共通 renderer へ移動
+            //var formula = parser.Parse(latex);
+            //var scale = Math.Max(1.0, Font.SizeInPoints * 96.0 / 72.0);
+            //var dpi = Math.Max(96.0, DeviceDpi);
+            //var brush = ToWpfBrush(ForeColor);
+            //var environment = WpfTeXEnvironment.Create(texStyle, scale, Font.FontFamily.Name, brush, null);
+            //renderedBitmap = thickness <= 0.0
+            //    ? ToDrawingBitmap(formula.RenderToBitmap(environment, scale, 0.0, 0.0, dpi), dpi)
+            //    : RenderGeometryBitmap(formula, environment, scale, dpi, brush, thickness); // (260427Ch) 細い数式を必要時だけ stroke で太らせる。
+            renderedBitmap = RenderLatexBitmap(latex, Font, ForeColor, Math.Max(96.0, DeviceDpi), texStyle, thickness); // 260706Ch
         }
         catch (Exception ex)
         {
@@ -228,6 +229,24 @@ public class LabelLaTeX : Control
         if (brush.CanFreeze)
             brush.Freeze();
         return brush;
+    }
+
+    /// <summary>LaTeX 文字列を GDI+ Bitmap へ描画する共通入口。MiniTable のセル描画からも利用する。260706Ch 追加。</summary>
+    public static Bitmap RenderLatexBitmap(string text, Font font, Color foreColor, double dpi = 96.0, TexStyle texStyle = TexStyle.Display, double thickness = 0.0)
+    {
+        var latex = NormalizeLatex(text);
+        if (latex.Length == 0)
+            return null;
+
+        var parser = WpfTeXFormulaParser.Instance;
+        var formula = parser.Parse(latex);
+        var scale = Math.Max(1.0, font.SizeInPoints * 96.0 / 72.0);
+        dpi = Math.Max(96.0, dpi);
+        var brush = ToWpfBrush(foreColor);
+        var environment = WpfTeXEnvironment.Create(texStyle, scale, font.FontFamily.Name, brush, null);
+        return thickness <= 0.0
+            ? ToDrawingBitmap(formula.RenderToBitmap(environment, scale, 0.0, 0.0, dpi), dpi)
+            : RenderGeometryBitmap(formula, environment, scale, dpi, brush, thickness);
     }
 
     private static Bitmap RenderGeometryBitmap(TexFormula formula, TexEnvironment environment, double scale, double dpi, WpfSolidColorBrush brush, double thickness)

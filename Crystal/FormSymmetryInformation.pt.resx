@@ -67,12 +67,6 @@ no formato selecionado (vetor emf ou bitmap bmp).</value>
     <value>Copia o diagrama de posições gerais para a área de transferência
 no formato selecionado (vetor emf ou bitmap bmp).</value>
   </data>
-  <data name="dataGridView1.ToolTip" xml:space="preserve">
-    <value>Posições de Wyckoff deste grupo espacial: cada linha
-fornece um conjunto de sítios atômicos equivalentes por
-simetria com sua multiplicidade, letra de Wyckoff, simetria
-do sítio e coordenadas fracionárias (somente leitura).</value>
-  </data>
   <data name="indexControlAxis1.ToolTip" xml:space="preserve">
     <value>Insira os índices de direção (u₁ v₁ w₁)
 do eixo 1; atualiza seu comprimento, o

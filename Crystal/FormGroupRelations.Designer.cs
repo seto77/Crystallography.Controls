@@ -1,4 +1,4 @@
-// 260704Cl 新規: 空間群の group-subgroup 関係ブラウザ (Phase 2)。設計は Pattern A (ツリー+タブ) を骨格に、
+﻿// 260704Cl 新規: 空間群の group-subgroup 関係ブラウザ (Phase 2)。設計は Pattern A (ツリー+タブ) を骨格に、
 // Pattern C のグラフ (Diagram タブ) と Pattern B の軌道分裂・双晶インスペクタを統合した最小公倍数フォーム。
 // レイアウトは docking 主体 (ピクセル座標依存を避ける)。ラベル文言はコード側 Loc() で多言語化 (方式②)。
 namespace Crystallography.Controls;
@@ -19,10 +19,10 @@ partial class FormGroupRelations
         components = new System.ComponentModel.Container();
         toolTip = new System.Windows.Forms.ToolTip(components);
         panelToolbar = new System.Windows.Forms.Panel();
-        buttonBack = new System.Windows.Forms.Button();
-        buttonForward = new System.Windows.Forms.Button();
-        buttonHome = new System.Windows.Forms.Button();
         labelBreadcrumb = new System.Windows.Forms.Label();
+        buttonHome = new System.Windows.Forms.Button();
+        buttonForward = new System.Windows.Forms.Button();
+        buttonBack = new System.Windows.Forms.Button();
         panelBanner = new System.Windows.Forms.Panel();
         labelContext = new System.Windows.Forms.Label();
         splitMain = new System.Windows.Forms.SplitContainer();
@@ -30,8 +30,11 @@ partial class FormGroupRelations
         tabDetail = new System.Windows.Forms.TabControl();
         tabMatrix = new System.Windows.Forms.TabPage();
         miniTableGenerators = new MiniTable();
-        labelMatrix = new System.Windows.Forms.Label();
-        labelRelTitle = new System.Windows.Forms.Label();
+        labelLatex3 = new LabelLaTeX();
+        labelLatex2 = new LabelLaTeX();
+        labelLatex1 = new LabelLaTeX();
+        //labelMatrix = new System.Windows.Forms.Label(); // 260706Ch: LabelLaTeX 3 段表示へ置換
+        //labelRelTitle = new System.Windows.Forms.Label(); // 260706Ch: labelLatex1 に統合
         tabOrbit = new System.Windows.Forms.TabPage();
         miniTableOrbit = new MiniTable();
         labelOrbitInfo = new System.Windows.Forms.Label();
@@ -43,7 +46,6 @@ partial class FormGroupRelations
         labelReflInfo = new System.Windows.Forms.Label();
         tabDiagram = new System.Windows.Forms.TabPage();
         pictureBoxGraph = new System.Windows.Forms.PictureBox();
-
         panelToolbar.SuspendLayout();
         panelBanner.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)splitMain).BeginInit();
@@ -83,38 +85,6 @@ partial class FormGroupRelations
         panelToolbar.Size = new System.Drawing.Size(880, 34);
         panelToolbar.TabIndex = 0;
         //
-        // buttonBack
-        //
-        buttonBack.Enabled = false;
-        buttonBack.Location = new System.Drawing.Point(6, 4);
-        buttonBack.Name = "buttonBack";
-        buttonBack.Size = new System.Drawing.Size(38, 26);
-        buttonBack.TabIndex = 0;
-        buttonBack.Text = "←";
-        buttonBack.UseVisualStyleBackColor = true;
-        buttonBack.Click += buttonBack_Click;
-        //
-        // buttonForward
-        //
-        buttonForward.Enabled = false;
-        buttonForward.Location = new System.Drawing.Point(46, 4);
-        buttonForward.Name = "buttonForward";
-        buttonForward.Size = new System.Drawing.Size(38, 26);
-        buttonForward.TabIndex = 1;
-        buttonForward.Text = "→";
-        buttonForward.UseVisualStyleBackColor = true;
-        buttonForward.Click += buttonForward_Click;
-        //
-        // buttonHome
-        //
-        buttonHome.Location = new System.Drawing.Point(88, 4);
-        buttonHome.Name = "buttonHome";
-        buttonHome.Size = new System.Drawing.Size(54, 26);
-        buttonHome.TabIndex = 2;
-        buttonHome.Text = "⌂ Home";
-        buttonHome.UseVisualStyleBackColor = true;
-        buttonHome.Click += buttonHome_Click;
-        //
         // labelBreadcrumb
         //
         labelBreadcrumb.AutoEllipsis = true;
@@ -123,6 +93,44 @@ partial class FormGroupRelations
         labelBreadcrumb.Size = new System.Drawing.Size(720, 26);
         labelBreadcrumb.TabIndex = 3;
         labelBreadcrumb.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+        //
+        // buttonHome
+        //
+        buttonHome.AutoSize = true;
+        buttonHome.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+        buttonHome.Location = new System.Drawing.Point(88, 4);
+        buttonHome.Name = "buttonHome";
+        buttonHome.Size = new System.Drawing.Size(64, 25);
+        buttonHome.TabIndex = 2;
+        buttonHome.Text = "⌂ Home";
+        buttonHome.UseVisualStyleBackColor = true;
+        buttonHome.Click += buttonHome_Click;
+        //
+        // buttonForward
+        //
+        buttonForward.AutoSize = true;
+        buttonForward.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+        buttonForward.Enabled = false;
+        buttonForward.Location = new System.Drawing.Point(46, 4);
+        buttonForward.Name = "buttonForward";
+        buttonForward.Size = new System.Drawing.Size(27, 25);
+        buttonForward.TabIndex = 1;
+        buttonForward.Text = "→";
+        buttonForward.UseVisualStyleBackColor = true;
+        buttonForward.Click += buttonForward_Click;
+        //
+        // buttonBack
+        //
+        buttonBack.AutoSize = true;
+        buttonBack.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+        buttonBack.Enabled = false;
+        buttonBack.Location = new System.Drawing.Point(6, 4);
+        buttonBack.Name = "buttonBack";
+        buttonBack.Size = new System.Drawing.Size(27, 25);
+        buttonBack.TabIndex = 0;
+        buttonBack.Text = "←";
+        buttonBack.UseVisualStyleBackColor = true;
+        buttonBack.Click += buttonBack_Click;
         //
         // panelBanner
         //
@@ -148,7 +156,13 @@ partial class FormGroupRelations
         splitMain.Dock = System.Windows.Forms.DockStyle.Fill;
         splitMain.Location = new System.Drawing.Point(0, 58);
         splitMain.Name = "splitMain";
+        //
+        // splitMain.Panel1
+        //
         splitMain.Panel1.Controls.Add(treeRelations);
+        //
+        // splitMain.Panel2
+        //
         splitMain.Panel2.Controls.Add(tabDetail);
         splitMain.Size = new System.Drawing.Size(880, 462);
         splitMain.SplitterDistance = 300;
@@ -183,8 +197,11 @@ partial class FormGroupRelations
         // tabMatrix
         //
         tabMatrix.Controls.Add(miniTableGenerators);
-        tabMatrix.Controls.Add(labelMatrix);
-        tabMatrix.Controls.Add(labelRelTitle);
+        tabMatrix.Controls.Add(labelLatex3);
+        tabMatrix.Controls.Add(labelLatex2);
+        tabMatrix.Controls.Add(labelLatex1);
+        //tabMatrix.Controls.Add(labelMatrix); // 260706Ch: 旧 labelMatrix は LabelLaTeX へ分割
+        //tabMatrix.Controls.Add(labelRelTitle); // 260706Ch: 関係タイトルは labelLatex1 で描画
         tabMatrix.Location = new System.Drawing.Point(4, 24);
         tabMatrix.Name = "tabMatrix";
         tabMatrix.Padding = new System.Windows.Forms.Padding(3);
@@ -193,35 +210,62 @@ partial class FormGroupRelations
         tabMatrix.Text = "Matrix";
         tabMatrix.UseVisualStyleBackColor = true;
         //
-        // labelRelTitle
-        //
-        labelRelTitle.Dock = System.Windows.Forms.DockStyle.Top;
-        labelRelTitle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-        labelRelTitle.Location = new System.Drawing.Point(3, 3);
-        labelRelTitle.Name = "labelRelTitle";
-        labelRelTitle.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-        labelRelTitle.Size = new System.Drawing.Size(562, 28);
-        labelRelTitle.TabIndex = 0;
-        labelRelTitle.Text = "Select a relation";
-        //
-        // labelMatrix
-        //
-        labelMatrix.Dock = System.Windows.Forms.DockStyle.Top;
-        labelMatrix.Font = new System.Drawing.Font("Consolas", 10F);
-        labelMatrix.Location = new System.Drawing.Point(3, 31);
-        labelMatrix.Name = "labelMatrix";
-        labelMatrix.Padding = new System.Windows.Forms.Padding(6, 6, 6, 8);
-        labelMatrix.Size = new System.Drawing.Size(562, 110);
-        labelMatrix.TabIndex = 1;
-        //
         // miniTableGenerators
         //
         miniTableGenerators.AllowVerticalScroll = true;
         miniTableGenerators.Dock = System.Windows.Forms.DockStyle.Fill;
-        miniTableGenerators.Location = new System.Drawing.Point(3, 141);
+        //miniTableGenerators.Location = new System.Drawing.Point(3, 171); // 260706Ch: LaTeX ラベル拡大に合わせて下げる
+        miniTableGenerators.Location = new System.Drawing.Point(3, 209);
         miniTableGenerators.Name = "miniTableGenerators";
-        miniTableGenerators.Size = new System.Drawing.Size(562, 290);
-        miniTableGenerators.TabIndex = 2;
+        //miniTableGenerators.Size = new System.Drawing.Size(562, 260); // 260706Ch: 上部 LaTeX 領域拡大
+        miniTableGenerators.Size = new System.Drawing.Size(562, 222);
+        miniTableGenerators.TabIndex = 3;
+        miniTableGenerators.TabStop = false;
+        //
+        // labelLatex3
+        //
+        labelLatex3.Dock = System.Windows.Forms.DockStyle.Top;
+        //labelLatex3.Font = new System.Drawing.Font("Segoe UI", 11F); // 260706Ch: 行列表示を少し大きくする
+        labelLatex3.Font = new System.Drawing.Font("Segoe UI", 13F);
+        //labelLatex3.Location = new System.Drawing.Point(3, 77); // 260706Ch: labelLatex1/2 拡大分を反映
+        labelLatex3.Location = new System.Drawing.Point(3, 93);
+        labelLatex3.Name = "labelLatex3";
+        labelLatex3.Padding = new System.Windows.Forms.Padding(6, 4, 6, 8);
+        //labelLatex3.Size = new System.Drawing.Size(562, 94); // 260706Ch: 大きい数式用に高さを確保
+        labelLatex3.Size = new System.Drawing.Size(562, 116);
+        labelLatex3.TabIndex = 2;
+        labelLatex3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+        labelLatex3.Thickness = 0.6D;
+        //
+        // labelLatex2
+        //
+        labelLatex2.Dock = System.Windows.Forms.DockStyle.Top;
+        //labelLatex2.Font = new System.Drawing.Font("Segoe UI", 10F); // 260706Ch: transformation 表示を少し大きくする
+        labelLatex2.Font = new System.Drawing.Font("Segoe UI", 12F);
+        //labelLatex2.Location = new System.Drawing.Point(3, 41); // 260706Ch: labelLatex1 拡大分を反映
+        labelLatex2.Location = new System.Drawing.Point(3, 49);
+        labelLatex2.Name = "labelLatex2";
+        labelLatex2.Padding = new System.Windows.Forms.Padding(6, 4, 6, 4);
+        //labelLatex2.Size = new System.Drawing.Size(562, 36); // 260706Ch: 大きい数式用に高さを確保
+        labelLatex2.Size = new System.Drawing.Size(562, 44);
+        labelLatex2.TabIndex = 1;
+        labelLatex2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+        labelLatex2.Thickness = 0.6D;
+        //
+        // labelLatex1
+        //
+        labelLatex1.Dock = System.Windows.Forms.DockStyle.Top;
+        //labelLatex1.Font = new System.Drawing.Font("Segoe UI", 11F); // 260706Ch: relation 表示を少し大きくする
+        labelLatex1.Font = new System.Drawing.Font("Segoe UI", 13F);
+        labelLatex1.Location = new System.Drawing.Point(3, 3);
+        labelLatex1.Name = "labelLatex1";
+        labelLatex1.Padding = new System.Windows.Forms.Padding(6, 4, 6, 4);
+        //labelLatex1.Size = new System.Drawing.Size(562, 38); // 260706Ch: 大きい数式用に高さを確保
+        labelLatex1.Size = new System.Drawing.Size(562, 46);
+        labelLatex1.TabIndex = 0;
+        labelLatex1.Text = "\\mathrm{Select\\,a\\,subgroup\\,relation\\,from\\,the\\,tree.}";
+        labelLatex1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+        labelLatex1.Thickness = 0.6D;
         //
         // tabOrbit
         //
@@ -235,15 +279,6 @@ partial class FormGroupRelations
         tabOrbit.Text = "Orbit splitting";
         tabOrbit.UseVisualStyleBackColor = true;
         //
-        // labelOrbitInfo
-        //
-        labelOrbitInfo.Dock = System.Windows.Forms.DockStyle.Top;
-        labelOrbitInfo.Location = new System.Drawing.Point(3, 3);
-        labelOrbitInfo.Name = "labelOrbitInfo";
-        labelOrbitInfo.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-        labelOrbitInfo.Size = new System.Drawing.Size(562, 34);
-        labelOrbitInfo.TabIndex = 0;
-        //
         // miniTableOrbit
         //
         miniTableOrbit.AllowVerticalScroll = true;
@@ -252,6 +287,16 @@ partial class FormGroupRelations
         miniTableOrbit.Name = "miniTableOrbit";
         miniTableOrbit.Size = new System.Drawing.Size(562, 394);
         miniTableOrbit.TabIndex = 1;
+        miniTableOrbit.TabStop = false;
+        //
+        // labelOrbitInfo
+        //
+        labelOrbitInfo.Dock = System.Windows.Forms.DockStyle.Top;
+        labelOrbitInfo.Location = new System.Drawing.Point(3, 3);
+        labelOrbitInfo.Name = "labelOrbitInfo";
+        labelOrbitInfo.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+        labelOrbitInfo.Size = new System.Drawing.Size(562, 34);
+        labelOrbitInfo.TabIndex = 0;
         //
         // tabDomains
         //
@@ -265,15 +310,6 @@ partial class FormGroupRelations
         tabDomains.Text = "Domains & Twins";
         tabDomains.UseVisualStyleBackColor = true;
         //
-        // labelDomains
-        //
-        labelDomains.Dock = System.Windows.Forms.DockStyle.Top;
-        labelDomains.Location = new System.Drawing.Point(3, 3);
-        labelDomains.Name = "labelDomains";
-        labelDomains.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-        labelDomains.Size = new System.Drawing.Size(562, 96);
-        labelDomains.TabIndex = 0;
-        //
         // miniTableTwins
         //
         miniTableTwins.AllowVerticalScroll = true;
@@ -282,6 +318,16 @@ partial class FormGroupRelations
         miniTableTwins.Name = "miniTableTwins";
         miniTableTwins.Size = new System.Drawing.Size(562, 332);
         miniTableTwins.TabIndex = 1;
+        miniTableTwins.TabStop = false;
+        //
+        // labelDomains
+        //
+        labelDomains.Dock = System.Windows.Forms.DockStyle.Top;
+        labelDomains.Location = new System.Drawing.Point(3, 3);
+        labelDomains.Name = "labelDomains";
+        labelDomains.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+        labelDomains.Size = new System.Drawing.Size(562, 96);
+        labelDomains.TabIndex = 0;
         //
         // tabReflections
         //
@@ -295,15 +341,6 @@ partial class FormGroupRelations
         tabReflections.Text = "New reflections";
         tabReflections.UseVisualStyleBackColor = true;
         //
-        // labelReflInfo
-        //
-        labelReflInfo.Dock = System.Windows.Forms.DockStyle.Top;
-        labelReflInfo.Location = new System.Drawing.Point(3, 3);
-        labelReflInfo.Name = "labelReflInfo";
-        labelReflInfo.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-        labelReflInfo.Size = new System.Drawing.Size(562, 50);
-        labelReflInfo.TabIndex = 0;
-        //
         // miniTableReflections
         //
         miniTableReflections.AllowVerticalScroll = true;
@@ -312,6 +349,16 @@ partial class FormGroupRelations
         miniTableReflections.Name = "miniTableReflections";
         miniTableReflections.Size = new System.Drawing.Size(562, 378);
         miniTableReflections.TabIndex = 1;
+        miniTableReflections.TabStop = false;
+        //
+        // labelReflInfo
+        //
+        labelReflInfo.Dock = System.Windows.Forms.DockStyle.Top;
+        labelReflInfo.Location = new System.Drawing.Point(3, 3);
+        labelReflInfo.Name = "labelReflInfo";
+        labelReflInfo.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+        labelReflInfo.Size = new System.Drawing.Size(562, 50);
+        labelReflInfo.TabIndex = 0;
         //
         // tabDiagram
         //
@@ -350,8 +397,8 @@ partial class FormGroupRelations
         Name = "FormGroupRelations";
         StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
         Text = "Group Relations";
-
         panelToolbar.ResumeLayout(false);
+        panelToolbar.PerformLayout();
         panelBanner.ResumeLayout(false);
         splitMain.Panel1.ResumeLayout(false);
         splitMain.Panel2.ResumeLayout(false);
@@ -383,8 +430,11 @@ partial class FormGroupRelations
     private System.Windows.Forms.TreeView treeRelations;
     private System.Windows.Forms.TabControl tabDetail;
     private System.Windows.Forms.TabPage tabMatrix;
-    private System.Windows.Forms.Label labelRelTitle;
-    private System.Windows.Forms.Label labelMatrix;
+    private LabelLaTeX labelLatex1;
+    private LabelLaTeX labelLatex2;
+    private LabelLaTeX labelLatex3;
+    //private System.Windows.Forms.Label labelRelTitle; // 260706Ch: labelLatex1 に統合
+    //private System.Windows.Forms.Label labelMatrix; // 260706Ch: LabelLaTeX 3 段表示へ置換
     private MiniTable miniTableGenerators;
     private System.Windows.Forms.TabPage tabOrbit;
     private System.Windows.Forms.Label labelOrbitInfo;

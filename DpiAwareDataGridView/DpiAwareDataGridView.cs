@@ -260,7 +260,8 @@ public class DpiAwareDataGridView : DataGridView
     private static int FromLogicalPixels(int logicalPixels, int dpi)
         => Math.Max(1, (int)Math.Round(logicalPixels * dpi / 96.0));
 
-    private int CurrentDpi
+    // 260706Ch: DataGridViewLatexTextBoxCell (セル描画時の DPI 取得) から使えるよう internal 化。
+    internal int CurrentDpi
     {
         get
         {

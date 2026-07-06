@@ -67,12 +67,6 @@
     <value>以所选格式（emf 矢量或 bmp 位图）
 将一般位置图复制到剪贴板。</value>
   </data>
-  <data name="dataGridView1.ToolTip" xml:space="preserve">
-    <value>该空间群的维科夫位置：每一行给出
-一组对称等效的原子位置，并附带其
-多重性、维科夫字母、位置对称性
-和分数坐标（只读）。</value>
-  </data>
   <data name="indexControlAxis1.ToolTip" xml:space="preserve">
     <value>输入轴 1 的方向指数 (u₁ v₁ w₁)；
 会更新其长度、轴间夹角

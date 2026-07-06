@@ -67,12 +67,6 @@ au format sélectionné (vectoriel emf ou bitmap bmp).</value>
     <value>Copie le diagramme des positions générales dans le presse-papiers
 au format sélectionné (vectoriel emf ou bitmap bmp).</value>
   </data>
-  <data name="dataGridView1.ToolTip" xml:space="preserve">
-    <value>Positions de Wyckoff de ce groupe d'espace : chaque ligne
-donne un ensemble de sites atomiques équivalents par symétrie
-avec sa multiplicité, sa lettre de Wyckoff, sa symétrie de
-site et ses coordonnées fractionnaires (lecture seule).</value>
-  </data>
   <data name="indexControlAxis1.ToolTip" xml:space="preserve">
     <value>Saisissez les indices de direction (u₁ v₁ w₁)
 de l'axe 1 ; met à jour sa longueur, l'angle

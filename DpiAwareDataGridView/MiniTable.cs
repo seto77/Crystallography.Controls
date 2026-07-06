@@ -217,11 +217,13 @@ public class MiniTable : DpiAwareDataGridView
     /// <param name="Align">セルの配置。数値列は MiddleRight、テキスト列は MiddleLeft/MiddleCenter。</param>
     /// <param name="Format">セルの DefaultCellStyle.Format (例 "g4")。値は double/int のまま渡し、表示時に整形させる。</param>
     /// <param name="Fill">true の列だけ残り幅を吸収 (Fill)。他列は内容幅 (AllCells)。Fill は 0 または 1 列。</param>
+    /// <param name="Latex">true の列はセルの値を LaTeX 文字列として bitmap 描画する (<see cref="DataGridViewLatexTextBoxCell"/>)。260706Ch 追加。</param>
     public readonly record struct Col(
         string Header,
         DataGridViewContentAlignment Align = DataGridViewContentAlignment.MiddleLeft,
         string Format = null,
-        bool Fill = false);
+        bool Fill = false,
+        bool Latex = false);
 
     /// <summary>列をコード生成する (記号のみ・翻訳不要の表向け)。1 回だけ呼ぶ。260606Cl 追加。</summary>
     public void SetColumns(params Col[] cols)
@@ -250,6 +252,8 @@ public class MiniTable : DpiAwareDataGridView
                 c.DefaultCellStyle.Alignment = col.Align;
                 if (!string.IsNullOrEmpty(col.Format))
                     c.DefaultCellStyle.Format = col.Format;
+                if (col.Latex) // 260706Ch: MiniTable に LaTeX レンダリング列を追加
+                    DataGridViewLatexTextBoxCell.ApplyToColumn(c);
                 Columns.Add(c);
             }
         }

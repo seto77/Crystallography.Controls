@@ -1,4 +1,4 @@
-// 260704Cl 新規: 空間群の group-subgroup 関係ブラウザ (Phase 2)。
+﻿// 260704Cl 新規: 空間群の group-subgroup 関係ブラウザ (Phase 2)。
 // Pattern A (ツリー+タブ詳細) を骨格に、Pattern C (Bärnighausen グラフ=Diagram タブ) と
 // Pattern B (軌道分裂・双晶インスペクタ) を統合。translationengleiche (t-) 部分群/超群は
 // TSubgroupFinder が既存の対称操作データから実行時に厳密計算する (型同定は操作集合の完全一致で検証済み)。
@@ -335,8 +335,11 @@ public partial class FormGroupRelations : FormBase
         _selectedRelation = s;
         if (s == null)
         {
-            labelRelTitle.Text = Loc(en: "Select a subgroup relation from the tree.", ja: "ツリーから部分群関係を選択してください。", de: "Wählen Sie eine Untergruppenrelation im Baum.", fr: "Sélectionnez une relation de sous-groupe dans l'arbre.", es: "Seleccione una relación de subgrupo en el árbol.", pt: "Selecione uma relação de subgrupo na árvore.", it: "Seleziona una relazione di sottogruppo nell'albero.", ru: "Выберите отношение подгруппы в дереве.", zhHans: "请从树中选择子群关系。", zhHant: "請從樹中選擇子群關係。", ko: "트리에서 부분군 관계를 선택하세요.");
-            labelMatrix.Text = "";
+            //labelRelTitle.Text = Loc(en: "Select a subgroup relation from the tree.", ja: "ツリーから部分群関係を選択してください。", de: "Wählen Sie eine Untergruppenrelation im Baum.", fr: "Sélectionnez une relation de sous-groupe dans l'arbre.", es: "Seleccione una relación de subgrupo en el árbol.", pt: "Selecione uma relação de subgrupo na árvore.", it: "Seleziona una relazione di sottogruppo nell'albero.", ru: "Выберите отношение подгруппы в дереве.", zhHans: "请从树中选择子群关系。", zhHant: "請從樹中選擇子群關係。", ko: "트리에서 부분군 관계를 선택하세요.");
+            //labelMatrix.Text = "";
+            labelLatex1.Text = @"\mathrm{Select\,a\,subgroup\,relation\,from\,the\,tree.}"; // 260706Ch: labelMatrix から LabelLaTeX 3 段表示へ移行
+            labelLatex2.Text = "";
+            labelLatex3.Text = "";
             miniTableGenerators.ClearRows();
             labelOrbitInfo.Text = ""; miniTableOrbit.ClearRows();
             labelDomains.Text = ""; miniTableTwins.ClearRows();
@@ -345,14 +348,15 @@ public partial class FormGroupRelations : FormBase
         }
 
         bool viewFromChild = s.ParentSeriesNumber != _currentSeries; // true = Minimal supergroups 側から選択
-        var parent = SymmetryStatic.Symmetries[_currentSeries];
-        string otherName = viewFromChild
-            ? SeitzNotation.PrettyHM(SymmetryStatic.Symmetries[s.ParentSeriesNumber].SpaceGroupHMStr)
-            : (s.ChildSeriesNumber >= 0 ? SeitzNotation.PrettyHM(s.ChildLabel) : s.PointGroupHM);
-        string arrow = viewFromChild ? "←" : "→";
-        string supergroupTag = viewFromChild ? "  " + Loc(en: "(supergroup)", ja: "(超群)", de: "(Obergruppe)", fr: "(supergroupe)", es: "(supergrupo)", pt: "(supergrupo)", it: "(supergruppo)", ru: "(надгруппа)", zhHans: "(超群)", zhHant: "(超群)", ko: "(초군)") : "";
-        string kindTag = s.Kind == GroupRelationKind.K ? "k" : "t"; // 260705Cl 追加 (Phase 2c Step4)
-        labelRelTitle.Text = $"{SeitzNotation.PrettyHM(parent.SpaceGroupHMStr)}  {arrow}  {otherName}{supergroupTag}    ·    {kindTag}, index {s.Index}";
+        //var parent = SymmetryStatic.Symmetries[_currentSeries];
+        //string otherName = viewFromChild
+        //    ? SeitzNotation.PrettyHM(SymmetryStatic.Symmetries[s.ParentSeriesNumber].SpaceGroupHMStr)
+        //    : (s.ChildSeriesNumber >= 0 ? SeitzNotation.PrettyHM(s.ChildLabel) : s.PointGroupHM);
+        //string arrow = viewFromChild ? "←" : "→";
+        //string supergroupTag = viewFromChild ? "  " + Loc(en: "(supergroup)", ja: "(超群)", de: "(Obergruppe)", fr: "(supergroupe)", es: "(supergrupo)", pt: "(supergrupo)", it: "(supergruppo)", ru: "(надгруппа)", zhHans: "(超群)", zhHant: "(超群)", ko: "(초군)") : "";
+        //string kindTag = s.Kind == GroupRelationKind.K ? "k" : "t"; // 260705Cl 追加 (Phase 2c Step4)
+        //labelRelTitle.Text = $"{SeitzNotation.PrettyHM(parent.SpaceGroupHMStr)}  {arrow}  {otherName}{supergroupTag}    ·    {kindTag}, index {s.Index}";
+        labelLatex1.Text = BuildRelationLatex(s); // 260706Ch: 常に「超群 → 部分群」の向きで表示
 
         FillMatrixTab(s, viewFromChild);
         FillOrbitTab(s);
@@ -362,31 +366,43 @@ public partial class FormGroupRelations : FormBase
 
     private void FillMatrixTab(GroupRelation s, bool viewFromChild)
     {
-        var sb = new StringBuilder();
+        //var sb = new StringBuilder(); // 260706Ch: 旧 labelMatrix 文字列表示は labelLatex2/3 へ分割
         // 260705Cl 修正 (Phase 2e): Minimal supergroups 側から選択した場合は (P,p)⁻¹ を表示する
         // (格納値は逆引き元である supergroup 自身の部分群表のもの = 子基準系→親基準系の向き)。
         var (P, p) = viewFromChild ? s.GetInverseTransform() : (s.TransformP, s.TransformShift);
         if (P != null)
         {
-            sb.AppendLine(viewFromChild
-                ? Loc(en: "Transformation to supergroup basis  (a',b',c') = (a,b,c)·P⁻¹  (derived from the supergroup's own subgroup table)", ja: "超群基底への変換  (a',b',c') = (a,b,c)·P⁻¹  (超群自身の部分群表から算出)", de: "Transformation zur Obergruppenbasis  (a',b',c') = (a,b,c)·P⁻¹  (aus der eigenen Untergruppentabelle der Obergruppe abgeleitet)", fr: "Transformation vers la base du supergroupe  (a',b',c') = (a,b,c)·P⁻¹  (dérivée de la table des sous-groupes du supergroupe)", es: "Transformación a la base del supergrupo  (a',b',c') = (a,b,c)·P⁻¹  (derivada de la tabla de subgrupos del propio supergrupo)", pt: "Transformação para a base do supergrupo  (a',b',c') = (a,b,c)·P⁻¹  (derivada da tabela de subgrupos do próprio supergrupo)", it: "Trasformazione alla base del supergruppo  (a',b',c') = (a,b,c)·P⁻¹  (derivata dalla tabella dei sottogruppi del supergruppo stesso)", ru: "Преобразование к базису надгруппы  (a',b',c') = (a,b,c)·P⁻¹  (получено из таблицы подгрупп самой надгруппы)", zhHans: "到超群基底的变换  (a',b',c') = (a,b,c)·P⁻¹  (由超群自身的子群表推得)", zhHant: "到超群基底的變換  (a',b',c') = (a,b,c)·P⁻¹  (由超群自身的子群表推得)", ko: "초군 기저 변환  (a',b',c') = (a,b,c)·P⁻¹  (초군 자체의 부분군 표에서 산출)")
-                : Loc(en: "Transformation to child basis  (a',b',c') = (a,b,c)·P", ja: "子基底への変換  (a',b',c') = (a,b,c)·P", de: "Transformation zur Kindbasis  (a',b',c') = (a,b,c)·P", fr: "Transformation vers la base fille  (a',b',c') = (a,b,c)·P", es: "Transformación a base hija  (a',b',c') = (a,b,c)·P", pt: "Transformação para base filha  (a',b',c') = (a,b,c)·P", it: "Trasformazione alla base figlia  (a',b',c') = (a,b,c)·P", ru: "Преобразование к базису подгруппы  (a',b',c') = (a,b,c)·P", zhHans: "到子基底的变换  (a',b',c') = (a,b,c)·P", zhHant: "到子基底的變換  (a',b',c') = (a,b,c)·P", ko: "자식 기저 변환  (a',b',c') = (a,b,c)·P"));
-            sb.AppendLine();
-            for (int r = 0; r < 3; r++)
-                sb.AppendLine($"   | {Frac(P[r * 3]),6}  {Frac(P[r * 3 + 1]),6}  {Frac(P[r * 3 + 2]),6} |     p{(r == 1 ? " =" : "  ")} {Frac(p[r]),6}");
-            if (viewFromChild)
-            {
-                sb.AppendLine();
-                sb.AppendLine(Loc(en: "Operations below are expressed in the supergroup's own setting.", ja: "以下の操作は超群自身の設定で表示しています。", de: "Die Operationen unten sind in der eigenen Aufstellung der Obergruppe angegeben.", fr: "Les opérations ci-dessous sont exprimées dans le repère propre du supergroupe.", es: "Las operaciones siguientes se expresan en el propio ajuste del supergrupo.", pt: "As operações abaixo são expressas na própria configuração do supergrupo.", it: "Le operazioni sottostanti sono espresse nella impostazione propria del supergruppo.", ru: "Операции ниже приведены в собственной установке надгруппы.", zhHans: "以下操作以超群自身的设置表示。", zhHant: "以下操作以超群自身的設定表示。", ko: "아래 연산은 초군 자체의 설정으로 표시됩니다."));
-            }
+            // 260706Ch: 以下 2 行の 11 言語 Loc() 文言 (Transformation to supergroup/child basis の説明文と
+            // 「以下の操作は超群自身の設定で表示しています。」注記) は BuildTransformationLatex の英語ハードコード
+            // \mathrm{} へ置き換えられ、非ラテン文字言語 (ja/zh/ko/ru 等) の翻訳が失われている (i18n 退行、要修正)。
+            // WpfMath の LaTeX パーサは \mathrm{} 内でも CJK/Cyrillic を解釈できず TexParseException を投げるため、
+            // 単純に Loc() の戻り値をそのまま埋め込むことはできない (検証済み)。対応方針は要検討 (別途ユーザー確認)。
+            //sb.AppendLine(viewFromChild
+            //    ? Loc(en: "Transformation to supergroup basis  (a',b',c') = (a,b,c)·P⁻¹  (derived from the supergroup's own subgroup table)", ja: "超群基底への変換  (a',b',c') = (a,b,c)·P⁻¹  (超群自身の部分群表から算出)", de: "Transformation zur Obergruppenbasis  (a',b',c') = (a,b,c)·P⁻¹  (aus der eigenen Untergruppentabelle der Obergruppe abgeleitet)", fr: "Transformation vers la base du supergroupe  (a',b',c') = (a,b,c)·P⁻¹  (dérivée de la table des sous-groupes du supergroupe)", es: "Transformación a la base del supergrupo  (a',b',c') = (a,b,c)·P⁻¹  (derivada de la tabla de subgrupos del propio supergrupo)", pt: "Transformação para a base do supergrupo  (a',b',c') = (a,b,c)·P⁻¹  (derivada da tabela de subgrupos do próprio supergrupo)", it: "Trasformazione alla base del supergruppo  (a',b',c') = (a,b,c)·P⁻¹  (derivata dalla tabella dei sottogruppi del supergruppo stesso)", ru: "Преобразование к базису надгруппы  (a',b',c') = (a,b,c)·P⁻¹  (получено из таблицы подгрупп самой надгруппы)", zhHans: "到超群基底的变换  (a',b',c') = (a,b,c)·P⁻¹  (由超群自身的子群表推得)", zhHant: "到超群基底的變換  (a',b',c') = (a,b,c)·P⁻¹  (由超群自身的子群表推得)", ko: "초군 기저 변환  (a',b',c') = (a,b,c)·P⁻¹  (초군 자체의 부분군 표에서 산출)")
+            //    : Loc(en: "Transformation to child basis  (a',b',c') = (a,b,c)·P", ja: "子基底への変換  (a',b',c') = (a,b,c)·P", de: "Transformation zur Kindbasis  (a',b',c') = (a,b,c)·P", fr: "Transformation vers la base fille  (a',b',c') = (a,b,c)·P", es: "Transformación a base hija  (a',b',c') = (a,b,c)·P", pt: "Transformação para base filha  (a',b',c') = (a,b,c)·P", it: "Trasformazione alla base figlia  (a',b',c') = (a,b,c)·P", ru: "Преобразование к базису подгруппы  (a',b',c') = (a,b,c)·P", zhHans: "到子基底的变换  (a',b',c') = (a,b,c)·P", zhHant: "到子基底的變換  (a',b',c') = (a,b,c)·P", ko: "자식 기저 변환  (a',b',c') = (a,b,c)·P"));
+            //sb.AppendLine();
+            //for (int r = 0; r < 3; r++)
+            //    sb.AppendLine($"   | {Frac(P[r * 3]),6}  {Frac(P[r * 3 + 1]),6}  {Frac(P[r * 3 + 2]),6} |     p{(r == 1 ? " =" : "  ")} {Frac(p[r]),6}");
+            //if (viewFromChild)
+            //{
+            //    sb.AppendLine();
+            //    sb.AppendLine(Loc(en: "Operations below are expressed in the supergroup's own setting.", ja: "以下の操作は超群自身の設定で表示しています。", de: "Die Operationen unten sind in der eigenen Aufstellung der Obergruppe angegeben.", fr: "Les opérations ci-dessous sont exprimées dans le repère propre du supergroupe.", es: "Las operaciones siguientes se expresan en el propio ajuste del supergrupo.", pt: "As operações abaixo são expressas na própria configuração do supergrupo.", it: "Le operazioni sottostanti sono espresse nella impostazione propria del supergruppo.", ru: "Операции ниже приведены в собственной установке надгруппы.", zhHans: "以下操作以超群自身的设置表示。", zhHant: "以下操作以超群自身的設定表示。", ko: "아래 연산은 초군 자체의 설정으로 표시됩니다."));
+            //}
+            labelLatex2.Text = BuildTransformationLatex(viewFromChild);
+            labelLatex3.Text = BuildMatrixLatex(P, p);
         }
         else
         {
-            sb.AppendLine(Loc(en: "Type not resolved from the operation catalogue; point group " + s.PointGroupHM + " only.", ja: "変換カタログから型を同定できませんでした (点群 " + s.PointGroupHM + " のみ)。", de: "Typ nicht aufgelöst; nur Punktgruppe " + s.PointGroupHM + ".", fr: "Type non résolu ; seulement le groupe ponctuel " + s.PointGroupHM + ".", es: "Tipo no resuelto; solo grupo puntual " + s.PointGroupHM + ".", pt: "Tipo não resolvido; apenas grupo pontual " + s.PointGroupHM + ".", it: "Tipo non risolto; solo gruppo puntuale " + s.PointGroupHM + ".", ru: "Тип не определён; только точечная группа " + s.PointGroupHM + ".", zhHans: "未能识别类型；仅点群 " + s.PointGroupHM + "。", zhHant: "未能識別類型；僅點群 " + s.PointGroupHM + "。", ko: "유형 미확인; 점군 " + s.PointGroupHM + "만."));
+            // 260706Ch: 同上。以下は英語ハードコードで、旧 11 言語 Loc() 文言からの退行。
+            //sb.AppendLine(Loc(en: "Type not resolved from the operation catalogue; point group " + s.PointGroupHM + " only.", ja: "変換カタログから型を同定できませんでした (点群 " + s.PointGroupHM + " のみ)。", de: "Typ nicht aufgelöst; nur Punktgruppe " + s.PointGroupHM + ".", fr: "Type non résolu ; seulement le groupe ponctuel " + s.PointGroupHM + ".", es: "Tipo no resuelto; solo grupo puntual " + s.PointGroupHM + ".", pt: "Tipo não resolvido; apenas grupo pontual " + s.PointGroupHM + ".", it: "Tipo non risolto; solo gruppo puntuale " + s.PointGroupHM + ".", ru: "Тип не определён; только точечная группа " + s.PointGroupHM + ".", zhHans: "未能识别类型；仅点群 " + s.PointGroupHM + "。", zhHant: "未能識別類型；僅點群 " + s.PointGroupHM + "。", ko: "유형 미확인; 점군 " + s.PointGroupHM + "만."));
+            labelLatex2.Text = $@"\mathrm{{Type\,not\,resolved;\,point\,group}}\,\, {HmToLatex(s.PointGroupHM)}\,\, \mathrm{{only.}}";
+            labelLatex3.Text = "";
         }
-        sb.AppendLine();
-        sb.Append(Loc(en: "Conjugate subgroups in this class: ", ja: "この類の共役部分群数: ", de: "Konjugierte Untergruppen dieser Klasse: ", fr: "Sous-groupes conjugués de cette classe : ", es: "Subgrupos conjugados de esta clase: ", pt: "Subgrupos conjugados desta classe: ", it: "Sottogruppi coniugati di questa classe: ", ru: "Сопряжённых подгрупп в классе: ", zhHans: "本类共轭子群数: ", zhHant: "本類共軛子群數: ", ko: "이 클래스의 켤레 부분군 수: ") + s.ConjugateCount);
-        labelMatrix.Text = sb.ToString();
+        // 260706Ch: 「この類の共役部分群数: N」(s.ConjugateCount) の表示行は labelLatex2/3 への移行時に
+        // 表示先を失ったまま残っている。UI 上この情報は現在どこにも表示されていない (機能欠落、要確認)。
+        //sb.AppendLine();
+        //sb.Append(Loc(en: "Conjugate subgroups in this class: ", ja: "この類の共役部分群数: ", de: "Konjugierte Untergruppen dieser Klasse: ", fr: "Sous-groupes conjugués de cette classe : ", es: "Subgrupos conjugados de esta clase: ", pt: "Subgrupos conjugados desta classe: ", it: "Sottogruppi coniugati di questa classe: ", ru: "Сопряжённых подгрупп в классе: ", zhHans: "本类共轭子群数: ", zhHant: "本類共軛子群數: ", ko: "이 클래스의 켤레 부분군 수: ") + s.ConjugateCount);
+        //labelMatrix.Text = sb.ToString();
 
         // Retained / Lost generators
         var rows = new List<object[]>();
@@ -423,11 +439,17 @@ public partial class FormGroupRelations : FormBase
         var rows = new List<object[]>();
         for (int w = 0; w < wycks.Length; w++)
         {
-            string parent = $"{wycks[w].Multiplicity}{wycks[w].WyckoffLetter}  {wycks[w].SiteSymmetry}";
+            //string parent = $"{wycks[w].Multiplicity}{wycks[w].WyckoffLetter}  {wycks[w].SiteSymmetry}";
+            //string child = string.Join(" + ", split[w].Select(p =>
+            //    p.ChildWyckoffLetter != null ? $"{p.ChildMultiplicity}{p.ChildWyckoffLetter}" : $"{p.CountInParentCell}·"));
+            //string sites = s.ChildSeriesNumber >= 0
+            //    ? string.Join(", ", split[w].Select(p => p.ChildSiteSymmetry).Distinct())
+            //    : "";
+            string parent = WyckoffLatex(wycks[w].Multiplicity, wycks[w].WyckoffLetter, wycks[w].SiteSymmetry); // 260706Ch
             string child = string.Join(" + ", split[w].Select(p =>
-                p.ChildWyckoffLetter != null ? $"{p.ChildMultiplicity}{p.ChildWyckoffLetter}" : $"{p.CountInParentCell}·"));
+                p.ChildWyckoffLetter != null ? WyckoffLatex(p.ChildMultiplicity, p.ChildWyckoffLetter) : $@"{p.CountInParentCell}\cdot")); // 260706Ch
             string sites = s.ChildSeriesNumber >= 0
-                ? string.Join(", ", split[w].Select(p => p.ChildSiteSymmetry).Distinct())
+                ? string.Join(", ", split[w].Select(p => p.ChildSiteSymmetry).Distinct().Select(HmToLatex)) // 260706Ch
                 : "";
             rows.Add([parent, child, split[w].Length.ToString(), sites]);
         }
@@ -669,18 +691,23 @@ public partial class FormGroupRelations : FormBase
         const DataGridViewContentAlignment R = DataGridViewContentAlignment.MiddleRight;
 
         miniTableGenerators.SetColumns(
-            new MiniTable.Col("Seitz", L),
+            //new MiniTable.Col("Seitz", L),
+            new MiniTable.Col("Seitz", L, Latex: true), // 260706Ch: Matrix タブの MiniTable も LaTeX 描画へ
             new MiniTable.Col(Loc(en: "Type", ja: "種類", de: "Typ", fr: "Type", es: "Tipo", pt: "Tipo", it: "Tipo", ru: "Тип", zhHans: "类型", zhHant: "類型", ko: "종류"), L, Fill: true),
             new MiniTable.Col(Loc(en: "Status", ja: "状態", de: "Status", fr: "État", es: "Estado", pt: "Estado", it: "Stato", ru: "Статус", zhHans: "状态", zhHant: "狀態", ko: "상태"), L));
 
         miniTableOrbit.SetColumns(
-            new MiniTable.Col(Loc(en: "Parent", ja: "親", de: "Eltern", fr: "Parent", es: "Padre", pt: "Pai", it: "Genitore", ru: "Родитель", zhHans: "母群", zhHant: "母群", ko: "부모"), L),
-            new MiniTable.Col(Loc(en: "→ Child", ja: "→ 子", de: "→ Kind", fr: "→ Fille", es: "→ Hija", pt: "→ Filho", it: "→ Figlio", ru: "→ Подгруппа", zhHans: "→ 子群", zhHant: "→ 子群", ko: "→ 자식"), L, Fill: true),
+            //new MiniTable.Col(Loc(en: "Parent", ja: "親", de: "Eltern", fr: "Parent", es: "Padre", pt: "Pai", it: "Genitore", ru: "Родитель", zhHans: "母群", zhHant: "母群", ko: "부모"), L),
+            //new MiniTable.Col(Loc(en: "→ Child", ja: "→ 子", de: "→ Kind", fr: "→ Fille", es: "→ Hija", pt: "→ Filho", it: "→ Figlio", ru: "→ Подгруппа", zhHans: "→ 子群", zhHant: "→ 子群", ko: "→ 자식"), L, Fill: true),
+            new MiniTable.Col(Loc(en: "Parent", ja: "親", de: "Eltern", fr: "Parent", es: "Padre", pt: "Pai", it: "Genitore", ru: "Родитель", zhHans: "母群", zhHant: "母群", ko: "부모"), L, Latex: true), // 260706Ch
+            new MiniTable.Col(Loc(en: "→ Child", ja: "→ 子", de: "→ Kind", fr: "→ Fille", es: "→ Hija", pt: "→ Filho", it: "→ Figlio", ru: "→ Подгруппа", zhHans: "→ 子群", zhHant: "→ 子群", ko: "→ 자식"), L, Fill: true, Latex: true), // 260706Ch
             new MiniTable.Col(Loc(en: "Split", ja: "分裂数", de: "Teile", fr: "Parts", es: "Partes", pt: "Partes", it: "Parti", ru: "Части", zhHans: "分裂", zhHant: "分裂", ko: "분열"), R),
-            new MiniTable.Col(Loc(en: "Site sym.", ja: "サイト対称", de: "Lagesym.", fr: "Sym. site", es: "Sim. sitio", pt: "Sim. sítio", it: "Simm. sito", ru: "Симм. поз.", zhHans: "位置对称", zhHant: "位置對稱", ko: "자리 대칭"), L));
+            //new MiniTable.Col(Loc(en: "Site sym.", ja: "サイト対称", de: "Lagesym.", fr: "Sym. site", es: "Sim. sitio", pt: "Sim. sítio", it: "Simm. sito", ru: "Симм. поз.", zhHans: "位置对称", zhHant: "位置對稱", ko: "자리 대칭"), L));
+            new MiniTable.Col(Loc(en: "Site sym.", ja: "サイト対称", de: "Lagesym.", fr: "Sym. site", es: "Sim. sitio", pt: "Sim. sítio", it: "Simm. sito", ru: "Симм. поз.", zhHans: "位置对称", zhHant: "位置對稱", ko: "자리 대칭"), L, Latex: true)); // 260706Ch
 
         miniTableTwins.SetColumns(
-            new MiniTable.Col("Seitz", L),
+            //new MiniTable.Col("Seitz", L),
+            new MiniTable.Col("Seitz", L, Latex: true), // 260706Ch
             new MiniTable.Col(Loc(en: "Twin operation", ja: "双晶操作", de: "Zwillingsoperation", fr: "Opération de macle", es: "Operación de macla", pt: "Operação de geminação", it: "Operazione di geminazione", ru: "Операция двойникования", zhHans: "双晶操作", zhHant: "雙晶操作", ko: "쌍정 연산"), L, Fill: true));
 
         miniTableReflections.SetColumns(
@@ -710,6 +737,56 @@ public partial class FormGroupRelations : FormBase
     // 260705Cl: FormSymmetryInformation と一字一句同一だった PrettyHM を SeitzNotation.PrettyHM へ集約 (実装は移設)。
     // 260705Cl: Hkl(int) は int 補間で足りる素通し helper だったためインライン化 (FillReflectionsTab)。
     //private static string Hkl(int v) => v.ToString(System.Globalization.CultureInfo.InvariantCulture);
+
+    // 260706Ch 追加: Matrix タブの上部表示を LabelLaTeX 3 段に分割するための軽量 LaTeX 生成。
+    private static string BuildRelationLatex(GroupRelation s)
+    {
+        var parent = s.ParentSeriesNumber >= 0 ? SymmetryStatic.Symmetries[s.ParentSeriesNumber].SpaceGroupHMStr : "?";
+        var child = s.ChildSeriesNumber >= 0 ? SymmetryStatic.Symmetries[s.ChildSeriesNumber].SpaceGroupHMStr : s.ChildLabel;
+        string kind = s.Kind switch { GroupRelationKind.K => "k", GroupRelationKind.Isomorphic => "i", _ => "t" };
+        return $@"{HmToLatex(parent)}\,\, \rightarrow\,\, {HmToLatex(child)}\,\,\,\, \mathrm{{kind}}={kind}\,\, \mathrm{{index}}={s.Index}";
+    }
+
+    private static string BuildTransformationLatex(bool viewFromChild)
+        => viewFromChild
+            ? @"\mathrm{Transformation\,to\,supergroup\,basis}\,\, (a',b',c')=(a,b,c)P^{-1}"
+            : @"\mathrm{Transformation\,to\,subgroup\,basis}\,\, (a',b',c')=(a,b,c)P";
+
+    private static string BuildMatrixLatex(double[] P, double[] p)
+    {
+        string[] rows =
+        [
+            $"{LatexFrac(P[0])} & {LatexFrac(P[1])} & {LatexFrac(P[2])}",
+            $"{LatexFrac(P[3])} & {LatexFrac(P[4])} & {LatexFrac(P[5])}",
+            $"{LatexFrac(P[6])} & {LatexFrac(P[7])} & {LatexFrac(P[8])}",
+        ];
+        string[] shift =
+        [
+            p != null && p.Length > 0 ? LatexFrac(p[0]) : "?",
+            p != null && p.Length > 1 ? LatexFrac(p[1]) : "?",
+            p != null && p.Length > 2 ? LatexFrac(p[2]) : "?",
+        ];
+        return $@"P=\left(\matrix{{{string.Join(@" \\ ", rows)}}}\right)\,\,\,\, p=\left(\matrix{{{string.Join(@" \\ ", shift)}}}\right)";
+    }
+
+    // 260706Ch: FormSymmetryInformation.ToLatex と同種の変換 (sub->下付き・-N->\bar{N}) を独自実装していたが、
+    // 実装がドリフトしていた (subN 置換範囲が n<=6 と n<=5 で不一致) ため削除し、既存の ToLatex(spaced:true) へ統合。
+    private static string HmToLatex(string hm)
+        => string.IsNullOrEmpty(hm) ? "?" : FormSymmetryInformation.ToLatex(hm, spaced: true);
+
+    private static string WyckoffLatex(int multiplicity, string letter, string siteSymmetry = null) // 260706Ch: OrbitSplitting MiniTable 用
+    {
+        var label = $@"{multiplicity}\mathrm{{{letter}}}";
+        return string.IsNullOrWhiteSpace(siteSymmetry) ? label : $@"{label}\,\, {HmToLatex(siteSymmetry)}";
+    }
+
+    private static string LatexFrac(double d)
+    {
+        var f = Frac(d);
+        //var slash = f.IndexOf('/'); // 260706Ch: \frac は行列全体が縦に伸びるため横方向分数へ変更
+        //return slash > 0 ? $@"\frac{{{f[..slash]}}}{{{f[(slash + 1)..]}}}" : f;
+        return f; // 260706Ch: 1/2 のような横方向分数として描画する
+    }
 
     /// <summary>有理数を短い分数/整数文字列へ (行列・原点表示用)。</summary>
     private static string Frac(double d)

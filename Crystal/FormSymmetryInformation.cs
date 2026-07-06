@@ -90,11 +90,13 @@ public partial class FormSymmetryInformation : FormBase
         label40.Text = Loc(en: "The axis normal to both planes", ja: "両面に垂直な軸", de: "Achse senkrecht zu beiden Ebenen", fr: "L'axe normal aux deux plans", es: "Eje normal a ambos planos", pt: "O eixo normal a ambos os planos", it: "L'asse normale a entrambi i piani", ru: "Ось, перпендикулярная обеим плоскостям", zhHans: "同时垂直于两晶面的晶轴", zhHant: "垂直於兩晶面的晶軸", ko: "두 면에 수직인 축");
         label42.Text = Loc(en: "The plane normal to both axes", ja: "両軸に垂直な面", de: "Ebene senkrecht zu beiden Achsen", fr: "Le plan normal aux deux axes", es: "Plano normal a ambos ejes", pt: "O plano normal a ambos os eixos", it: "Il piano normale a entrambi gli assi", ru: "Плоскость, перпендикулярная обеим осям", zhHans: "同时垂直于两晶轴的晶面", zhHant: "垂直於兩晶軸的晶面", ko: "두 축에 수직인 면");
 
-        // --- Wyckoff タブ: DataGridView 列見出し (Mult./Site Sym. は AtomControl の出荷済み訳に一致) ---
-        columnMultiplicityDataGridViewTextBoxColumn.HeaderText = Loc(en: "Mult.", ja: "多重度", de: "Mult.", fr: "Mult.", es: "Mult.", pt: "Mult.", it: "Molt.", ru: "Кратн.", zhHans: "多重性", zhHant: "多重度", ko: "중복도");
-        columnWyckoffLetterDataGridViewTextBoxColumn.HeaderText = Loc(en: "Wyck. Let.", ja: "記号", de: "Wyck.-Buchst.", fr: "Lettre Wyck.", es: "Let. Wyck.", pt: "Let. Wyck.", it: "Lett. Wyck.", ru: "Б. Уайк.", zhHans: "Wyck. 字母", zhHant: "Wyck. 字母", ko: "WP 기호");
-        columnSiteSymmetryDataGridViewTextBoxColumn.HeaderText = Loc(en: "Site Sym.", ja: "サイト対称性", de: "Lagesym.", fr: "Sym. site", es: "Sim. sitio", pt: "Sim. sítio", it: "Simm. sito", ru: "Симм. поз.", zhHans: "位置对称性", zhHant: "位置對稱", ko: "자리 대칭");
-        columnCoordinates1DataGridViewTextBoxColumn.HeaderText = Loc(en: "Coordinates", ja: "座標", de: "Koordinaten", fr: "Coordonnées", es: "Coordenadas", pt: "Coordenadas", it: "Coordinate", ru: "Координаты", zhHans: "坐标", zhHant: "座標", ko: "좌표");
+        // --- Wyckoff タブ: 旧 DataGridView 列見出し (Mult./Site Sym. は AtomControl の出荷済み訳に一致) ---
+        // 260706Ch: Wyckoff タブは miniTableWyckoff (MiniTable.SetColumns、下記 SetupExtraTables 内) へ移行し、
+        // 対応する旧 dataGridView1 とその列は孤立コントロールとして削除済み (simplify2 Phase4)。
+        //columnMultiplicityDataGridViewTextBoxColumn.HeaderText = Loc(en: "Mult.", ja: "多重度", de: "Mult.", fr: "Mult.", es: "Mult.", pt: "Mult.", it: "Molt.", ru: "Кратн.", zhHans: "多重性", zhHant: "多重度", ko: "중복도");
+        //columnWyckoffLetterDataGridViewTextBoxColumn.HeaderText = Loc(en: "Wyck. Let.", ja: "記号", de: "Wyck.-Buchst.", fr: "Lettre Wyck.", es: "Let. Wyck.", pt: "Let. Wyck.", it: "Lett. Wyck.", ru: "Б. Уайк.", zhHans: "Wyck. 字母", zhHant: "Wyck. 字母", ko: "WP 기호");
+        //columnSiteSymmetryDataGridViewTextBoxColumn.HeaderText = Loc(en: "Site Sym.", ja: "サイト対称性", de: "Lagesym.", fr: "Sym. site", es: "Sim. sitio", pt: "Sim. sítio", it: "Simm. sito", ru: "Симм. поз.", zhHans: "位置对称性", zhHant: "位置對稱", ko: "자리 대칭");
+        //columnCoordinates1DataGridViewTextBoxColumn.HeaderText = Loc(en: "Coordinates", ja: "座標", de: "Koordinaten", fr: "Coordonnées", es: "Coordenadas", pt: "Coordenadas", it: "Coordinate", ru: "Координаты", zhHans: "坐标", zhHant: "座標", ko: "좌표");
 
         // --- Conditions タブ ---
         label49.Text = Loc(en: "Conditions limiting possible reflections", ja: "反射条件（系統的消滅則）", de: "Auslöschungsbedingungen", fr: "Conditions limitant les réflexions possibles", es: "Condiciones limitantes de las reflexiones posibles", pt: "Condições que limitam as reflexões possíveis", it: "Condizioni che limitano le riflessioni possibili", ru: "Условия, ограничивающие возможные отражения", zhHans: "可能衍射的限制条件", zhHant: "限制可能反射的條件", ko: "가능한 반사를 제한하는 조건");
@@ -127,7 +129,8 @@ public partial class FormSymmetryInformation : FormBase
     /// <param name="plain">単語 (CrystalSystem) を <c>\mathrm{}</c> でラップ。</param>
     /// <param name="spaced">HM 系の対称要素軸間に <c>\,</c> を挿入。</param>
     /// <param name="noBar">ExtinctionRule の indices 接頭辞のみ <c>-h/-k/-l</c> を overline 化。</param>
-    private static string ToLatex(string str, bool sfStyle = false, bool plain = false, bool spaced = false, bool noBar = false)
+    // 260706Ch: FormGroupRelations の HmToLatex (同種の変換を独自実装していた) から呼べるよう internal 化。
+    internal static string ToLatex(string str, bool sfStyle = false, bool plain = false, bool spaced = false, bool noBar = false)
     {
         if (string.IsNullOrEmpty(str)) return string.Empty;
         if (plain || str == "Unknown") return $@"\mathrm{{{str}}}";
@@ -188,6 +191,12 @@ public partial class FormSymmetryInformation : FormBase
         }
         return str + suffix; // 三方晶系 Hex/Rho 接尾辞があれば末尾に下付きで再付与
     }
+
+    private static string SiteSymmetryToLatex(string str) // 260706Ch: Wyckoff / MiniTable セル用
+        => string.IsNullOrWhiteSpace(str) || str == "-" ? str : ToLatex(str, spaced: true);
+
+    private static string CoordinateToLatex(string str) // 260706Ch: Wyckoff 座標セル用。parse 不能時はセル側が通常描画へ退避する。
+        => string.IsNullOrWhiteSpace(str) ? str : str.Replace(" ", @"\,");
 
     [GeneratedRegex(@"(Hex|Rho|\(\d\))$")]
     private static partial Regex SuffixRegex();
@@ -405,25 +414,34 @@ public partial class FormSymmetryInformation : FormBase
     #endregion
 
     #region ワイコフ位置の設定
-    /// <summary>現在の空間群の lattice centering と Wyckoff position を <see cref="dataSet"/> 内の Wyckoff テーブルへ書き込む。</summary>
+    /// <summary>現在の空間群の lattice centering と Wyckoff position を Wyckoff MiniTable へ書き込む。260706Ch 変更。</summary>
     /// <remarks> 1 ポジションあたり座標が 4 個を超える場合は 4 個ずつ複数行に分割して追加する。</remarks>
     private void SetWyckoffPosition()
     {
-        var table = dataSet.Tables[0]; // (260426Ch)
-        table.Clear();
+        //var table = dataSet.Tables[0]; // (260426Ch)
+        //table.Clear();
+        var rows = new List<object[]>(); // 260706Ch: DataGridView/DataSet ではなく MiniTable へ直接投入
         var centeringRow = Crystal.Symmetry.LatticeTypeStr switch
         {
-            "P" => new object[] { "-", "-", "-", "(0,0,0)+", "", "", "" },
-            "A" => ["-", "-", "-", "(0,0,0)+", "(0,1/2,1/2)+", "", ""],
-            "B" => ["-", "-", "-", "(0,0,0)+", "(1/2,0,1/2)+", "", ""],
-            "C" => ["-", "-", "-", "(0,0,0)+", "(1/2,1/2,0)+", "", ""],
-            "F" => ["-", "-", "-", "(0,0,0)+", "(0,1/2,1/2)+", "(1/2,0,1/2)+", "(1/2,1/2,0)+"], // (260426Ch) 3 番目の F centering 座標 typo を修正
-            "I" => ["-", "-", "-", "(0,0,0)+", "(1/2,1/2,1/2)+", "", ""],
-            "H" => ["-", "-", "-", "(0,0,0)+", "(1/3,2/3,2/3)+", "(2/3,1/3,1/3)+", ""],
+            //"P" => new object[] { "-", "-", "-", "(0,0,0)+", "", "", "" },
+            "P" => new object[] { "-", "-", "-", CoordinateToLatex("(0,0,0)+"), "", "", "" }, // 260706Ch
+            //"A" => ["-", "-", "-", "(0,0,0)+", "(0,1/2,1/2)+", "", ""],
+            //"B" => ["-", "-", "-", "(0,0,0)+", "(1/2,0,1/2)+", "", ""],
+            //"C" => ["-", "-", "-", "(0,0,0)+", "(1/2,1/2,0)+", "", ""],
+            //"F" => ["-", "-", "-", "(0,0,0)+", "(0,1/2,1/2)+", "(1/2,0,1/2)+", "(1/2,1/2,0)+"], // (260426Ch) 3 番目の F centering 座標 typo を修正
+            //"I" => ["-", "-", "-", "(0,0,0)+", "(1/2,1/2,1/2)+", "", ""],
+            //"H" => ["-", "-", "-", "(0,0,0)+", "(1/3,2/3,2/3)+", "(2/3,1/3,1/3)+", ""],
+            "A" => ["-", "-", "-", CoordinateToLatex("(0,0,0)+"), CoordinateToLatex("(0,1/2,1/2)+"), "", ""], // 260706Ch
+            "B" => ["-", "-", "-", CoordinateToLatex("(0,0,0)+"), CoordinateToLatex("(1/2,0,1/2)+"), "", ""], // 260706Ch
+            "C" => ["-", "-", "-", CoordinateToLatex("(0,0,0)+"), CoordinateToLatex("(1/2,1/2,0)+"), "", ""], // 260706Ch
+            "F" => ["-", "-", "-", CoordinateToLatex("(0,0,0)+"), CoordinateToLatex("(0,1/2,1/2)+"), CoordinateToLatex("(1/2,0,1/2)+"), CoordinateToLatex("(1/2,1/2,0)+")], // 260706Ch
+            "I" => ["-", "-", "-", CoordinateToLatex("(0,0,0)+"), CoordinateToLatex("(1/2,1/2,1/2)+"), "", ""], // 260706Ch
+            "H" => ["-", "-", "-", CoordinateToLatex("(0,0,0)+"), CoordinateToLatex("(1/3,2/3,2/3)+"), CoordinateToLatex("(2/3,1/3,1/3)+"), ""], // 260706Ch
             _ => null
         };
         if (centeringRow != null)
-            table.Rows.Add(centeringRow);
+            //table.Rows.Add(centeringRow);
+            rows.Add(centeringRow); // 260706Ch
 
         Crystal.Symmetry = SymmetryStatic.Symmetries[Crystal.SymmetrySeriesNumber];
 
@@ -438,18 +456,23 @@ public partial class FormSymmetryInformation : FormBase
                 {
                     row[0] = position.Multiplicity;
                     row[1] = position.WyckoffLetter;
-                    row[2] = position.SiteSymmetry;
+                    //row[2] = position.SiteSymmetry;
+                    row[2] = SiteSymmetryToLatex(position.SiteSymmetry); // 260706Ch
                 }
                 else
                 {
                     row[0] = row[1] = row[2] = "";
                 }
                 for (int offset = 0; offset < 4; offset++)
-                    row[3 + offset] = j + offset < len ? positions[j + offset] : "";
+                    //row[3 + offset] = j + offset < len ? positions[j + offset] : "";
+                    row[3 + offset] = j + offset < len ? CoordinateToLatex(positions[j + offset]) : ""; // 260706Ch
 
-                table.Rows.Add(row);
+                //table.Rows.Add(row);
+                rows.Add(row); // 260706Ch
             }
         }
+
+        miniTableWyckoff.SetRows(rows); // 260706Ch
     }
     #endregion
 
@@ -468,10 +491,21 @@ public partial class FormSymmetryInformation : FormBase
         const DataGridViewContentAlignment R = DataGridViewContentAlignment.MiddleRight;
         const DataGridViewContentAlignment C = DataGridViewContentAlignment.MiddleCenter;
 
+        miniTableWyckoff.SetColumns( // 260706Ch: Wyckoff タブも MiniTable + LaTeX セルへ移行
+            new MiniTable.Col(Loc(en: "Mult.", ja: "多重度", de: "Mult.", fr: "Mult.", es: "Mult.", pt: "Mult.", it: "Mult.", ru: "Кратн.", zhHans: "重数", zhHant: "重數", ko: "다중도"), R),
+            new MiniTable.Col(Loc(en: "Wyck. Let.", ja: "記号", de: "Wyck.-Buchst.", fr: "Lettre Wyck.", es: "Letra Wyck.", pt: "Letra Wyck.", it: "Let. Wyck.", ru: "Буква", zhHans: "Wyck. 字母", zhHant: "Wyck. 字母", ko: "Wyck. 문자"), C),
+            new MiniTable.Col(Loc(en: "Site Sym.", ja: "サイト対称性", de: "Lagesym.", fr: "Sym. site", es: "Sim. sitio", pt: "Sim. sítio", it: "Simm. sito", ru: "Симм. поз.", zhHans: "位置对称", zhHant: "位置對稱", ko: "자리 대칭"), C, Latex: true),
+            new MiniTable.Col(Loc(en: "Coordinates", ja: "座標", de: "Koordinaten", fr: "Coordonnées", es: "Coordenadas", pt: "Coordenadas", it: "Coordinate", ru: "Координаты", zhHans: "坐标", zhHant: "座標", ko: "좌표"), L, Latex: true),
+            new MiniTable.Col("", L, Latex: true),
+            new MiniTable.Col("", L, Latex: true),
+            new MiniTable.Col("", L, Fill: true, Latex: true));
+
         miniTableOperations.SetColumns(
             new MiniTable.Col("#", R),
-            new MiniTable.Col(Loc(en: "Coordinates", ja: "座標", de: "Koordinaten", fr: "Coordonnées", es: "Coordenadas", pt: "Coordenadas", it: "Coordinate", ru: "Координаты", zhHans: "坐标", zhHant: "座標", ko: "좌표"), L),
-            new MiniTable.Col("Seitz", L),
+            //new MiniTable.Col(Loc(en: "Coordinates", ja: "座標", de: "Koordinaten", fr: "Coordonnées", es: "Coordenadas", pt: "Coordenadas", it: "Coordinate", ru: "Координаты", zhHans: "坐标", zhHant: "座標", ko: "좌표"), L),
+            //new MiniTable.Col("Seitz", L),
+            new MiniTable.Col(Loc(en: "Coordinates", ja: "座標", de: "Koordinaten", fr: "Coordonnées", es: "Coordenadas", pt: "Coordenadas", it: "Coordinate", ru: "Координаты", zhHans: "坐标", zhHant: "座標", ko: "좌표"), L, Latex: true), // 260706Ch
+            new MiniTable.Col("Seitz", L, Latex: true), // 260706Ch
             new MiniTable.Col(Loc(en: "Type", ja: "種類", de: "Typ", fr: "Type", es: "Tipo", pt: "Tipo", it: "Tipo", ru: "Тип", zhHans: "类型", zhHant: "類型", ko: "종류"), L, Fill: true));
 
         miniTableProperties.SetColumns(
@@ -480,8 +514,10 @@ public partial class FormSymmetryInformation : FormBase
 
         miniTableSettings.SetColumns(
             new MiniTable.Col("", C),
-            new MiniTable.Col(Loc(en: "HM symbol", ja: "HM 記号", de: "HM-Symbol", fr: "Symbole HM", es: "Símbolo HM", pt: "Símbolo HM", it: "Simbolo HM", ru: "Символ HM", zhHans: "HM 符号", zhHant: "HM 符號", ko: "HM 기호"), L),
-            new MiniTable.Col(Loc(en: "Hall symbol", ja: "Hall 記号", de: "Hall-Symbol", fr: "Symbole Hall", es: "Símbolo Hall", pt: "Símbolo Hall", it: "Simbolo Hall", ru: "Символ Hall", zhHans: "Hall 符号", zhHant: "Hall 符號", ko: "Hall 기호"), L, Fill: true));
+            //new MiniTable.Col(Loc(en: "HM symbol", ja: "HM 記号", de: "HM-Symbol", fr: "Symbole HM", es: "Símbolo HM", pt: "Símbolo HM", it: "Simbolo HM", ru: "Символ HM", zhHans: "HM 符号", zhHant: "HM 符號", ko: "HM 기호"), L),
+            //new MiniTable.Col(Loc(en: "Hall symbol", ja: "Hall 記号", de: "Hall-Symbol", fr: "Symbole Hall", es: "Símbolo Hall", pt: "Símbolo Hall", it: "Simbolo Hall", ru: "Символ Hall", zhHans: "Hall 符号", zhHant: "Hall 符號", ko: "Hall 기호"), L, Fill: true));
+            new MiniTable.Col(Loc(en: "HM symbol", ja: "HM 記号", de: "HM-Symbol", fr: "Symbole HM", es: "Símbolo HM", pt: "Símbolo HM", it: "Simbolo HM", ru: "Символ HM", zhHans: "HM 符号", zhHant: "HM 符號", ko: "HM 기호"), L, Latex: true), // 260706Ch
+            new MiniTable.Col(Loc(en: "Hall symbol", ja: "Hall 記号", de: "Hall-Symbol", fr: "Symbole Hall", es: "Símbolo Hall", pt: "Símbolo Hall", it: "Simbolo Hall", ru: "Символ Hall", zhHans: "Hall 符号", zhHant: "Hall 符號", ko: "Hall 기호"), L, Fill: true, Latex: true)); // 260706Ch
     }
 
     /// <summary>現在の空間群の一般位置の全対称操作を Operations タブに流し込む (中心化展開済み)。</summary>
@@ -562,7 +598,8 @@ public partial class FormSymmetryInformation : FormBase
         {
             var sym = SymmetryStatic.Symmetries[s];
             if (sym.SpaceGroupNumber != itno) continue;
-            rows.Add([s == cur ? "▶" : "", SeitzNotation.PrettyHM(sym.SpaceGroupHMStr), sym.SpaceGroupHallStr]);
+            //rows.Add([s == cur ? "▶" : "", SeitzNotation.PrettyHM(sym.SpaceGroupHMStr), sym.SpaceGroupHallStr]);
+            rows.Add([s == cur ? "▶" : "", ToLatex(sym.SpaceGroupHMStr, spaced: true), ToLatex(sym.SpaceGroupHallStr, spaced: true)]); // 260706Ch
         }
         miniTableSettings.SetRows(rows);
     }

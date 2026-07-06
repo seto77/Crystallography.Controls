@@ -67,12 +67,6 @@ im gewählten Format (emf-Vektor oder bmp-Bitmap).</value>
     <value>Kopiert das Diagramm der allgemeinen Lage in die Zwischenablage
 im gewählten Format (emf-Vektor oder bmp-Bitmap).</value>
   </data>
-  <data name="dataGridView1.ToolTip" xml:space="preserve">
-    <value>Wyckoff-Lagen dieser Raumgruppe: Jede Zeile gibt
-einen Satz symmetrieäquivalenter Atompositionen
-mit Multiplizität, Wyckoff-Buchstabe, Lagesymmetrie
-und fraktionellen Koordinaten an (schreibgeschützt).</value>
-  </data>
   <data name="indexControlAxis1.ToolTip" xml:space="preserve">
     <value>Geben Sie die Richtungsindizes (u₁ v₁ w₁)
 von Achse 1 ein; aktualisiert deren Länge, den

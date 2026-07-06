@@ -67,12 +67,6 @@
     <value>일반 위치 도면을 선택한 형식
 (emf 벡터 또는 bmp 비트맵)으로 클립보드에 복사합니다.</value>
   </data>
-  <data name="dataGridView1.ToolTip" xml:space="preserve">
-    <value>이 공간군의 와이코프 위치: 각 행은 대칭 등가인
-원자 자리의 집합을 나타내며, 중복도, 와이코프 문자,
-자리 대칭, 분율 좌표를 함께 표시합니다
-(읽기 전용).</value>
-  </data>
   <data name="indexControlAxis1.ToolTip" xml:space="preserve">
     <value>축 1의 방향 지수 (u₁ v₁ w₁)를 입력합니다.
 축 길이, 축 사이 각도, 공통 면이

@@ -67,12 +67,6 @@ nel formato selezionato (vettoriale emf o bitmap bmp).</value>
     <value>Copia il diagramma delle posizioni generali negli appunti
 nel formato selezionato (vettoriale emf o bitmap bmp).</value>
   </data>
-  <data name="dataGridView1.ToolTip" xml:space="preserve">
-    <value>Posizioni di Wyckoff di questo gruppo spaziale: ogni riga
-indica un insieme di siti atomici equivalenti per simmetria
-con la loro molteplicità, lettera di Wyckoff, simmetria del
-sito e coordinate frazionarie (sola lettura).</value>
-  </data>
   <data name="indexControlAxis1.ToolTip" xml:space="preserve">
     <value>Inserisci gli indici di direzione (u₁ v₁ w₁)
 dell'asse 1; aggiorna la sua lunghezza, l'angolo

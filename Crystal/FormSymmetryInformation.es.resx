@@ -67,12 +67,6 @@ en el formato seleccionado (vector emf o mapa de bits bmp).</value>
     <value>Copia el diagrama de posiciones generales al portapapeles
 en el formato seleccionado (vector emf o mapa de bits bmp).</value>
   </data>
-  <data name="dataGridView1.ToolTip" xml:space="preserve">
-    <value>Posiciones de Wyckoff de este grupo espacial: cada fila
-da un conjunto de sitios atómicos simétricamente equivalentes
-con su multiplicidad, letra de Wyckoff, simetría del
-sitio y coordenadas fraccionarias (solo lectura).</value>
-  </data>
   <data name="indexControlAxis1.ToolTip" xml:space="preserve">
     <value>Introduce los índices de dirección (u₁ v₁ w₁)
 del eje 1; actualiza su longitud, el

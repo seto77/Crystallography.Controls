@@ -116,12 +116,6 @@
     <value>一般位置図を、選択中の形式 (ベクター emf /
 ビットマップ bmp) でクリップボードにコピーします。</value>
   </data>
-  <data name="dataGridView1.ToolTip" xml:space="preserve">
-    <value>この空間群のワイコフ位置 (対称等価な原子サイト
-の集合) の一覧です。各行に多重度 (Mult.)、
-ワイコフ記号 (Wyck. Let.)、サイト対称性 (Site
-Sym.)、分率座標を表示します (読み取り専用)。</value>
-  </data>
   <data name="indexControlAxis1.ToolTip" xml:space="preserve">
     <value>軸1の方向指数 (u₁ v₁ w₁) を入力します。
 軸長・軸間角・共通面が再計算されます。</value>

@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             toolTip = new System.Windows.Forms.ToolTip(components);
             buttonCopyElements = new System.Windows.Forms.Button();
             buttonCopyPositions = new System.Windows.Forms.Button();
@@ -54,23 +53,8 @@
             numericBoxLengthPlane1 = new NumericBox();
             textBoxZonePlane = new System.Windows.Forms.TextBox();
             label42 = new System.Windows.Forms.Label();
-            dataGridView1 = new DpiAwareDataGridView();
-            columnMultiplicityDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            columnWyckoffLetterDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            columnSiteSymmetryDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            columnCoordinates1DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            columnCoordinates2DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            columnCoordinates3DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            columnCoordinates4DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            miniTableWyckoff = new MiniTable(); // 260706Ch: Wyckoff タブを MiniTable 表示へ移行
             dataSet = new System.Data.DataSet();
-            dataTableWyckoff = new System.Data.DataTable();
-            dataColumn1 = new System.Data.DataColumn();
-            dataColumn2 = new System.Data.DataColumn();
-            dataColumn3 = new System.Data.DataColumn();
-            dataColumn4 = new System.Data.DataColumn();
-            dataColumn5 = new System.Data.DataColumn();
-            dataColumn6 = new System.Data.DataColumn();
-            dataColumn7 = new System.Data.DataColumn();
             dataTablePlanes = new System.Data.DataTable();
             dataColumnH = new System.Data.DataColumn();
             dataColumnK = new System.Data.DataColumn();
@@ -145,9 +129,8 @@
             flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
             flowLayoutPanel7 = new System.Windows.Forms.FlowLayoutPanel();
             flowLayoutPanel8 = new System.Windows.Forms.FlowLayoutPanel();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)miniTableWyckoff).BeginInit(); // 260706Ch
             ((System.ComponentModel.ISupportInitialize)dataSet).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dataTableWyckoff).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataTablePlanes).BeginInit();
             tableLayoutPanel1.SuspendLayout();
             panel4.SuspendLayout();
@@ -573,130 +556,22 @@
             label42.TabIndex = 6;
             label42.Text = "The plane normal to both axes";
             toolTip.SetToolTip(label42, "Lattice plane (hkl) that contains both\r\naxis 1 and axis 2 (the plane common to\r\nthe two directions), shown read-only.");
-            // 
-            // dataGridView1
-            // 
-            dataGridView1.AllowUserToAddRows = false;
-            dataGridView1.AllowUserToDeleteRows = false;
-            dataGridView1.AutoGenerateColumns = false;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { columnMultiplicityDataGridViewTextBoxColumn, columnWyckoffLetterDataGridViewTextBoxColumn, columnSiteSymmetryDataGridViewTextBoxColumn, columnCoordinates1DataGridViewTextBoxColumn, columnCoordinates2DataGridViewTextBoxColumn, columnCoordinates3DataGridViewTextBoxColumn, columnCoordinates4DataGridViewTextBoxColumn });
-            dataGridView1.DataMember = "TableWyckoff";
-            dataGridView1.DataSource = dataSet;
-            dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            dataGridView1.Location = new System.Drawing.Point(0, 0);
-            dataGridView1.MultiSelect = false;
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.RowHeadersVisible = false;
-            dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dataGridView1.Size = new System.Drawing.Size(673, 141);
-            dataGridView1.TabIndex = 0;
-            toolTip.SetToolTip(dataGridView1, "Wyckoff positions of this space group: each row\r\ngives a set of symmetry-equivalent atomic sites\r\nwith its multiplicity, Wyckoff letter, site\r\nsymmetry and fractional coordinates (read-only).");
-            // 
-            // columnMultiplicityDataGridViewTextBoxColumn
-            // 
-            columnMultiplicityDataGridViewTextBoxColumn.DataPropertyName = "ColumnMultiplicity";
-            columnMultiplicityDataGridViewTextBoxColumn.HeaderText = "Mult.";
-            columnMultiplicityDataGridViewTextBoxColumn.Name = "columnMultiplicityDataGridViewTextBoxColumn";
-            columnMultiplicityDataGridViewTextBoxColumn.ReadOnly = true;
-            columnMultiplicityDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            columnMultiplicityDataGridViewTextBoxColumn.Width = 40;
-            // 
-            // columnWyckoffLetterDataGridViewTextBoxColumn
-            // 
-            columnWyckoffLetterDataGridViewTextBoxColumn.DataPropertyName = "ColumnWyckoffLetter";
-            columnWyckoffLetterDataGridViewTextBoxColumn.HeaderText = "Wyck. Let.";
-            columnWyckoffLetterDataGridViewTextBoxColumn.Name = "columnWyckoffLetterDataGridViewTextBoxColumn";
-            columnWyckoffLetterDataGridViewTextBoxColumn.ReadOnly = true;
-            columnWyckoffLetterDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            columnWyckoffLetterDataGridViewTextBoxColumn.Width = 80;
-            // 
-            // columnSiteSymmetryDataGridViewTextBoxColumn
-            // 
-            columnSiteSymmetryDataGridViewTextBoxColumn.DataPropertyName = "ColumnSiteSymmetry";
-            columnSiteSymmetryDataGridViewTextBoxColumn.HeaderText = "Site Sym.";
-            columnSiteSymmetryDataGridViewTextBoxColumn.Name = "columnSiteSymmetryDataGridViewTextBoxColumn";
-            columnSiteSymmetryDataGridViewTextBoxColumn.ReadOnly = true;
-            columnSiteSymmetryDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            columnSiteSymmetryDataGridViewTextBoxColumn.Width = 80;
-            // 
-            // columnCoordinates1DataGridViewTextBoxColumn
-            // 
-            columnCoordinates1DataGridViewTextBoxColumn.DataPropertyName = "ColumnCoordinates1";
-            columnCoordinates1DataGridViewTextBoxColumn.HeaderText = "Coordinates";
-            columnCoordinates1DataGridViewTextBoxColumn.Name = "columnCoordinates1DataGridViewTextBoxColumn";
-            columnCoordinates1DataGridViewTextBoxColumn.ReadOnly = true;
-            columnCoordinates1DataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // columnCoordinates2DataGridViewTextBoxColumn
-            // 
-            columnCoordinates2DataGridViewTextBoxColumn.DataPropertyName = "ColumnCoordinates2";
-            columnCoordinates2DataGridViewTextBoxColumn.HeaderText = "";
-            columnCoordinates2DataGridViewTextBoxColumn.Name = "columnCoordinates2DataGridViewTextBoxColumn";
-            columnCoordinates2DataGridViewTextBoxColumn.ReadOnly = true;
-            columnCoordinates2DataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // columnCoordinates3DataGridViewTextBoxColumn
-            // 
-            columnCoordinates3DataGridViewTextBoxColumn.DataPropertyName = "ColumnCoordinates3";
-            columnCoordinates3DataGridViewTextBoxColumn.HeaderText = "";
-            columnCoordinates3DataGridViewTextBoxColumn.Name = "columnCoordinates3DataGridViewTextBoxColumn";
-            columnCoordinates3DataGridViewTextBoxColumn.ReadOnly = true;
-            columnCoordinates3DataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // columnCoordinates4DataGridViewTextBoxColumn
-            // 
-            columnCoordinates4DataGridViewTextBoxColumn.DataPropertyName = "ColumnCoordinates4";
-            columnCoordinates4DataGridViewTextBoxColumn.HeaderText = "";
-            columnCoordinates4DataGridViewTextBoxColumn.Name = "columnCoordinates4DataGridViewTextBoxColumn";
-            columnCoordinates4DataGridViewTextBoxColumn.ReadOnly = true;
-            columnCoordinates4DataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            //
+            // miniTableWyckoff
+            //
+            miniTableWyckoff.AllowVerticalScroll = true; // 260706Ch
+            miniTableWyckoff.Dock = System.Windows.Forms.DockStyle.Fill;
+            miniTableWyckoff.Location = new System.Drawing.Point(0, 0);
+            miniTableWyckoff.Name = "miniTableWyckoff";
+            miniTableWyckoff.Size = new System.Drawing.Size(673, 141);
+            miniTableWyckoff.TabIndex = 0;
+            miniTableWyckoff.TabStop = false;
+            toolTip.SetToolTip(miniTableWyckoff, "Wyckoff positions of this space group: each row\r\ngives a set of symmetry-equivalent atomic sites\r\nwith its multiplicity, Wyckoff letter, site\r\nsymmetry and fractional coordinates (read-only).");
             // 
             // dataSet
             // 
             dataSet.DataSetName = "NewDataSet";
-            dataSet.Tables.AddRange(new System.Data.DataTable[] { dataTableWyckoff, dataTablePlanes });
-            // 
-            // dataTableWyckoff
-            // 
-            dataTableWyckoff.Columns.AddRange(new System.Data.DataColumn[] { dataColumn1, dataColumn2, dataColumn3, dataColumn4, dataColumn5, dataColumn6, dataColumn7 });
-            dataTableWyckoff.TableName = "TableWyckoff";
-            // 
-            // dataColumn1
-            // 
-            dataColumn1.ColumnName = "ColumnMultiplicity";
-            // 
-            // dataColumn2
-            // 
-            dataColumn2.ColumnName = "ColumnWyckoffLetter";
-            // 
-            // dataColumn3
-            // 
-            dataColumn3.ColumnName = "ColumnSiteSymmetry";
-            // 
-            // dataColumn4
-            // 
-            dataColumn4.ColumnName = "ColumnCoordinates1";
-            // 
-            // dataColumn5
-            // 
-            dataColumn5.ColumnName = "ColumnCoordinates2";
-            // 
-            // dataColumn6
-            // 
-            dataColumn6.ColumnName = "ColumnCoordinates3";
-            // 
-            // dataColumn7
-            // 
-            dataColumn7.ColumnName = "ColumnCoordinates4";
+            dataSet.Tables.AddRange(new System.Data.DataTable[] { dataTablePlanes });
             // 
             // dataTablePlanes
             // 
@@ -1149,7 +1024,7 @@
             // tabPageWyckoff
             // 
             captureExtender.SetCapture(tabPageWyckoff, true);
-            tabPageWyckoff.Controls.Add(dataGridView1);
+            tabPageWyckoff.Controls.Add(miniTableWyckoff); // 260706Ch
             tabPageWyckoff.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
             tabPageWyckoff.Location = new System.Drawing.Point(4, 24);
             tabPageWyckoff.Name = "tabPageWyckoff";
@@ -1499,9 +1374,8 @@
             Text = "Symmetry Information";
             FormClosing += FormCrystallographicInformation_FormClosing;
             Load += FormCrystallographicInformation_Load;
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)miniTableWyckoff).EndInit(); // 260706Ch
             ((System.ComponentModel.ISupportInitialize)dataSet).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dataTableWyckoff).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataTablePlanes).EndInit();
             tableLayoutPanel1.ResumeLayout(false);
             panel4.ResumeLayout(false);
@@ -1571,6 +1445,7 @@
         private System.Windows.Forms.TabPage tabPageConditions;
         private System.Windows.Forms.Label label49;
         private System.Windows.Forms.TabPage tabPageWyckoff;
+        private MiniTable miniTableWyckoff; // 260706Ch: Wyckoff タブ用 MiniTable
         // 260704Cl 追加: Phase 1 の Operations / Properties / Settings タブ
         private System.Windows.Forms.TabPage tabPageOperations;
         private MiniTable miniTableOperations;
@@ -1593,17 +1468,7 @@
         private Crystallography.Controls.NumericBox numericBoxLengthAxis1;
         private System.Windows.Forms.TextBox textBoxZoneAxis;
         private Crystallography.Controls.NumericBox numericBoxLengthAxis2;
-        // private System.Windows.Forms.DataGridView dataGridView1; // 260518Cl 旧実装
-        private DpiAwareDataGridView dataGridView1; // 260518Cl
         private System.Data.DataSet dataSet;
-        private System.Data.DataTable dataTableWyckoff;
-        private System.Data.DataColumn dataColumn1;
-        private System.Data.DataColumn dataColumn2;
-        private System.Data.DataColumn dataColumn3;
-        private System.Data.DataColumn dataColumn4;
-        private System.Data.DataColumn dataColumn5;
-        private System.Data.DataColumn dataColumn6;
-        private System.Data.DataColumn dataColumn7;
         private System.Data.DataTable dataTablePlanes;
         private System.Data.DataColumn dataColumnH;
         private System.Data.DataColumn dataColumnK;
@@ -1660,13 +1525,6 @@
         private System.Windows.Forms.RadioButton radioButtonDirectionA;
         private System.Windows.Forms.RadioButton radioButtonDirectionB;
         private System.Windows.Forms.RadioButton radioButtonDirectionC;
-        private System.Windows.Forms.DataGridViewTextBoxColumn columnMultiplicityDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn columnWyckoffLetterDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn columnSiteSymmetryDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn columnCoordinates1DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn columnCoordinates2DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn columnCoordinates3DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn columnCoordinates4DataGridViewTextBoxColumn;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel5;
         private IndexControl indexControlPlane1;
         private IndexControl indexControlPlane2;
