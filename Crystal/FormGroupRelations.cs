@@ -409,9 +409,11 @@ public partial class FormGroupRelations : FormBase
         string retStr = Loc(en: "retained", ja: "保持", de: "erhalten", fr: "conservé", es: "conservado", pt: "mantido", it: "mantenuto", ru: "сохранено", zhHans: "保持", zhHant: "保持", ko: "유지");
         string lostStr = Loc(en: "lost", ja: "消失", de: "verloren", fr: "perdu", es: "perdido", pt: "perdido", it: "perso", ru: "утрачено", zhHans: "消失", zhHant: "消失", ko: "소실");
         foreach (var op in s.Representatives)
-            rows.Add([SeitzNotation.Seitz(op), SeitzNotation.GeometricType(op), retStr]);
+            //rows.Add([FormSymmetryInformation.SeitzToLatex(SeitzNotation.Seitz(op)), SeitzNotation.GeometricType(op), retStr]); // 260708Ch: SeitzNotation.SeitzLatex に一本化 (構造化データから直接生成)
+            rows.Add([SeitzNotation.SeitzLatex(op), SeitzNotation.GeometricType(op), retStr]); // 260708Ch
         foreach (var op in s.CosetRepresentatives)
-            rows.Add([SeitzNotation.Seitz(op), SeitzNotation.GeometricType(op), lostStr]);
+            //rows.Add([FormSymmetryInformation.SeitzToLatex(SeitzNotation.Seitz(op)), SeitzNotation.GeometricType(op), lostStr]); // 260708Ch
+            rows.Add([SeitzNotation.SeitzLatex(op), SeitzNotation.GeometricType(op), lostStr]); // 260708Ch
         miniTableGenerators.SetRows(rows);
     }
 
@@ -486,7 +488,8 @@ public partial class FormGroupRelations : FormBase
 
         var rows = new List<object[]>();
         foreach (var op in s.CosetRepresentatives)
-            rows.Add([SeitzNotation.Seitz(op), SeitzNotation.GeometricType(op)]);
+            //rows.Add([FormSymmetryInformation.SeitzToLatex(SeitzNotation.Seitz(op)), SeitzNotation.GeometricType(op)]); // 260708Ch: SeitzNotation.SeitzLatex に一本化 (構造化データから直接生成)
+            rows.Add([SeitzNotation.SeitzLatex(op), SeitzNotation.GeometricType(op)]); // 260708Ch
         if (rows.Count == 0)
             rows.Add([Loc(en: "(single domain)", ja: "(単一ドメイン)", de: "(Einzeldomäne)", fr: "(domaine unique)", es: "(dominio único)", pt: "(domínio único)", it: "(dominio singolo)", ru: "(один домен)", zhHans: "(单畴)", zhHant: "(單疇)", ko: "(단일 도메인)"), ""]);
         miniTableTwins.SetRows(rows);

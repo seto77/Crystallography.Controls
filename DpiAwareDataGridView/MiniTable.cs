@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using XamlMath;
 
 namespace Crystallography.Controls;
 
@@ -26,6 +27,11 @@ namespace Crystallography.Controls;
 [ToolboxItem(true)]
 public class MiniTable : DpiAwareDataGridView
 {
+    private const string DefaultDesignTimePreviewText = "Sample";
+    private const string DefaultDesignTimePreviewLatexText = @"x+1/2";
+    //private static readonly Padding DefaultCellPaddingValue = new(4, 0, 4, 0); // 260708Ch: LaTeX の上下切れを避けるため縦余白も既定化
+    private static readonly Padding DefaultCellPaddingValue = new(4, 3, 4, 3); // 260708Ch
+
     public MiniTable()
     {
         // 構造系は構築時に固定 (デザイン画面にもミニ表の姿で反映される)。
@@ -42,8 +48,10 @@ public class MiniTable : DpiAwareDataGridView
         base.BorderStyle = BorderStyle.None;
         base.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
         base.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None; // 列ごとの AutoSizeMode を使う
-        base.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+        //base.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells; // 260708Ch: ManualRowHeight=-1/0/1+ で自動/手動を切替可能にする
+        ApplyRowHeightSettings(updateContainerHeight: false); // 260708Ch
         base.TabStop = false;
+        ApplyCellPadding(); // 260708Ch: 自動列幅にも反映されるセル内余白を既定適用
     }
 
     #region 公開オプション (表示専用テーブルとして意味のあるものだけ)
@@ -66,6 +74,70 @@ public class MiniTable : DpiAwareDataGridView
     [DefaultValue(false), Category("MiniTable")]
     public bool AutoFitWidth { get; set; }
 
+    //private bool autoRowHeight = true; // 260708Ch: ManualRowHeight=-1 を Auto とする仕様へ統合
+    ///// <summary>行高を内容に合わせて自動調整するか。false のとき <see cref="ManualRowHeight"/> を使う。260708Ch 追加。</summary>
+    //[DefaultValue(true), Category("MiniTable")]
+    //[Description("行高を内容に合わせて自動調整します。false のときは ManualRowHeight の固定行高を使います。")]
+    //public bool AutoRowHeight
+    //{
+    //    get => autoRowHeight;
+    //    set
+    //    {
+    //        if (autoRowHeight == value) return;
+    //        autoRowHeight = value;
+    //        ApplyRowHeightSettings();
+    //    }
+    //}
+
+    private int manualRowHeight = -1;
+    /// <summary>-1 のとき内容に合わせた自動行高、0 のとき RowTemplate.Height、1 以上のとき固定行高 (px)。260708Ch 追加。</summary>
+    //[DefaultValue(0), Category("MiniTable")] // 260708Ch: -1=Auto / 0=RowTemplate.Height / 1+=固定値へ仕様変更
+    [DefaultValue(-1), Category("MiniTable")]
+    [Description("-1 のとき内容に合わせた自動行高、0 のとき RowTemplate.Height、1 以上のとき指定ピクセルの固定行高にします。")]
+    public int ManualRowHeight
+    {
+        get => manualRowHeight;
+        set
+        {
+            //var normalized = Math.Max(0, value); // 260708Ch: -1 を Auto として許可
+            var normalized = Math.Max(-1, value); // 260708Ch
+            if (manualRowHeight == normalized) return;
+            manualRowHeight = normalized;
+            ApplyRowHeightSettings();
+        }
+    }
+
+    private Padding cellPadding = DefaultCellPaddingValue;
+    /// <summary>セル内容の内側余白。AutoSize 列幅にも反映される。260708Ch 追加。</summary>
+    //[DefaultValue(typeof(Padding), "4, 0, 4, 0"), Category("MiniTable")] // 260708Ch: 上下方向の既定余白を追加
+    [DefaultValue(typeof(Padding), "4, 3, 4, 3"), Category("MiniTable")]
+    [Description("セル内容の内側余白を指定します。左右の値を大きくすると自動列幅にも余白が加わります。")]
+    public Padding CellPadding
+    {
+        get => cellPadding;
+        set
+        {
+            var normalized = new Padding(
+                Math.Max(0, value.Left),
+                Math.Max(0, value.Top),
+                Math.Max(0, value.Right),
+                Math.Max(0, value.Bottom));
+            if (cellPadding.Equals(normalized)) return;
+            cellPadding = normalized;
+            ApplyCellPadding();
+            if (Rows.Count > 0 && IsHandleCreated)
+            {
+                foreach (DataGridViewColumn column in Columns) // 260708Ch: 余白変更時に内容幅列を再測定
+                    if (column.Visible && column.AutoSizeMode == DataGridViewAutoSizeColumnMode.AllCells)
+                        AutoResizeColumn(column.Index, DataGridViewAutoSizeColumnMode.AllCells);
+                ApplyRowHeightSettings(); // 260708Ch: 行高適用+コンテナ高さ更新をここで一括 (FitHeightToRows 二重呼び出しを解消)
+                if (AutoFitWidth)
+                    FitWidthToColumns();
+            }
+            Invalidate();
+        }
+    }
+
     private bool allowVerticalScroll;
     /// <summary>行数がコントロール高さを超えるとき縦スクロールバーを許可するか (opt-in)。既定 false (=表示専用で非表示)。
     /// 固定高さのセルに置き行数が増減する表 (Beam Interaction のスカラ/線表など) で true にする。260606Cl 追加。</summary>
@@ -74,6 +146,98 @@ public class MiniTable : DpiAwareDataGridView
     {
         get => allowVerticalScroll;
         set { allowVerticalScroll = value; base.ScrollBars = value ? ScrollBars.Vertical : ScrollBars.None; }
+    }
+
+    private double latexThickness = 0.6;
+    /// <summary>LaTeX セルの縁取り太さ (device-independent pixel)。0 のとき通常描画。260707Ch 追加。</summary>
+    [DefaultValue(0.6D), Category("MiniTable LaTeX")]
+    [Description("LaTeX セルの縁取り太さを device-independent pixel 単位で指定します。0 のときは通常描画です。")]
+    public double LatexThickness
+    {
+        get => latexThickness;
+        set
+        {
+            var normalized = Math.Max(0.0, value);
+            if (latexThickness == normalized) return;
+            latexThickness = normalized;
+            ApplyLatexOptionsToColumns();
+        }
+    }
+
+    private float latexFontSizeInPoints;
+    /// <summary>LaTeX セルだけに使う文字サイズ (pt)。0 以下なら MiniTable/セルの Font を使う。260707Ch 追加。</summary>
+    [DefaultValue(0f), Category("MiniTable LaTeX")]
+    [Description("LaTeX セルだけに使う文字サイズ (pt) を指定します。0 のときは MiniTable/セルの Font を使います。")]
+    public float LatexFontSizeInPoints
+    {
+        get => latexFontSizeInPoints;
+        set
+        {
+            var normalized = Math.Max(0f, value);
+            if (Math.Abs(latexFontSizeInPoints - normalized) < 0.01f) return;
+            latexFontSizeInPoints = normalized;
+            ApplyLatexOptionsToColumns();
+        }
+    }
+
+    private TexStyle latexTexStyle = TexStyle.Display;
+    /// <summary>LaTeX セルの TeX style。260707Ch 追加。</summary>
+    [DefaultValue(TexStyle.Display), Category("MiniTable LaTeX")]
+    [Description("LaTeX セルの TeX style を指定します。")]
+    public TexStyle LatexTexStyle
+    {
+        get => latexTexStyle;
+        set
+        {
+            if (latexTexStyle == value) return;
+            latexTexStyle = value;
+            ApplyLatexOptionsToColumns();
+        }
+    }
+
+    private LatexFractionStyle latexFractionStyle = LatexFractionStyle.Horizontal;
+    /// <summary>LaTeX セル中の "1/2" 形式の分数を横・縦・斜めのどれで描くか。260707Ch 追加。</summary>
+    [DefaultValue(LatexFractionStyle.Horizontal), Category("MiniTable LaTeX")]
+    [Description("LaTeX セル中の 1/2 形式の分数を Horizontal, Vertical, Slanted のどれで描くか指定します。")]
+    public LatexFractionStyle LatexFractionStyle
+    {
+        get => latexFractionStyle;
+        set
+        {
+            if (latexFractionStyle == value) return;
+            latexFractionStyle = value;
+            ApplyLatexOptionsToColumns();
+        }
+    }
+
+    private bool designTimePreviewEnabled = true;
+    /// <summary>デザイナ上だけダミー行を描画するか。実行時データや Designer.cs には影響しない。260707Ch 追加。</summary>
+    [DefaultValue(true), Category("MiniTable Design")]
+    [Description("デザイン時だけダミー行を描画します。Rows/Columns には追加しないため実行時データには影響しません。")]
+    public bool DesignTimePreviewEnabled
+    {
+        get => designTimePreviewEnabled;
+        set { if (designTimePreviewEnabled == value) return; designTimePreviewEnabled = value; Invalidate(); }
+    }
+
+    private string designTimePreviewText = DefaultDesignTimePreviewText;
+    /// <summary>デザイナ上の通常セルに表示するダミー文字列。260707Ch 追加。</summary>
+    [DefaultValue(DefaultDesignTimePreviewText), Category("MiniTable Design")]
+    [Description("デザイン時プレビューの通常セルに表示するダミー文字列を指定します。")]
+    public string DesignTimePreviewText
+    {
+        get => designTimePreviewText;
+        set { designTimePreviewText = value ?? string.Empty; Invalidate(); }
+    }
+
+    private string designTimePreviewLatexText = DefaultDesignTimePreviewLatexText;
+    /// <summary>デザイナ上の LaTeX セルに表示するダミー数式。260707Ch 追加。</summary>
+    [DefaultValue(DefaultDesignTimePreviewLatexText), Category("MiniTable Design")]
+    [Description("デザイン時プレビューの LaTeX セルに表示するダミー数式を指定します。")]
+    public string DesignTimePreviewLatexText
+    {
+        get => designTimePreviewLatexText;
+        set { designTimePreviewLatexText = value ?? string.Empty; Invalidate(); }
     }
 
     #endregion
@@ -91,6 +255,13 @@ public class MiniTable : DpiAwareDataGridView
         base.OnParentChanged(e);
         if (IsHandleCreated)
             base.BackgroundColor = ResolveBackground();
+    }
+
+    protected override void OnPaint(PaintEventArgs e)
+    {
+        base.OnPaint(e);
+        if (ShouldDrawDesignTimePreview())
+            DrawDesignTimePreview(e.Graphics); // 260707Ch: Rows を増やさずデザイン時だけ見本行を重ね描き
     }
 
     /// <summary>
@@ -131,6 +302,251 @@ public class MiniTable : DpiAwareDataGridView
             base.AlternatingRowsDefaultCellStyle.SelectionBackColor = alt;
             base.AlternatingRowsDefaultCellStyle.SelectionForeColor = base.DefaultCellStyle.ForeColor;
         }
+        ApplyCellPadding(); // 260708Ch: ApplyTheme 後も MiniTable.CellPadding を維持
+    }
+
+    private void ApplyCellPadding()
+    {
+        // 260708Ch: CellPadding はデザイナ値=96dpi論理値として扱い、実行時 DPI に応じてスケールする
+        // (DpiAwareDataGridView が列幅/行ヘッダ幅にしている処理と同じ考え方。Padding は 0 を許すため
+        // 列幅用の FromLogicalPixels の「最小 1px」floor はそのまま使わず ScaleForDpi で個別に丸める)。
+        var dpi = CurrentDpi;
+        var scaled = new Padding(
+            ScaleForDpi(CellPadding.Left, dpi),
+            ScaleForDpi(CellPadding.Top, dpi),
+            ScaleForDpi(CellPadding.Right, dpi),
+            ScaleForDpi(CellPadding.Bottom, dpi));
+        base.DefaultCellStyle.Padding = scaled; // 260708Ch
+        base.AlternatingRowsDefaultCellStyle.Padding = scaled; // 260708Ch
+    }
+
+    /// <summary>96dpi 論理ピクセルを現在 DPI の物理ピクセルへ変換する。0 はそのまま 0 を返す (Padding 用途で
+    /// 「余白なし」を維持するため、列幅用の DpiAwareDataGridView.FromLogicalPixels の「最小 1px」floor は適用しない)。260708Ch 追加。</summary>
+    private static int ScaleForDpi(int logicalPixels, int dpi)
+        => logicalPixels <= 0 ? logicalPixels : Math.Max(1, (int)Math.Round(logicalPixels * dpi / 96.0));
+
+    private void ApplyRowHeightSettings(bool updateContainerHeight = true)
+    {
+        //base.AutoSizeRowsMode = AutoRowHeight ? DataGridViewAutoSizeRowsMode.AllCells : DataGridViewAutoSizeRowsMode.None; // 260708Ch: AutoRowHeight 廃止
+        var auto = ManualRowHeight < 0; // 260708Ch
+        base.AutoSizeRowsMode = auto ? DataGridViewAutoSizeRowsMode.AllCells : DataGridViewAutoSizeRowsMode.None; // 260708Ch
+        if (!auto)
+            ApplyManualRowHeights();
+        else if (Rows.Count > 0 && IsHandleCreated)
+            AutoResizeRows(DataGridViewAutoSizeRowsMode.AllCells); // 260708Ch
+
+        // 260708Ch: 行高は上で適用済みなので、コンテナ高さの再計算だけ行う (FitHeightToRows を呼ぶと
+        // AutoResizeRows/ApplyManualRowHeights が二重に走っていた)。
+        if (updateContainerHeight && AutoFitHeight && Rows.Count > 0 && IsHandleCreated)
+            AdjustContainerHeightToRows();
+        Invalidate();
+    }
+
+    /// <summary>ManualRowHeight&gt;0 なら固定値、0 なら RowTemplate.Height を使う実効行高。260708Ch 追加 (3 箇所の重複計算式を集約)。</summary>
+    private int ResolveFixedRowHeight() => Math.Max(1, ManualRowHeight > 0 ? ManualRowHeight : RowTemplate.Height);
+
+    private void ApplyManualRowHeights()
+    {
+        var height = ScaleForDpi(ResolveFixedRowHeight(), CurrentDpi); // 260708Ch: ManualRowHeight もデザイナ値=96dpi論理値として扱う
+        base.RowTemplate.Height = height; // 260708Ch
+        foreach (DataGridViewRow row in Rows)
+            if (!row.IsNewRow)
+                row.Height = height; // 260708Ch
+    }
+
+    private void ApplyLatexOptionsToColumns()
+    {
+        foreach (DataGridViewColumn column in Columns)
+            if (column.CellTemplate is DataGridViewLatexTextBoxCell)
+                //DataGridViewLatexTextBoxCell.ApplyToColumn(column, LatexThickness, LatexTexStyle, LatexFontSizeInPoints); // 260707Ch: 分数表記プロパティも適用
+                DataGridViewLatexTextBoxCell.ApplyToColumn(column, LatexThickness, LatexTexStyle, LatexFontSizeInPoints, LatexFractionStyle); // 260707Ch
+
+        if (Rows.Count > 0 && IsHandleCreated)
+        {
+            ApplyRowHeightSettings(); // 260708Ch: 行高適用+コンテナ高さ更新をここで一括
+            if (AutoFitWidth)
+                FitWidthToColumns();
+        }
+        Invalidate();
+    }
+
+    #endregion
+
+    #region デザイン時プレビュー
+
+    private bool ShouldDrawDesignTimePreview()
+        => DesignTimePreviewEnabled
+        && Rows.Count == 0
+        && !IsDisposed
+        && (DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Designtime || Site?.DesignMode == true);
+
+    private void DrawDesignTimePreview(Graphics g)
+    {
+        var visibleColumns = Columns.Cast<DataGridViewColumn>().Where(c => c.Visible).OrderBy(c => c.DisplayIndex).ToArray();
+        var rowHeight = ManualRowHeight >= 0
+            ? ScaleForDpi(ResolveFixedRowHeight(), CurrentDpi) // 260708Ch: 実行時と同じ DPI スケールをデザイン時プレビューにも適用
+            : Math.Max(RowTemplate.Height, Font.Height + 8); // 260708Ch
+        var top = ColumnHeadersVisible ? ColumnHeadersHeight : 0;
+
+        if (visibleColumns.Length == 0)
+        {
+            DrawDesignTimePreviewWithoutColumns(g, rowHeight);
+            return;
+        }
+
+        var rowCount = Math.Min(2, Math.Max(0, (ClientSize.Height - top) / Math.Max(1, rowHeight)));
+        for (int row = 0; row < rowCount; row++)
+        {
+            foreach (var column in visibleColumns)
+            {
+                var columnBounds = GetColumnDisplayRectangle(column.Index, true);
+                if (columnBounds.Width <= 0) continue;
+                var cellBounds = new Rectangle(columnBounds.Left, top + row * rowHeight, columnBounds.Width, rowHeight);
+                DrawDesignTimePreviewCell(g, cellBounds, column, row);
+            }
+        }
+    }
+
+    private void DrawDesignTimePreviewWithoutColumns(Graphics g, int rowHeight)
+    {
+        var width = ClientSize.Width;
+        if (width <= 4 || ClientSize.Height <= 4) return;
+
+        var headerHeight = ColumnHeadersVisible ? ColumnHeadersHeight : 0;
+        var firstWidth = Math.Max(40, width / 2);
+        var columns = new[]
+        {
+            new Rectangle(0, 0, firstWidth, headerHeight),
+            new Rectangle(firstWidth, 0, Math.Max(1, width - firstWidth), headerHeight),
+        };
+
+        if (headerHeight > 0)
+        {
+            DrawPreviewHeader(g, columns[0], "Text");
+            DrawPreviewHeader(g, columns[1], "LaTeX");
+        }
+
+        var rowCount = Math.Min(2, Math.Max(0, (ClientSize.Height - headerHeight) / Math.Max(1, rowHeight)));
+        for (int row = 0; row < rowCount; row++)
+        {
+            DrawPreviewCell(g, new Rectangle(columns[0].Left, headerHeight + row * rowHeight, columns[0].Width, rowHeight), DesignTimePreviewText, false, DefaultCellStyle.Alignment, Font, ForeColor, row);
+            DrawPreviewCell(g, new Rectangle(columns[1].Left, headerHeight + row * rowHeight, columns[1].Width, rowHeight), DesignTimePreviewLatexText, true, DataGridViewContentAlignment.MiddleLeft, Font, ForeColor, row);
+        }
+    }
+
+    private void DrawDesignTimePreviewCell(Graphics g, Rectangle bounds, DataGridViewColumn column, int row)
+    {
+        var style = column.DefaultCellStyle;
+        var alignment = style.Alignment == DataGridViewContentAlignment.NotSet ? DefaultCellStyle.Alignment : style.Alignment;
+        if (alignment == DataGridViewContentAlignment.NotSet)
+            alignment = DataGridViewContentAlignment.MiddleLeft;
+
+        var font = style.Font ?? DefaultCellStyle.Font ?? Font;
+        var foreColor = ResolveStyleColor(style.ForeColor, ResolveStyleColor(DefaultCellStyle.ForeColor, ForeColor));
+        var latex = column.CellTemplate is DataGridViewLatexTextBoxCell;
+        DrawPreviewCell(g, bounds, latex ? DesignTimePreviewLatexText : DesignTimePreviewText, latex, alignment, font, foreColor, row);
+    }
+
+    private void DrawPreviewHeader(Graphics g, Rectangle bounds, string text)
+    {
+        if (bounds.Height <= 0 || bounds.Width <= 0) return;
+
+        using var back = new SolidBrush(SystemColors.Control);
+        using var pen = new Pen(GridColor);
+        g.FillRectangle(back, bounds);
+        g.DrawRectangle(pen, bounds.Left, bounds.Top, bounds.Width - 1, bounds.Height - 1);
+        TextRenderer.DrawText(g, text, Font, Rectangle.Inflate(bounds, -3, -1), SystemColors.ControlText,
+            TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
+    }
+
+    private void DrawPreviewCell(Graphics g, Rectangle bounds, string text, bool latex, DataGridViewContentAlignment alignment, Font font, Color foreColor, int row)
+    {
+        if (bounds.Width <= 0 || bounds.Height <= 0) return;
+
+        var backColor = row % 2 == 0
+            ? ResolveStyleColor(DefaultCellStyle.BackColor, SystemColors.Window)
+            : ResolveStyleColor(AlternatingRowsDefaultCellStyle.BackColor, ResolveStyleColor(DefaultCellStyle.BackColor, SystemColors.Window));
+
+        using var back = new SolidBrush(backColor);
+        using var pen = new Pen(GridColor);
+        g.FillRectangle(back, bounds);
+        g.DrawRectangle(pen, bounds.Left, bounds.Top, bounds.Width - 1, bounds.Height - 1);
+
+        //var contentBounds = Rectangle.Inflate(bounds, -4, -3); // 260708Ch: デザイン時プレビューも MiniTable.CellPadding に追従
+        var contentBounds = new Rectangle( // 260708Ch
+            bounds.Left + CellPadding.Left,
+            bounds.Top + CellPadding.Top,
+            Math.Max(0, bounds.Width - CellPadding.Horizontal),
+            Math.Max(0, bounds.Height - CellPadding.Vertical));
+        if (latex && TryDrawPreviewLatex(g, text, font, foreColor, contentBounds, alignment))
+            return;
+
+        TextRenderer.DrawText(g, text ?? string.Empty, font, contentBounds, foreColor, GetTextFormatFlags(alignment));
+    }
+
+    private bool TryDrawPreviewLatex(Graphics g, string text, Font font, Color foreColor, Rectangle bounds, DataGridViewContentAlignment alignment)
+    {
+        if (string.IsNullOrWhiteSpace(text) || bounds.Width <= 0 || bounds.Height <= 0)
+            return false;
+
+        var latexFont = DataGridViewLatexTextBoxCell.ResolveFont(font, LatexFontSizeInPoints, out var disposeFont); // 260708Ch: DataGridViewLatexTextBoxCell と共有の静的ヘルパーに統合
+        Bitmap bitmap = null;
+        try
+        {
+            bitmap = LabelLaTeX.RenderLatexBitmap(DataGridViewLatexTextBoxCell.FormatFractions(text, LatexFractionStyle), latexFont, foreColor, CurrentDpi, LatexTexStyle, LatexThickness); // 260707Ch
+            if (bitmap == null)
+                return false;
+            g.DrawImage(bitmap, Align(bitmap.Size, bounds, alignment));
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+        finally
+        {
+            bitmap?.Dispose();
+            if (disposeFont)
+                latexFont.Dispose();
+        }
+    }
+
+    private static Color ResolveStyleColor(Color color, Color fallback)
+        => color.IsEmpty ? fallback : color;
+
+    private static TextFormatFlags GetTextFormatFlags(DataGridViewContentAlignment alignment)
+    {
+        var flags = TextFormatFlags.EndEllipsis | TextFormatFlags.NoPrefix | TextFormatFlags.VerticalCenter;
+        flags |= alignment switch
+        {
+            DataGridViewContentAlignment.TopCenter or DataGridViewContentAlignment.MiddleCenter or DataGridViewContentAlignment.BottomCenter
+                => TextFormatFlags.HorizontalCenter,
+            DataGridViewContentAlignment.TopRight or DataGridViewContentAlignment.MiddleRight or DataGridViewContentAlignment.BottomRight
+                => TextFormatFlags.Right,
+            _ => TextFormatFlags.Left,
+        };
+        return flags;
+    }
+
+    private static Rectangle Align(Size content, Rectangle bounds, DataGridViewContentAlignment alignment)
+    {
+        var x = alignment switch
+        {
+            DataGridViewContentAlignment.TopCenter or DataGridViewContentAlignment.MiddleCenter or DataGridViewContentAlignment.BottomCenter
+                => bounds.Left + (bounds.Width - content.Width) / 2,
+            DataGridViewContentAlignment.TopRight or DataGridViewContentAlignment.MiddleRight or DataGridViewContentAlignment.BottomRight
+                => bounds.Right - content.Width,
+            _ => bounds.Left,
+        };
+        var y = alignment switch
+        {
+            DataGridViewContentAlignment.MiddleLeft or DataGridViewContentAlignment.MiddleCenter or DataGridViewContentAlignment.MiddleRight
+                => bounds.Top + (bounds.Height - content.Height) / 2,
+            DataGridViewContentAlignment.BottomLeft or DataGridViewContentAlignment.BottomCenter or DataGridViewContentAlignment.BottomRight
+                => bounds.Bottom - content.Height,
+            _ => bounds.Top,
+        };
+        return new Rectangle(x, y, content.Width, content.Height);
     }
 
     #endregion
@@ -144,7 +560,10 @@ public class MiniTable : DpiAwareDataGridView
     {
         if (values == null || (Columns.Count > 0 && values.Length != Columns.Count))
             throw new ArgumentException("Row value count does not match column count.", nameof(values));
-        return Rows.Add(values);
+        var index = Rows.Add(values); // 260708Ch
+        if (ManualRowHeight >= 0) // 260708Ch
+            Rows[index].Height = ScaleForDpi(ResolveFixedRowHeight(), CurrentDpi); // 260708Ch
+        return index; // 260708Ch
     }
 
     /// <summary>全行を <paramref name="rows"/> で丸ごと差し替える (結晶切替などのたびに呼ぶ)。260606Cl 追加。</summary>
@@ -167,10 +586,9 @@ public class MiniTable : DpiAwareDataGridView
         {
             ResumeLayout();
         }
+        ApplyRowHeightSettings(); // 260708Ch: 行高適用+コンテナ高さ更新をここで一括 (FitHeightToRows 二重呼び出しを解消)
         if (AutoFitWidth)
             FitWidthToColumns();
-        if (AutoFitHeight)
-            FitHeightToRows();
     }
 
     /// <summary>全行を消す。260606Cl 追加。</summary>
@@ -179,7 +597,17 @@ public class MiniTable : DpiAwareDataGridView
     /// <summary>コントロール高さを「ヘッダ + 全行」に縮める (ScrollBars=None 前提)。手動 <see cref="AddRow"/> 後は明示的に呼ぶ。260606Cl 追加。</summary>
     public void FitHeightToRows()
     {
-        AutoResizeRows(DataGridViewAutoSizeRowsMode.AllCells);
+        if (ManualRowHeight < 0) // 260708Ch
+            AutoResizeRows(DataGridViewAutoSizeRowsMode.AllCells); // 260708Ch
+        else
+            ApplyManualRowHeights(); // 260708Ch
+        AdjustContainerHeightToRows();
+    }
+
+    /// <summary>行高の再適用はせず、コントロール高さだけを現在の行高構成に合わせる。260708Ch 追加
+    /// (ApplyRowHeightSettings が行高適用の直後に呼ぶための分離。FitHeightToRows と二重に行高を適用しないため)。</summary>
+    private void AdjustContainerHeightToRows()
+    {
         var chrome = Height - ClientSize.Height; // 枠ぶん
         Height = chrome
             + (ColumnHeadersVisible ? ColumnHeadersHeight : 0)
@@ -253,7 +681,9 @@ public class MiniTable : DpiAwareDataGridView
                 if (!string.IsNullOrEmpty(col.Format))
                     c.DefaultCellStyle.Format = col.Format;
                 if (col.Latex) // 260706Ch: MiniTable に LaTeX レンダリング列を追加
-                    DataGridViewLatexTextBoxCell.ApplyToColumn(c);
+                    //DataGridViewLatexTextBoxCell.ApplyToColumn(c); // 260707Ch: 固定値ではなく MiniTable の LaTeX プロパティを使う
+                    //DataGridViewLatexTextBoxCell.ApplyToColumn(c, LatexThickness, LatexTexStyle, LatexFontSizeInPoints); // 260707Ch: 分数表記プロパティも適用
+                    DataGridViewLatexTextBoxCell.ApplyToColumn(c, LatexThickness, LatexTexStyle, LatexFontSizeInPoints, LatexFractionStyle); // 260707Ch
                 Columns.Add(c);
             }
         }

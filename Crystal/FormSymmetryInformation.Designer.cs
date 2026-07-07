@@ -53,21 +53,7 @@
             numericBoxLengthPlane1 = new NumericBox();
             textBoxZonePlane = new System.Windows.Forms.TextBox();
             label42 = new System.Windows.Forms.Label();
-            miniTableWyckoff = new MiniTable(); // 260706Ch: Wyckoff タブを MiniTable 表示へ移行
-            dataSet = new System.Data.DataSet();
-            dataTablePlanes = new System.Data.DataTable();
-            dataColumnH = new System.Data.DataColumn();
-            dataColumnK = new System.Data.DataColumn();
-            dataColumnL = new System.Data.DataColumn();
-            dataColumnMulti = new System.Data.DataColumn();
-            dataColumnD = new System.Data.DataColumn();
-            dataColumnCondition = new System.Data.DataColumn();
-            dataColumnTwoTheta = new System.Data.DataColumn();
-            dataColumnFreal = new System.Data.DataColumn();
-            dataColumnFinverse = new System.Data.DataColumn();
-            dataColumnF = new System.Data.DataColumn();
-            dataColumn13 = new System.Data.DataColumn();
-            dataColumnIntensity = new System.Data.DataColumn();
+            miniTableWyckoff = new MiniTable();
             label49 = new System.Windows.Forms.Label();
             label8 = new System.Windows.Forms.Label();
             label9 = new System.Windows.Forms.Label();
@@ -82,6 +68,20 @@
             radioButtonDirectionB = new System.Windows.Forms.RadioButton();
             radioButtonDirectionC = new System.Windows.Forms.RadioButton();
             label12 = new System.Windows.Forms.Label();
+            dataSet = new System.Data.DataSet();
+            dataTablePlanes = new System.Data.DataTable();
+            dataColumnH = new System.Data.DataColumn();
+            dataColumnK = new System.Data.DataColumn();
+            dataColumnL = new System.Data.DataColumn();
+            dataColumnMulti = new System.Data.DataColumn();
+            dataColumnD = new System.Data.DataColumn();
+            dataColumnCondition = new System.Data.DataColumn();
+            dataColumnTwoTheta = new System.Data.DataColumn();
+            dataColumnFreal = new System.Data.DataColumn();
+            dataColumnFinverse = new System.Data.DataColumn();
+            dataColumnF = new System.Data.DataColumn();
+            dataColumn13 = new System.Data.DataColumn();
+            dataColumnIntensity = new System.Data.DataColumn();
             tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             panel4 = new System.Windows.Forms.Panel();
             graphicsBoxSymmetryElements = new GraphicsBox(components);
@@ -94,6 +94,8 @@
             labelLaTex3 = new LabelLaTeX();
             tabControl = new System.Windows.Forms.TabControl();
             tabPageGeometrics = new System.Windows.Forms.TabPage();
+            flowLayoutPanel8 = new System.Windows.Forms.FlowLayoutPanel();
+            flowLayoutPanel7 = new System.Windows.Forms.FlowLayoutPanel();
             flowLayoutPanel6 = new System.Windows.Forms.FlowLayoutPanel();
             flowLayoutPanel14 = new System.Windows.Forms.FlowLayoutPanel();
             flowLayoutPanel11 = new System.Windows.Forms.FlowLayoutPanel();
@@ -101,8 +103,7 @@
             panel1 = new System.Windows.Forms.Panel();
             tabPageWyckoff = new System.Windows.Forms.TabPage();
             tabPageConditions = new System.Windows.Forms.TabPage();
-            flowLayoutPanelExtinctionRule = new System.Windows.Forms.FlowLayoutPanel();
-            // 260704Cl 追加: Phase 1 の Operations / Properties / Settings タブ
+            miniTableConditions = new MiniTable();
             tabPageOperations = new System.Windows.Forms.TabPage();
             miniTableOperations = new MiniTable();
             panelOperationsBottom = new System.Windows.Forms.Panel();
@@ -122,14 +123,14 @@
             labelLaTexPG_SF = new LabelLaTeX();
             bindingSourceScatteringFactor = new System.Windows.Forms.BindingSource(components);
             panel2 = new System.Windows.Forms.Panel();
+            panel5 = new System.Windows.Forms.Panel();
             labelLaTexNumber = new LabelLaTeX();
             flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
-            buttonGroupRelations = new System.Windows.Forms.Button(); // 260704Cl 追加
             label15 = new System.Windows.Forms.Label();
             flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
-            flowLayoutPanel7 = new System.Windows.Forms.FlowLayoutPanel();
-            flowLayoutPanel8 = new System.Windows.Forms.FlowLayoutPanel();
-            ((System.ComponentModel.ISupportInitialize)miniTableWyckoff).BeginInit(); // 260706Ch
+            buttonGroupRelations = new System.Windows.Forms.Button();
+            splitContainer1 = new System.Windows.Forms.SplitContainer();
+            ((System.ComponentModel.ISupportInitialize)miniTableWyckoff).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataSet).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataTablePlanes).BeginInit();
             tableLayoutPanel1.SuspendLayout();
@@ -141,15 +142,18 @@
             flowLayoutPanel3.SuspendLayout();
             tabControl.SuspendLayout();
             tabPageGeometrics.SuspendLayout();
+            flowLayoutPanel8.SuspendLayout();
+            flowLayoutPanel7.SuspendLayout();
             flowLayoutPanel6.SuspendLayout();
             flowLayoutPanel14.SuspendLayout();
             flowLayoutPanel11.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
             tabPageWyckoff.SuspendLayout();
             tabPageConditions.SuspendLayout();
-            tabPageOperations.SuspendLayout(); // 260704Cl
-            panelOperationsBottom.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)miniTableConditions).BeginInit();
+            tabPageOperations.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)miniTableOperations).BeginInit();
+            panelOperationsBottom.SuspendLayout();
             tabPageProperties.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)miniTableProperties).BeginInit();
             tabPageSettings.SuspendLayout();
@@ -158,10 +162,13 @@
             groupBoxPointGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)bindingSourceScatteringFactor).BeginInit();
             panel2.SuspendLayout();
+            panel5.SuspendLayout();
             flowLayoutPanel4.SuspendLayout();
             flowLayoutPanel5.SuspendLayout();
-            flowLayoutPanel7.SuspendLayout();
-            flowLayoutPanel8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
+            splitContainer1.Panel1.SuspendLayout();
+            splitContainer1.Panel2.SuspendLayout();
+            splitContainer1.SuspendLayout();
             SuspendLayout();
             // 
             // toolTip
@@ -357,10 +364,11 @@
             // 
             indexControlPlane2.AutoSize = true;
             indexControlPlane2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            indexControlPlane2.LabelVisible = false;
             indexControlPlane2.Location = new System.Drawing.Point(0, 0);
             indexControlPlane2.Margin = new System.Windows.Forms.Padding(0);
             indexControlPlane2.Name = "indexControlPlane2";
-            indexControlPlane2.Size = new System.Drawing.Size(128, 41);
+            indexControlPlane2.Size = new System.Drawing.Size(128, 25);
             indexControlPlane2.SubScript = "2";
             indexControlPlane2.TabIndex = 14;
             toolTip.SetToolTip(indexControlPlane2, "Enter the Miller indices (h₂ k₂ l₂) of\r\nplane 2; updates its interplanar spacing,\r\nthe inter-plane angle and the zone axis.");
@@ -391,8 +399,7 @@
             label40.Location = new System.Drawing.Point(3, 3);
             label40.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             label40.Name = "label40";
-            // label40.Size = new System.Drawing.Size(176, 16); // 260622Cl 変更前
-            label40.Size = new System.Drawing.Size(176, 32); // 260622Cl 変更: 2行訳(de/it/pt/ru)が1行高で切れるため
+            label40.Size = new System.Drawing.Size(176, 32);
             label40.TabIndex = 6;
             label40.Text = "The axis normal to both planes";
             toolTip.SetToolTip(label40, "Zone axis [uvw]: the crystal direction\r\nlying in both plane 1 and plane 2\r\n(their common zone), shown read-only.");
@@ -401,11 +408,12 @@
             // 
             indexControlAxis2.AutoSize = true;
             indexControlAxis2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            indexControlAxis2.LabelVisible = false;
             indexControlAxis2.Location = new System.Drawing.Point(0, 0);
             indexControlAxis2.Margin = new System.Windows.Forms.Padding(0);
             indexControlAxis2.Mode = IndexControl.ModeEnum.Axis;
             indexControlAxis2.Name = "indexControlAxis2";
-            indexControlAxis2.Size = new System.Drawing.Size(128, 41);
+            indexControlAxis2.Size = new System.Drawing.Size(128, 25);
             indexControlAxis2.SubScript = "2";
             indexControlAxis2.TabIndex = 14;
             toolTip.SetToolTip(indexControlAxis2, "Enter the direction indices (u₂ v₂ w₂)\r\nof axis 2; updates its length, the\r\ninter-axis angle and the common plane.");
@@ -453,11 +461,12 @@
             // 
             indexControlAxis1.AutoSize = true;
             indexControlAxis1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            indexControlAxis1.LabelVisible = false;
             indexControlAxis1.Location = new System.Drawing.Point(0, 0);
             indexControlAxis1.Margin = new System.Windows.Forms.Padding(0);
             indexControlAxis1.Mode = IndexControl.ModeEnum.Axis;
             indexControlAxis1.Name = "indexControlAxis1";
-            indexControlAxis1.Size = new System.Drawing.Size(128, 41);
+            indexControlAxis1.Size = new System.Drawing.Size(128, 25);
             indexControlAxis1.SubScript = "1";
             indexControlAxis1.TabIndex = 14;
             toolTip.SetToolTip(indexControlAxis1, "Enter the direction indices (u₁ v₁ w₁)\r\nof axis 1; updates its length, the\r\ninter-axis angle and the common plane.");
@@ -505,10 +514,11 @@
             // 
             indexControlPlane1.AutoSize = true;
             indexControlPlane1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            indexControlPlane1.LabelVisible = false;
             indexControlPlane1.Location = new System.Drawing.Point(0, 0);
             indexControlPlane1.Margin = new System.Windows.Forms.Padding(0);
             indexControlPlane1.Name = "indexControlPlane1";
-            indexControlPlane1.Size = new System.Drawing.Size(128, 41);
+            indexControlPlane1.Size = new System.Drawing.Size(128, 25);
             indexControlPlane1.SubScript = "1";
             indexControlPlane1.TabIndex = 14;
             toolTip.SetToolTip(indexControlPlane1, "Enter the Miller indices (h₁ k₁ l₁) of\r\nplane 1; updates its interplanar spacing,\r\nthe inter-plane angle and the zone axis.");
@@ -551,80 +561,27 @@
             label42.Location = new System.Drawing.Point(3, 3);
             label42.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             label42.Name = "label42";
-            // label42.Size = new System.Drawing.Size(175, 16); // 260622Cl 変更前
-            label42.Size = new System.Drawing.Size(175, 32); // 260622Cl 変更: 同上
+            label42.Size = new System.Drawing.Size(175, 32);
             label42.TabIndex = 6;
             label42.Text = "The plane normal to both axes";
             toolTip.SetToolTip(label42, "Lattice plane (hkl) that contains both\r\naxis 1 and axis 2 (the plane common to\r\nthe two directions), shown read-only.");
-            //
+            // 
             // miniTableWyckoff
-            //
-            miniTableWyckoff.AllowVerticalScroll = true; // 260706Ch
+            // 
+            miniTableWyckoff.AllowVerticalScroll = true;
+            miniTableWyckoff.ColumnHeadersHeight = 26;
             miniTableWyckoff.Dock = System.Windows.Forms.DockStyle.Fill;
+            miniTableWyckoff.LatexFontSizeInPoints = 10F;
+            miniTableWyckoff.LatexFractionStyle = LatexFractionStyle.Slanted;
+            miniTableWyckoff.LatexThickness = 0.2D;
             miniTableWyckoff.Location = new System.Drawing.Point(0, 0);
+            miniTableWyckoff.ManualRowHeight = 26;
             miniTableWyckoff.Name = "miniTableWyckoff";
-            miniTableWyckoff.Size = new System.Drawing.Size(673, 141);
+            miniTableWyckoff.RowTemplate.Height = 26;
+            miniTableWyckoff.Size = new System.Drawing.Size(677, 160);
             miniTableWyckoff.TabIndex = 0;
             miniTableWyckoff.TabStop = false;
             toolTip.SetToolTip(miniTableWyckoff, "Wyckoff positions of this space group: each row\r\ngives a set of symmetry-equivalent atomic sites\r\nwith its multiplicity, Wyckoff letter, site\r\nsymmetry and fractional coordinates (read-only).");
-            // 
-            // dataSet
-            // 
-            dataSet.DataSetName = "NewDataSet";
-            dataSet.Tables.AddRange(new System.Data.DataTable[] { dataTablePlanes });
-            // 
-            // dataTablePlanes
-            // 
-            dataTablePlanes.Columns.AddRange(new System.Data.DataColumn[] { dataColumnH, dataColumnK, dataColumnL, dataColumnMulti, dataColumnD, dataColumnCondition, dataColumnTwoTheta, dataColumnFreal, dataColumnFinverse, dataColumnF, dataColumn13, dataColumnIntensity });
-            dataTablePlanes.TableName = "TablePlanes";
-            // 
-            // dataColumnH
-            // 
-            dataColumnH.ColumnName = "ColumnH";
-            // 
-            // dataColumnK
-            // 
-            dataColumnK.ColumnName = "ColumnK";
-            // 
-            // dataColumnL
-            // 
-            dataColumnL.ColumnName = "ColumnL";
-            // 
-            // dataColumnMulti
-            // 
-            dataColumnMulti.ColumnName = "ColumnMulti";
-            // 
-            // dataColumnD
-            // 
-            dataColumnD.ColumnName = "ColumnD";
-            // 
-            // dataColumnCondition
-            // 
-            dataColumnCondition.ColumnName = "ColumnCondition";
-            // 
-            // dataColumnTwoTheta
-            // 
-            dataColumnTwoTheta.ColumnName = "ColumnTwoTheta";
-            // 
-            // dataColumnFreal
-            // 
-            dataColumnFreal.ColumnName = "ColumnFReal";
-            // 
-            // dataColumnFinverse
-            // 
-            dataColumnFinverse.ColumnName = "ColumnFInverse";
-            // 
-            // dataColumnF
-            // 
-            dataColumnF.ColumnName = "ColumnF";
-            // 
-            // dataColumn13
-            // 
-            dataColumn13.ColumnName = "ColumnF2";
-            // 
-            // dataColumnIntensity
-            // 
-            dataColumnIntensity.ColumnName = "ColumnIntensity";
             // 
             // label49
             // 
@@ -691,7 +648,7 @@
             // 
             label.AutoSize = true;
             label.Font = new System.Drawing.Font("Segoe UI", 9F);
-            label.Location = new System.Drawing.Point(135, 3);
+            label.Location = new System.Drawing.Point(130, 0);
             label.Name = "label";
             label.Size = new System.Drawing.Size(87, 15);
             label.TabIndex = 1;
@@ -726,7 +683,7 @@
             // 
             label4.AutoSize = true;
             label4.Font = new System.Drawing.Font("Segoe UI", 9F);
-            label4.Location = new System.Drawing.Point(8, 3);
+            label4.Location = new System.Drawing.Point(3, 0);
             label4.Name = "label4";
             label4.Size = new System.Drawing.Size(54, 15);
             label4.TabIndex = 1;
@@ -803,6 +760,64 @@
             label12.Text = "Copy format";
             toolTip.SetToolTip(label12, "Choose the image format used when copying a diagram\r\nto the clipboard: vector (emf) or bitmap (bmp).");
             // 
+            // dataSet
+            // 
+            dataSet.DataSetName = "NewDataSet";
+            dataSet.Tables.AddRange(new System.Data.DataTable[] { dataTablePlanes });
+            // 
+            // dataTablePlanes
+            // 
+            dataTablePlanes.Columns.AddRange(new System.Data.DataColumn[] { dataColumnH, dataColumnK, dataColumnL, dataColumnMulti, dataColumnD, dataColumnCondition, dataColumnTwoTheta, dataColumnFreal, dataColumnFinverse, dataColumnF, dataColumn13, dataColumnIntensity });
+            dataTablePlanes.TableName = "TablePlanes";
+            // 
+            // dataColumnH
+            // 
+            dataColumnH.ColumnName = "ColumnH";
+            // 
+            // dataColumnK
+            // 
+            dataColumnK.ColumnName = "ColumnK";
+            // 
+            // dataColumnL
+            // 
+            dataColumnL.ColumnName = "ColumnL";
+            // 
+            // dataColumnMulti
+            // 
+            dataColumnMulti.ColumnName = "ColumnMulti";
+            // 
+            // dataColumnD
+            // 
+            dataColumnD.ColumnName = "ColumnD";
+            // 
+            // dataColumnCondition
+            // 
+            dataColumnCondition.ColumnName = "ColumnCondition";
+            // 
+            // dataColumnTwoTheta
+            // 
+            dataColumnTwoTheta.ColumnName = "ColumnTwoTheta";
+            // 
+            // dataColumnFreal
+            // 
+            dataColumnFreal.ColumnName = "ColumnFReal";
+            // 
+            // dataColumnFinverse
+            // 
+            dataColumnFinverse.ColumnName = "ColumnFInverse";
+            // 
+            // dataColumnF
+            // 
+            dataColumnF.ColumnName = "ColumnF";
+            // 
+            // dataColumn13
+            // 
+            dataColumn13.ColumnName = "ColumnF2";
+            // 
+            // dataColumnIntensity
+            // 
+            dataColumnIntensity.ColumnName = "ColumnIntensity";
+            // 
             // tableLayoutPanel1
             // 
             captureExtender.SetCapture(tableLayoutPanel1, true);
@@ -812,12 +827,12 @@
             tableLayoutPanel1.Controls.Add(panel4, 0, 0);
             tableLayoutPanel1.Controls.Add(panel3, 1, 0);
             tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            tableLayoutPanel1.Location = new System.Drawing.Point(4, 183);
+            tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 1;
             tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            tableLayoutPanel1.Size = new System.Drawing.Size(1020, 561);
+            tableLayoutPanel1.Size = new System.Drawing.Size(1020, 538);
             tableLayoutPanel1.TabIndex = 5;
             // 
             // panel4
@@ -827,7 +842,7 @@
             panel4.Dock = System.Windows.Forms.DockStyle.Fill;
             panel4.Location = new System.Drawing.Point(3, 3);
             panel4.Name = "panel4";
-            panel4.Size = new System.Drawing.Size(504, 555);
+            panel4.Size = new System.Drawing.Size(504, 532);
             panel4.TabIndex = 9;
             // 
             // graphicsBoxSymmetryElements
@@ -837,7 +852,7 @@
             graphicsBoxSymmetryElements.Fonts = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
             graphicsBoxSymmetryElements.Location = new System.Drawing.Point(0, 25);
             graphicsBoxSymmetryElements.Name = "graphicsBoxSymmetryElements";
-            graphicsBoxSymmetryElements.Size = new System.Drawing.Size(504, 530);
+            graphicsBoxSymmetryElements.Size = new System.Drawing.Size(504, 507);
             graphicsBoxSymmetryElements.TabIndex = 0;
             graphicsBoxSymmetryElements.TabStop = false;
             // 
@@ -859,7 +874,7 @@
             panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             panel3.Location = new System.Drawing.Point(513, 3);
             panel3.Name = "panel3";
-            panel3.Size = new System.Drawing.Size(504, 555);
+            panel3.Size = new System.Drawing.Size(504, 532);
             panel3.TabIndex = 8;
             // 
             // graphicsBoxGeneralPositions
@@ -869,7 +884,7 @@
             graphicsBoxGeneralPositions.Fonts = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
             graphicsBoxGeneralPositions.Location = new System.Drawing.Point(0, 25);
             graphicsBoxGeneralPositions.Name = "graphicsBoxGeneralPositions";
-            graphicsBoxGeneralPositions.Size = new System.Drawing.Size(504, 530);
+            graphicsBoxGeneralPositions.Size = new System.Drawing.Size(504, 507);
             graphicsBoxGeneralPositions.TabIndex = 0;
             graphicsBoxGeneralPositions.TabStop = false;
             // 
@@ -931,14 +946,15 @@
             tabControl.Controls.Add(tabPageGeometrics);
             tabControl.Controls.Add(tabPageWyckoff);
             tabControl.Controls.Add(tabPageConditions);
-            tabControl.Controls.Add(tabPageOperations); // 260704Cl
+            tabControl.Controls.Add(tabPageOperations);
             tabControl.Controls.Add(tabPageProperties);
             tabControl.Controls.Add(tabPageSettings);
+            tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             tabControl.Font = new System.Drawing.Font("Segoe UI", 9F);
-            tabControl.Location = new System.Drawing.Point(337, 3);
+            tabControl.Location = new System.Drawing.Point(335, 0);
             tabControl.Name = "tabControl";
             tabControl.SelectedIndex = 0;
-            tabControl.Size = new System.Drawing.Size(681, 169);
+            tabControl.Size = new System.Drawing.Size(685, 188);
             tabControl.TabIndex = 4;
             // 
             // tabPageGeometrics
@@ -959,10 +975,34 @@
             tabPageGeometrics.Location = new System.Drawing.Point(4, 24);
             tabPageGeometrics.Name = "tabPageGeometrics";
             tabPageGeometrics.Padding = new System.Windows.Forms.Padding(3);
-            // tabPageGeometrics.Size = new System.Drawing.Size(673, 141); // 260622Cl 変更前
-            tabPageGeometrics.Size = new System.Drawing.Size(673, 165); // 260622Cl 変更: label40/42 の2行化を収める(+24px)
+            tabPageGeometrics.Size = new System.Drawing.Size(677, 160);
             tabPageGeometrics.TabIndex = 3;
             tabPageGeometrics.Text = "Geometrics Calculation";
+            // 
+            // flowLayoutPanel8
+            // 
+            flowLayoutPanel8.AutoSize = true;
+            flowLayoutPanel8.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            flowLayoutPanel8.Controls.Add(label42);
+            flowLayoutPanel8.Controls.Add(textBoxZonePlane);
+            flowLayoutPanel8.Location = new System.Drawing.Point(342, 111);
+            flowLayoutPanel8.Margin = new System.Windows.Forms.Padding(0);
+            flowLayoutPanel8.Name = "flowLayoutPanel8";
+            flowLayoutPanel8.Size = new System.Drawing.Size(253, 35);
+            flowLayoutPanel8.TabIndex = 21;
+            flowLayoutPanel8.WrapContents = false;
+            // 
+            // flowLayoutPanel7
+            // 
+            flowLayoutPanel7.AutoSize = true;
+            flowLayoutPanel7.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            flowLayoutPanel7.Controls.Add(label40);
+            flowLayoutPanel7.Controls.Add(textBoxZoneAxis);
+            flowLayoutPanel7.Location = new System.Drawing.Point(27, 111);
+            flowLayoutPanel7.Margin = new System.Windows.Forms.Padding(0);
+            flowLayoutPanel7.Name = "flowLayoutPanel7";
+            flowLayoutPanel7.Size = new System.Drawing.Size(254, 35);
+            flowLayoutPanel7.TabIndex = 20;
             // 
             // flowLayoutPanel6
             // 
@@ -973,7 +1013,7 @@
             flowLayoutPanel6.Location = new System.Drawing.Point(80, 66);
             flowLayoutPanel6.Margin = new System.Windows.Forms.Padding(0);
             flowLayoutPanel6.Name = "flowLayoutPanel6";
-            flowLayoutPanel6.Size = new System.Drawing.Size(195, 41);
+            flowLayoutPanel6.Size = new System.Drawing.Size(195, 38);
             flowLayoutPanel6.TabIndex = 5;
             // 
             // flowLayoutPanel14
@@ -985,7 +1025,7 @@
             flowLayoutPanel14.Location = new System.Drawing.Point(400, 66);
             flowLayoutPanel14.Margin = new System.Windows.Forms.Padding(0);
             flowLayoutPanel14.Name = "flowLayoutPanel14";
-            flowLayoutPanel14.Size = new System.Drawing.Size(195, 41);
+            flowLayoutPanel14.Size = new System.Drawing.Size(195, 38);
             flowLayoutPanel14.TabIndex = 5;
             // 
             // flowLayoutPanel11
@@ -997,7 +1037,7 @@
             flowLayoutPanel11.Location = new System.Drawing.Point(399, 5);
             flowLayoutPanel11.Margin = new System.Windows.Forms.Padding(0);
             flowLayoutPanel11.Name = "flowLayoutPanel11";
-            flowLayoutPanel11.Size = new System.Drawing.Size(195, 41);
+            flowLayoutPanel11.Size = new System.Drawing.Size(195, 38);
             flowLayoutPanel11.TabIndex = 5;
             // 
             // flowLayoutPanel1
@@ -1010,7 +1050,7 @@
             flowLayoutPanel1.Location = new System.Drawing.Point(80, 5);
             flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new System.Drawing.Size(195, 41);
+            flowLayoutPanel1.Size = new System.Drawing.Size(195, 38);
             flowLayoutPanel1.TabIndex = 5;
             // 
             // panel1
@@ -1024,122 +1064,152 @@
             // tabPageWyckoff
             // 
             captureExtender.SetCapture(tabPageWyckoff, true);
-            tabPageWyckoff.Controls.Add(miniTableWyckoff); // 260706Ch
+            tabPageWyckoff.Controls.Add(miniTableWyckoff);
             tabPageWyckoff.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
             tabPageWyckoff.Location = new System.Drawing.Point(4, 24);
             tabPageWyckoff.Name = "tabPageWyckoff";
-            tabPageWyckoff.Size = new System.Drawing.Size(673, 141);
+            tabPageWyckoff.Size = new System.Drawing.Size(677, 160);
             tabPageWyckoff.TabIndex = 2;
             tabPageWyckoff.Text = "Wyckoff Positions";
             // 
             // tabPageConditions
             // 
             captureExtender.SetCapture(tabPageConditions, true);
-            tabPageConditions.Controls.Add(flowLayoutPanelExtinctionRule);
+            tabPageConditions.Controls.Add(miniTableConditions);
             tabPageConditions.Controls.Add(label49);
             tabPageConditions.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
             tabPageConditions.Location = new System.Drawing.Point(4, 24);
             tabPageConditions.Name = "tabPageConditions";
-            tabPageConditions.Size = new System.Drawing.Size(673, 141);
+            tabPageConditions.Size = new System.Drawing.Size(677, 160);
             tabPageConditions.TabIndex = 1;
             tabPageConditions.Text = "Conditions";
             // 
-            // flowLayoutPanelExtinctionRule
+            // miniTableConditions
             // 
-            flowLayoutPanelExtinctionRule.AutoScroll = true;
-            flowLayoutPanelExtinctionRule.Dock = System.Windows.Forms.DockStyle.Fill;
-            flowLayoutPanelExtinctionRule.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            flowLayoutPanelExtinctionRule.Location = new System.Drawing.Point(0, 21);
-            flowLayoutPanelExtinctionRule.Margin = new System.Windows.Forms.Padding(0);
-            flowLayoutPanelExtinctionRule.Name = "flowLayoutPanelExtinctionRule";
-            flowLayoutPanelExtinctionRule.Size = new System.Drawing.Size(673, 120);
-            flowLayoutPanelExtinctionRule.TabIndex = 6;
-            flowLayoutPanelExtinctionRule.WrapContents = false;
+            miniTableConditions.AllowVerticalScroll = true;
+            miniTableConditions.CellPadding = new System.Windows.Forms.Padding(6, 2, 6, 2);
+            miniTableConditions.ColumnHeadersHeight = 26;
+            miniTableConditions.Dock = System.Windows.Forms.DockStyle.Fill;
+            miniTableConditions.LatexFontSizeInPoints = 10F;
+            miniTableConditions.LatexFractionStyle = LatexFractionStyle.Slanted;
+            miniTableConditions.LatexThickness = 0.2D;
+            miniTableConditions.Location = new System.Drawing.Point(0, 21);
+            miniTableConditions.ManualRowHeight = 26;
+            miniTableConditions.Name = "miniTableConditions";
+            miniTableConditions.RowTemplate.Height = 26;
+            miniTableConditions.Size = new System.Drawing.Size(677, 139);
+            miniTableConditions.TabIndex = 6;
+            miniTableConditions.TabStop = false;
+            toolTip.SetToolTip(miniTableConditions, "Reflection conditions (systematic absences) for\r\nthis space group: each row gives the affected hkl\r\nindices, the condition needed for that reflection\r\nto appear, and the symmetry element causing it\r\n(read-only)."); // 260708Cl 追加
             //
-            // tabPageOperations (260704Cl 追加)
-            //
-            captureExtender.SetCapture(tabPageOperations, true);
+            // tabPageOperations
+            // 
             tabPageOperations.BackColor = System.Drawing.SystemColors.Control;
+            captureExtender.SetCapture(tabPageOperations, true);
             tabPageOperations.Controls.Add(miniTableOperations);
             tabPageOperations.Controls.Add(panelOperationsBottom);
             tabPageOperations.Location = new System.Drawing.Point(4, 24);
             tabPageOperations.Name = "tabPageOperations";
-            tabPageOperations.Size = new System.Drawing.Size(673, 141);
+            tabPageOperations.Size = new System.Drawing.Size(677, 160);
             tabPageOperations.TabIndex = 4;
             tabPageOperations.Text = "Operations";
-            //
+            // 
             // miniTableOperations
-            //
+            // 
             miniTableOperations.AllowVerticalScroll = true;
+            miniTableOperations.CellPadding = new System.Windows.Forms.Padding(6, 2, 6, 2);
+            miniTableOperations.ColumnHeadersHeight = 26;
             miniTableOperations.Dock = System.Windows.Forms.DockStyle.Fill;
+            miniTableOperations.LatexFontSizeInPoints = 10F;
+            miniTableOperations.LatexFractionStyle = LatexFractionStyle.Slanted;
+            miniTableOperations.LatexThickness = 0.2D;
             miniTableOperations.Location = new System.Drawing.Point(0, 0);
+            miniTableOperations.ManualRowHeight = 26;
             miniTableOperations.Name = "miniTableOperations";
-            miniTableOperations.Size = new System.Drawing.Size(673, 113);
+            miniTableOperations.RowTemplate.Height = 26;
+            miniTableOperations.Size = new System.Drawing.Size(677, 132);
             miniTableOperations.TabIndex = 0;
-            //
+            miniTableOperations.TabStop = false;
+            // 
             // panelOperationsBottom
-            //
+            // 
             panelOperationsBottom.Controls.Add(buttonCopyCif);
             panelOperationsBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            panelOperationsBottom.Location = new System.Drawing.Point(0, 113);
+            panelOperationsBottom.Location = new System.Drawing.Point(0, 132);
             panelOperationsBottom.Name = "panelOperationsBottom";
-            panelOperationsBottom.Size = new System.Drawing.Size(673, 28);
+            panelOperationsBottom.Size = new System.Drawing.Size(677, 28);
             panelOperationsBottom.TabIndex = 1;
-            //
+            // 
             // buttonCopyCif
-            //
+            // 
             buttonCopyCif.AutoSize = true;
             buttonCopyCif.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             buttonCopyCif.Location = new System.Drawing.Point(3, 2);
             buttonCopyCif.Name = "buttonCopyCif";
-            buttonCopyCif.Size = new System.Drawing.Size(100, 23);
+            buttonCopyCif.Size = new System.Drawing.Size(73, 25);
             buttonCopyCif.TabIndex = 0;
             buttonCopyCif.Text = "Copy (CIF)";
             buttonCopyCif.UseVisualStyleBackColor = true;
             buttonCopyCif.Click += buttonCopyCif_Click;
-            //
-            // tabPageProperties (260704Cl 追加)
-            //
-            captureExtender.SetCapture(tabPageProperties, true);
+            // 
+            // tabPageProperties
+            // 
             tabPageProperties.BackColor = System.Drawing.SystemColors.Control;
+            captureExtender.SetCapture(tabPageProperties, true);
             tabPageProperties.Controls.Add(miniTableProperties);
             tabPageProperties.Location = new System.Drawing.Point(4, 24);
             tabPageProperties.Name = "tabPageProperties";
-            tabPageProperties.Size = new System.Drawing.Size(673, 141);
+            tabPageProperties.Size = new System.Drawing.Size(677, 160);
             tabPageProperties.TabIndex = 5;
             tabPageProperties.Text = "Properties";
-            //
+            // 
             // miniTableProperties
-            //
+            // 
             miniTableProperties.AllowVerticalScroll = true;
+            miniTableProperties.CellPadding = new System.Windows.Forms.Padding(6, 2, 6, 2);
+            miniTableProperties.ColumnHeadersHeight = 26;
             miniTableProperties.Dock = System.Windows.Forms.DockStyle.Fill;
+            miniTableProperties.LatexFontSizeInPoints = 10F;
+            miniTableProperties.LatexFractionStyle = LatexFractionStyle.Slanted;
+            miniTableProperties.LatexThickness = 0.2D;
             miniTableProperties.Location = new System.Drawing.Point(0, 0);
+            miniTableProperties.ManualRowHeight = 26;
             miniTableProperties.Name = "miniTableProperties";
-            miniTableProperties.Size = new System.Drawing.Size(673, 141);
+            miniTableProperties.RowTemplate.Height = 26;
+            miniTableProperties.Size = new System.Drawing.Size(677, 160);
             miniTableProperties.TabIndex = 0;
-            //
-            // tabPageSettings (260704Cl 追加)
-            //
-            captureExtender.SetCapture(tabPageSettings, true);
+            miniTableProperties.TabStop = false;
+            // 
+            // tabPageSettings
+            // 
             tabPageSettings.BackColor = System.Drawing.SystemColors.Control;
+            captureExtender.SetCapture(tabPageSettings, true);
             tabPageSettings.Controls.Add(miniTableSettings);
             tabPageSettings.Location = new System.Drawing.Point(4, 24);
             tabPageSettings.Name = "tabPageSettings";
-            tabPageSettings.Size = new System.Drawing.Size(673, 141);
+            tabPageSettings.Size = new System.Drawing.Size(677, 160);
             tabPageSettings.TabIndex = 6;
             tabPageSettings.Text = "Settings";
-            //
+            // 
             // miniTableSettings
-            //
+            // 
             miniTableSettings.AllowVerticalScroll = true;
+            miniTableSettings.CellPadding = new System.Windows.Forms.Padding(6, 2, 6, 2);
+            miniTableSettings.ColumnHeadersHeight = 26;
             miniTableSettings.Dock = System.Windows.Forms.DockStyle.Fill;
+            miniTableSettings.LatexFontSizeInPoints = 10F;
+            miniTableSettings.LatexFractionStyle = LatexFractionStyle.Slanted;
+            miniTableSettings.LatexThickness = 0.2D;
             miniTableSettings.Location = new System.Drawing.Point(0, 0);
+            miniTableSettings.ManualRowHeight = 26;
             miniTableSettings.Name = "miniTableSettings";
-            miniTableSettings.Size = new System.Drawing.Size(673, 141);
+            miniTableSettings.RowTemplate.Height = 26;
+            miniTableSettings.Size = new System.Drawing.Size(677, 160);
             miniTableSettings.TabIndex = 0;
-            //
+            miniTableSettings.TabStop = false;
+            // 
             // groupBoxSpaceGroup
-            //
+            // 
             groupBoxSpaceGroup.Controls.Add(labelLaTexSG_Hall);
             groupBoxSpaceGroup.Controls.Add(labelLaTexSG_SF);
             groupBoxSpaceGroup.Controls.Add(labelLaTexHM_full);
@@ -1149,7 +1219,7 @@
             groupBoxSpaceGroup.Controls.Add(label5);
             groupBoxSpaceGroup.Controls.Add(label6);
             groupBoxSpaceGroup.Font = new System.Drawing.Font("Segoe UI", 9F);
-            groupBoxSpaceGroup.Location = new System.Drawing.Point(3, 77);
+            groupBoxSpaceGroup.Location = new System.Drawing.Point(-2, 74);
             groupBoxSpaceGroup.Name = "groupBoxSpaceGroup";
             groupBoxSpaceGroup.Size = new System.Drawing.Size(328, 95);
             groupBoxSpaceGroup.TabIndex = 5;
@@ -1203,7 +1273,7 @@
             // labelLaTexCS
             // 
             labelLaTexCS.Font = new System.Drawing.Font("Segoe UI", 11F);
-            labelLaTexCS.Location = new System.Drawing.Point(223, 3);
+            labelLaTexCS.Location = new System.Drawing.Point(218, 0);
             labelLaTexCS.Margin = new System.Windows.Forms.Padding(0);
             labelLaTexCS.Name = "labelLaTexCS";
             labelLaTexCS.Size = new System.Drawing.Size(86, 20);
@@ -1218,7 +1288,7 @@
             groupBoxPointGroup.Controls.Add(label11);
             groupBoxPointGroup.Controls.Add(labelLaTexPG_SF);
             groupBoxPointGroup.Font = new System.Drawing.Font("Segoe UI", 9F);
-            groupBoxPointGroup.Location = new System.Drawing.Point(3, 25);
+            groupBoxPointGroup.Location = new System.Drawing.Point(-2, 22);
             groupBoxPointGroup.Name = "groupBoxPointGroup";
             groupBoxPointGroup.Size = new System.Drawing.Size(328, 46);
             groupBoxPointGroup.TabIndex = 4;
@@ -1254,23 +1324,32 @@
             // 
             // panel2
             // 
-            panel2.Controls.Add(label4);
-            panel2.Controls.Add(label);
             panel2.Controls.Add(tabControl);
-            panel2.Controls.Add(groupBoxSpaceGroup);
-            panel2.Controls.Add(labelLaTexNumber);
-            panel2.Controls.Add(groupBoxPointGroup);
-            panel2.Controls.Add(labelLaTexCS);
-            panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            panel2.Location = new System.Drawing.Point(4, 4);
+            panel2.Controls.Add(panel5);
+            panel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            panel2.Location = new System.Drawing.Point(0, 0);
             panel2.Name = "panel2";
-            panel2.Size = new System.Drawing.Size(1020, 179);
+            panel2.Size = new System.Drawing.Size(1020, 188);
             panel2.TabIndex = 7;
+            // 
+            // panel5
+            // 
+            panel5.Controls.Add(label4);
+            panel5.Controls.Add(labelLaTexCS);
+            panel5.Controls.Add(label);
+            panel5.Controls.Add(groupBoxPointGroup);
+            panel5.Controls.Add(labelLaTexNumber);
+            panel5.Controls.Add(groupBoxSpaceGroup);
+            panel5.Dock = System.Windows.Forms.DockStyle.Left;
+            panel5.Location = new System.Drawing.Point(0, 0);
+            panel5.Name = "panel5";
+            panel5.Size = new System.Drawing.Size(335, 188);
+            panel5.TabIndex = 7;
             // 
             // labelLaTexNumber
             // 
             labelLaTexNumber.Font = new System.Drawing.Font("Segoe UI", 11F);
-            labelLaTexNumber.Location = new System.Drawing.Point(64, 3);
+            labelLaTexNumber.Location = new System.Drawing.Point(59, 0);
             labelLaTexNumber.Margin = new System.Windows.Forms.Padding(0);
             labelLaTexNumber.Name = "labelLaTexNumber";
             labelLaTexNumber.Size = new System.Drawing.Size(66, 20);
@@ -1289,12 +1368,12 @@
             flowLayoutPanel4.Controls.Add(radioButtonDirectionC);
             flowLayoutPanel4.Controls.Add(label12);
             flowLayoutPanel4.Controls.Add(flowLayoutPanel5);
-            flowLayoutPanel4.Controls.Add(buttonGroupRelations); // 260704Cl 追加
+            flowLayoutPanel4.Controls.Add(buttonGroupRelations);
             flowLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Bottom;
-            flowLayoutPanel4.Location = new System.Drawing.Point(4, 744);
+            flowLayoutPanel4.Location = new System.Drawing.Point(4, 734);
             flowLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
             flowLayoutPanel4.Name = "flowLayoutPanel4";
-            flowLayoutPanel4.Size = new System.Drawing.Size(1020, 19);
+            flowLayoutPanel4.Size = new System.Drawing.Size(1020, 29);
             flowLayoutPanel4.TabIndex = 8;
             // 
             // label15
@@ -1307,21 +1386,9 @@
             label15.Size = new System.Drawing.Size(57, 17);
             label15.TabIndex = 6;
             label15.Text = "Options";
-            //
-            // buttonGroupRelations (260704Cl 追加)
-            //
-            buttonGroupRelations.AutoSize = true;
-            buttonGroupRelations.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            buttonGroupRelations.Margin = new System.Windows.Forms.Padding(24, 0, 3, 0);
-            buttonGroupRelations.Name = "buttonGroupRelations";
-            buttonGroupRelations.Size = new System.Drawing.Size(120, 23);
-            buttonGroupRelations.TabIndex = 8;
-            buttonGroupRelations.Text = "Group Relations...";
-            buttonGroupRelations.UseVisualStyleBackColor = true;
-            buttonGroupRelations.Click += buttonGroupRelations_Click;
-            //
+            // 
             // flowLayoutPanel5
-            //
+            // 
             flowLayoutPanel5.AutoSize = true;
             flowLayoutPanel5.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             flowLayoutPanel5.Controls.Add(radioButtonEmf);
@@ -1332,30 +1399,36 @@
             flowLayoutPanel5.Size = new System.Drawing.Size(96, 19);
             flowLayoutPanel5.TabIndex = 7;
             // 
-            // flowLayoutPanel7
+            // buttonGroupRelations
             // 
-            flowLayoutPanel7.AutoSize = true;
-            flowLayoutPanel7.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            flowLayoutPanel7.Controls.Add(label40);
-            flowLayoutPanel7.Controls.Add(textBoxZoneAxis);
-            flowLayoutPanel7.Location = new System.Drawing.Point(27, 111);
-            flowLayoutPanel7.Margin = new System.Windows.Forms.Padding(0);
-            flowLayoutPanel7.Name = "flowLayoutPanel7";
-            flowLayoutPanel7.Size = new System.Drawing.Size(254, 23);
-            flowLayoutPanel7.TabIndex = 20;
+            buttonGroupRelations.AutoSize = true;
+            buttonGroupRelations.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            buttonGroupRelations.Location = new System.Drawing.Point(430, 0);
+            buttonGroupRelations.Margin = new System.Windows.Forms.Padding(24, 0, 3, 0);
+            buttonGroupRelations.Name = "buttonGroupRelations";
+            buttonGroupRelations.Size = new System.Drawing.Size(126, 29);
+            buttonGroupRelations.TabIndex = 8;
+            buttonGroupRelations.Text = "Group Relations...";
+            buttonGroupRelations.UseVisualStyleBackColor = true;
+            buttonGroupRelations.Click += buttonGroupRelations_Click;
             // 
-            // flowLayoutPanel8
+            // splitContainer1
             // 
-            flowLayoutPanel8.AutoSize = true;
-            flowLayoutPanel8.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            flowLayoutPanel8.Controls.Add(label42);
-            flowLayoutPanel8.Controls.Add(textBoxZonePlane);
-            flowLayoutPanel8.Location = new System.Drawing.Point(342, 111);
-            flowLayoutPanel8.Margin = new System.Windows.Forms.Padding(0);
-            flowLayoutPanel8.Name = "flowLayoutPanel8";
-            flowLayoutPanel8.Size = new System.Drawing.Size(253, 23);
-            flowLayoutPanel8.TabIndex = 21;
-            flowLayoutPanel8.WrapContents = false;
+            splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            splitContainer1.Location = new System.Drawing.Point(4, 4);
+            splitContainer1.Name = "splitContainer1";
+            splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            splitContainer1.Panel1.Controls.Add(panel2);
+            // 
+            // splitContainer1.Panel2
+            // 
+            splitContainer1.Panel2.Controls.Add(tableLayoutPanel1);
+            splitContainer1.Size = new System.Drawing.Size(1020, 730);
+            splitContainer1.SplitterDistance = 188;
+            splitContainer1.TabIndex = 9;
             // 
             // FormSymmetryInformation
             // 
@@ -1363,9 +1436,8 @@
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             captureExtender.SetCapture(this, true);
             ClientSize = new System.Drawing.Size(1028, 767);
-            Controls.Add(tableLayoutPanel1);
+            Controls.Add(splitContainer1);
             Controls.Add(flowLayoutPanel4);
-            Controls.Add(panel2);
             Font = new System.Drawing.Font("Segoe UI", 10F);
             Name = "FormSymmetryInformation";
             Padding = new System.Windows.Forms.Padding(4);
@@ -1374,7 +1446,7 @@
             Text = "Symmetry Information";
             FormClosing += FormCrystallographicInformation_FormClosing;
             Load += FormCrystallographicInformation_Load;
-            ((System.ComponentModel.ISupportInitialize)miniTableWyckoff).EndInit(); // 260706Ch
+            ((System.ComponentModel.ISupportInitialize)miniTableWyckoff).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataSet).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataTablePlanes).EndInit();
             tableLayoutPanel1.ResumeLayout(false);
@@ -1391,6 +1463,10 @@
             tabControl.ResumeLayout(false);
             tabPageGeometrics.ResumeLayout(false);
             tabPageGeometrics.PerformLayout();
+            flowLayoutPanel8.ResumeLayout(false);
+            flowLayoutPanel8.PerformLayout();
+            flowLayoutPanel7.ResumeLayout(false);
+            flowLayoutPanel7.PerformLayout();
             flowLayoutPanel6.ResumeLayout(false);
             flowLayoutPanel6.PerformLayout();
             flowLayoutPanel14.ResumeLayout(false);
@@ -1402,10 +1478,11 @@
             tabPageWyckoff.ResumeLayout(false);
             tabPageConditions.ResumeLayout(false);
             tabPageConditions.PerformLayout();
-            tabPageOperations.ResumeLayout(false); // 260704Cl
+            ((System.ComponentModel.ISupportInitialize)miniTableConditions).EndInit();
+            tabPageOperations.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)miniTableOperations).EndInit();
             panelOperationsBottom.ResumeLayout(false);
             panelOperationsBottom.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)miniTableOperations).EndInit();
             tabPageProperties.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)miniTableProperties).EndInit();
             tabPageSettings.ResumeLayout(false);
@@ -1416,15 +1493,16 @@
             groupBoxPointGroup.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)bindingSourceScatteringFactor).EndInit();
             panel2.ResumeLayout(false);
-            panel2.PerformLayout();
+            panel5.ResumeLayout(false);
+            panel5.PerformLayout();
             flowLayoutPanel4.ResumeLayout(false);
             flowLayoutPanel4.PerformLayout();
             flowLayoutPanel5.ResumeLayout(false);
             flowLayoutPanel5.PerformLayout();
-            flowLayoutPanel7.ResumeLayout(false);
-            flowLayoutPanel7.PerformLayout();
-            flowLayoutPanel8.ResumeLayout(false);
-            flowLayoutPanel8.PerformLayout();
+            splitContainer1.Panel1.ResumeLayout(false);
+            splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
+            splitContainer1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
 
@@ -1498,7 +1576,8 @@
         private LabelLaTeX labelLaTexCS;
         private LabelLaTeX labelLaTexPG_SF;
         private LabelLaTeX labelLaTexPG_HM;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelExtinctionRule; // 260427Cl
+        //private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelExtinctionRule; // 260427Cl // 260708Ch: Conditions タブを MiniTable 表示へ変更
+        private MiniTable miniTableConditions; // 260708Ch
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TabPage tabPageGeometrics;
         private System.Windows.Forms.Panel panel2;
@@ -1532,5 +1611,7 @@
         private IndexControl indexControlAxis1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel8;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel7;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.Panel panel5;
     }
 }

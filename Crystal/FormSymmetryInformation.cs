@@ -172,6 +172,18 @@ public partial class FormSymmetryInformation : FormBase
 
         for (int n = 1; n <= 5; n++)
             str = str.Replace($"sub{n}", $"_{n}");
+
+        // ExtinctionRule の indices 接頭辞 (最初の ":" まで) のみ "-h/-k/-l/-2h" 等を overline 化。
+        // 例: "h-hl: 2h-l=4n: d⊥[110]" → "h\bar{h}l: 2h-l=4n: d\perp [110]" (条件式の "2h-l" や説明部はそのまま)
+        // 260708Ch: 直後の汎用 "-N→\bar{N}" ループより前に処理する必要がある。後回しにすると "-2h" の "-2" だけが
+        // 先に食われて \bar{2}h に壊れ、それを直すためだけの補正 regex (IndicesPrefixDigitLetterBarRegex) が要った。
+        if (noBar)
+        {
+            var colonIdx = str.IndexOf(':');
+            if (colonIdx > 0)
+                str = OverlineIndicesPrefix(str[..colonIdx]) + str[colonIdx..];
+        }
+
         // "-N" (digit) → "\bar{N}". HM では P-3m → P\bar{3}m、ExtinctionRule では [01-1] → [01\bar{1}]。
         // 条件式部の "2h-k=4n" 等は "-letter" なのでこの置換にかからず literal のまま。
         for (int n = 0; n <= 9; n++)
@@ -181,22 +193,77 @@ public partial class FormSymmetryInformation : FormBase
         // 連続する条件式の境目 (例: "...=2n k+l=2n" → "...=2n, k+l=2n") にカンマを挿入。
         // ExtinctionRule の F centering 等でしか出ない \dn[空白][letter] パターン限定なので副作用なし。
         str = ConditionSeparatorRegex().Replace(str, ", ");
-        // ExtinctionRule の indices 接頭辞 (最初の ":" まで) のみ "-h/-k/-l" を \bar{...} に変換。
-        // 例: "h-hl: 2h-l=4n: d⊥[110]" → "h\bar{h}l: 2h-l=4n: d\perp [110]" (条件式の "2h-l" や説明部はそのまま)
-        if (noBar)
-        {
-            var colonIdx = str.IndexOf(':');
-            if (colonIdx > 0)
-                str = IndicesPrefixBarRegex().Replace(str[..colonIdx], @"\bar{$1}") + str[colonIdx..];
-        }
         return str + suffix; // 三方晶系 Hex/Rho 接尾辞があれば末尾に下付きで再付与
     }
 
     private static string SiteSymmetryToLatex(string str) // 260706Ch: Wyckoff / MiniTable セル用
         => string.IsNullOrWhiteSpace(str) || str == "-" ? str : ToLatex(str, spaced: true);
 
+    /// <summary>"-h"/"-2h" 等の hkl 指数接頭辞を overline (単一文字は \bar、複数文字は \overline) へ変換する。
+    /// 汎用の "-N→\bar{N}" 置換より前に適用する必要がある (でないと "-2h" が "\bar{2}h" に壊れる)。260708Ch 追加
+    /// (ToLatex の noBar 分岐と ConditionIndicesToLatex に重複していた同一ロジックを統合)。</summary>
+    private static string OverlineIndicesPrefix(string str)
+        => IndicesPrefixBarRegex().Replace(str, match => match.Groups[1].Value.Length > 1
+            ? $@"\overline{{{match.Groups[1].Value}}}"
+            : $@"\bar{{{match.Groups[1].Value}}}");
+
+    private static string ConditionIndicesToLatex(string str) // 260708Ch: Conditions の indices 列専用。-2h は \overline{2h} として扱う。
+        => string.IsNullOrWhiteSpace(str) ? str : ToLatex(OverlineIndicesPrefix(str.Trim())); // 260708Ch
+
     private static string CoordinateToLatex(string str) // 260706Ch: Wyckoff 座標セル用。parse 不能時はセル側が通常描画へ退避する。
-        => string.IsNullOrWhiteSpace(str) ? str : str.Replace(" ", @"\,");
+    {
+        if (string.IsNullOrWhiteSpace(str)) return str;
+        //return str.Replace(" ", @"\,"); // 260707Ch: 座標先頭の -x/-y/-z を結晶学標準の overbar 表記へ変換するため下へ移動
+        var latex = LeadingNegativeCoordinateRegex().Replace(str, @"$1\bar{$2}"); // 260707Ch: 例 (-x,-y,-z) → (\bar{x},\bar{y},\bar{z})
+        return latex.Replace(" ", @"\,");
+    }
+
+    // 260708Ch: SeitzNotation.SeitzLatex(in SymmetryOperation) に置き換え。Seitz() が返す文字列を正規表現で
+    // 再パースするのではなく、Seitz() と同じ構造データ (Order/Sense/Direction/SeitzTranslation) から直接 LaTeX を
+    // 組み立てる形に刷新 (全空間群展開済み7424操作で旧実装と出力が完全一致することを検証済み)。
+    //internal static string SeitzToLatex(string str) // 260707Ch: Seitz 記号セル用。-1/-4 と方向 [1-10] の負号を overbar 表記へ。
+    //{
+    //    if (string.IsNullOrWhiteSpace(str)) return str;
+    //    var match = SeitzNotationRegex().Match(str.Trim()); // 260708Ch
+    //    if (!match.Success)
+    //    {
+    //        var fallback = NegativeDigitRegex().Replace(str, @"\bar{$1}"); // 260708Ch
+    //        return fallback.Replace(" ", @"\,"); // 260708Ch
+    //    }
+    //
+    //    var rotationText = match.Groups["rotation"].Value; // 260708Ch
+    //    var rotation = SeitzRotationToLatex(rotationText); // 260708Ch
+    //    var direction = match.Groups["direction"].Success && rotationText is not "1" and not "-1" ? $"_{{{SeitzDirectionToLatex(match.Groups["direction"].Value)}}}" : ""; // 260708Ch
+    //    var translation = match.Groups["translation"].Success ? match.Groups["translation"].Value : "0,0,0"; // 260708Ch
+    //    return $@"\{{\,{rotation}{direction}\mid {translation.Replace(",", @",\,")}\,\}}"; // 260708Ch
+    //}
+    //
+    //private static string SeitzRotationToLatex(string rotation) // 260708Ch
+    //{
+    //    var match = SeitzRotationRegex().Match(rotation);
+    //    if (!match.Success)
+    //        return rotation;
+    //
+    //    var number = match.Groups["number"].Value;
+    //    var body = match.Groups["negative"].Success ? $@"\bar{{{number}}}" : number;
+    //    return match.Groups["sense"].Success ? $@"{body}^{{{match.Groups["sense"].Value}}}" : body;
+    //}
+    //
+    //private static string SeitzDirectionToLatex(string direction) // 260708Ch
+    //{
+    //    var body = direction.Trim('[', ']');
+    //    var parts = SeitzDirectionComponentRegex().Matches(body);
+    //    if (parts.Count == 0)
+    //        return body;
+    //
+    //    var tokens = new List<string>(parts.Count);
+    //    foreach (Match part in parts)
+    //    {
+    //        var token = part.Value;
+    //        tokens.Add(token.StartsWith("-", StringComparison.Ordinal) ? $@"\bar{{{token[1..]}}}" : token);
+    //    }
+    //    return string.Concat(tokens);
+    //}
 
     [GeneratedRegex(@"(Hex|Rho|\(\d\))$")]
     private static partial Regex SuffixRegex();
@@ -207,28 +274,45 @@ public partial class FormSymmetryInformation : FormBase
     [GeneratedRegex(@"(?<=\dn)\s+(?=[a-zA-Z])")]
     private static partial Regex ConditionSeparatorRegex();
 
-    [GeneratedRegex(@"-([hkl])")]
+    //[GeneratedRegex(@"-([hkl])")] // 260708Ch: -2h のような係数付き指数もまとめて overbar にする
+    [GeneratedRegex(@"-(\d*[hkl])")] // 260708Ch
     private static partial Regex IndicesPrefixBarRegex();
+
+    [GeneratedRegex(@"(^|[(,\s])-(x|y|z)")]
+    private static partial Regex LeadingNegativeCoordinateRegex(); // 260707Ch
+
+    // 260708Ch: SeitzToLatex/SeitzRotationToLatex/SeitzDirectionToLatex 削除 (SeitzNotation.SeitzLatex に置き換え) に伴い未使用化。
+    //[GeneratedRegex(@"-([0-9])")]
+    //private static partial Regex NegativeDigitRegex(); // 260707Ch
+    //
+    //[GeneratedRegex(@"^(?<rotation>\S+)(?:\s+(?<direction>\[[^\]]+\]))?(?:\s+(?<translation>\S+))?$")]
+    //private static partial Regex SeitzNotationRegex(); // 260708Ch
+    //
+    //[GeneratedRegex(@"^(?<negative>-)?(?<number>\d+)(?<sense>[+-])?$")]
+    //private static partial Regex SeitzRotationRegex(); // 260708Ch
+    //
+    //[GeneratedRegex(@"-?\d")]
+    //private static partial Regex SeitzDirectionComponentRegex(); // 260708Ch
     #endregion
 
-    #region 出現則用のLabelLatex生成
+    #region 出現則表示
     // 260427Cl: 結晶切替の度に N 個の LabelLaTeX を生成するので Font/Padding は static で共有 (Font は IDisposable だがアプリ生存期間)。
-    private static readonly Font ExtinctionRuleFont = new("Segoe UI", 13F);
-    private static readonly Padding ExtinctionRuleMargin = new(0, 0, 0, 2);
+    //private static readonly Font ExtinctionRuleFont = new("Segoe UI", 13F); // 260708Ch: Conditions タブを MiniTable 表示へ変更
+    //private static readonly Padding ExtinctionRuleMargin = new(0, 0, 0, 2); // 260708Ch
 
-    /// <summary>
-    /// <see cref="flowLayoutPanelExtinctionRule"/> に積む 1 行ぶんの <see cref="LabelLaTeX"/> を生成する (260427Cl 追加)。
-    /// </summary>
-    /// <param name="latex">行に描画する LaTeX 文字列。</param>
-    /// <returns>AutoSize 有効・Segoe UI 13pt・縁取り 0.6 で初期化した <see cref="LabelLaTeX"/>。</returns>
-    private static LabelLaTeX MakeExtinctionRuleLabel(string latex) => new()
-    {
-        AutoSize = true,
-        Font = ExtinctionRuleFont,
-        Margin = ExtinctionRuleMargin,
-        Thickness = 0.6,
-        Text = latex,
-    };
+    ///// <summary>
+    ///// <see cref="flowLayoutPanelExtinctionRule"/> に積む 1 行ぶんの <see cref="LabelLaTeX"/> を生成する (260427Cl 追加)。
+    ///// </summary>
+    ///// <param name="latex">行に描画する LaTeX 文字列。</param>
+    ///// <returns>AutoSize 有効・Segoe UI 13pt・縁取り 0.6 で初期化した <see cref="LabelLaTeX"/>。</returns>
+    //private static LabelLaTeX MakeExtinctionRuleLabel(string latex) => new()
+    //{
+    //    AutoSize = true,
+    //    Font = ExtinctionRuleFont,
+    //    Margin = ExtinctionRuleMargin,
+    //    Thickness = 0.6,
+    //    Text = latex,
+    //};
     #endregion
 
     #region ChangeCrystal() 結晶が変更されたとき 
@@ -284,19 +368,33 @@ public partial class FormSymmetryInformation : FormBase
 
         // 260427Cl 追加: ExtinctionRule は 1 行 1 LabelLaTeX で FlowLayoutPanel に積む (AutoScroll でスクロール)。
         // hkl 算術式中の "-h"/"-1" は字面通りに残したいので noBar:true。
-        flowLayoutPanelExtinctionRule.SuspendLayout();
-        // Controls.Clear() は子を Dispose しないため、LabelLaTeX が保持する Bitmap が GC まで残る。
-        // Control.Dispose() は内部で Parent.Controls.Remove(this) を呼ぶため後ろから index で回す
-        // (前から foreach するとコレクション変更中の列挙で例外になる)。Dispose 後は Controls が空になるので Clear 不要。
-        for (int i = flowLayoutPanelExtinctionRule.Controls.Count - 1; i >= 0; i--)
-            flowLayoutPanelExtinctionRule.Controls[i].Dispose();
+        //flowLayoutPanelExtinctionRule.SuspendLayout(); // 260708Ch: Conditions タブを MiniTable 表示へ変更
+        //// Controls.Clear() は子を Dispose しないため、LabelLaTeX が保持する Bitmap が GC まで残る。
+        //// Control.Dispose() は内部で Parent.Controls.Remove(this) を呼ぶため後ろから index で回す
+        //// (前から foreach するとコレクション変更中の列挙で例外になる)。Dispose 後は Controls が空になるので Clear 不要。
+        //for (int i = flowLayoutPanelExtinctionRule.Controls.Count - 1; i >= 0; i--)
+        //    flowLayoutPanelExtinctionRule.Controls[i].Dispose();
         var rules = symmetry.ExtinctionRuleStr;
+        var conditionRows = new List<object[]>(); // 260708Ch: LabelLaTeX の動的追加ではなく MiniTable 行として投入
         if (rules == null || rules.Length == 0)
-            flowLayoutPanelExtinctionRule.Controls.Add(MakeExtinctionRuleLabel(@"\mathrm{No\ Condition}"));
+            //flowLayoutPanelExtinctionRule.Controls.Add(MakeExtinctionRuleLabel(@"\mathrm{No\ Condition}")); // 260708Ch
+            conditionRows.Add([@"\mathrm{No\ Condition}", "", ""]); // 260708Ch
         else
             foreach (var rule in rules)
-                flowLayoutPanelExtinctionRule.Controls.Add(MakeExtinctionRuleLabel(ToLatex(rule, noBar: true)));
-        flowLayoutPanelExtinctionRule.ResumeLayout(true);
+                //flowLayoutPanelExtinctionRule.Controls.Add(MakeExtinctionRuleLabel(ToLatex(rule, noBar: true))); // 260708Ch
+            {
+                var parts = rule.Split(':', 3); // 260708Ch: 旧表示でコロン区切りだった 3 情報を MiniTable の 3 列へ分割
+                if (parts.Length == 3)
+                    conditionRows.Add([
+                        //IndicesPrefixBarRegex().Replace(ToLatex(parts[0].Trim()), @"\bar{$1}"), // 260708Ch: -2h を \bar{2h} として扱う
+                        ConditionIndicesToLatex(parts[0]), // 260708Ch
+                        ToLatex(parts[1].Trim()),
+                        ToLatex(parts[2].Trim())]); // 260708Ch
+                else
+                    conditionRows.Add([ToLatex(rule, noBar: true), "", ""]); // 260708Ch: 念のため旧形式でない文字列も表示
+            }
+        //flowLayoutPanelExtinctionRule.ResumeLayout(true); // 260708Ch
+        miniTableConditions.SetRows(conditionRows); // 260708Ch
 
         // 260704Cl 追加: Operations / Properties / Settings タブの再構築
         // 260705Cl 修正: 3 表の内容は SymmetrySeriesNumber のみに依存するため、格子定数スピナーや原子編集などで
@@ -455,7 +553,9 @@ public partial class FormSymmetryInformation : FormBase
                 if (j == 0)
                 {
                     row[0] = position.Multiplicity;
-                    row[1] = position.WyckoffLetter;
+                    //row[1] = position.WyckoffLetter; // 260708Ch: Wyckoff letter 列も LaTeX セルで描画する
+                    //row[1] = $@"\mathrm{{{position.WyckoffLetter}}}"; // 260708Ch: Wyckoff letter は結晶学表記に合わせて italic に戻す
+                    row[1] = position.WyckoffLetter; // 260708Ch
                     //row[2] = position.SiteSymmetry;
                     row[2] = SiteSymmetryToLatex(position.SiteSymmetry); // 260706Ch
                 }
@@ -493,12 +593,19 @@ public partial class FormSymmetryInformation : FormBase
 
         miniTableWyckoff.SetColumns( // 260706Ch: Wyckoff タブも MiniTable + LaTeX セルへ移行
             new MiniTable.Col(Loc(en: "Mult.", ja: "多重度", de: "Mult.", fr: "Mult.", es: "Mult.", pt: "Mult.", it: "Mult.", ru: "Кратн.", zhHans: "重数", zhHant: "重數", ko: "다중도"), R),
-            new MiniTable.Col(Loc(en: "Wyck. Let.", ja: "記号", de: "Wyck.-Buchst.", fr: "Lettre Wyck.", es: "Letra Wyck.", pt: "Letra Wyck.", it: "Let. Wyck.", ru: "Буква", zhHans: "Wyck. 字母", zhHant: "Wyck. 字母", ko: "Wyck. 문자"), C),
+            //new MiniTable.Col(Loc(en: "Wyck. Let.", ja: "記号", de: "Wyck.-Buchst.", fr: "Lettre Wyck.", es: "Letra Wyck.", pt: "Letra Wyck.", it: "Let. Wyck.", ru: "Буква", zhHans: "Wyck. 字母", zhHant: "Wyck. 字母", ko: "Wyck. 문자"), C), // 260708Ch: Wyckoff letter も LaTeX 描画へ
+            new MiniTable.Col(Loc(en: "Wyck. Let.", ja: "記号", de: "Wyck.-Buchst.", fr: "Lettre Wyck.", es: "Letra Wyck.", pt: "Letra Wyck.", it: "Let. Wyck.", ru: "Буква", zhHans: "Wyck. 字母", zhHant: "Wyck. 字母", ko: "Wyck. 문자"), C, Latex: true), // 260708Ch
             new MiniTable.Col(Loc(en: "Site Sym.", ja: "サイト対称性", de: "Lagesym.", fr: "Sym. site", es: "Sim. sitio", pt: "Sim. sítio", it: "Simm. sito", ru: "Симм. поз.", zhHans: "位置对称", zhHant: "位置對稱", ko: "자리 대칭"), C, Latex: true),
             new MiniTable.Col(Loc(en: "Coordinates", ja: "座標", de: "Koordinaten", fr: "Coordonnées", es: "Coordenadas", pt: "Coordenadas", it: "Coordinate", ru: "Координаты", zhHans: "坐标", zhHant: "座標", ko: "좌표"), L, Latex: true),
             new MiniTable.Col("", L, Latex: true),
             new MiniTable.Col("", L, Latex: true),
             new MiniTable.Col("", L, Fill: true, Latex: true));
+
+        miniTableConditions.SetColumns( // 260708Ch: Conditions タブを MiniTable + LaTeX セルへ移行
+            //new MiniTable.Col(Loc(en: "Condition", ja: "条件", de: "Bedingung", fr: "Condition", es: "Condición", pt: "Condição", it: "Condizione", ru: "Условие", zhHans: "条件", zhHant: "條件", ko: "조건"), L, Fill: true, Latex: true)); // 260708Ch: コロン区切りの 3 情報を列分割
+            new MiniTable.Col(Loc(en: "Indices", ja: "指数", de: "Indizes", fr: "Indices", es: "Índices", pt: "Índices", it: "Indici", ru: "Индексы", zhHans: "指数", zhHant: "指數", ko: "지수"), C, Latex: true), // 260708Ch
+            new MiniTable.Col(Loc(en: "Condition", ja: "条件", de: "Bedingung", fr: "Condition", es: "Condición", pt: "Condição", it: "Condizione", ru: "Условие", zhHans: "条件", zhHant: "條件", ko: "조건"), L, Latex: true), // 260708Ch
+            new MiniTable.Col(Loc(en: "Element", ja: "要素", de: "Element", fr: "Élément", es: "Elemento", pt: "Elemento", it: "Elemento", ru: "Элемент", zhHans: "要素", zhHant: "要素", ko: "요소"), L, Fill: true, Latex: true)); // 260708Ch
 
         miniTableOperations.SetColumns(
             new MiniTable.Col("#", R),
@@ -532,7 +639,8 @@ public partial class FormSymmetryInformation : FormBase
 
         var rows = new List<object[]>(ops.Length);
         for (int i = 0; i < ops.Length; i++)
-            rows.Add([i + 1, SeitzNotation.Triplet(ops[i]), SeitzNotation.Seitz(ops[i]), SeitzNotation.GeometricType(ops[i])]);
+            //rows.Add([i + 1, CoordinateToLatex(SeitzNotation.Triplet(ops[i])), SeitzToLatex(SeitzNotation.Seitz(ops[i])), SeitzNotation.GeometricType(ops[i])]); // 260708Ch: SeitzNotation.SeitzLatex に一本化 (構造化データから直接生成)
+            rows.Add([i + 1, CoordinateToLatex(SeitzNotation.Triplet(ops[i])), SeitzNotation.SeitzLatex(ops[i]), SeitzNotation.GeometricType(ops[i])]); // 260708Ch
         miniTableOperations.SetRows(rows);
     }
 
