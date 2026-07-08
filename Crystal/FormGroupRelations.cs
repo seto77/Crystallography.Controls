@@ -170,33 +170,22 @@ public partial class FormGroupRelations : FormBase
             //        if (Visible) { BuildTree(); RenderGraph(); }
             //    }
             //}, TaskScheduler.FromCurrentSynchronizationContext());
-            Task.Run(() =>
+            // 260708Cl (/simplify): Task.Run + マーシャリング足場を k-超群側と共通の ComputeThenApplyOnUi へ集約。
+            ComputeThenApplyOnUi(() => TSubgroupFinder.GetMinimalTSupergroups(it), result =>
             {
-                IReadOnlyList<GroupRelation> result = null;
-                try { result = TSubgroupFinder.GetMinimalTSupergroups(it); }
-                catch { /* 計算失敗時も pending 解除だけは行う */ }
-                try
+                _supersPending = false;
+                if (result != null && !IsDisposed && _currentSeries == seriesNumber)
                 {
-                    if (IsDisposed || !IsHandleCreated) return;
-                    BeginInvoke(() =>
+                    _supers = result;
+                    // 260705Cl 追加: フォームが非表示 (Hide) の間はツリー/グラフを再構築しない。ユーザーが見ていない
+                    // UI を触っても意味が無く、非表示中の control 更新でハンドル生成に失敗する例外を実際に観測した
+                    // (--capture ハーネスでの検証)。次に NavigateTo/LoadSpaceGroup されたとき最新の _supers で再構築される。
+                    if (Visible)
                     {
-                        _supersPending = false;
-                        if (result != null && !IsDisposed && _currentSeries == seriesNumber)
-                        {
-                            _supers = result;
-                            // 260705Cl 追加: フォームが非表示 (Hide) の間はツリー/グラフを再構築しない。ユーザーが見ていない
-                            // UI を触っても意味が無く、非表示中の control 更新でハンドル生成に失敗する例外を実際に観測した
-                            // (--capture ハーネスでの検証)。次に NavigateTo/LoadSpaceGroup されたとき最新の _supers で再構築される。
-                            if (Visible)
-                            {
-                                BuildTree();
-                                RenderGraph();
-                            }
-                        }
-                    });
+                        BuildTree();
+                        RenderGraph();
+                    }
                 }
-                catch (ObjectDisposedException) { } // フォーム破棄との競合は無視
-                catch (InvalidOperationException) { } // ハンドル破棄との競合は無視
             });
         }
         // 260708Cl 追加 (Phase 2d 後段): k-超群逆引き。初回は同じ結晶類の全タイプの k-部分群計算を伴い重い
@@ -211,28 +200,16 @@ public partial class FormGroupRelations : FormBase
             _ksupers = [];
             _ksupersPending = true;
             int itK = sym.SpaceGroupNumber;
-            // 260708Cl: t-超群側と同じく BeginInvoke で UI スレッドへ明示マーシャリング (上のコメント参照)。
-            Task.Run(() =>
+            // 260708Cl: t-超群側と同じく BeginInvoke で UI スレッドへ明示マーシャリング (共通足場 ComputeThenApplyOnUi)。
+            ComputeThenApplyOnUi(() => KSubgroupFinder.GetMinimalKSupergroups(itK), result =>
             {
-                GroupRelation[] result = null;
-                try { result = KSubgroupFinder.GetMinimalKSupergroups(itK); }
-                catch { /* 計算失敗時も pending 解除だけは行う */ }
-                try
+                _ksupersPending = false;
+                if (result != null && !IsDisposed && _currentSeries == seriesNumber)
                 {
-                    if (IsDisposed || !IsHandleCreated) return;
-                    BeginInvoke(() =>
-                    {
-                        _ksupersPending = false;
-                        if (result != null && !IsDisposed && _currentSeries == seriesNumber)
-                        {
-                            _ksupers = result;
-                            if (Visible)
-                                BuildTree(); // k-超群は Diagram に描かないため RenderGraph は不要
-                        }
-                    });
+                    _ksupers = result;
+                    if (Visible)
+                        BuildTree(); // k-超群は Diagram に描かないため RenderGraph は不要
                 }
-                catch (ObjectDisposedException) { } // フォーム破棄との競合は無視
-                catch (InvalidOperationException) { } // ハンドル破棄との競合は無視
             });
         }
         _selectedRelation = null;
@@ -242,6 +219,27 @@ public partial class FormGroupRelations : FormBase
         UpdateNavButtons();
         RenderGraph();
         ShowRelationDetail(null);
+    }
+
+    /// <summary>260708Cl 追加 (/simplify): バックグラウンド計算 → UI スレッドへ BeginInvoke で結果反映する共通足場
+    /// (t-/k- 超群逆引きで共有。旧: 同一の Task.Run + ガード + マーシャリングを 2 箇所へコピーしていた)。
+    /// compute が失敗したときは null を渡して applyOnUi を必ず呼ぶ (pending 解除のため)。フォーム破棄・
+    /// ハンドル未生成との競合は握りつぶす (マーシャリング先が消えただけなので何もしないのが正しい)。</summary>
+    private void ComputeThenApplyOnUi<T>(Func<T> compute, Action<T> applyOnUi) where T : class
+    {
+        Task.Run(() =>
+        {
+            T result = null;
+            try { result = compute(); }
+            catch { /* 計算失敗時も applyOnUi (pending 解除) は行う */ }
+            try
+            {
+                if (IsDisposed || !IsHandleCreated) return;
+                BeginInvoke(() => applyOnUi(result));
+            }
+            catch (ObjectDisposedException) { } // フォーム破棄との競合は無視
+            catch (InvalidOperationException) { } // ハンドル破棄との競合は無視
+        });
     }
 
     private void UpdateNavButtons()
