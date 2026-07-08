@@ -37,6 +37,9 @@ public partial class FormGroupRelations : FormBase
     private GroupRelation[] _ksubs = [];
     private IReadOnlyList<GroupRelation> _supers = [];
     private bool _supersPending; // 260705Cl 追加: 超群索引をバックグラウンド構築中 (ツリーに「計算中…」を表示)
+    /// <summary>260708Cl 追加 (Phase 2d 後段): 現在閲覧中の群の minimal k-超群 (KSubgroupFinder の逆引き、同型含む)。</summary>
+    private GroupRelation[] _ksupers = [];
+    private bool _ksupersPending; // 260708Cl 追加: k-超群逆引きをバックグラウンド構築中
     private GroupRelation _selectedRelation;   // ツリー/グラフで選択中の関係 (null 可)
 
     // グラフのヒットテスト用ノード矩形 (画面座標) と対応 series。
@@ -154,22 +157,83 @@ public partial class FormGroupRelations : FormBase
             _supers = [];
             _supersPending = true;
             int it = sym.SpaceGroupNumber;
-            Task.Run(() => TSubgroupFinder.GetMinimalTSupergroups(it)).ContinueWith(t =>
+            // 260708Cl 修正: ContinueWith(FromCurrentSynchronizationContext) は先行タスクの完了スレッド
+            // (スレッドプール) 上でインライン実行されることがあり (診断ハーネスで非 UI スレッド実行を実測)、
+            // 非 UI スレッドの BuildTree がツリーを半構築のまま放置する実バグ (ツリー空白) になった。
+            // BeginInvoke で明示的に UI スレッドへマーシャリングする。
+            //Task.Run(() => TSubgroupFinder.GetMinimalTSupergroups(it)).ContinueWith(t =>
+            //{
+            //    _supersPending = false;
+            //    if (!t.IsFaulted && !IsDisposed && _currentSeries == seriesNumber)
+            //    {
+            //        _supers = t.Result;
+            //        if (Visible) { BuildTree(); RenderGraph(); }
+            //    }
+            //}, TaskScheduler.FromCurrentSynchronizationContext());
+            Task.Run(() =>
             {
-                _supersPending = false;
-                if (!t.IsFaulted && !IsDisposed && _currentSeries == seriesNumber)
+                IReadOnlyList<GroupRelation> result = null;
+                try { result = TSubgroupFinder.GetMinimalTSupergroups(it); }
+                catch { /* 計算失敗時も pending 解除だけは行う */ }
+                try
                 {
-                    _supers = t.Result;
-                    // 260705Cl 追加: フォームが非表示 (Hide) の間はツリー/グラフを再構築しない。ユーザーが見ていない
-                    // UI を触っても意味が無く、非表示中の control 更新でハンドル生成に失敗する例外を実際に観測した
-                    // (--capture ハーネスでの検証)。次に NavigateTo/LoadSpaceGroup されたとき最新の _supers で再構築される。
-                    if (Visible)
+                    if (IsDisposed || !IsHandleCreated) return;
+                    BeginInvoke(() =>
                     {
-                        BuildTree();
-                        RenderGraph();
-                    }
+                        _supersPending = false;
+                        if (result != null && !IsDisposed && _currentSeries == seriesNumber)
+                        {
+                            _supers = result;
+                            // 260705Cl 追加: フォームが非表示 (Hide) の間はツリー/グラフを再構築しない。ユーザーが見ていない
+                            // UI を触っても意味が無く、非表示中の control 更新でハンドル生成に失敗する例外を実際に観測した
+                            // (--capture ハーネスでの検証)。次に NavigateTo/LoadSpaceGroup されたとき最新の _supers で再構築される。
+                            if (Visible)
+                            {
+                                BuildTree();
+                                RenderGraph();
+                            }
+                        }
+                    });
                 }
-            }, TaskScheduler.FromCurrentSynchronizationContext());
+                catch (ObjectDisposedException) { } // フォーム破棄との競合は無視
+                catch (InvalidOperationException) { } // ハンドル破棄との競合は無視
+            });
+        }
+        // 260708Cl 追加 (Phase 2d 後段): k-超群逆引き。初回は同じ結晶類の全タイプの k-部分群計算を伴い重い
+        // 場合があるため、t-超群索引と同じ「バックグラウンド構築 + 計算中…ノード + 完了時差し替え」方式を踏襲。
+        if (KSubgroupFinder.KSupergroupsReady(sym.SpaceGroupNumber))
+        {
+            _ksupers = KSubgroupFinder.GetMinimalKSupergroups(sym.SpaceGroupNumber);
+            _ksupersPending = false;
+        }
+        else
+        {
+            _ksupers = [];
+            _ksupersPending = true;
+            int itK = sym.SpaceGroupNumber;
+            // 260708Cl: t-超群側と同じく BeginInvoke で UI スレッドへ明示マーシャリング (上のコメント参照)。
+            Task.Run(() =>
+            {
+                GroupRelation[] result = null;
+                try { result = KSubgroupFinder.GetMinimalKSupergroups(itK); }
+                catch { /* 計算失敗時も pending 解除だけは行う */ }
+                try
+                {
+                    if (IsDisposed || !IsHandleCreated) return;
+                    BeginInvoke(() =>
+                    {
+                        _ksupersPending = false;
+                        if (result != null && !IsDisposed && _currentSeries == seriesNumber)
+                        {
+                            _ksupers = result;
+                            if (Visible)
+                                BuildTree(); // k-超群は Diagram に描かないため RenderGraph は不要
+                        }
+                    });
+                }
+                catch (ObjectDisposedException) { } // フォーム破棄との競合は無視
+                catch (InvalidOperationException) { } // ハンドル破棄との競合は無視
+            });
         }
         _selectedRelation = null;
 
@@ -254,15 +318,28 @@ public partial class FormGroupRelations : FormBase
         var tNode = subRoot.Nodes.Add("t — translationengleiche");
         foreach (var s in _subs)
             tNode.Nodes.Add(MakeSubNode(s));
-        // 260705Cl 修正 (Phase 2c Step4): k- (klassengleiche) を実データ化。isomorphic はまだ Phase 2 データ待ち。
+        // 260705Cl 修正 (Phase 2c Step4): k- (klassengleiche) を実データ化。
+        // 260708Cl (Phase 2d): 同型 (Kind=Isomorphic、ITA IIc) を isomorphic カテゴリへ分離して実データ化 (codex R7 合意)。
         var kNode = subRoot.Nodes.Add("k — klassengleiche");
-        if (_ksubs.Length == 0)
+        var kOnly = _ksubs.Where(s => s.Kind == GroupRelationKind.K).ToArray();
+        if (kOnly.Length == 0)
             kNode.Nodes.Add(NoneNode());
         else
-            foreach (var s in _ksubs)
+            foreach (var s in kOnly)
                 kNode.Nodes.Add(MakeSubNode(s));
         var iNode = subRoot.Nodes.Add(Loc(en: "isomorphic (series)", ja: "同型 (系列)", de: "isomorph (Serie)", fr: "isomorphes (série)", es: "isomorfos (serie)", pt: "isomorfos (série)", it: "isomorfi (serie)", ru: "изоморфные (серия)", zhHans: "同型 (系列)", zhHant: "同型 (系列)", ko: "동형 (계열)"));
-        iNode.Nodes.Add(PendingNode());
+        //iNode.Nodes.Add(PendingNode()); // 260708Cl: 実データ化
+        // 注記: 列挙は index ≤ 4 の厳密列挙のみ。同型系列は高指数へ続く (例: 立方晶 a′=3a は index 27)。
+        // 「任意の素数 index」への一般化はしない (空間群ごとに許される p と変換式が異なる、codex R7)。
+        // スピナーによる高指数拡張は G-共役類と ITA A1 の normalizer 系列表示の粒度差 (P1 で行数爆発) が
+        // 解決してから (codex R7 で保留判断)。
+        iNode.Nodes.Add(new TreeNode(Loc(en: "index ≤ 4 only — isomorphic series continue to higher indices", ja: "index ≤ 4 のみ表示 — 同型系列はより高い指数へ続きます", de: "nur Index ≤ 4 — isomorphe Serien setzen sich zu höheren Indizes fort", fr: "index ≤ 4 uniquement — les séries isomorphes continuent aux indices supérieurs", es: "solo índice ≤ 4 — las series isomorfas continúan en índices mayores", pt: "apenas índice ≤ 4 — as séries isomorfas continuam em índices maiores", it: "solo indice ≤ 4 — le serie isomorfe continuano a indici superiori", ru: "только индекс ≤ 4 — изоморфные серии продолжаются при больших индексах", zhHans: "仅显示 index ≤ 4 — 同型系列延伸至更高指数", zhHant: "僅顯示 index ≤ 4 — 同型系列延伸至更高指數", ko: "index ≤ 4만 표시 — 동형 계열은 더 높은 지수로 이어집니다")) { ForeColor = SystemColors.GrayText });
+        var isoOnly = _ksubs.Where(s => s.Kind == GroupRelationKind.Isomorphic).ToArray();
+        if (isoOnly.Length == 0)
+            iNode.Nodes.Add(NoneNode());
+        else
+            foreach (var s in isoOnly)
+                iNode.Nodes.Add(MakeSubNode(s));
 
         // --- Minimal supergroups ---
         var superRoot = treeRelations.Nodes.Add(Loc(en: "Minimal supergroups", ja: "極小超群", de: "Minimale Obergruppen", fr: "Supergroupes minimaux", es: "Supergrupos minimales", pt: "Supergrupos minimais", it: "Supergruppi minimali", ru: "Минимальные надгруппы", zhHans: "极小超群", zhHant: "極小超群", ko: "극소 초군"));
@@ -277,7 +354,24 @@ public partial class FormGroupRelations : FormBase
             foreach (var s in _supers)
                 tsNode.Nodes.Add(MakeSuperNode(s));
         var ksNode = superRoot.Nodes.Add("k — klassengleiche");
-        ksNode.Nodes.Add(PendingNode());
+        //ksNode.Nodes.Add(PendingNode()); // 260708Cl: 実データ化 (Phase 2d 後段、KSubgroupFinder.GetMinimalKSupergroups 逆引き)
+        if (_ksupersPending)
+            ksNode.Nodes.Add(ComputingNode());
+        else if (_ksupers.Length == 0)
+            ksNode.Nodes.Add(NoneNode());
+        else
+            foreach (var s in _ksupers)
+                ksNode.Nodes.Add(MakeSuperNode(s));
+
+        // 260708Cl: 同一タイプ・同一 index の非共役クラスはラベルが同一で区別できない (実 GUI 目視で
+        // Pm-3m の k に "Fm-3m [2] No.225" が 2 行並んだ、改修計画 §4.4)。重複ラベルへ類番号を付ける。
+        foreach (var category in new[] { tNode, kNode, iNode, tsNode, ksNode })
+            foreach (var g in category.Nodes.Cast<TreeNode>().Where(n => n.Tag != null).GroupBy(n => n.Text).Where(g => g.Count() > 1))
+            {
+                int i = 1;
+                foreach (var n in g)
+                    n.Text += $"   · {Loc(en: "class", ja: "類", de: "Klasse", fr: "classe", es: "clase", pt: "classe", it: "classe", ru: "класс", zhHans: "类", zhHant: "類", ko: "클래스")} {i++}";
+            }
 
         treeRelations.EndUpdate();
         subRoot.Expand(); tNode.Expand(); superRoot.Expand(); tsNode.Expand();
@@ -302,7 +396,8 @@ public partial class FormGroupRelations : FormBase
         return new TreeNode(label) { Tag = new NodeTag { Kind = NodeKind.Supergroup, Relation = s, TargetSeries = s.ParentSeriesNumber } };
     }
 
-    private TreeNode PendingNode() => new(Loc(en: "Phase 2 data pending", ja: "Phase 2 データ待ち", de: "Phase-2-Daten ausstehend", fr: "Données Phase 2 à venir", es: "Datos de Fase 2 pendientes", pt: "Dados da Fase 2 pendentes", it: "Dati Fase 2 in attesa", ru: "Данные фазы 2 ожидаются", zhHans: "Phase 2 数据待补", zhHant: "Phase 2 資料待補", ko: "Phase 2 데이터 대기")) { ForeColor = SystemColors.GrayText };
+    // 260708Cl: 全カテゴリ (t/k/isomorphic 部分群・t/k 超群) が実データ化され、プレースホルダは不要になったため削除。
+    //private TreeNode PendingNode() => new(Loc(en: "Phase 2 data pending", ja: "Phase 2 データ待ち", de: "Phase-2-Daten ausstehend", fr: "Données Phase 2 à venir", es: "Datos de Fase 2 pendientes", pt: "Dados da Fase 2 pendentes", it: "Dati Fase 2 in attesa", ru: "Данные фазы 2 ожидаются", zhHans: "Phase 2 数据待补", zhHant: "Phase 2 資料待補", ko: "Phase 2 데이터 대기")) { ForeColor = SystemColors.GrayText };
     private TreeNode NoneNode() => new(Loc(en: "none", ja: "なし", de: "keine", fr: "aucun", es: "ninguno", pt: "nenhum", it: "nessuno", ru: "нет", zhHans: "无", zhHant: "無", ko: "없음")) { ForeColor = SystemColors.GrayText };
     private TreeNode ComputingNode() => new(Loc(en: "computing…", ja: "計算中…", de: "wird berechnet…", fr: "calcul en cours…", es: "calculando…", pt: "calculando…", it: "calcolo in corso…", ru: "вычисляется…", zhHans: "计算中…", zhHant: "計算中…", ko: "계산 중…")) { ForeColor = SystemColors.GrayText }; // 260705Cl 追加
 
@@ -422,23 +517,21 @@ public partial class FormGroupRelations : FormBase
         miniTableGenerators.SetRows(rows);
     }
 
-    /// <summary>k-部分群 (Kind=K) は Orbit splitting / Domains / New reflections タブが未対応
-    /// (親胞 mod1 の近似では並進格子が粗くなる k- を正しく扱えないため、専用ロジックが必要。
-    /// codex レビュー指摘、Phase 2d 以降の課題)。260705Cl 追加 (Phase 2c Step4)。</summary>
-    private static string KNotSupportedMessage() => Loc(en: "Not yet available for klassengleiche (k-) relations — needs dedicated logic for the coarser translation lattice (planned for a later phase).", ja: "klassengleiche (k-) 関係ではまだ未対応です (並進格子が粗くなるため専用ロジックが必要、今後のPhaseで対応予定)。", de: "Für klassengleiche (k-) Beziehungen noch nicht verfügbar (erfordert eigene Logik für das gröbere Translationsgitter, für eine spätere Phase geplant).", fr: "Pas encore disponible pour les relations klassengleiche (k) — nécessite une logique dédiée pour le réseau de translation plus grossier (prévu pour une phase ultérieure).", es: "Aún no disponible para relaciones klassengleiche (k) — requiere lógica dedicada para la red de traslación más gruesa (planificado para una fase posterior).", pt: "Ainda não disponível para relações klassengleiche (k) — requer lógica dedicada para a rede de translação mais grosseira (planejado para uma fase posterior).", it: "Non ancora disponibile per le relazioni klassengleiche (k) — richiede una logica dedicata per il reticolo di traslazione più grossolano (pianificato per una fase successiva).", ru: "Пока недоступно для klassengleiche (k-) отношений — требуется отдельная логика для более грубой трансляционной решётки (запланировано на более позднюю фазу).", zhHans: "klassengleiche (k-) 关系尚不支持 — 需要针对更粗平移格子的专用逻辑 (计划在后续阶段实现)。", zhHant: "klassengleiche (k-) 關係尚不支援 — 需要針對更粗平移格子的專用邏輯 (計畫在後續階段實現)。", ko: "klassengleiche (k-) 관계는 아직 지원되지 않습니다 — 더 성긴 병진 격자를 위한 전용 로직이 필요합니다 (추후 단계에서 지원 예정).");
+    // 260708Cl: k-/isomorphic の全タブ実データ化に伴い KNotSupportedMessage() (ガード文言) は不要になったため削除。
+    //private static string KNotSupportedMessage() => Loc(en: "Not yet available for klassengleiche (k-) relations — needs dedicated logic for the coarser translation lattice (planned for a later phase).", ja: "klassengleiche (k-) 関係ではまだ未対応です (並進格子が粗くなるため専用ロジックが必要、今後のPhaseで対応予定)。", ...);
 
     private void FillOrbitTab(GroupRelation s)
     {
-        if (s.Kind == GroupRelationKind.Isomorphic) // isomorphic (系列、未実装) はガード
-        {
-            labelOrbitInfo.Text = KNotSupportedMessage();
-            miniTableOrbit.ClearRows();
-            return;
-        }
+        //if (s.Kind == GroupRelationKind.Isomorphic) // 260708Cl: ガード解除 — 同型は klassengleiche の特殊例で k ロジックがそのまま正しい
+        //{
+        //    labelOrbitInfo.Text = KNotSupportedMessage();
+        //    miniTableOrbit.ClearRows();
+        //    return;
+        //}
         // 260708Cl (Phase 2d): k- も実データ化。k- は並進喪失で軌道が分裂し、多重度は拡大した部分群胞基準。
         labelOrbitInfo.Text = s.ChildSeriesNumber < 0
             ? Loc(en: "Child type unresolved — orbit letters unavailable.", ja: "子の型が未同定のため Wyckoff 文字は表示できません。", de: "Kindtyp ungelöst — keine Lagesymbole.", fr: "Type fille non résolu — lettres indisponibles.", es: "Tipo hija sin resolver — letras no disponibles.", pt: "Tipo filho não resolvido — letras indisponíveis.", it: "Tipo figlio non risolto — lettere non disponibili.", ru: "Тип подгруппы не определён — буквы недоступны.", zhHans: "子类型未识别 — 无法显示字母。", zhHant: "子類型未識別 — 無法顯示字母。", ko: "자식 유형 미확인 — 문자 표시 불가.")
-            : s.Kind == GroupRelationKind.K
+            : s.Kind != GroupRelationKind.T // 260708Cl: Isomorphic も k 文言 (旧: == GroupRelationKind.K)
                 ? Loc(en: "How each parent Wyckoff orbit splits as lattice translations are lost (sampled with a generic point); multiplicities are given in the enlarged subgroup cell.", ja: "並進対称の喪失に伴い親の各 Wyckoff 軌道がどう分裂するか (generic 点でのサンプル計算)。多重度は拡大した部分群胞基準です。", de: "Wie sich jede Wyckoff-Lage des Elters beim Verlust von Gittertranslationen aufspaltet (Stichprobe mit generischem Punkt); Multiplizitäten in der vergrößerten Untergruppenzelle.", fr: "Comment chaque orbite de Wyckoff du parent se scinde lorsque des translations de réseau sont perdues (échantillon, point générique) ; les multiplicités sont données dans la maille agrandie du sous-groupe.", es: "Cómo se divide cada órbita de Wyckoff del padre al perderse traslaciones de red (muestreo con punto genérico); las multiplicidades se dan en la celda ampliada del subgrupo.", pt: "Como cada órbita de Wyckoff do pai se divide quando translações de rede são perdidas (amostragem com ponto genérico); as multiplicidades são dadas na célula ampliada do subgrupo.", it: "Come ogni orbita di Wyckoff del genitore si suddivide con la perdita di traslazioni reticolari (campione, punto generico); le molteplicità sono date nella cella ingrandita del sottogruppo.", ru: "Как расщепляется каждая орбита Уайкоффа родителя при потере трансляций решётки (выборка, общая точка); кратности даны в увеличенной ячейке подгруппы.", zhHans: "随着点阵平移的丧失，母群各 Wyckoff 轨道如何分裂 (通用点采样)；多重度以扩大的子群胞为准。", zhHant: "隨著點陣平移的喪失，母群各 Wyckoff 軌道如何分裂 (通用點取樣)；多重度以擴大的子群胞為準。", ko: "격자 병진이 사라지면서 부모의 각 Wyckoff 궤도가 어떻게 분열하는지 (일반점 샘플링); 다중도는 확대된 부분군 셀 기준입니다.")
                 : Loc(en: "How each Wyckoff orbit of the parent splits (sampled with a generic point).", ja: "親の各 Wyckoff 軌道の分裂 (generic 点でのサンプル計算)。", de: "Aufspaltung jeder Wyckoff-Lage des Elters (Stichprobe mit generischem Punkt).", fr: "Éclatement de chaque orbite de Wyckoff du parent (échantillon, point générique).", es: "División de cada órbita de Wyckoff del padre (muestreo con punto genérico).", pt: "Divisão de cada órbita de Wyckoff do pai (amostragem com ponto genérico).", it: "Suddivisione di ogni orbita di Wyckoff del genitore (campione, punto generico).", ru: "Расщепление каждой орбиты Уайкоффа родителя (выборка, общая точка).", zhHans: "母群各 Wyckoff 轨道的分裂 (通用点采样)。", zhHant: "母群各 Wyckoff 軌道的分裂 (通用點取樣)。", ko: "부모의 각 Wyckoff 궤도 분열 (일반점 샘플링).");
 
@@ -472,7 +565,7 @@ public partial class FormGroupRelations : FormBase
         // 並進対称の喪失 [T:T′]=index により反位相 (並進) ドメインが index 個生じ、ドメインを結ぶのは失われた
         // 格子並進 (CosetRepresentatives、純並進操作) である。これらは方位を変えないので基本反射は重なり合い、
         // 超格子反射で位相が干渉する。t- 前提の共役類ベースの計数式は流用しない。
-        if (s.Kind == GroupRelationKind.K)
+        if (s.Kind != GroupRelationKind.T) // 260708Cl: Isomorphic も k ロジック (旧: == GroupRelationKind.K)
         {
             int totalK = s.Index;
             var sbK = new StringBuilder();
@@ -485,19 +578,35 @@ public partial class FormGroupRelations : FormBase
             labelDomains.Text = sbK.ToString();
 
             var rowsK = new List<object[]>();
+            //foreach (var op in s.CosetRepresentatives)
+            //    rowsK.Add([SeitzNotation.SeitzLatex(op), SeitzNotation.GeometricType(op)]); // 260708Cl: SeitzLatex/GeometricType は親胞 mod1 で並進を還元するため、IIb (胞拡大) の失われた整数格子並進 (例 {1|1,0,0}) が {1|0,0,0} Identity と表示される実バグ (実 GUI 目視で発覚)
+            var (Pinv, _) = s.GetInverseTransform(); // 260708Cl: 未同定 (TransformP=null) なら (null, null)
             foreach (var op in s.CosetRepresentatives)
-                rowsK.Add([SeitzNotation.SeitzLatex(op), SeitzNotation.GeometricType(op)]);
+            {
+                // 260708Cl: 無還元の親並進をそのまま組版し、右列に部分群胞座標での反位相ベクトル Frac(P⁻¹·t) を添える。
+                var t = op.SeitzTranslation;
+                string seitz = $@"\{{ 1 \mid {Frac(t.U)},\,{Frac(t.V)},\,{Frac(t.W)} \}}";
+                string desc = Loc(en: "Lost lattice translation", ja: "失われた格子並進", de: "Verlorene Gittertranslation", fr: "Translation de réseau perdue", es: "Traslación de red perdida", pt: "Translação de rede perdida", it: "Traslazione reticolare persa", ru: "Утраченная трансляция решётки", zhHans: "失去的点阵平移", zhHant: "失去的點陣平移", ko: "잃어버린 격자 병진");
+                if (Pinv != null)
+                {
+                    double cx = Frac01(Pinv[0] * t.U + Pinv[1] * t.V + Pinv[2] * t.W);
+                    double cy = Frac01(Pinv[3] * t.U + Pinv[4] * t.V + Pinv[5] * t.W);
+                    double cz = Frac01(Pinv[6] * t.U + Pinv[7] * t.V + Pinv[8] * t.W);
+                    desc += $"  →  ({Frac(cx)}, {Frac(cy)}, {Frac(cz)}) " + Loc(en: "in the subgroup cell", ja: "(部分群胞座標)", de: "in der Untergruppenzelle", fr: "dans la maille du sous-groupe", es: "en la celda del subgrupo", pt: "na célula do subgrupo", it: "nella cella del sottogruppo", ru: "в ячейке подгруппы", zhHans: "(子群胞坐标)", zhHant: "(子群胞座標)", ko: "(부분군 셀 기준)");
+                }
+                rowsK.Add([seitz, desc]);
+            }
             if (rowsK.Count == 0)
                 rowsK.Add([Loc(en: "(single domain)", ja: "(単一ドメイン)", de: "(Einzeldomäne)", fr: "(domaine unique)", es: "(dominio único)", pt: "(domínio único)", it: "(dominio singolo)", ru: "(один домен)", zhHans: "(单畴)", zhHant: "(單疇)", ko: "(단일 도메인)"), ""]);
             miniTableTwins.SetRows(rowsK);
             return;
         }
-        if (s.Kind != GroupRelationKind.T) // isomorphic 等 (未実装) はガード
-        {
-            labelDomains.Text = KNotSupportedMessage();
-            miniTableTwins.ClearRows();
-            return;
-        }
+        //if (s.Kind != GroupRelationKind.T) // 260708Cl: 上の分岐が != T になり到達不能のため削除 (isomorphic ガード)
+        //{
+        //    labelDomains.Text = KNotSupportedMessage();
+        //    miniTableTwins.ClearRows();
+        //    return;
+        //}
         // 260705Cl 修正: t-部分群は並進を失わないため、反位相 (並進) ドメインは定義上常に 1 で、全ドメイン状態が
         // 方位 (双晶) 状態。旧実装の Index/ConjugateCount は「同一部分群 H を共有する状態数」(normalizer 因子。
         // 例: Pm-3m→P4mm の +P/−P 180° ドメイン) であり、反位相ドメイン数ではない。
@@ -527,14 +636,14 @@ public partial class FormGroupRelations : FormBase
 
     private void FillReflectionsTab(GroupRelation s)
     {
-        if (s.Kind == GroupRelationKind.Isomorphic) // isomorphic (系列、未実装) はガード
-        {
-            labelReflInfo.Text = KNotSupportedMessage();
-            miniTableReflections.ClearRows();
-            return;
-        }
+        //if (s.Kind == GroupRelationKind.Isomorphic) // 260708Cl: ガード解除 — 同型は k ロジックで実データ化
+        //{
+        //    labelReflInfo.Text = KNotSupportedMessage();
+        //    miniTableReflections.ClearRows();
+        //    return;
+        //}
         // 260708Cl (Phase 2d): k- は超格子反射を実データ化。子が未同定なら子の消滅則を判定できず予測不可。
-        if (s.Kind == GroupRelationKind.K && s.ChildSeriesNumber < 0)
+        if (s.Kind != GroupRelationKind.T && s.ChildSeriesNumber < 0) // 260708Cl: Isomorphic も対象 (旧: == GroupRelationKind.K)
         {
             labelReflInfo.Text = Loc(en: "Child type unresolved — new reflections cannot be predicted.", ja: "子の型が未同定のため新規反射を予測できません。", de: "Kindtyp ungelöst — neue Reflexe nicht vorhersagbar.", fr: "Type fille non résolu — nouvelles réflexions imprévisibles.", es: "Tipo hija sin resolver — no se pueden predecir nuevas reflexiones.", pt: "Tipo filho não resolvido — não é possível prever novas reflexões.", it: "Tipo figlio non risolto — nuove riflessioni non prevedibili.", ru: "Тип подгруппы не определён — новые отражения нельзя предсказать.", zhHans: "子类型未识别 — 无法预测新反射。", zhHant: "子類型未識別 — 無法預測新反射。", ko: "자식 유형 미확인 — 새 반사를 예측할 수 없습니다.");
             miniTableReflections.ClearRows();
@@ -542,7 +651,7 @@ public partial class FormGroupRelations : FormBase
         }
         // 260705Cl 修正 (Phase 2e): FillOrbitTab と同じ理由で s.ParentSeriesNumber を使う。
         var refl = TSubgroupFinder.GetNewReflections(s.ParentSeriesNumber, s, 4);
-        if (s.Kind == GroupRelationKind.K)
+        if (s.Kind != GroupRelationKind.T) // 260708Cl: Isomorphic も k 文言 (旧: == GroupRelationKind.K)
             // 260708Cl (Phase 2d): k- は胞拡大で超格子反射が現れる。右端列は超格子=親の分数指数 "(…)"、消滅則解除=解除された親の消滅則。
             labelReflInfo.Text = refl.Length == 0
                 ? Loc(en: "No new reflections on the subgroup cell (|h,k,l| ≤ 4).", ja: "部分群胞での新規反射はありません (|h,k,l| ≤ 4)。", de: "Keine neuen Reflexe in der Untergruppenzelle (|h,k,l| ≤ 4).", fr: "Aucune nouvelle réflexion sur la maille du sous-groupe (|h,k,l| ≤ 4).", es: "Sin nuevas reflexiones en la celda del subgrupo (|h,k,l| ≤ 4).", pt: "Sem novas reflexões na célula do subgrupo (|h,k,l| ≤ 4).", it: "Nessuna nuova riflessione nella cella del sottogruppo (|h,k,l| ≤ 4).", ru: "Нет новых отражений в ячейке подгруппы (|h,k,l| ≤ 4).", zhHans: "子群胞中无新反射 (|h,k,l| ≤ 4)。", zhHant: "子群胞中無新反射 (|h,k,l| ≤ 4)。", ko: "부분군 셀에 새로운 반사가 없습니다 (|h,k,l| ≤ 4).")
@@ -887,5 +996,8 @@ public partial class FormGroupRelations : FormBase
         }
         return d.ToString("0.###", System.Globalization.CultureInfo.InvariantCulture);
     }
+
+    /// <summary>260708Cl 追加: 値を [0,1) へ還元する (Domains タブの部分群胞座標の反位相ベクトル用)。</summary>
+    private static double Frac01(double d) { d -= Math.Floor(d); return d > 1 - 1e-6 ? 0 : d; }
     #endregion
 }
