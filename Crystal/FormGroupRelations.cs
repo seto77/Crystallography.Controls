@@ -429,15 +429,18 @@ public partial class FormGroupRelations : FormBase
 
     private void FillOrbitTab(GroupRelation s)
     {
-        if (s.Kind != GroupRelationKind.T)
+        if (s.Kind == GroupRelationKind.Isomorphic) // isomorphic (系列、未実装) はガード
         {
             labelOrbitInfo.Text = KNotSupportedMessage();
             miniTableOrbit.ClearRows();
             return;
         }
-        labelOrbitInfo.Text = s.ChildSeriesNumber >= 0
-            ? Loc(en: "How each Wyckoff orbit of the parent splits (sampled with a generic point).", ja: "親の各 Wyckoff 軌道の分裂 (generic 点でのサンプル計算)。", de: "Aufspaltung jeder Wyckoff-Lage des Elters (Stichprobe mit generischem Punkt).", fr: "Éclatement de chaque orbite de Wyckoff du parent (échantillon, point générique).", es: "División de cada órbita de Wyckoff del padre (muestreo con punto genérico).", pt: "Divisão de cada órbita de Wyckoff do pai (amostragem com ponto genérico).", it: "Suddivisione di ogni orbita di Wyckoff del genitore (campione, punto generico).", ru: "Расщепление каждой орбиты Уайкоффа родителя (выборка, общая точка).", zhHans: "母群各 Wyckoff 轨道的分裂 (通用点采样)。", zhHant: "母群各 Wyckoff 軌道的分裂 (通用點取樣)。", ko: "부모의 각 Wyckoff 궤도 분열 (일반점 샘플링).")
-            : Loc(en: "Child type unresolved — orbit letters unavailable.", ja: "子の型が未同定のため Wyckoff 文字は表示できません。", de: "Kindtyp ungelöst — keine Lagesymbole.", fr: "Type fille non résolu — lettres indisponibles.", es: "Tipo hija sin resolver — letras no disponibles.", pt: "Tipo filho não resolvido — letras indisponíveis.", it: "Tipo figlio non risolto — lettere non disponibili.", ru: "Тип подгруппы не определён — буквы недоступны.", zhHans: "子类型未识别 — 无法显示字母。", zhHant: "子類型未識別 — 無法顯示字母。", ko: "자식 유형 미확인 — 문자 표시 불가.");
+        // 260708Cl (Phase 2d): k- も実データ化。k- は並進喪失で軌道が分裂し、多重度は拡大した部分群胞基準。
+        labelOrbitInfo.Text = s.ChildSeriesNumber < 0
+            ? Loc(en: "Child type unresolved — orbit letters unavailable.", ja: "子の型が未同定のため Wyckoff 文字は表示できません。", de: "Kindtyp ungelöst — keine Lagesymbole.", fr: "Type fille non résolu — lettres indisponibles.", es: "Tipo hija sin resolver — letras no disponibles.", pt: "Tipo filho não resolvido — letras indisponíveis.", it: "Tipo figlio non risolto — lettere non disponibili.", ru: "Тип подгруппы не определён — буквы недоступны.", zhHans: "子类型未识别 — 无法显示字母。", zhHant: "子類型未識別 — 無法顯示字母。", ko: "자식 유형 미확인 — 문자 표시 불가.")
+            : s.Kind == GroupRelationKind.K
+                ? Loc(en: "How each parent Wyckoff orbit splits as lattice translations are lost (sampled with a generic point); multiplicities are given in the enlarged subgroup cell.", ja: "並進対称の喪失に伴い親の各 Wyckoff 軌道がどう分裂するか (generic 点でのサンプル計算)。多重度は拡大した部分群胞基準です。", de: "Wie sich jede Wyckoff-Lage des Elters beim Verlust von Gittertranslationen aufspaltet (Stichprobe mit generischem Punkt); Multiplizitäten in der vergrößerten Untergruppenzelle.", fr: "Comment chaque orbite de Wyckoff du parent se scinde lorsque des translations de réseau sont perdues (échantillon, point générique) ; les multiplicités sont données dans la maille agrandie du sous-groupe.", es: "Cómo se divide cada órbita de Wyckoff del padre al perderse traslaciones de red (muestreo con punto genérico); las multiplicidades se dan en la celda ampliada del subgrupo.", pt: "Como cada órbita de Wyckoff do pai se divide quando translações de rede são perdidas (amostragem com ponto genérico); as multiplicidades são dadas na célula ampliada do subgrupo.", it: "Come ogni orbita di Wyckoff del genitore si suddivide con la perdita di traslazioni reticolari (campione, punto generico); le molteplicità sono date nella cella ingrandita del sottogruppo.", ru: "Как расщепляется каждая орбита Уайкоффа родителя при потере трансляций решётки (выборка, общая точка); кратности даны в увеличенной ячейке подгруппы.", zhHans: "随着点阵平移的丧失，母群各 Wyckoff 轨道如何分裂 (通用点采样)；多重度以扩大的子群胞为准。", zhHant: "隨著點陣平移的喪失，母群各 Wyckoff 軌道如何分裂 (通用點取樣)；多重度以擴大的子群胞為準。", ko: "격자 병진이 사라지면서 부모의 각 Wyckoff 궤도가 어떻게 분열하는지 (일반점 샘플링); 다중도는 확대된 부분군 셀 기준입니다.")
+                : Loc(en: "How each Wyckoff orbit of the parent splits (sampled with a generic point).", ja: "親の各 Wyckoff 軌道の分裂 (generic 点でのサンプル計算)。", de: "Aufspaltung jeder Wyckoff-Lage des Elters (Stichprobe mit generischem Punkt).", fr: "Éclatement de chaque orbite de Wyckoff du parent (échantillon, point générique).", es: "División de cada órbita de Wyckoff del padre (muestreo con punto genérico).", pt: "Divisão de cada órbita de Wyckoff do pai (amostragem com ponto genérico).", it: "Suddivisione di ogni orbita di Wyckoff del genitore (campione, punto generico).", ru: "Расщепление каждой орбиты Уайкоффа родителя (выборка, общая точка).", zhHans: "母群各 Wyckoff 轨道的分裂 (通用点采样)。", zhHant: "母群各 Wyckoff 軌道的分裂 (通用點取樣)。", ko: "부모의 각 Wyckoff 궤도 분열 (일반점 샘플링).");
 
         // 260705Cl 修正 (Phase 2e): _currentSeries でなく s.ParentSeriesNumber を使う。Maximal subgroups 側では
         // 常に一致するが、Minimal supergroups 側では s.ParentSeriesNumber (= 超群自身) が正しい分裂元になる。
@@ -465,10 +468,32 @@ public partial class FormGroupRelations : FormBase
 
     private void FillDomainsTab(GroupRelation s)
     {
-        if (s.Kind != GroupRelationKind.T)
+        // 260708Cl (Phase 2d): k- (klassengleiche) は点群が変わらないため方位 (双晶) ドメインは常に 1。
+        // 並進対称の喪失 [T:T′]=index により反位相 (並進) ドメインが index 個生じ、ドメインを結ぶのは失われた
+        // 格子並進 (CosetRepresentatives、純並進操作) である。これらは方位を変えないので基本反射は重なり合い、
+        // 超格子反射で位相が干渉する。t- 前提の共役類ベースの計数式は流用しない。
+        if (s.Kind == GroupRelationKind.K)
         {
-            // 260705Cl 追加 (Phase 2c Step4): k- は並進を失うため反位相 (並進) ドメインが 1 を超えうる。
-            // 正しいドメイン計数式は Phase 2d の課題 (codex 指摘)。誤った t- 前提の式を流用しない。
+            int totalK = s.Index;
+            var sbK = new StringBuilder();
+            sbK.AppendLine(Loc(en: "Domain states on this transition:", ja: "この転移でのドメイン状態:", de: "Domänenzustände bei diesem Übergang:", fr: "États de domaine pour cette transition :", es: "Estados de dominio en esta transición:", pt: "Estados de domínio nesta transição:", it: "Stati di dominio in questa transizione:", ru: "Доменные состояния при этом переходе:", zhHans: "此相变的畴态:", zhHant: "此相變的疇態:", ko: "이 전이의 도메인 상태:"));
+            sbK.AppendLine($"   {Loc(en: "Total", ja: "総数", de: "Gesamt", fr: "Total", es: "Total", pt: "Total", it: "Totale", ru: "Всего", zhHans: "总数", zhHant: "總數", ko: "전체")} = {totalK}      " +
+                           $"{Loc(en: "orientation", ja: "方位", de: "Orientierung", fr: "orientation", es: "orientación", pt: "orientação", it: "orientazione", ru: "ориентация", zhHans: "取向", zhHant: "取向", ko: "방위")} = 1      " +
+                           $"{Loc(en: "antiphase", ja: "反位相", de: "Antiphase", fr: "antiphase", es: "antifase", pt: "antifase", it: "antifase", ru: "антифаза", zhHans: "反相", zhHant: "反相", ko: "반위상")} = {totalK}");
+            sbK.AppendLine();
+            sbK.Append(Loc(en: "Antiphase (translation) domains are related by the lattice translations lost in the subgroup; they keep the same orientation, so the fundamental reflections coincide while the superlattice reflections interfere.", ja: "反位相 (並進) ドメインは、部分群で失われた格子並進によって関係づけられます。方位は同一なので基本反射は重なり合い、超格子反射で位相が干渉します。", de: "Antiphasen- (Translations-)Domänen sind durch die in der Untergruppe verlorenen Gittertranslationen verbunden; sie behalten dieselbe Orientierung, sodass die Grundreflexe zusammenfallen, während die Überstrukturreflexe interferieren.", fr: "Les domaines d'antiphase (de translation) sont reliés par les translations de réseau perdues dans le sous-groupe ; ils conservent la même orientation, de sorte que les réflexions fondamentales coïncident tandis que les réflexions de surstructure interfèrent.", es: "Los dominios de antifase (de traslación) están relacionados por las traslaciones de red perdidas en el subgrupo; mantienen la misma orientación, por lo que las reflexiones fundamentales coinciden mientras que las reflexiones de superestructura interfieren.", pt: "Os domínios de antifase (de translação) estão relacionados pelas translações de rede perdidas no subgrupo; mantêm a mesma orientação, de modo que as reflexões fundamentais coincidem enquanto as reflexões de superestrutura interferem.", it: "I domini di antifase (di traslazione) sono legati dalle traslazioni reticolari perse nel sottogruppo; mantengono la stessa orientazione, quindi le riflessioni fondamentali coincidono mentre le riflessioni di superstruttura interferiscono.", ru: "Антифазные (трансляционные) домены связаны трансляциями решётки, утраченными в подгруппе; они сохраняют одинаковую ориентацию, поэтому основные рефлексы совпадают, а сверхструктурные отражения интерферируют.", zhHans: "反相 (平移) 畴由子群中失去的点阵平移相联系；它们取向相同，故基本反射重合，而超结构反射发生干涉。", zhHant: "反相 (平移) 疇由子群中失去的點陣平移相聯繫；它們取向相同，故基本反射重合，而超結構反射發生干涉。", ko: "반위상 (병진) 도메인은 부분군에서 잃어버린 격자 병진으로 연결됩니다. 방위가 동일하므로 기본 반사는 겹치지만 초격자 반사에서 위상이 간섭합니다."));
+            labelDomains.Text = sbK.ToString();
+
+            var rowsK = new List<object[]>();
+            foreach (var op in s.CosetRepresentatives)
+                rowsK.Add([SeitzNotation.SeitzLatex(op), SeitzNotation.GeometricType(op)]);
+            if (rowsK.Count == 0)
+                rowsK.Add([Loc(en: "(single domain)", ja: "(単一ドメイン)", de: "(Einzeldomäne)", fr: "(domaine unique)", es: "(dominio único)", pt: "(domínio único)", it: "(dominio singolo)", ru: "(один домен)", zhHans: "(单畴)", zhHant: "(單疇)", ko: "(단일 도메인)"), ""]);
+            miniTableTwins.SetRows(rowsK);
+            return;
+        }
+        if (s.Kind != GroupRelationKind.T) // isomorphic 等 (未実装) はガード
+        {
             labelDomains.Text = KNotSupportedMessage();
             miniTableTwins.ClearRows();
             return;
@@ -502,23 +527,33 @@ public partial class FormGroupRelations : FormBase
 
     private void FillReflectionsTab(GroupRelation s)
     {
-        if (s.Kind != GroupRelationKind.T)
+        if (s.Kind == GroupRelationKind.Isomorphic) // isomorphic (系列、未実装) はガード
         {
-            // 260705Cl 追加 (Phase 2c Step4): k- の New reflections (分数次反射) は q_parent=P⁻ᵀ·h の
-            // 非整数判定を伴う専用ロジックが必要 (計画書 §5「3 分類」)。t- 用の GetNewReflections は
-            // 親と同じ並進格子を前提にしており流用不可。
             labelReflInfo.Text = KNotSupportedMessage();
+            miniTableReflections.ClearRows();
+            return;
+        }
+        // 260708Cl (Phase 2d): k- は超格子反射を実データ化。子が未同定なら子の消滅則を判定できず予測不可。
+        if (s.Kind == GroupRelationKind.K && s.ChildSeriesNumber < 0)
+        {
+            labelReflInfo.Text = Loc(en: "Child type unresolved — new reflections cannot be predicted.", ja: "子の型が未同定のため新規反射を予測できません。", de: "Kindtyp ungelöst — neue Reflexe nicht vorhersagbar.", fr: "Type fille non résolu — nouvelles réflexions imprévisibles.", es: "Tipo hija sin resolver — no se pueden predecir nuevas reflexiones.", pt: "Tipo filho não resolvido — não é possível prever novas reflexões.", it: "Tipo figlio non risolto — nuove riflessioni non prevedibili.", ru: "Тип подгруппы не определён — новые отражения нельзя предсказать.", zhHans: "子类型未识别 — 无法预测新反射。", zhHant: "子類型未識別 — 無法預測新反射。", ko: "자식 유형 미확인 — 새 반사를 예측할 수 없습니다.");
             miniTableReflections.ClearRows();
             return;
         }
         // 260705Cl 修正 (Phase 2e): FillOrbitTab と同じ理由で s.ParentSeriesNumber を使う。
         var refl = TSubgroupFinder.GetNewReflections(s.ParentSeriesNumber, s, 4);
-        labelReflInfo.Text = refl.Length == 0
-            // 260705Cl 修正: t-部分群は格子周期を変えないため「超構造(superstructure)」反射ではない
-            // (真の超格子反射は k-部分群で初めて生じる。codex レビューで指摘)。全言語でタブ見出し (New reflections)
-            // と揃う中立表現に統一。
-            ? Loc(en: "No new reflections: the subgroup lifts no systematic absence of the parent (|h,k,l| ≤ 4).", ja: "新規反射なし: この部分群は親の系統的消滅を解除しません (|h,k,l| ≤ 4)。", de: "Keine neuen Reflexe: Die Untergruppe hebt keine Auslöschung des Elters auf (|h,k,l| ≤ 4).", fr: "Aucune nouvelle réflexion : le sous-groupe ne lève aucune extinction du parent (|h,k,l| ≤ 4).", es: "Sin nuevas reflexiones: el subgrupo no levanta ninguna ausencia del padre (|h,k,l| ≤ 4).", pt: "Sem novas reflexões: o subgrupo não levanta nenhuma ausência do pai (|h,k,l| ≤ 4).", it: "Nessuna nuova riflessione: il sottogruppo non rimuove assenze del genitore (|h,k,l| ≤ 4).", ru: "Нет новых отражений: подгруппа не снимает погасаний родителя (|h,k,l| ≤ 4).", zhHans: "无新反射: 该子群未解除母群的系统消光 (|h,k,l| ≤ 4)。", zhHant: "無新反射: 該子群未解除母群的系統消光 (|h,k,l| ≤ 4)。", ko: "새로운 반사 없음: 이 부분군은 부모의 소멸을 해제하지 않습니다 (|h,k,l| ≤ 4).")
-            : string.Format(Loc(en: "{0} reflections (up to symmetry) become allowed. Intensity still depends on the structure factor.", ja: "{0} 本 (対称等価を除く) の反射が許容になります。強度は構造因子に依存します。", de: "{0} Reflexe (bis auf Symmetrie) werden erlaubt. Die Intensität hängt weiter vom Strukturfaktor ab.", fr: "{0} réflexions (à symétrie près) deviennent autorisées. L'intensité dépend du facteur de structure.", es: "{0} reflexiones (salvo simetría) se permiten. La intensidad depende del factor de estructura.", pt: "{0} reflexões (a menos de simetria) tornam-se permitidas. A intensidade depende do fator de estrutura.", it: "{0} riflessioni (a meno di simmetria) diventano permesse. L'intensità dipende dal fattore di struttura.", ru: "{0} отражений (с точностью до симметрии) становятся разрешёнными. Интенсивность зависит от структурного фактора.", zhHans: "{0} 个 (对称等价除外) 反射变为允许。强度仍取决于结构因子。", zhHant: "{0} 個 (對稱等價除外) 反射變為允許。強度仍取決於結構因子。", ko: "{0}개 (대칭 제외) 반사가 허용됩니다. 강도는 구조 인자에 따릅니다."), refl.Length);
+        if (s.Kind == GroupRelationKind.K)
+            // 260708Cl (Phase 2d): k- は胞拡大で超格子反射が現れる。右端列は超格子=親の分数指数 "(…)"、消滅則解除=解除された親の消滅則。
+            labelReflInfo.Text = refl.Length == 0
+                ? Loc(en: "No new reflections on the subgroup cell (|h,k,l| ≤ 4).", ja: "部分群胞での新規反射はありません (|h,k,l| ≤ 4)。", de: "Keine neuen Reflexe in der Untergruppenzelle (|h,k,l| ≤ 4).", fr: "Aucune nouvelle réflexion sur la maille du sous-groupe (|h,k,l| ≤ 4).", es: "Sin nuevas reflexiones en la celda del subgrupo (|h,k,l| ≤ 4).", pt: "Sem novas reflexões na célula do subgrupo (|h,k,l| ≤ 4).", it: "Nessuna nuova riflessione nella cella del sottogruppo (|h,k,l| ≤ 4).", ru: "Нет новых отражений в ячейке подгруппы (|h,k,l| ≤ 4).", zhHans: "子群胞中无新反射 (|h,k,l| ≤ 4)。", zhHant: "子群胞中無新反射 (|h,k,l| ≤ 4)。", ko: "부분군 셀에 새로운 반사가 없습니다 (|h,k,l| ≤ 4).")
+                : string.Format(Loc(en: "{0} new reflections (up to symmetry) appear on the enlarged subgroup cell. The last column gives the parent fractional index in parentheses for superlattice reflections, or the lifted parent extinction rule for released ones. Intensity still depends on the structure factor.", ja: "{0} 本 (対称等価を除く) の新規反射が拡大した部分群胞に現れます。右端の列は、超格子反射では親の分数指数を括弧付きで、消滅則解除では解除された親の消滅則を示します。強度は構造因子に依存します。", de: "{0} neue Reflexe (bis auf Symmetrie) erscheinen in der vergrößerten Untergruppenzelle. Die letzte Spalte zeigt den Elternindex in Klammern (Überstrukturreflexe) bzw. die aufgehobene Auslöschungsregel des Elters (freigegebene Reflexe). Die Intensität hängt weiter vom Strukturfaktor ab.", fr: "{0} nouvelles réflexions (à symétrie près) apparaissent sur la maille agrandie du sous-groupe. La dernière colonne indique l'indice fractionnaire du parent entre parenthèses (réflexions de surstructure) ou la règle d'extinction du parent levée (réflexions libérées). L'intensité dépend du facteur de structure.", es: "{0} nuevas reflexiones (salvo simetría) aparecen en la celda ampliada del subgrupo. La última columna muestra el índice fraccionario del padre entre paréntesis (reflexiones de superestructura) o la regla de extinción del padre levantada (reflexiones liberadas). La intensidad depende del factor de estructura.", pt: "{0} novas reflexões (a menos de simetria) aparecem na célula ampliada do subgrupo. A última coluna mostra o índice fracionário do pai entre parênteses (reflexões de superestrutura) ou a regra de extinção do pai levantada (reflexões liberadas). A intensidade depende do fator de estrutura.", it: "{0} nuove riflessioni (a meno di simmetria) compaiono nella cella ingrandita del sottogruppo. L'ultima colonna riporta l'indice frazionario del genitore tra parentesi (riflessioni di superstruttura) o la regola di estinzione del genitore rimossa (riflessioni liberate). L'intensità dipende dal fattore di struttura.", ru: "{0} новых отражений (с точностью до симметрии) появляются в увеличенной ячейке подгруппы. В последнем столбце указан дробный индекс родителя в скобках (сверхструктурные отражения) или снятое правило погасания родителя (освобождённые отражения). Интенсивность зависит от структурного фактора.", zhHans: "{0} 个 (对称等价除外) 新反射出现在扩大的子群胞上。最后一列对超结构反射给出括号内的母群分数指数，对释放反射给出被解除的母群消光条件。强度仍取决于结构因子。", zhHant: "{0} 個 (對稱等價除外) 新反射出現在擴大的子群胞上。最後一列對超結構反射給出括號內的母群分數指數，對釋放反射給出被解除的母群消光條件。強度仍取決於結構因子。", ko: "{0}개 (대칭 제외) 새 반사가 확대된 부분군 셀에 나타납니다. 마지막 열은 초격자 반사의 경우 괄호 안의 부모 분수 지수를, 해제된 반사의 경우 해제된 부모 소멸 규칙을 보여줍니다. 강도는 구조 인자에 따릅니다."), refl.Length);
+        else
+            labelReflInfo.Text = refl.Length == 0
+                // 260705Cl 修正: t-部分群は格子周期を変えないため「超構造(superstructure)」反射ではない
+                // (真の超格子反射は k-部分群で初めて生じる。codex レビューで指摘)。全言語でタブ見出し (New reflections)
+                // と揃う中立表現に統一。
+                ? Loc(en: "No new reflections: the subgroup lifts no systematic absence of the parent (|h,k,l| ≤ 4).", ja: "新規反射なし: この部分群は親の系統的消滅を解除しません (|h,k,l| ≤ 4)。", de: "Keine neuen Reflexe: Die Untergruppe hebt keine Auslöschung des Elters auf (|h,k,l| ≤ 4).", fr: "Aucune nouvelle réflexion : le sous-groupe ne lève aucune extinction du parent (|h,k,l| ≤ 4).", es: "Sin nuevas reflexiones: el subgrupo no levanta ninguna ausencia del padre (|h,k,l| ≤ 4).", pt: "Sem novas reflexões: o subgrupo não levanta nenhuma ausência do pai (|h,k,l| ≤ 4).", it: "Nessuna nuova riflessione: il sottogruppo non rimuove assenze del genitore (|h,k,l| ≤ 4).", ru: "Нет новых отражений: подгруппа не снимает погасаний родителя (|h,k,l| ≤ 4).", zhHans: "无新反射: 该子群未解除母群的系统消光 (|h,k,l| ≤ 4)。", zhHant: "無新反射: 該子群未解除母群的系統消光 (|h,k,l| ≤ 4)。", ko: "새로운 반사 없음: 이 부분군은 부모의 소멸을 해제하지 않습니다 (|h,k,l| ≤ 4).")
+                : string.Format(Loc(en: "{0} reflections (up to symmetry) become allowed. Intensity still depends on the structure factor.", ja: "{0} 本 (対称等価を除く) の反射が許容になります。強度は構造因子に依存します。", de: "{0} Reflexe (bis auf Symmetrie) werden erlaubt. Die Intensität hängt weiter vom Strukturfaktor ab.", fr: "{0} réflexions (à symétrie près) deviennent autorisées. L'intensité dépend du facteur de structure.", es: "{0} reflexiones (salvo simetría) se permiten. La intensidad depende del factor de estructura.", pt: "{0} reflexões (a menos de simetria) tornam-se permitidas. A intensidade depende do fator de estrutura.", it: "{0} riflessioni (a meno di simmetria) diventano permesse. L'intensità dipende dal fattore di struttura.", ru: "{0} отражений (с точностью до симметрии) становятся разрешёнными. Интенсивность зависит от структурного фактора.", zhHans: "{0} 个 (对称等价除外) 反射变为允许。强度仍取决于结构因子。", zhHant: "{0} 個 (對稱等價除外) 反射變為允許。強度仍取決於結構因子。", ko: "{0}개 (대칭 제외) 반사가 허용됩니다. 강도는 구조 인자에 따릅니다."), refl.Length);
 
         var rows = new List<object[]>();
         foreach (var r in refl)
