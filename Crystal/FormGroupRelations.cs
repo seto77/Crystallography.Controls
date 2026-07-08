@@ -43,7 +43,25 @@ public partial class FormGroupRelations : FormBase
     private GroupRelation _selectedRelation;   // ツリー/グラフで選択中の関係 (null 可)
 
     // グラフのヒットテスト用ノード矩形 (画面座標) と対応 series。
-    private readonly List<(Rectangle Rect, int Series)> _graphNodes = [];
+    //private readonly List<(Rectangle Rect, int Series)> _graphNodes = []; // 260709Cl: k-/isomorphic 辺の追加に伴い GraphNode へ拡張。
+    // series ベースの逆引きは (a) 同じ子タイプが t と k の両方に現れると曖昧、(b) isomorphic (子 series == 現在 series) が
+    // 「series == _currentSeries は無視」ガードに弾かれ選択不能、の 2 つの実害があった (codex 相談 R8)。
+    private readonly List<GraphNode> _graphNodes = [];
+
+    /// <summary>260709Cl 追加: Diagram のヒットテスト用ノード。同一 (対象 series, Kind, index) の非共役クラスは
+    /// 1 ノードに集約する (Relations に全クラス、先頭が代表。ツリーが類ごとの詳細を担う)。
+    /// 現在ノード・overflow (+N) ノードは Relations が空。</summary>
+    private sealed class GraphNode
+    {
+        public Rectangle Rect;
+        /// <summary>dblclick の遷移先 series (-1 = 遷移不可)。</summary>
+        public int TargetSeries = -1;
+        /// <summary>集約された共役類 (空 = 現在ノード / overflow ノード)。クリック選択は先頭を代表に使う。</summary>
+        public GroupRelation[] Relations = [];
+        /// <summary>true = 上段 (Minimal supergroups) 由来。Matrix タブの (P,p)⁻¹ 表示向き判定に明示的に渡す
+        /// (self-isomorphic では Parent==Child==現在 series となり従来の推定が破綻するため。codex 相談 R8)。</summary>
+        public bool ViewFromChild;
+    }
 
     // 260708Cl 追加: Diagram ノードの HM/点群記号 LaTeX ビットマップキャッシュ (記号文字列ごと。色・フォント・dpi は全ノード共通)。
     private readonly Dictionary<string, Bitmap> _hmLatexCache = [];
@@ -207,8 +225,13 @@ public partial class FormGroupRelations : FormBase
                 if (result != null && !IsDisposed && _currentSeries == seriesNumber)
                 {
                     _ksupers = result;
-                    if (Visible)
-                        BuildTree(); // k-超群は Diagram に描かないため RenderGraph は不要
+                    //if (Visible)
+                    //    BuildTree(); // k-超群は Diagram に描かないため RenderGraph は不要
+                    if (Visible) // 260709Cl: Diagram にも k-超群辺を描くようになったため RenderGraph も呼ぶ
+                    {
+                        BuildTree();
+                        RenderGraph();
+                    }
                 }
             });
         }
@@ -353,17 +376,41 @@ public partial class FormGroupRelations : FormBase
                 tsNode.Nodes.Add(MakeSuperNode(s));
         var ksNode = superRoot.Nodes.Add("k — klassengleiche");
         //ksNode.Nodes.Add(PendingNode()); // 260708Cl: 実データ化 (Phase 2d 後段、KSubgroupFinder.GetMinimalKSupergroups 逆引き)
+        // 260709Cl: _ksupers には Kind=K と Kind=Isomorphic が混在する (GetMinimalKSupergroups は同型を含む逆引き)。
+        // 部分群側と同様に isomorphic を専用枝へ分離する (Diagram の i ラベルとの分類整合。codex 相談 R8)。
+        var isSupNode = superRoot.Nodes.Add(Loc(en: "isomorphic (series)", ja: "同型 (系列)", de: "isomorph (Serie)", fr: "isomorphes (série)", es: "isomorfos (serie)", pt: "isomorfos (série)", it: "isomorfi (serie)", ru: "изоморфные (серия)", zhHans: "同型 (系列)", zhHant: "同型 (系列)", ko: "동형 (계열)"));
         if (_ksupersPending)
+        {
             ksNode.Nodes.Add(ComputingNode());
-        else if (_ksupers.Length == 0)
-            ksNode.Nodes.Add(NoneNode());
-        else
-            foreach (var s in _ksupers)
-                ksNode.Nodes.Add(MakeSuperNode(s));
+            isSupNode.Nodes.Add(ComputingNode()); // 260709Cl
+        }
+        //else if (_ksupers.Length == 0)
+        //    ksNode.Nodes.Add(NoneNode());
+        //else
+        //    foreach (var s in _ksupers)
+        //        ksNode.Nodes.Add(MakeSuperNode(s));
+        else // 260709Cl: Kind で振り分け
+        {
+            var kSupOnly = _ksupers.Where(s => s.Kind == GroupRelationKind.K).ToArray();
+            if (kSupOnly.Length == 0)
+                ksNode.Nodes.Add(NoneNode());
+            else
+                foreach (var s in kSupOnly)
+                    ksNode.Nodes.Add(MakeSuperNode(s));
+            var isoSupOnly = _ksupers.Where(s => s.Kind == GroupRelationKind.Isomorphic).ToArray();
+            // 部分群側と同じ「index ≤ 4 のみ」の注記 (同型系列は超群方向にも際限なく続く)。
+            isSupNode.Nodes.Add(new TreeNode(Loc(en: "index ≤ 4 only — isomorphic series continue to higher indices", ja: "index ≤ 4 のみ表示 — 同型系列はより高い指数へ続きます", de: "nur Index ≤ 4 — isomorphe Serien setzen sich zu höheren Indizes fort", fr: "index ≤ 4 uniquement — les séries isomorphes continuent aux indices supérieurs", es: "solo índice ≤ 4 — las series isomorfas continúan en índices mayores", pt: "apenas índice ≤ 4 — as séries isomorfas continuam em índices maiores", it: "solo indice ≤ 4 — le serie isomorfe continuano a indici superiori", ru: "только индекс ≤ 4 — изоморфные серии продолжаются при больших индексах", zhHans: "仅显示 index ≤ 4 — 同型系列延伸至更高指数", zhHant: "僅顯示 index ≤ 4 — 同型系列延伸至更高指數", ko: "index ≤ 4만 표시 — 동형 계열은 더 높은 지수로 이어집니다")) { ForeColor = SystemColors.GrayText });
+            if (isoSupOnly.Length == 0)
+                isSupNode.Nodes.Add(NoneNode());
+            else
+                foreach (var s in isoSupOnly)
+                    isSupNode.Nodes.Add(MakeSuperNode(s));
+        }
 
         // 260708Cl: 同一タイプ・同一 index の非共役クラスはラベルが同一で区別できない (実 GUI 目視で
         // Pm-3m の k に "Fm-3m [2] No.225" が 2 行並んだ、改修計画 §4.4)。重複ラベルへ類番号を付ける。
-        foreach (var category in new[] { tNode, kNode, iNode, tsNode, ksNode })
+        //foreach (var category in new[] { tNode, kNode, iNode, tsNode, ksNode })
+        foreach (var category in new[] { tNode, kNode, iNode, tsNode, ksNode, isSupNode }) // 260709Cl: isomorphic 超群枝を追加
             foreach (var g in category.Nodes.Cast<TreeNode>().Where(n => n.Tag != null).GroupBy(n => n.Text).Where(g => g.Count() > 1))
             {
                 int i = 1;
@@ -412,7 +459,8 @@ public partial class FormGroupRelations : FormBase
         // 260705Cl 修正: 超群ノードも GroupRelation を持つため選択可能にする (Kind 判定を廃し Relation の有無だけで分岐)。
         if (e.Node.Tag is NodeTag { Relation: not null } tag)
         {
-            ShowRelationDetail(tag.Relation);
+            //ShowRelationDetail(tag.Relation);
+            ShowRelationDetail(tag.Relation, tag.Kind == NodeKind.Supergroup); // 260709Cl: 選択元 (超群側か) を明示 (self-isomorphic の向き判定)
             RenderGraph(); // 選択ノードのハイライト更新
         }
     }
@@ -427,8 +475,12 @@ public partial class FormGroupRelations : FormBase
     #region 詳細タブの流し込み
     /// <summary>選択された部分群/超群関係の詳細を各タブに表示する。null なら空表示。260705Cl 修正 (Phase 2e):
     /// 超群 (Minimal supergroups) 側の関係は s.ParentSeriesNumber が _currentSeries と異なる (= 超群自身)。
-    /// この場合は「子基準系から見た」向きに変換を反転表示する (viewFromChild)。</summary>
-    private void ShowRelationDetail(GroupRelation s)
+    /// この場合は「子基準系から見た」向きに変換を反転表示する (viewFromChild)。
+    /// 260709Cl シグネチャ変更 (旧: ShowRelationDetail(GroupRelation s)): fromSupergroupSide で選択元
+    /// (超群側 = true) を明示できるようにした。self-isomorphic 関係 (同型、Parent==Child==現在 series) では
+    /// 従来の「ParentSeriesNumber != _currentSeries」推定が破綻し、超群側から選んでも (P,p) が
+    /// 部分群向きで表示される実バグがあった (codex 相談 R8)。null = 従来の推定 (互換)。</summary>
+    private void ShowRelationDetail(GroupRelation s, bool? fromSupergroupSide = null)
     {
         _selectedRelation = s;
         if (s == null)
@@ -445,7 +497,9 @@ public partial class FormGroupRelations : FormBase
             return;
         }
 
-        bool viewFromChild = s.ParentSeriesNumber != _currentSeries; // true = Minimal supergroups 側から選択
+        //bool viewFromChild = s.ParentSeriesNumber != _currentSeries; // true = Minimal supergroups 側から選択
+        // 260709Cl: 選択元が分かる呼び出し (ツリー/Diagram) からは明示値を使い、推定は互換フォールバックに降格。
+        bool viewFromChild = fromSupergroupSide ?? (s.ParentSeriesNumber != _currentSeries);
         //var parent = SymmetryStatic.Symmetries[_currentSeries];
         //string otherName = viewFromChild
         //    ? SeitzNotation.PrettyHM(SymmetryStatic.Symmetries[s.ParentSeriesNumber].SpaceGroupHMStr)
@@ -688,54 +742,223 @@ public partial class FormGroupRelations : FormBase
         old?.Dispose();
     }
 
+    // 260709Cl 全面改修: k-/isomorphic 辺を追加 (codex 相談 R8。旧実装は t- のみ描画していた)。
+    //private void DrawGraph(Graphics g, int w, int h)
+    //{
+    //    // 3 段レイアウト: 上=超群, 中=現在, 下=部分群。ノード = 群、辺 = t 関係 (index ラベル)。
+    //    var cur = SymmetryStatic.Symmetries[_currentSeries];
+    //    int midY = h / 2, topY = (int)(h * 0.16), botY = (int)(h * 0.84);
+    //    var nodeSize = new Size(88, 40);
+    //    var curRect = NodeRect(w / 2, midY, nodeSize);
+    //    var superList = _supers.Take(6).ToList();
+    //    var superRects = SpreadRects(superList.Count, w, topY, nodeSize);
+    //    var subList = _subs.ToList();
+    //    var subRects = SpreadRects(subList.Count, w, botY, nodeSize);
+    //    using var edgePen = new Pen(Color.FromArgb(150, 160, 175), 1.4f);
+    //    using var edgeFont = new Font("Segoe UI", 8f, FontStyle.Bold);
+    //    using var labelBg = new SolidBrush(Color.White);
+    //    using var tBrush = new SolidBrush(Color.FromArgb(47, 111, 179));
+    //    for (int i = 0; i < superRects.Count; i++)
+    //    {
+    //        DrawEdge(g, edgePen, Center(superRects[i]), Center(curRect));
+    //        DrawEdgeLabel(g, edgeFont, tBrush, labelBg, Mid(Center(superRects[i]), Center(curRect)), $"t{superList[i].Index}");
+    //    }
+    //    for (int i = 0; i < subRects.Count; i++)
+    //    {
+    //        DrawEdge(g, edgePen, Center(curRect), Center(subRects[i]));
+    //        DrawEdgeLabel(g, edgeFont, tBrush, labelBg, Mid(Center(curRect), Center(subRects[i])), $"t{subList[i].Index}");
+    //    }
+    //    for (int i = 0; i < superRects.Count; i++)
+    //    {
+    //        bool selSuper = _selectedRelation != null && ReferenceEquals(_selectedRelation, superList[i]);
+    //        DrawNode(g, superRects[i], SymmetryStatic.Symmetries[superList[i].ParentSeriesNumber], false, selSuper, superList[i].ParentSeriesNumber);
+    //    }
+    //    for (int i = 0; i < subRects.Count; i++)
+    //    {
+    //        bool sel = _selectedRelation != null && ReferenceEquals(_selectedRelation, subList[i]);
+    //        DrawNode(g, subRects[i], subList[i].ChildSeriesNumber >= 0 ? SymmetryStatic.Symmetries[subList[i].ChildSeriesNumber] : default, false, sel,
+    //                 subList[i].ChildSeriesNumber, subList[i].ChildSeriesNumber < 0 ? subList[i].PointGroupHM : null);
+    //    }
+    //    DrawNode(g, curRect, cur, true, false, _currentSeries);
+    //}
+
+    /// <summary>関係種別ごとの辺ラベル色 (白背景で判別しやすく色覚多様性に配慮した 3 色、codex R8 推奨)。</summary>
+    private static Color KindColor(GroupRelationKind kind) => kind switch
+    {
+        GroupRelationKind.K => Color.FromArgb(0, 121, 107),          // teal
+        GroupRelationKind.Isomorphic => Color.FromArgb(166, 90, 0),  // burnt orange
+        _ => Color.FromArgb(47, 111, 179),                           // t = 既存の青
+    };
+
+    private static char KindChar(GroupRelationKind kind) => kind switch { GroupRelationKind.K => 'k', GroupRelationKind.Isomorphic => 'i', _ => 't' };
+
+    /// <summary>260709Cl 追加: 関係リストを Diagram ノード単位へ集約する。既知の子 (series ≥ 0) は
+    /// (対象 series, Kind, Index) が同じ非共役クラスを 1 ノードにまとめる (ツリーが類ごとの詳細を担う)。
+    /// 未同定 (ChildSeriesNumber = -1) は異なるクラスを同一視しないよう集約しない (codex R8)。挿入順を保つ。</summary>
+    private static List<List<GroupRelation>> AggregateForGraph(IEnumerable<GroupRelation> rels, bool bySupergroup)
+    {
+        var agg = new List<List<GroupRelation>>();
+        var map = new Dictionary<(int Series, GroupRelationKind Kind, int Index), List<GroupRelation>>();
+        foreach (var r in rels)
+        {
+            int series = bySupergroup ? r.ParentSeriesNumber : r.ChildSeriesNumber;
+            if (series >= 0 && map.TryGetValue((series, r.Kind, r.Index), out var list))
+                list.Add(r);
+            else
+            {
+                var l = new List<GroupRelation> { r };
+                agg.Add(l);
+                if (series >= 0)
+                    map[(series, r.Kind, r.Index)] = l;
+            }
+        }
+        return agg;
+    }
+
+    /// <summary>260709Cl 追加: 1 段 (上段/下段) に表示するノードをカテゴリ (t → k → iso) 順に max 個まで選ぶ。
+    /// あふれる場合は "+N" overflow ノード用に 1 枠空け、各カテゴリ最低 1 枠を保証してから先頭カテゴリ優先で
+    /// 埋める (t 優先のみだと k/iso が一切見えない群が出る、codex R8)。</summary>
+    private static List<List<GroupRelation>> SelectRow(List<List<GroupRelation>>[] categories, int max, out int overflow)
+    {
+        int total = categories.Sum(c => c.Count);
+        if (total <= max)
+        {
+            overflow = 0;
+            return [.. categories.SelectMany(c => c)];
+        }
+        max = Math.Max(categories.Count(c => c.Count > 0), max - 1); // "+N" 分を確保 (最低でも各カテゴリ 1 枠)
+        var take = new int[categories.Length];
+        int used = 0;
+        for (int i = 0; i < categories.Length; i++)
+        {
+            //take[i] = Math.Min(categories[i].Count, 1);
+            take[i] = Math.Min(categories[i].Count, 2); // 260709Cl: 最低保証 2 枠 (Pm-3m の k 3 タイプ中 1 つしか見えなかった)
+            used += take[i];
+        }
+        // 保証合計が max を超えたら後方カテゴリから 1 枠へ切り詰める
+        for (int i = categories.Length - 1; i >= 0 && used > max; i--)
+            while (take[i] > 1 && used > max) { take[i]--; used--; }
+        for (int i = 0; i < categories.Length && used < max; i++)
+        {
+            int add = Math.Min(categories[i].Count - take[i], max - used);
+            take[i] += add;
+            used += add;
+        }
+        var sel = new List<List<GroupRelation>>();
+        for (int i = 0; i < categories.Length; i++)
+            sel.AddRange(categories[i].Take(take[i]));
+        overflow = total - sel.Count;
+        return sel;
+    }
+
     private void DrawGraph(Graphics g, int w, int h)
     {
-        // 3 段レイアウト: 上=超群, 中=現在, 下=部分群。ノード = 群、辺 = t 関係 (index ラベル)。
+        // 3 段レイアウト: 上=極小超群, 中=現在, 下=極大部分群。どの種別 (t/k/isomorphic) も「一段」の関係なので
+        // 同じ段に混在させ (Bärnighausen 図の慣行)、辺ラベル t2 / k2 / i3 と色で種別を示す。
         var cur = SymmetryStatic.Symmetries[_currentSeries];
         int midY = h / 2, topY = (int)(h * 0.16), botY = (int)(h * 0.84);
-        var nodeSize = new Size(88, 40);
+        //var nodeSize = new Size(88, 40);
+        //int maxPerRow = Math.Max(3, (w - 40) / (nodeSize.Width + 10)); // 横あふれ防止 (幅から動的に算出)
+        // 260709Cl: 混雑時はノード幅を 88→66 px に縮小して 1 行の容量を稼ぐ (フォーム既定幅で Pm-3m の
+        // k-部分群 3 タイプ中 2 つが "+N" に隠れた)。選択は縮小幅の容量で行い、結果が標準幅でも
+        // 収まるなら標準幅で描く。
+        int maxPerRow = Math.Max(3, (w - 40) / (66 + 8)); // 横あふれ防止 (縮小幅の容量、幅から動的に算出)
 
+        // 上段: t-超群 → k-超群 → isomorphic 超群 (_ksupers は Kind 混在なので分離)
+        var topRow = SelectRow(
+            [AggregateForGraph(_supers, bySupergroup: true),
+             AggregateForGraph(_ksupers.Where(s => s.Kind == GroupRelationKind.K), bySupergroup: true),
+             AggregateForGraph(_ksupers.Where(s => s.Kind == GroupRelationKind.Isomorphic), bySupergroup: true)],
+            maxPerRow, out int topOverflow);
+        // 下段: t-部分群 → k-部分群 → isomorphic 部分群
+        var botRow = SelectRow(
+            [AggregateForGraph(_subs, bySupergroup: false),
+             AggregateForGraph(_ksubs.Where(s => s.Kind == GroupRelationKind.K), bySupergroup: false),
+             AggregateForGraph(_ksubs.Where(s => s.Kind == GroupRelationKind.Isomorphic), bySupergroup: false)],
+            maxPerRow, out int botOverflow);
+        int rowMax = Math.Max(topRow.Count + (topOverflow > 0 ? 1 : 0), botRow.Count + (botOverflow > 0 ? 1 : 0));
+        var nodeSize = rowMax <= Math.Max(3, (w - 40) / (88 + 10)) ? new Size(88, 40) : new Size(66, 40);
         var curRect = NodeRect(w / 2, midY, nodeSize);
-        // supergroups (上)
-        var superList = _supers.Take(6).ToList();
-        var superRects = SpreadRects(superList.Count, w, topY, nodeSize);
-        // subgroups (下)
-        var subList = _subs.ToList();
-        var subRects = SpreadRects(subList.Count, w, botY, nodeSize);
 
-        using var edgePen = new Pen(Color.FromArgb(150, 160, 175), 1.4f);
+        var superRects = SpreadRects(topRow.Count + (topOverflow > 0 ? 1 : 0), w, topY, nodeSize);
+        var subRects = SpreadRects(botRow.Count + (botOverflow > 0 ? 1 : 0), w, botY, nodeSize);
+
         using var edgeFont = new Font("Segoe UI", 8f, FontStyle.Bold);
         using var labelBg = new SolidBrush(Color.White);
-        using var tBrush = new SolidBrush(Color.FromArgb(47, 111, 179));
 
-        // edges: super -> current
-        for (int i = 0; i < superRects.Count; i++)
+        // 辺 + ラベル (線は種別色の薄色、ラベル文字は不透明の種別色。色だけに依存させず t/k/i の文字を必ず併記)
+        void DrawRelationEdge(List<GroupRelation> group, Point nodeCenter, bool toCurrent)
         {
-            DrawEdge(g, edgePen, Center(superRects[i]), Center(curRect));
-            DrawEdgeLabel(g, edgeFont, tBrush, labelBg, Mid(Center(superRects[i]), Center(curRect)), $"t{superList[i].Index}");
+            var kind = group[0].Kind;
+            using var pen = new Pen(Color.FromArgb(110, KindColor(kind)), 1.4f);
+            using var fg = new SolidBrush(KindColor(kind));
+            var (a, b) = toCurrent ? (nodeCenter, Center(curRect)) : (Center(curRect), nodeCenter);
+            DrawEdge(g, pen, a, b);
+            // 非共役類を集約したノードは類数を添える (×n は ConjugateCount と紛れるため「n cls」表記、codex R8)。
+            string label = $"{KindChar(kind)}{group[0].Index}" + (group.Count > 1 ? $" ·{group.Count}{Loc(en: "cls", ja: "類", de: "Kl.", fr: "cl.", es: "cl.", pt: "cl.", it: "cl.", ru: "кл.", zhHans: "类", zhHant: "類", ko: "류")}" : "");
+            DrawEdgeLabel(g, edgeFont, fg, labelBg, Mid(a, b), label);
         }
-        // edges: current -> sub
-        for (int i = 0; i < subRects.Count; i++)
-        {
-            DrawEdge(g, edgePen, Center(curRect), Center(subRects[i]));
-            DrawEdgeLabel(g, edgeFont, tBrush, labelBg, Mid(Center(curRect), Center(subRects[i])), $"t{subList[i].Index}");
-        }
+        for (int i = 0; i < topRow.Count; i++)
+            DrawRelationEdge(topRow[i], Center(superRects[i]), toCurrent: true);
+        for (int i = 0; i < botRow.Count; i++)
+            DrawRelationEdge(botRow[i], Center(subRects[i]), toCurrent: false);
 
-        // nodes
-        for (int i = 0; i < superRects.Count; i++)
+        // ノード (ハイライトは集約内のどの類が選択されていても点灯)
+        for (int i = 0; i < topRow.Count; i++)
         {
-            // 260705Cl 修正 (Phase 2e): SupergroupSeriesNumber → ParentSeriesNumber (GroupRelation 統合)。
-            // 超群も選択可能になったため sel ハイライトを部分群と同様に付ける。
-            bool selSuper = _selectedRelation != null && ReferenceEquals(_selectedRelation, superList[i]);
-            DrawNode(g, superRects[i], SymmetryStatic.Symmetries[superList[i].ParentSeriesNumber], false, selSuper, superList[i].ParentSeriesNumber);
+            var group = topRow[i];
+            bool sel = _selectedRelation != null && group.Any(r => ReferenceEquals(r, _selectedRelation));
+            int series = group[0].ParentSeriesNumber;
+            DrawNode(g, superRects[i], SymmetryStatic.Symmetries[series], false, sel, series);
+            _graphNodes.Add(new GraphNode { Rect = superRects[i], TargetSeries = series, Relations = [.. group], ViewFromChild = true });
         }
-        for (int i = 0; i < subRects.Count; i++)
+        for (int i = 0; i < botRow.Count; i++)
         {
-            bool sel = _selectedRelation != null && ReferenceEquals(_selectedRelation, subList[i]);
-            DrawNode(g, subRects[i], subList[i].ChildSeriesNumber >= 0 ? SymmetryStatic.Symmetries[subList[i].ChildSeriesNumber] : default, false, sel,
-                     subList[i].ChildSeriesNumber, subList[i].ChildSeriesNumber < 0 ? subList[i].PointGroupHM : null);
+            var group = botRow[i];
+            bool sel = _selectedRelation != null && group.Any(r => ReferenceEquals(r, _selectedRelation));
+            int series = group[0].ChildSeriesNumber;
+            DrawNode(g, subRects[i], series >= 0 ? SymmetryStatic.Symmetries[series] : default, false, sel,
+                     series, series < 0 ? group[0].PointGroupHM : null);
+            _graphNodes.Add(new GraphNode { Rect = subRects[i], TargetSeries = series, Relations = [.. group], ViewFromChild = false });
         }
+        // overflow ノード ("+N"、ヒットテスト対象外 — 全リストはツリー側で見る)
+        if (topOverflow > 0)
+            DrawOverflowNode(g, superRects[^1], topOverflow);
+        if (botOverflow > 0)
+            DrawOverflowNode(g, subRects[^1], botOverflow);
+
         DrawNode(g, curRect, cur, true, false, _currentSeries);
+        _graphNodes.Add(new GraphNode { Rect = curRect, TargetSeries = _currentSeries }); // 現在ノード (選択なし・遷移 no-op)
+
+        // 右下の恒常注記: isomorphic 辺があるときのみ「i: index ≤ 4 のみ」(詳細な説明はツリー側の注記が担う)
+        bool hasIso = _ksubs.Any(s => s.Kind == GroupRelationKind.Isomorphic) || _ksupers.Any(s => s.Kind == GroupRelationKind.Isomorphic);
+        using var noteFont = new Font("Segoe UI", 7.5f);
+        using var noteFg = new SolidBrush(SystemColors.GrayText);
+        if (hasIso)
+        {
+            string note = "i: " + Loc(en: "index ≤ 4 only", ja: "index ≤ 4 のみ", de: "nur Index ≤ 4", fr: "index ≤ 4 uniquement", es: "solo índice ≤ 4", pt: "apenas índice ≤ 4", it: "solo indice ≤ 4", ru: "только индекс ≤ 4", zhHans: "仅 index ≤ 4", zhHant: "僅 index ≤ 4", ko: "index ≤ 4만");
+            var sz = g.MeasureString(note, noteFont);
+            g.DrawString(note, noteFont, noteFg, w - sz.Width - 6, h - sz.Height - 4);
+        }
+        // k-超群がバックグラウンド構築中なら右上に注記 (完了時に ComputeThenApplyOnUi 経由で再描画される)
+        if (_ksupersPending)
+        {
+            string note = "k: " + Loc(en: "computing…", ja: "計算中…", de: "wird berechnet…", fr: "calcul en cours…", es: "calculando…", pt: "calculando…", it: "calcolo in corso…", ru: "вычисляется…", zhHans: "计算中…", zhHant: "計算中…", ko: "계산 중…");
+            var sz = g.MeasureString(note, noteFont);
+            g.DrawString(note, noteFont, noteFg, w - sz.Width - 6, 4);
+        }
+    }
+
+    /// <summary>260709Cl 追加: 表示枠にあふれた関係数を示す "+N" ノード (灰色破線、クリック不可)。</summary>
+    private static void DrawOverflowNode(Graphics g, Rectangle rect, int count)
+    {
+        using var border = new Pen(Color.FromArgb(170, 178, 190), 1.2f) { DashStyle = DashStyle.Dash };
+        using var path = Rounded(rect, 8);
+        g.DrawPath(border, path);
+        using var font = new Font("Segoe UI", 10f, FontStyle.Bold);
+        using var fg = new SolidBrush(SystemColors.GrayText);
+        using var sf = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
+        g.DrawString($"+{count}", font, fg, (RectangleF)rect, sf);
     }
 
     private List<Rectangle> SpreadRects(int count, int w, int y, Size size)
@@ -767,7 +990,7 @@ public partial class FormGroupRelations : FormBase
 
     private void DrawNode(Graphics g, Rectangle rect, Symmetry sym, bool isCurrent, bool isSelected, int series, string fallbackLabel = null)
     {
-        _graphNodes.Add((rect, series));
+        //_graphNodes.Add((rect, series)); // 260709Cl: ヒットテスト登録は DrawGraph 側 (GraphNode 化で Relation/選択元も持つため)
         using var fill = new SolidBrush(Color.White);
         using var border = new Pen(isCurrent ? Color.FromArgb(47, 111, 179) : isSelected ? Color.FromArgb(44, 122, 123) : Color.FromArgb(180, 188, 200), isCurrent || isSelected ? 2.2f : 1.3f);
         using var path = Rounded(rect, 8);
@@ -845,12 +1068,21 @@ public partial class FormGroupRelations : FormBase
         g.InterpolationMode = old;
     }
 
-    private int HitTestGraph(Point p)
+    // 260709Cl シグネチャ変更 (旧: private int HitTestGraph(Point p) — series を返していた):
+    // GraphNode を直接返す。series 逆引きは t/k 重複・isomorphic (子 series == 現在) で曖昧だった (codex R8)。
+    //private int HitTestGraph(Point p)
+    //{
+    //    foreach (var (rect, series) in _graphNodes)
+    //        if (rect.Contains(p) && series >= 0)
+    //            return series;
+    //    return -1;
+    //}
+    private GraphNode HitTestGraph(Point p)
     {
-        foreach (var (rect, series) in _graphNodes)
-            if (rect.Contains(p) && series >= 0)
-                return series;
-        return -1;
+        foreach (var node in _graphNodes)
+            if (node.Rect.Contains(p))
+                return node;
+        return null;
     }
 
     private void pictureBoxGraph_SizeChanged(object sender, EventArgs e)
@@ -860,20 +1092,31 @@ public partial class FormGroupRelations : FormBase
 
     private void pictureBoxGraph_MouseClick(object sender, MouseEventArgs e)
     {
-        int series = HitTestGraph(e.Location);
-        if (series < 0 || series == _currentSeries) return;
-        // クリック = その関係を選択 (詳細タブ更新)。260705Cl 修正 (Phase 2e): 部分群 (_subs) だけでなく
-        // 超群 (_supers, ParentSeriesNumber で識別) ノードも選択可能にする。
-        GroupRelation rel = _subs.FirstOrDefault(s => s.ChildSeriesNumber == series)
-            ?? _supers.FirstOrDefault(s => s.ParentSeriesNumber == series);
-        if (rel != null) { ShowRelationDetail(rel); RenderGraph(); }
+        //int series = HitTestGraph(e.Location);
+        //if (series < 0 || series == _currentSeries) return;
+        //// クリック = その関係を選択 (詳細タブ更新)。260705Cl 修正 (Phase 2e): 部分群 (_subs) だけでなく
+        //// 超群 (_supers, ParentSeriesNumber で識別) ノードも選択可能にする。
+        //GroupRelation rel = _subs.FirstOrDefault(s => s.ChildSeriesNumber == series)
+        //    ?? _supers.FirstOrDefault(s => s.ParentSeriesNumber == series);
+        //if (rel != null) { ShowRelationDetail(rel); RenderGraph(); }
+        // 260709Cl: クリック = ノードの代表関係を選択 (集約ノードは先頭類)。選択元 (上段/下段) も明示して
+        // self-isomorphic の Matrix 向きを正しくする。現在ノード・overflow ノード (Relations 空) は何もしない。
+        var node = HitTestGraph(e.Location);
+        if (node?.Relations is { Length: > 0 } rels)
+        {
+            ShowRelationDetail(rels[0], node.ViewFromChild);
+            RenderGraph();
+        }
     }
 
     private void pictureBoxGraph_MouseDoubleClick(object sender, MouseEventArgs e)
     {
-        int series = HitTestGraph(e.Location);
-        if (series >= 0 && series != _currentSeries)
-            NavigateTo(series);
+        //int series = HitTestGraph(e.Location);
+        //if (series >= 0 && series != _currentSeries)
+        //    NavigateTo(series);
+        var node = HitTestGraph(e.Location); // 260709Cl: GraphNode 化 (isomorphic は TargetSeries == 現在 series なので自然に no-op)
+        if (node != null && node.TargetSeries >= 0 && node.TargetSeries != _currentSeries)
+            NavigateTo(node.TargetSeries);
     }
     #endregion
 
