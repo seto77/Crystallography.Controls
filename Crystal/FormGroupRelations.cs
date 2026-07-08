@@ -41,6 +41,9 @@ public partial class FormGroupRelations : FormBase
 
     // グラフのヒットテスト用ノード矩形 (画面座標) と対応 series。
     private readonly List<(Rectangle Rect, int Series)> _graphNodes = [];
+
+    // 260708Cl 追加: Diagram ノードの HM/点群記号 LaTeX ビットマップキャッシュ (記号文字列ごと。色・フォント・dpi は全ノード共通)。
+    private readonly Dictionary<string, Bitmap> _hmLatexCache = [];
     #endregion
 
     #region コンストラクタ / 初期化
@@ -61,6 +64,8 @@ public partial class FormGroupRelations : FormBase
                     Hide();
                 }
             };
+            // 260708Cl 追加: Diagram の HM 記号 LaTeX ビットマップキャッシュをフォーム破棄時に解放。
+            Disposed += (_, _) => { foreach (var b in _hmLatexCache.Values) b?.Dispose(); _hmLatexCache.Clear(); };
         }
     }
 
@@ -630,14 +635,25 @@ public partial class FormGroupRelations : FormBase
         g.FillPath(fill, path);
         g.DrawPath(border, path);
 
-        using var hmFont = new Font("Segoe UI", 10f, FontStyle.Bold);
         using var noFont = new Font("Segoe UI", 7.5f);
-        using var fg = new SolidBrush(Color.FromArgb(26, 32, 41));
         using var subFg = new SolidBrush(Color.FromArgb(103, 113, 126));
         using var sf = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center }; // 260705Cl: Dispose 漏れ修正
-        string hm = series >= 0 ? SeitzNotation.PrettyHM(sym.SpaceGroupHMStr) : fallbackLabel ?? "?";
+        // 260708Cl: 空間群/点群記号を PrettyHM の Unicode 近似テキストでなく LaTeX 数式ビットマップで描画する。
+        // 下付き (P4_2/mnm の 4_2)・オーバーライン (R\bar{3}m) が正しく組版される。Matrix/Orbit タブと同じ
+        // LabelLaTeX.RenderLatexBitmap 経路。ビットマップは記号ごとにキャッシュ (色・フォントは全ノード共通)。
+        string hmLatex = series >= 0 ? HmToLatex(sym.SpaceGroupHMStr) : (fallbackLabel != null ? HmToLatex(fallbackLabel) : "?");
+        var hmArea = new Rectangle(rect.X + 4, rect.Y + 2, rect.Width - 8, rect.Height - 16);
+        var hmBmp = GetHmBitmap(hmLatex);
+        if (hmBmp != null)
+            DrawBitmapFit(g, hmBmp, hmArea);
+        else
+        {
+            // WpfMath が解釈できない記号はプレーンテキスト描画へフォールバック。
+            using var hmFont = new Font("Segoe UI", 10f, FontStyle.Bold);
+            using var fg = new SolidBrush(Color.FromArgb(26, 32, 41));
+            g.DrawString(series >= 0 ? SeitzNotation.PrettyHM(sym.SpaceGroupHMStr) : fallbackLabel ?? "?", hmFont, fg, (RectangleF)hmArea, sf);
+        }
         string no = series >= 0 ? "No. " + sym.SpaceGroupNumber : "";
-        g.DrawString(hm, hmFont, fg, new RectangleF(rect.X, rect.Y + 2, rect.Width, rect.Height - 14), sf);
         if (no.Length > 0)
             g.DrawString(no, noFont, subFg, new RectangleF(rect.X, rect.Bottom - 15, rect.Width, 13), sf);
     }
@@ -654,6 +670,38 @@ public partial class FormGroupRelations : FormBase
         return path;
     }
     //private static Rectangle Inflate(Rectangle r, int by) => new(r.X - by, r.Y - by, r.Width + 2 * by, r.Height + 2 * by); // 260705Cl: BCL Rectangle.Inflate に置換
+
+    /// <summary>260708Cl 追加: Diagram ノードの HM/点群記号を LaTeX ビットマップ化してキャッシュから返す。
+    /// 描画先の Bitmap Graphics は既定 96 dpi なので、GDI DrawString で描く "No." 副題と縮尺を揃えるため 96 dpi で組版する。
+    /// WpfMath が解釈できない記号 (理論上は無いが防御的に) は null を返し、呼び出し側でテキスト描画へフォールバックする。</summary>
+    private Bitmap GetHmBitmap(string latex)
+    {
+        if (!_hmLatexCache.TryGetValue(latex, out var bmp))
+        {
+            try
+            {
+                using var f = new Font("Segoe UI", 10f, FontStyle.Bold);
+                bmp = LabelLaTeX.RenderLatexBitmap(latex, f, Color.FromArgb(26, 32, 41), 96.0);
+            }
+            catch { bmp = null; }
+            _hmLatexCache[latex] = bmp; // 失敗 (null) もキャッシュして再パースを避ける
+        }
+        return bmp;
+    }
+
+    /// <summary>260708Cl 追加: ビットマップをアスペクト比を保って area に収まるよう中央描画する (拡大はしない)。</summary>
+    private static void DrawBitmapFit(Graphics g, Bitmap bmp, Rectangle area)
+    {
+        if (area.Width <= 0 || area.Height <= 0 || bmp.Width <= 0 || bmp.Height <= 0) return;
+        double scale = Math.Min(1.0, Math.Min((double)area.Width / bmp.Width, (double)area.Height / bmp.Height));
+        int dw = Math.Max(1, (int)Math.Round(bmp.Width * scale));
+        int dh = Math.Max(1, (int)Math.Round(bmp.Height * scale));
+        var dest = new Rectangle(area.X + (area.Width - dw) / 2, area.Y + (area.Height - dh) / 2, dw, dh);
+        var old = g.InterpolationMode;
+        g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+        g.DrawImage(bmp, dest);
+        g.InterpolationMode = old;
+    }
 
     private int HitTestGraph(Point p)
     {
