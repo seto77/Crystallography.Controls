@@ -41,6 +41,9 @@ partial class FormGroupRelations
         labelDomains = new System.Windows.Forms.Label();
         tabReflections = new System.Windows.Forms.TabPage();
         miniTableReflections = new MiniTable();
+        panelReflSearch = new System.Windows.Forms.FlowLayoutPanel(); // 260709Cl 追加: 反射探索窓 (|h|,|k|,|l| ≤ n) 調整 UI
+        labelReflMax = new System.Windows.Forms.Label(); // 260709Cl 追加
+        numericReflMax = new System.Windows.Forms.NumericUpDown(); // 260709Cl 追加
         labelReflInfo = new System.Windows.Forms.Label();
         tabDiagram = new System.Windows.Forms.TabPage();
         pictureBoxGraph = new System.Windows.Forms.PictureBox();
@@ -59,6 +62,8 @@ partial class FormGroupRelations
         ((System.ComponentModel.ISupportInitialize)miniTableTwins).BeginInit();
         tabReflections.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)miniTableReflections).BeginInit();
+        panelReflSearch.SuspendLayout(); // 260709Cl 追加
+        ((System.ComponentModel.ISupportInitialize)numericReflMax).BeginInit(); // 260709Cl 追加
         tabDiagram.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBoxGraph).BeginInit();
         SuspendLayout();
@@ -335,6 +340,7 @@ partial class FormGroupRelations
         // tabReflections
         // 
         tabReflections.Controls.Add(miniTableReflections);
+        tabReflections.Controls.Add(panelReflSearch); // 260709Cl 追加 (Dock=Top は後から Add した方が外側: labelReflInfo の下・表の上に入る)
         tabReflections.Controls.Add(labelReflInfo);
         tabReflections.Location = new System.Drawing.Point(4, 24);
         tabReflections.Name = "tabReflections";
@@ -359,9 +365,46 @@ partial class FormGroupRelations
         miniTableReflections.Size = new System.Drawing.Size(562, 378);
         miniTableReflections.TabIndex = 1;
         miniTableReflections.TabStop = false;
-        // 
+        //
+        // panelReflSearch (260709Cl 追加: 反射探索窓の調整 UI)
+        //
+        panelReflSearch.AutoSize = true;
+        panelReflSearch.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+        panelReflSearch.Controls.Add(labelReflMax);
+        panelReflSearch.Controls.Add(numericReflMax);
+        panelReflSearch.Dock = System.Windows.Forms.DockStyle.Top;
+        panelReflSearch.Location = new System.Drawing.Point(3, 53);
+        panelReflSearch.Name = "panelReflSearch";
+        panelReflSearch.Padding = new System.Windows.Forms.Padding(3, 0, 3, 2);
+        panelReflSearch.Size = new System.Drawing.Size(562, 29);
+        panelReflSearch.TabIndex = 2;
+        panelReflSearch.WrapContents = false;
+        //
+        // labelReflMax (260709Cl 追加)
+        //
+        labelReflMax.AutoSize = true;
+        labelReflMax.Location = new System.Drawing.Point(6, 0);
+        labelReflMax.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
+        labelReflMax.Name = "labelReflMax";
+        labelReflMax.Size = new System.Drawing.Size(120, 15);
+        labelReflMax.TabIndex = 0;
+        labelReflMax.Text = "Search window  |h|, |k|, |l| ≤";
+        //
+        // numericReflMax (260709Cl 追加)
+        //
+        numericReflMax.Location = new System.Drawing.Point(132, 2);
+        numericReflMax.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+        numericReflMax.Maximum = new decimal(new int[] { 8, 0, 0, 0 });
+        numericReflMax.Minimum = new decimal(new int[] { 2, 0, 0, 0 });
+        numericReflMax.Name = "numericReflMax";
+        numericReflMax.Size = new System.Drawing.Size(44, 23);
+        numericReflMax.TabIndex = 1;
+        numericReflMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+        numericReflMax.Value = new decimal(new int[] { 4, 0, 0, 0 });
+        numericReflMax.ValueChanged += numericReflMax_ValueChanged;
+        //
         // labelReflInfo
-        // 
+        //
         labelReflInfo.Dock = System.Windows.Forms.DockStyle.Top;
         labelReflInfo.Location = new System.Drawing.Point(3, 3);
         labelReflInfo.Name = "labelReflInfo";
@@ -421,7 +464,11 @@ partial class FormGroupRelations
         tabDomains.ResumeLayout(false);
         ((System.ComponentModel.ISupportInitialize)miniTableTwins).EndInit();
         tabReflections.ResumeLayout(false);
+        tabReflections.PerformLayout(); // 260709Cl: panelReflSearch (AutoSize) のため
         ((System.ComponentModel.ISupportInitialize)miniTableReflections).EndInit();
+        panelReflSearch.ResumeLayout(false); // 260709Cl 追加
+        panelReflSearch.PerformLayout(); // 260709Cl 追加
+        ((System.ComponentModel.ISupportInitialize)numericReflMax).EndInit(); // 260709Cl 追加
         tabDiagram.ResumeLayout(false);
         ((System.ComponentModel.ISupportInitialize)pictureBoxGraph).EndInit();
         ResumeLayout(false);
@@ -454,6 +501,9 @@ partial class FormGroupRelations
     private System.Windows.Forms.TabPage tabReflections;
     private System.Windows.Forms.Label labelReflInfo;
     private MiniTable miniTableReflections;
+    private System.Windows.Forms.FlowLayoutPanel panelReflSearch; // 260709Cl 追加
+    private System.Windows.Forms.Label labelReflMax; // 260709Cl 追加
+    private System.Windows.Forms.NumericUpDown numericReflMax; // 260709Cl 追加
     private System.Windows.Forms.TabPage tabDiagram;
     private System.Windows.Forms.PictureBox pictureBoxGraph;
 }

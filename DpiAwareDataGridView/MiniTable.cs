@@ -22,6 +22,9 @@ namespace Crystallography.Controls;
 /// - データ投入は DataSet/バインドを使わず <see cref="SetRows"/> (丸ごと差替) / <see cref="AddRow"/> (1 行追加) で object[] を渡す。
 /// - 列ヘッダーをローカライズする表は、列を <b>デザイナで定義</b>する (header/Alignment/Format は列側で設定 → resources.ApplyResources +
 ///   .resx/.ja.resx の既存翻訳機構に乗る)。記号のみで翻訳不要の表は <see cref="SetColumns"/> でコード生成してもよい。
+///   260709Cl 追記: resx を持たずコード側 Loc() で全ラベルをローカライズするフォーム (FormGroupRelations 等、方式②) では、
+///   ヘッダーに Loc() の戻り値を渡して <see cref="SetColumns"/> でコード生成する。「デザイナで定義」は resx 機構に乗る
+///   フォーム向けの指針であり、方式②のフォームにデザイナ列定義を強制しない (どちらも正)。
 /// - DPI 列幅・ヘッダ中央寄せは基底 <see cref="DpiAwareDataGridView"/> 任せ。列を AutoSize にすると基底の列幅 DPI 計算と二重化しない。
 /// </remarks>
 [ToolboxItem(true)]
@@ -570,20 +573,35 @@ public class MiniTable : DpiAwareDataGridView
     public void SetRows(IEnumerable<object[]> rows)
     {
         SuspendLayout();
+        var savedAutoSizeRowsMode = base.AutoSizeRowsMode; // 260709Cl: 投入中の行ごと autosize を止める (最後に ApplyRowHeightSettings が一括適用)
         try
         {
+            base.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None; // 260709Cl
             Rows.Clear();
+            //foreach (var row in rows)
+            //{
+            //    if (row.Length != Columns.Count)
+            //        throw new ArgumentException("Row value count does not match column count.", nameof(rows));
+            //    Rows.Add(row);
+            //}
+            // 260709Cl: 1 行ずつ Rows.Add すると AllCells 自動列幅・自動行高の再計算が行ごとに走り O(n²) になる
+            // (行数の多い表で顕在化)。DataGridViewRow を先に構築して AddRange で一括投入する (再計算は 1 回)。
+            var buf = new List<DataGridViewRow>();
             foreach (var row in rows)
             {
                 if (row.Length != Columns.Count)
                     throw new ArgumentException("Row value count does not match column count.", nameof(rows));
-                Rows.Add(row);
+                var r = new DataGridViewRow();
+                r.CreateCells(this, row);
+                buf.Add(r);
             }
+            Rows.AddRange([.. buf]);
             ClearSelection();
             CurrentCell = null;
         }
         finally
         {
+            base.AutoSizeRowsMode = savedAutoSizeRowsMode; // 260709Cl
             ResumeLayout();
         }
         ApplyRowHeightSettings(); // 260708Ch: 行高適用+コンテナ高さ更新をここで一括 (FitHeightToRows 二重呼び出しを解消)
