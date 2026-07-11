@@ -49,6 +49,8 @@ partial class FormGroupRelations
         labelReflInfo = new System.Windows.Forms.Label();
         tabDiagram = new System.Windows.Forms.TabPage();
         pictureBoxGraph = new System.Windows.Forms.PictureBox();
+        tabPointGroups = new System.Windows.Forms.TabPage(); // 260712Cl 追加 (③-4): 点群 Hasse 図
+        pictureBoxPointGroups = new System.Windows.Forms.PictureBox(); // 260712Cl 追加
         panelToolbar.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)numericIsoMax).BeginInit(); // 260709Cl 追加
         panelBanner.SuspendLayout();
@@ -69,6 +71,8 @@ partial class FormGroupRelations
         ((System.ComponentModel.ISupportInitialize)numericReflMax).BeginInit(); // 260709Cl 追加
         tabDiagram.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBoxGraph).BeginInit();
+        tabPointGroups.SuspendLayout(); // 260712Cl 追加
+        ((System.ComponentModel.ISupportInitialize)pictureBoxPointGroups).BeginInit(); // 260712Cl 追加
         SuspendLayout();
         // 
         // toolTip
@@ -220,6 +224,7 @@ partial class FormGroupRelations
         tabDetail.Controls.Add(tabDomains);
         tabDetail.Controls.Add(tabReflections);
         tabDetail.Controls.Add(tabDiagram);
+        tabDetail.Controls.Add(tabPointGroups); // 260712Cl 追加
         tabDetail.Dock = System.Windows.Forms.DockStyle.Fill;
         tabDetail.Location = new System.Drawing.Point(0, 0);
         tabDetail.Name = "tabDetail";
@@ -465,9 +470,32 @@ partial class FormGroupRelations
         pictureBoxGraph.SizeChanged += pictureBoxGraph_SizeChanged;
         pictureBoxGraph.MouseClick += pictureBoxGraph_MouseClick;
         pictureBoxGraph.MouseDoubleClick += pictureBoxGraph_MouseDoubleClick;
-        // 
+        //
+        // tabPointGroups (260712Cl 追加 ③-4: 32 点群型の Hasse 図)
+        //
+        tabPointGroups.Controls.Add(pictureBoxPointGroups);
+        tabPointGroups.Location = new System.Drawing.Point(4, 24);
+        tabPointGroups.Name = "tabPointGroups";
+        tabPointGroups.Padding = new System.Windows.Forms.Padding(3);
+        tabPointGroups.Size = new System.Drawing.Size(568, 434);
+        tabPointGroups.TabIndex = 5;
+        tabPointGroups.Text = "Point groups";
+        tabPointGroups.UseVisualStyleBackColor = true;
+        //
+        // pictureBoxPointGroups (260712Cl 追加)
+        //
+        pictureBoxPointGroups.BackColor = System.Drawing.Color.White;
+        pictureBoxPointGroups.Dock = System.Windows.Forms.DockStyle.Fill;
+        pictureBoxPointGroups.Location = new System.Drawing.Point(3, 3);
+        pictureBoxPointGroups.Name = "pictureBoxPointGroups";
+        pictureBoxPointGroups.Size = new System.Drawing.Size(562, 428);
+        pictureBoxPointGroups.TabIndex = 0;
+        pictureBoxPointGroups.TabStop = false;
+        pictureBoxPointGroups.SizeChanged += pictureBoxPointGroups_SizeChanged;
+        pictureBoxPointGroups.MouseClick += pictureBoxPointGroups_MouseClick;
+        //
         // FormGroupRelations
-        // 
+        //
         AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
         AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
         ClientSize = new System.Drawing.Size(880, 520);
@@ -502,6 +530,8 @@ partial class FormGroupRelations
         ((System.ComponentModel.ISupportInitialize)numericReflMax).EndInit(); // 260709Cl 追加
         tabDiagram.ResumeLayout(false);
         ((System.ComponentModel.ISupportInitialize)pictureBoxGraph).EndInit();
+        tabPointGroups.ResumeLayout(false); // 260712Cl 追加
+        ((System.ComponentModel.ISupportInitialize)pictureBoxPointGroups).EndInit(); // 260712Cl 追加
         ResumeLayout(false);
     }
 
@@ -539,4 +569,6 @@ partial class FormGroupRelations
     private System.Windows.Forms.NumericUpDown numericReflMax; // 260709Cl 追加
     private System.Windows.Forms.TabPage tabDiagram;
     private System.Windows.Forms.PictureBox pictureBoxGraph;
+    private System.Windows.Forms.TabPage tabPointGroups; // 260712Cl 追加 (③-4)
+    private System.Windows.Forms.PictureBox pictureBoxPointGroups; // 260712Cl 追加
 }

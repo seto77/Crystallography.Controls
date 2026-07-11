@@ -271,6 +271,8 @@ public partial class FormGroupRelations : FormBase
         UpdateBreadcrumb();
         UpdateNavButtons();
         RenderGraph();
+        _pgFocus = null; // 260712Cl 追加 (③-4): 群が変わったら点群図の注視をリセットして再描画
+        RenderPointGroups();
         ShowRelationDetail(null);
     }
 
@@ -1353,6 +1355,172 @@ public partial class FormGroupRelations : FormBase
     }
     #endregion
 
+    #region 点群 Hasse 図 (Point groups タブ) — 260712Cl 追加 (③-4、codex R12)
+    // 32 の幾何結晶類 (点群型) の包含 poset (PointGroupCatalog、被覆辺 80 本)。ITA Fig. 10.1.3.2 の慣行に
+    // ならい縦軸 = 位数 (log スケール)、左タワー = 六方/三方、右タワー = 立方/正方/斜方/単斜/三斜の
+    // 固定 2 タワー配置。クリック = その型を注視して下位集合 (青)・上位集合 (橙) を強調するだけで、
+    // 空間群ナビゲーションはしない (点群型は特定の空間群に対応しないため — codex R12)。
+
+    /// <summary>点群 Hasse 図のヒットテスト矩形 (描画順に登録)。</summary>
+    private readonly List<(Rectangle Rect, string Name)> _pgNodes = [];
+    /// <summary>クリックで注視中の点群型名 (null = 現在の空間群の点群)。</summary>
+    private string _pgFocus = null;
+
+    /// <summary>32 型の固定 x 座標 (0..1)。y は位数から log スケールで決まるため x のみ持つ。</summary>
+    private static readonly Dictionary<string, float> _pgX = new()
+    {
+        ["m-3m"] = 0.62f,
+        ["6/mmm"] = 0.15f, ["m-3"] = 0.44f, ["432"] = 0.62f, ["-43m"] = 0.80f,
+        ["4/mmm"] = 0.70f,
+        ["-3m"] = 0.05f, ["622"] = 0.16f, ["6mm"] = 0.27f, ["-6m2"] = 0.38f, ["6/m"] = 0.49f, ["23"] = 0.62f,
+        ["mmm"] = 0.56f, ["422"] = 0.66f, ["4mm"] = 0.755f, ["-42m"] = 0.85f, ["4/m"] = 0.945f,
+        ["32"] = 0.05f, ["3m"] = 0.16f, ["-6"] = 0.27f, ["6"] = 0.38f, ["-3"] = 0.49f,
+        ["222"] = 0.60f, ["mm2"] = 0.70f, ["2/m"] = 0.80f, ["4"] = 0.89f, ["-4"] = 0.965f,
+        ["3"] = 0.27f,
+        ["2"] = 0.55f, ["m"] = 0.70f, ["-1"] = 0.84f,
+        ["1"] = 0.62f,
+    };
+
+    /// <summary>focus 型の下位集合 (部分群型) と上位集合 (超群型) を被覆辺の推移閉包で求める (どちらも focus 自身を含む)。</summary>
+    internal static (HashSet<string> Down, HashSet<string> Up) PointGroupClosure(string focus)
+    {
+        var down = new HashSet<string> { focus };
+        var q = new Queue<string>(down);
+        while (q.Count > 0)
+        {
+            var x = q.Dequeue();
+            foreach (var e in PointGroupCatalog.CoverEdges)
+                if (e.Parent == x && down.Add(e.Child))
+                    q.Enqueue(e.Child);
+        }
+        var up = new HashSet<string> { focus };
+        q = new Queue<string>(up);
+        while (q.Count > 0)
+        {
+            var x = q.Dequeue();
+            foreach (var e in PointGroupCatalog.CoverEdges)
+                if (e.Child == x && up.Add(e.Parent))
+                    q.Enqueue(e.Parent);
+        }
+        return (down, up);
+    }
+
+    private void RenderPointGroups()
+    {
+        if (_currentSeries < 0) return;
+        int w = Math.Max(50, pictureBoxPointGroups.ClientSize.Width);
+        int h = Math.Max(50, pictureBoxPointGroups.ClientSize.Height);
+        var bmp = new Bitmap(w, h);
+        _pgNodes.Clear();
+        using (var g = Graphics.FromImage(bmp))
+        {
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            g.Clear(Color.White);
+            DrawPointGroups(g, w, h);
+        }
+        var old = pictureBoxPointGroups.Image;
+        pictureBoxPointGroups.Image = bmp;
+        old?.Dispose();
+    }
+
+    private void DrawPointGroups(Graphics g, int w, int h)
+    {
+        string curPg = PointGroupCatalog.NormalizedName(_currentSeries);
+        string focus = _pgFocus ?? curPg;
+        var (down, up) = PointGroupClosure(focus);
+        var orderOf = PointGroupCatalog.Types.ToDictionary(t => t.Name, t => t.Order);
+        float padT = 46, padB = 14, padL = 8, padR = 8;
+        var nodeSize = new Size(Math.Clamp((w - 16) / 12, 40, 54), 21);
+        double logMax = Math.Log2(48);
+        Point Pos(string nm) => new(
+            (int)(padL + _pgX[nm] * (w - padL - padR - nodeSize.Width) + nodeSize.Width / 2f),
+            (int)(padT + (float)(1 - Math.Log2(orderOf[nm]) / logMax) * (h - padT - padB - nodeSize.Height) + nodeSize.Height / 2f));
+
+        var downColor = Color.FromArgb(47, 111, 179); // 部分群方向 (Diagram の t- と同じ青)
+        var upColor = Color.FromArgb(166, 90, 0);     // 超群方向 (同 burnt orange — 白背景で判別しやすい既存 2 色を流用)
+        var focusColor = Color.FromArgb(44, 122, 123); // 注視ノード (既存の選択色 teal)
+
+        // 辺: 非強調 (薄グレー) → 強調 (down 青 / up 橙) の順に重ね描き
+        using (var dimPen = new Pen(Color.FromArgb(228, 232, 238), 1f))
+        using (var downPen = new Pen(Color.FromArgb(170, downColor), 1.8f))
+        using (var upPen = new Pen(Color.FromArgb(170, upColor), 1.8f))
+        {
+            foreach (var e in PointGroupCatalog.CoverEdges)
+                if (!(down.Contains(e.Parent) && down.Contains(e.Child)) && !(up.Contains(e.Parent) && up.Contains(e.Child)))
+                    g.DrawLine(dimPen, Pos(e.Parent), Pos(e.Child));
+            foreach (var e in PointGroupCatalog.CoverEdges)
+                if (down.Contains(e.Parent) && down.Contains(e.Child))
+                    g.DrawLine(downPen, Pos(e.Parent), Pos(e.Child));
+                else if (up.Contains(e.Parent) && up.Contains(e.Child))
+                    g.DrawLine(upPen, Pos(e.Parent), Pos(e.Child));
+        }
+        // 注視ノードに接する被覆辺のみ index (位数比) ラベルを表示
+        using (var edgeFont = new Font("Segoe UI", 7.5f, FontStyle.Bold))
+        using (var labelBg = new SolidBrush(Color.White))
+            foreach (var e in PointGroupCatalog.CoverEdges)
+            {
+                if (e.Parent != focus && e.Child != focus) continue;
+                using var fg = new SolidBrush(e.Parent == focus ? downColor : upColor);
+                DrawEdgeLabel(g, edgeFont, fg, labelBg, Mid(Pos(e.Parent), Pos(e.Child)), e.Index.ToString());
+            }
+        // ノード (関与しない型はグレーアウト)
+        using var nodeFont = new Font("Segoe UI", 8.25f, FontStyle.Bold);
+        using var nodeFontSmall = new Font("Segoe UI", 7f, FontStyle.Bold); // 260712Cl: 6/mmm 等の長い名前が折り返さないよう縮小版
+        using var sf = new StringFormat(StringFormatFlags.NoWrap) { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
+        foreach (var t in PointGroupCatalog.Types)
+        {
+            var c = Pos(t.Name);
+            var rect = new Rectangle(c.X - nodeSize.Width / 2, c.Y - nodeSize.Height / 2, nodeSize.Width, nodeSize.Height);
+            bool involved = down.Contains(t.Name) || up.Contains(t.Name);
+            bool isFocus = t.Name == focus;
+            var border = isFocus ? focusColor : down.Contains(t.Name) ? downColor : up.Contains(t.Name) ? upColor : Color.FromArgb(190, 197, 208);
+            if (t.Name == curPg) // 現在の空間群の点群は注視と独立に常時ハロー (Diagram の現在ノードと同じ水色)
+            {
+                using var halo = new SolidBrush(Color.FromArgb(220, 234, 251));
+                using var hp = Rounded(Rectangle.Inflate(rect, 3, 3), 8);
+                g.FillPath(halo, hp);
+            }
+            using var fill = new SolidBrush(involved ? Color.White : Color.FromArgb(250, 250, 252));
+            using var pen = new Pen(border, isFocus ? 2.2f : involved ? 1.6f : 1.1f);
+            using var path = Rounded(rect, 6);
+            g.FillPath(fill, path);
+            g.DrawPath(pen, path);
+            using var tfg = new SolidBrush(involved ? Color.Black : SystemColors.GrayText);
+            //g.DrawString(t.Name, nodeFont, tfg, (RectangleF)rect, sf);
+            var f = g.MeasureString(t.Name, nodeFont).Width <= rect.Width - 4 ? nodeFont : nodeFontSmall; // 260712Cl: 折り返し防止
+            g.DrawString(t.Name, f, tfg, (RectangleF)rect, sf);
+            _pgNodes.Add((rect, t.Name));
+        }
+        // 左上の情報行: 注視型の要約 + 下位/上位集合の型数 (自身を除く)
+        var info = PointGroupCatalog.Types.First(t => t.Name == focus);
+        string sgStr = Loc(en: "space-group types", ja: "空間群型", de: "Raumgruppentypen", fr: "types de groupes d'espace", es: "tipos de grupos espaciales", pt: "tipos de grupos espaciais", it: "tipi di gruppi spaziali", ru: "типов пространственных групп", zhHans: "空间群类型", zhHant: "空間群類型", ko: "공간군 유형");
+        string subStr = Loc(en: "subgroup types", ja: "部分群型", de: "Untergruppentypen", fr: "types de sous-groupes", es: "tipos de subgrupos", pt: "tipos de subgrupos", it: "tipi di sottogruppi", ru: "типов подгрупп", zhHans: "子群类型", zhHant: "子群類型", ko: "부분군 유형");
+        string supStr = Loc(en: "supergroup types", ja: "超群型", de: "Obergruppentypen", fr: "types de supergroupes", es: "tipos de supergrupos", pt: "tipos de supergrupos", it: "tipi di supergruppi", ru: "типов надгрупп", zhHans: "超群类型", zhHant: "超群類型", ko: "초군 유형");
+        using var infoFont = new Font("Segoe UI", 8.5f, FontStyle.Bold);
+        using var infoFont2 = new Font("Segoe UI", 8f);
+        using var infoFg = new SolidBrush(Color.Black);
+        using var downFg = new SolidBrush(downColor);
+        using var upFg = new SolidBrush(upColor);
+        g.DrawString($"{focus}  ({info.Schoenflies})   |G| = {info.Order}   ·   {info.SpaceGroupTypeCount} {sgStr}", infoFont, infoFg, 6, 5);
+        string dTxt = $"↓ {down.Count - 1} {subStr}";
+        g.DrawString(dTxt, infoFont2, downFg, 6, 22);
+        g.DrawString($"↑ {up.Count - 1} {supStr}", infoFont2, upFg, 6 + g.MeasureString(dTxt, infoFont2).Width + 14, 22);
+    }
+
+    private void pictureBoxPointGroups_SizeChanged(object sender, EventArgs e)
+    {
+        if (_currentSeries >= 0) RenderPointGroups();
+    }
+
+    private void pictureBoxPointGroups_MouseClick(object sender, MouseEventArgs e)
+    {
+        // ノードクリック = その型を注視、余白クリック = 現在の空間群の点群へ戻す (default タプルの Name は null)
+        _pgFocus = _pgNodes.FirstOrDefault(n => n.Rect.Contains(e.Location)).Name;
+        RenderPointGroups();
+    }
+    #endregion
+
     #region テーブル列定義 / ラベル多言語化 / 整形
     private void SetupTables()
     {
@@ -1398,6 +1566,20 @@ public partial class FormGroupRelations : FormBase
         //tabReflections.Text = Loc(en: "New reflections", ja: "超構造反射", de: "Neue Reflexe", fr: "Nouvelles réflexions", es: "Nuevas reflexiones", pt: "Novas reflexões", it: "Nuove riflessioni", ru: "Новые отражения", zhHans: "超结构反射", zhHant: "超結構反射", ko: "초구조 반사");
         tabReflections.Text = Loc(en: "New reflections", ja: "新規反射", de: "Neue Reflexe", fr: "Nouvelles réflexions", es: "Nuevas reflexiones", pt: "Novas reflexões", it: "Nuove riflessioni", ru: "Новые отражения", zhHans: "新反射", zhHant: "新反射", ko: "새 반사");
         tabDiagram.Text = Loc(en: "Diagram", ja: "系統図", de: "Diagramm", fr: "Diagramme", es: "Diagrama", pt: "Diagrama", it: "Diagramma", ru: "Диаграмма", zhHans: "系统图", zhHant: "系統圖", ko: "계통도");
+        // 260712Cl 追加 (③-4): 点群 Hasse 図タブ
+        tabPointGroups.Text = Loc(en: "Point groups", ja: "点群", de: "Punktgruppen", fr: "Groupes ponctuels", es: "Grupos puntuales", pt: "Grupos pontuais", it: "Gruppi puntuali", ru: "Точечные группы", zhHans: "点群", zhHant: "點群", ko: "점군");
+        toolTip.SetToolTip(pictureBoxPointGroups, Loc(
+            en: "Hasse diagram of the 32 crystallographic point-group types (vertical axis: group order). The current point group is haloed. Click a node to highlight its subgroup types (blue) and supergroup types (orange); numbers on the edges are the index (order ratio). Click empty space to return to the current group.",
+            ja: "32 の結晶学的点群型のハッセ図 (縦軸は群の位数)。現在の点群はハローで表示されます。ノードをクリックすると部分群型 (青) と超群型 (橙) を強調し、辺の数字は index (位数比) です。余白をクリックすると現在の点群に戻ります。",
+            de: "Hasse-Diagramm der 32 kristallographischen Punktgruppentypen (vertikale Achse: Gruppenordnung). Die aktuelle Punktgruppe ist hervorgehoben. Klicken Sie auf einen Knoten, um Untergruppentypen (blau) und Obergruppentypen (orange) hervorzuheben; die Zahlen an den Kanten sind der Index (Ordnungsverhältnis). Klick auf leere Fläche kehrt zur aktuellen Gruppe zurück.",
+            fr: "Diagramme de Hasse des 32 types de groupes ponctuels cristallographiques (axe vertical : ordre du groupe). Le groupe ponctuel actuel est entouré d'un halo. Cliquez sur un nœud pour mettre en évidence ses types de sous-groupes (bleu) et de supergroupes (orange) ; les nombres sur les arêtes sont l'indice (rapport des ordres). Cliquez sur un espace vide pour revenir au groupe actuel.",
+            es: "Diagrama de Hasse de los 32 tipos de grupos puntuales cristalográficos (eje vertical: orden del grupo). El grupo puntual actual está resaltado con halo. Haga clic en un nodo para resaltar sus tipos de subgrupos (azul) y supergrupos (naranja); los números en las aristas son el índice (razón de órdenes). Haga clic en un espacio vacío para volver al grupo actual.",
+            pt: "Diagrama de Hasse dos 32 tipos de grupos pontuais cristalográficos (eixo vertical: ordem do grupo). O grupo pontual atual é destacado com halo. Clique num nó para destacar seus tipos de subgrupos (azul) e supergrupos (laranja); os números nas arestas são o índice (razão de ordens). Clique num espaço vazio para voltar ao grupo atual.",
+            it: "Diagramma di Hasse dei 32 tipi di gruppi puntuali cristallografici (asse verticale: ordine del gruppo). Il gruppo puntuale attuale è evidenziato con alone. Clic su un nodo per evidenziare i tipi di sottogruppi (blu) e supergruppi (arancione); i numeri sugli spigoli sono l'indice (rapporto degli ordini). Clic su uno spazio vuoto per tornare al gruppo attuale.",
+            ru: "Диаграмма Хассе 32 кристаллографических типов точечных групп (вертикальная ось — порядок группы). Текущая точечная группа выделена ореолом. Щёлкните узел, чтобы подсветить типы подгрупп (синий) и надгрупп (оранжевый); числа на рёбрах — индекс (отношение порядков). Щелчок по пустому месту возвращает к текущей группе.",
+            zhHans: "32 种晶体学点群类型的 Hasse 图 (纵轴为群的阶)。当前点群带有光晕。单击节点可强调其子群类型 (蓝) 与超群类型 (橙)；边上的数字为 index (阶之比)。单击空白处返回当前点群。",
+            zhHant: "32 種晶體學點群類型的 Hasse 圖 (縱軸為群的階)。目前點群帶有光暈。單擊節點可強調其子群類型 (藍) 與超群類型 (橙)；邊上的數字為 index (階之比)。單擊空白處返回目前點群。",
+            ko: "32 결정학적 점군 유형의 Hasse 도표 (세로축은 군의 위수). 현재 점군은 후광으로 표시됩니다. 노드를 클릭하면 부분군 유형 (파랑) 과 초군 유형 (주황) 을 강조하며, 변의 숫자는 index (위수 비) 입니다. 여백을 클릭하면 현재 점군으로 돌아갑니다."));
         toolTip.SetToolTip(buttonBack, Loc(en: "Back", ja: "戻る", de: "Zurück", fr: "Précédent", es: "Atrás", pt: "Voltar", it: "Indietro", ru: "Назад", zhHans: "后退", zhHant: "後退", ko: "뒤로"));
         toolTip.SetToolTip(buttonForward, Loc(en: "Forward", ja: "進む", de: "Vor", fr: "Suivant", es: "Adelante", pt: "Avançar", it: "Avanti", ru: "Вперёд", zhHans: "前进", zhHant: "前進", ko: "앞으로"));
         toolTip.SetToolTip(pictureBoxGraph, Loc(en: "Click a node to inspect, double-click to browse into it.", ja: "ノードをクリックで詳細、ダブルクリックでその群へ移動。", de: "Knoten anklicken zum Ansehen, Doppelklick zum Öffnen.", fr: "Cliquez sur un nœud pour l'inspecter, double-cliquez pour y naviguer.", es: "Haga clic en un nodo para inspeccionar, doble clic para navegar.", pt: "Clique num nó para inspecionar, duplo clique para navegar.", it: "Clic su un nodo per ispezionare, doppio clic per aprirlo.", ru: "Клик по узлу — детали, двойной клик — перейти.", zhHans: "单击节点查看，双击进入该群。", zhHant: "單擊節點查看，雙擊進入該群。", ko: "노드를 클릭하면 상세, 더블클릭하면 이동."));
