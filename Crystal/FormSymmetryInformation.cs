@@ -405,6 +405,14 @@ public partial class FormSymmetryInformation : FormBase
             SetOperationsTable();
             SetPropertiesTable(symmetry);
             SetSettingsTable(symmetry);
+
+            // 260709Cl 追加: 開いたままの FormGroupRelations を新しい空間群へ追随させる (実バグ: 結晶を
+            // 切り替えても群の関係ブラウザは旧空間群のままで、Home も旧結晶を指し続けた)。LoadSpaceGroup は
+            // Home/コンテキスト基準 (_crystalSeries) の更新と履歴リセットを含む冪等な再入口。
+            // 非表示 (Hide) 中は何もしない — 再表示は必ず ShowGroupRelations() 経由で、そこで最新の
+            // SymmetrySeriesNumber が読み込まれる。
+            if (_formGroupRelations != null && !_formGroupRelations.IsDisposed && _formGroupRelations.Visible)
+                _formGroupRelations.LoadSpaceGroup(Crystal.SymmetrySeriesNumber, isCurrentCrystal: true);
         }
 
         // 260429Cl 追加: 対称要素・一般位置の図を再描画
