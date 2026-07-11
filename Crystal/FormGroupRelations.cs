@@ -42,6 +42,17 @@ public partial class FormGroupRelations : FormBase
     private bool _ksupersPending; // 260708Cl 追加: k-超群逆引きをバックグラウンド構築中
     private GroupRelation _selectedRelation;   // ツリー/グラフで選択中の関係 (null 可)
 
+    // 260709Cl 追加 (Phase 3、codex R11): isomorphic の normalizer 軌道 (系列) 表示と高指数拡張列挙。
+    /// <summary>index ≤ 4 の共役類 (GetMaximalKSubgroups) に対する軌道 ID (classId 引き)。null = 未計算 (pending/失敗)。</summary>
+    private int[] _isoOrbits;
+    /// <summary>index 5..スピナー値の拡張同型 (Kind=Isomorphic) と各軌道 ID。_ksubs とは分離して保持
+    /// (Diagram は index ≤ 4 の骨格のみ描く方針のため、混ぜない)。</summary>
+    private readonly List<(GroupRelation Rel, int Orbit)> _isoExtra = [];
+    private bool _isoPending;
+    private bool _isoFailed;
+    private int _isoGeneration; // 世代ガード (スピナー連打・ナビゲーション競合で古い結果を捨てる)
+    private readonly Timer _isoDebounce = new() { Interval = 300 }; // スピナー変更の debounce (codex R11)
+
     // グラフのヒットテスト用ノード矩形 (画面座標) と対応 series。
     //private readonly List<(Rectangle Rect, int Series)> _graphNodes = []; // 260709Cl: k-/isomorphic 辺の追加に伴い GraphNode へ拡張。
     // series ベースの逆引きは (a) 同じ子タイプが t と k の両方に現れると曖昧、(b) isomorphic (子 series == 現在 series) が
@@ -87,6 +98,9 @@ public partial class FormGroupRelations : FormBase
             };
             // 260708Cl 追加: Diagram の HM 記号 LaTeX ビットマップキャッシュをフォーム破棄時に解放。
             Disposed += (_, _) => { foreach (var b in _hmLatexCache.Values) b?.Dispose(); _hmLatexCache.Clear(); };
+            // 260709Cl 追加 (Phase 3): 同型 index スピナーの debounce タイマ (Tick で 1 回だけ再計算)。
+            _isoDebounce.Tick += (_, _) => { _isoDebounce.Stop(); if (_currentSeries >= 0) StartIsoComputation(); };
+            Disposed += (_, _) => _isoDebounce.Dispose();
         }
     }
 
@@ -237,11 +251,65 @@ public partial class FormGroupRelations : FormBase
         }
         _selectedRelation = null;
 
+        // 260709Cl 追加 (Phase 3): isomorphic の normalizer 軌道 (系列) と高指数拡張をバックグラウンド計算。
+        StartIsoComputation();
+
         BuildTree();
         UpdateBreadcrumb();
         UpdateNavButtons();
         RenderGraph();
         ShowRelationDetail(null);
+    }
+
+    /// <summary>260709Cl 追加 (Phase 3、codex R11): isomorphic の normalizer 軌道 (index ≤ 4 分) と
+    /// 高指数拡張列挙 (5..スピナー値) をバックグラウンドで計算し、完了時にツリーの同型枝を 2 階層
+    /// (軌道 → G-共役類) へ差し替える。世代 ID と series の二重ガードで古い結果を棄却。</summary>
+    private void StartIsoComputation()
+    {
+        int gen = ++_isoGeneration;
+        int sn = _currentSeries;
+        int isoMax = (int)numericIsoMax.Value;
+        _isoOrbits = null;
+        _isoExtra.Clear();
+        _isoPending = true;
+        _isoFailed = false;
+        ComputeThenApplyOnUi(() =>
+        {
+            var orbits = KSubgroupFinder.GetNormalizerOrbits(sn);
+            var extra = new List<(GroupRelation Rel, int Orbit)>();
+            for (int n = 5; n <= isoMax; n++)
+            {
+                var rels = KSubgroupFinder.GetMaximalKSubgroupsAt(sn, n); // 非素数冪 index は即時空 (codex R11)
+                if (rels.Length == 0) continue;
+                var orbs = KSubgroupFinder.GetNormalizerOrbitsAt(sn, n);
+                foreach (var r in rels)
+                    extra.Add((r, orbs[r.ConjugacyClassId]));
+            }
+            return Tuple.Create(orbits, extra);
+        }, result =>
+        {
+            if (gen != _isoGeneration || IsDisposed || _currentSeries != sn)
+                return; // 古い世代 / 別の群へ移動済み — 棄却
+            _isoPending = false;
+            if (result == null)
+            {
+                _isoFailed = true; // 計算失敗は空集合と区別して表示する (codex R11)
+            }
+            else
+            {
+                _isoOrbits = result.Item1;
+                _isoExtra.AddRange(result.Item2);
+            }
+            if (Visible)
+                BuildTree();
+        });
+    }
+
+    /// <summary>260709Cl 追加 (Phase 3): スピナー変更は debounce (300 ms) してから再計算 (連打・長押し対策)。</summary>
+    private void numericIsoMax_ValueChanged(object sender, EventArgs e)
+    {
+        _isoDebounce.Stop();
+        _isoDebounce.Start();
     }
 
     /// <summary>260708Cl 追加 (/simplify): バックグラウンド計算 → UI スレッドへ BeginInvoke で結果反映する共通足場
@@ -350,17 +418,51 @@ public partial class FormGroupRelations : FormBase
                 kNode.Nodes.Add(MakeSubNode(s));
         var iNode = subRoot.Nodes.Add(Loc(en: "isomorphic (series)", ja: "同型 (系列)", de: "isomorph (Serie)", fr: "isomorphes (série)", es: "isomorfos (serie)", pt: "isomorfos (série)", it: "isomorfi (serie)", ru: "изоморфные (серия)", zhHans: "同型 (系列)", zhHant: "同型 (系列)", ko: "동형 (계열)"));
         //iNode.Nodes.Add(PendingNode()); // 260708Cl: 実データ化
-        // 注記: 列挙は index ≤ 4 の厳密列挙のみ。同型系列は高指数へ続く (例: 立方晶 a′=3a は index 27)。
-        // 「任意の素数 index」への一般化はしない (空間群ごとに許される p と変換式が異なる、codex R7)。
-        // スピナーによる高指数拡張は G-共役類と ITA A1 の normalizer 系列表示の粒度差 (P1 で行数爆発) が
-        // 解決してから (codex R7 で保留判断)。
-        iNode.Nodes.Add(new TreeNode(Loc(en: "index ≤ 4 only — isomorphic series continue to higher indices", ja: "index ≤ 4 のみ表示 — 同型系列はより高い指数へ続きます", de: "nur Index ≤ 4 — isomorphe Serien setzen sich zu höheren Indizes fort", fr: "index ≤ 4 uniquement — les séries isomorphes continuent aux indices supérieurs", es: "solo índice ≤ 4 — las series isomorfas continúan en índices mayores", pt: "apenas índice ≤ 4 — as séries isomorfas continuam em índices maiores", it: "solo indice ≤ 4 — le serie isomorfe continuano a indici superiori", ru: "только индекс ≤ 4 — изоморфные серии продолжаются при больших индексах", zhHans: "仅显示 index ≤ 4 — 同型系列延伸至更高指数", zhHant: "僅顯示 index ≤ 4 — 同型系列延伸至更高指數", ko: "index ≤ 4만 표시 — 동형 계열은 더 높은 지수로 이어집니다")) { ForeColor = SystemColors.GrayText });
+        // 260709Cl (Phase 3): スピナー (numericIsoMax、2〜27) による高指数拡張と、normalizer 軌道 (系列) ごとの
+        // 2 階層表示を実データ化 (R7 の保留を解除。軌道束ね = Phase 2 GetNormalizerOrbits(At)、codex R9-R11)。
+        // 注記は現在の上限を動的表示。「任意の素数 index」への一般化はしない (空間群ごとに許される p と
+        // 変換式が異なる、codex R7)。
+        int isoMax = (int)numericIsoMax.Value;
+        iNode.Nodes.Add(new TreeNode(string.Format(Loc(en: "index ≤ {0} shown — isomorphic series continue to higher indices", ja: "index ≤ {0} のみ表示 — 同型系列はより高い指数へ続きます", de: "nur Index ≤ {0} — isomorphe Serien setzen sich zu höheren Indizes fort", fr: "index ≤ {0} uniquement — les séries isomorphes continuent aux indices supérieurs", es: "solo índice ≤ {0} — las series isomorfas continúan en índices mayores", pt: "apenas índice ≤ {0} — as séries isomorfas continuam em índices maiores", it: "solo indice ≤ {0} — le serie isomorfe continuano a indici superiori", ru: "только индекс ≤ {0} — изоморфные серии продолжаются при больших индексах", zhHans: "仅显示 index ≤ {0} — 同型系列延伸至更高指数", zhHant: "僅顯示 index ≤ {0} — 同型系列延伸至更高指數", ko: "index ≤ {0}만 표시 — 동형 계열은 더 높은 지수로 이어집니다"), isoMax)) { ForeColor = SystemColors.GrayText });
         var isoOnly = _ksubs.Where(s => s.Kind == GroupRelationKind.Isomorphic).ToArray();
-        if (isoOnly.Length == 0)
-            iNode.Nodes.Add(NoneNode());
-        else
+        if (_isoOrbits == null)
+        {
+            // 軌道が未計算 (バックグラウンド処理中 or 失敗): index ≤ 4 の類を従来どおりフラット表示 (codex R11)
             foreach (var s in isoOnly)
                 iNode.Nodes.Add(MakeSubNode(s));
+            if (_isoPending)
+                iNode.Nodes.Add(ComputingNode());
+            else if (_isoFailed)
+                iNode.Nodes.Add(FailedNode());
+            else if (isoOnly.Length == 0)
+                iNode.Nodes.Add(NoneNode());
+        }
+        else
+        {
+            // 2 階層: (index, 軌道) ごとにグループ化し、複数類の軌道は「軌道ノード + 子に各類」、1 類は直置き。
+            // 軌道代表は最小 ConjugacyClassId (決定的、codex R11)。
+            var isoAll = isoOnly.Select(s => (Rel: s, Orbit: _isoOrbits[s.ConjugacyClassId])).Concat(_isoExtra);
+            int shown = 0;
+            foreach (var grp in isoAll.GroupBy(x => (x.Rel.Index, x.Orbit)).OrderBy(g => g.Key.Index).ThenBy(g => g.Key.Orbit))
+            {
+                shown++;
+                var members = grp.OrderBy(x => x.Rel.ConjugacyClassId).Select(x => x.Rel).ToArray();
+                if (members.Length == 1)
+                {
+                    iNode.Nodes.Add(MakeSubNode(members[0]));
+                    continue;
+                }
+                var rep = members[0];
+                string label = $"{SeitzNotation.PrettyHM(rep.ChildLabel)}   [{rep.Index}]   — " +
+                    string.Format(Loc(en: "{0} classes (normalizer-equivalent)", ja: "同値な {0} 類 (normalizer)", de: "{0} Klassen (Normalisator-äquivalent)", fr: "{0} classes (équivalentes par normalisateur)", es: "{0} clases (equivalentes por normalizador)", pt: "{0} classes (equivalentes por normalizador)", it: "{0} classi (equivalenti per normalizzatore)", ru: "{0} классов (эквивалентны по нормализатору)", zhHans: "{0} 个类 (正规化子等价)", zhHant: "{0} 個類 (正規化子等價)", ko: "{0}개 류 (normalizer 동치)"), members.Length);
+                var orbitNode = new TreeNode(label) { Tag = new NodeTag { Kind = NodeKind.Subgroup, Relation = rep, TargetSeries = rep.ChildSeriesNumber } };
+                foreach (var mm in members)
+                    orbitNode.Nodes.Add(MakeSubNode(mm));
+                iNode.Nodes.Add(orbitNode);
+            }
+            if (shown == 0)
+                iNode.Nodes.Add(NoneNode());
+        }
 
         // --- Minimal supergroups ---
         var superRoot = treeRelations.Nodes.Add(Loc(en: "Minimal supergroups", ja: "極小超群", de: "Minimale Obergruppen", fr: "Supergroupes minimaux", es: "Supergrupos minimales", pt: "Supergrupos minimais", it: "Supergruppi minimali", ru: "Минимальные надгруппы", zhHans: "极小超群", zhHant: "極小超群", ko: "극소 초군"));
@@ -410,7 +512,10 @@ public partial class FormGroupRelations : FormBase
         // 260708Cl: 同一タイプ・同一 index の非共役クラスはラベルが同一で区別できない (実 GUI 目視で
         // Pm-3m の k に "Fm-3m [2] No.225" が 2 行並んだ、改修計画 §4.4)。重複ラベルへ類番号を付ける。
         //foreach (var category in new[] { tNode, kNode, iNode, tsNode, ksNode })
-        foreach (var category in new[] { tNode, kNode, iNode, tsNode, ksNode, isSupNode }) // 260709Cl: isomorphic 超群枝を追加
+        //foreach (var category in new[] { tNode, kNode, iNode, tsNode, ksNode, isSupNode }) // 260709Cl: isomorphic 超群枝を追加
+        var dupTargets = new List<TreeNode> { tNode, kNode, iNode, tsNode, ksNode, isSupNode }; // 260709Cl (Phase 3)
+        dupTargets.AddRange(iNode.Nodes.Cast<TreeNode>().Where(n => n.Nodes.Count > 0)); // 軌道ノードの下の類も対象
+        foreach (var category in dupTargets)
             foreach (var g in category.Nodes.Cast<TreeNode>().Where(n => n.Tag != null).GroupBy(n => n.Text).Where(g => g.Count() > 1))
             {
                 int i = 1;
@@ -445,6 +550,7 @@ public partial class FormGroupRelations : FormBase
     //private TreeNode PendingNode() => new(Loc(en: "Phase 2 data pending", ja: "Phase 2 データ待ち", de: "Phase-2-Daten ausstehend", fr: "Données Phase 2 à venir", es: "Datos de Fase 2 pendientes", pt: "Dados da Fase 2 pendentes", it: "Dati Fase 2 in attesa", ru: "Данные фазы 2 ожидаются", zhHans: "Phase 2 数据待补", zhHant: "Phase 2 資料待補", ko: "Phase 2 데이터 대기")) { ForeColor = SystemColors.GrayText };
     private TreeNode NoneNode() => new(Loc(en: "none", ja: "なし", de: "keine", fr: "aucun", es: "ninguno", pt: "nenhum", it: "nessuno", ru: "нет", zhHans: "无", zhHant: "無", ko: "없음")) { ForeColor = SystemColors.GrayText };
     private TreeNode ComputingNode() => new(Loc(en: "computing…", ja: "計算中…", de: "wird berechnet…", fr: "calcul en cours…", es: "calculando…", pt: "calculando…", it: "calcolo in corso…", ru: "вычисляется…", zhHans: "计算中…", zhHant: "計算中…", ko: "계산 중…")) { ForeColor = SystemColors.GrayText }; // 260705Cl 追加
+    private TreeNode FailedNode() => new(Loc(en: "computation failed", ja: "計算に失敗しました", de: "Berechnung fehlgeschlagen", fr: "échec du calcul", es: "el cálculo falló", pt: "o cálculo falhou", it: "calcolo non riuscito", ru: "вычисление не удалось", zhHans: "计算失败", zhHant: "計算失敗", ko: "계산 실패")) { ForeColor = SystemColors.GrayText }; // 260709Cl 追加 (codex R11: 失敗を空集合と区別)
 
     private enum NodeKind { Subgroup, Supergroup }
     private sealed class NodeTag
@@ -1179,6 +1285,9 @@ public partial class FormGroupRelations : FormBase
         toolTip.SetToolTip(buttonBack, Loc(en: "Back", ja: "戻る", de: "Zurück", fr: "Précédent", es: "Atrás", pt: "Voltar", it: "Indietro", ru: "Назад", zhHans: "后退", zhHant: "後退", ko: "뒤로"));
         toolTip.SetToolTip(buttonForward, Loc(en: "Forward", ja: "進む", de: "Vor", fr: "Suivant", es: "Adelante", pt: "Avançar", it: "Avanti", ru: "Вперёд", zhHans: "前进", zhHant: "前進", ko: "앞으로"));
         toolTip.SetToolTip(pictureBoxGraph, Loc(en: "Click a node to inspect, double-click to browse into it.", ja: "ノードをクリックで詳細、ダブルクリックでその群へ移動。", de: "Knoten anklicken zum Ansehen, Doppelklick zum Öffnen.", fr: "Cliquez sur un nœud pour l'inspecter, double-cliquez pour y naviguer.", es: "Haga clic en un nodo para inspeccionar, doble clic para navegar.", pt: "Clique num nó para inspecionar, duplo clique para navegar.", it: "Clic su un nodo per ispezionare, doppio clic per aprirlo.", ru: "Клик по узлу — детали, двойной клик — перейти.", zhHans: "单击节点查看，双击进入该群。", zhHant: "單擊節點查看，雙擊進入該群。", ko: "노드를 클릭하면 상세, 더블클릭하면 이동."));
+        // 260709Cl 追加 (Phase 3): 同型部分群の index 上限スピナー (「部分群」と明示 — 超群側は拡張対象外、codex R11)
+        labelIsoMax.Text = Loc(en: "Isomorphic subgroups:  index ≤", ja: "同型部分群:  index ≤", de: "Isomorphe Untergruppen:  Index ≤", fr: "Sous-groupes isomorphes :  index ≤", es: "Subgrupos isomorfos:  índice ≤", pt: "Subgrupos isomorfos:  índice ≤", it: "Sottogruppi isomorfi:  indice ≤", ru: "Изоморфные подгруппы:  индекс ≤", zhHans: "同型子群:  index ≤", zhHant: "同型子群:  index ≤", ko: "동형 부분군:  index ≤");
+        toolTip.SetToolTip(numericIsoMax, Loc(en: "Upper bound for enumerating maximal isomorphic subgroups (tree). Classes equivalent under the affine normalizer are grouped into one row, as in ITA A1. The Diagram keeps showing index ≤ 4 only.", ja: "同型極大部分群を列挙する指数の上限 (ツリー)。affine normalizer で同値な類は ITA A1 と同様に 1 行へまとめられます。系統図は index ≤ 4 のみの表示のままです。", de: "Obergrenze für die Aufzählung maximaler isomorpher Untergruppen (Baum). Unter dem affinen Normalisator äquivalente Klassen werden wie in ITA A1 zu einer Zeile gruppiert. Das Diagramm zeigt weiterhin nur Index ≤ 4.", fr: "Borne supérieure pour l'énumération des sous-groupes isomorphes maximaux (arbre). Les classes équivalentes sous le normalisateur affine sont regroupées en une ligne, comme dans ITA A1. Le diagramme continue de ne montrer que index ≤ 4.", es: "Límite superior para enumerar subgrupos isomorfos maximales (árbol). Las clases equivalentes bajo el normalizador afín se agrupan en una fila, como en ITA A1. El diagrama sigue mostrando solo índice ≤ 4.", pt: "Limite superior para enumerar subgrupos isomorfos maximais (árvore). Classes equivalentes sob o normalizador afim são agrupadas em uma linha, como na ITA A1. O diagrama continua mostrando apenas índice ≤ 4.", it: "Limite superiore per enumerare i sottogruppi isomorfi massimali (albero). Le classi equivalenti sotto il normalizzatore affine sono raggruppate in una riga, come in ITA A1. Il diagramma continua a mostrare solo indice ≤ 4.", ru: "Верхняя граница перечисления максимальных изоморфных подгрупп (дерево). Классы, эквивалентные относительно аффинного нормализатора, объединяются в одну строку, как в ITA A1. Диаграмма по-прежнему показывает только индекс ≤ 4.", zhHans: "枚举极大同型子群的指数上限 (树)。在仿射正规化子下等价的类会像 ITA A1 一样合并为一行。系统图仍只显示 index ≤ 4。", zhHant: "列舉極大同型子群的指數上限 (樹)。在仿射正規化子下等價的類會如 ITA A1 般合併為一列。系統圖仍僅顯示 index ≤ 4。", ko: "극대 동형 부분군을 열거하는 지수 상한 (트리). 아핀 normalizer 로 동치인 류는 ITA A1 과 같이 한 행으로 묶입니다. 계통도는 여전히 index ≤ 4만 표시합니다."));
         // 260709Cl 追加: 反射探索窓スピナー
         labelReflMax.Text = Loc(en: "Search window:  |h|, |k|, |l|  ≤", ja: "探索範囲:  |h|, |k|, |l|  ≤", de: "Suchfenster:  |h|, |k|, |l|  ≤", fr: "Fenêtre de recherche :  |h|, |k|, |l|  ≤", es: "Ventana de búsqueda:  |h|, |k|, |l|  ≤", pt: "Janela de busca:  |h|, |k|, |l|  ≤", it: "Finestra di ricerca:  |h|, |k|, |l|  ≤", ru: "Окно поиска:  |h|, |k|, |l|  ≤", zhHans: "搜索范围:  |h|, |k|, |l|  ≤", zhHant: "搜尋範圍:  |h|, |k|, |l|  ≤", ko: "탐색 범위:  |h|, |k|, |l|  ≤");
         toolTip.SetToolTip(numericReflMax, Loc(en: "Upper bound of the reflection index search. Larger values can list many more reflections.", ja: "新規反射を探索する指数の上限。大きくすると行数が大幅に増えることがあります。", de: "Obergrenze der Reflexindex-Suche. Größere Werte können deutlich mehr Reflexe auflisten.", fr: "Borne supérieure de la recherche d'indices. Des valeurs plus grandes peuvent lister beaucoup plus de réflexions.", es: "Límite superior de la búsqueda de índices. Valores mayores pueden listar muchas más reflexiones.", pt: "Limite superior da busca de índices. Valores maiores podem listar muitas mais reflexões.", it: "Limite superiore della ricerca degli indici. Valori maggiori possono elencare molte più riflessioni.", ru: "Верхняя граница поиска индексов отражений. Большие значения могут дать значительно больше строк.", zhHans: "反射指数搜索的上限。较大的值可能列出更多反射。", zhHant: "反射指數搜尋的上限。較大的值可能列出更多反射。", ko: "반사 지수 탐색의 상한. 값을 키우면 행 수가 크게 늘 수 있습니다."));

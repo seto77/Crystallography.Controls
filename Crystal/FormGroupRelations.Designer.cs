@@ -20,6 +20,8 @@ partial class FormGroupRelations
         toolTip = new System.Windows.Forms.ToolTip(components);
         panelToolbar = new System.Windows.Forms.Panel();
         labelBreadcrumb = new System.Windows.Forms.Label();
+        labelIsoMax = new System.Windows.Forms.Label(); // 260709Cl 追加 (Phase 3): 同型部分群の index 上限
+        numericIsoMax = new System.Windows.Forms.NumericUpDown(); // 260709Cl 追加 (Phase 3)
         buttonHome = new System.Windows.Forms.Button();
         buttonForward = new System.Windows.Forms.Button();
         buttonBack = new System.Windows.Forms.Button();
@@ -48,6 +50,7 @@ partial class FormGroupRelations
         tabDiagram = new System.Windows.Forms.TabPage();
         pictureBoxGraph = new System.Windows.Forms.PictureBox();
         panelToolbar.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)numericIsoMax).BeginInit(); // 260709Cl 追加
         panelBanner.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)splitMain).BeginInit();
         splitMain.Panel1.SuspendLayout();
@@ -77,6 +80,8 @@ partial class FormGroupRelations
         // 
         // panelToolbar
         // 
+        panelToolbar.Controls.Add(numericIsoMax); // 260709Cl 追加 (Phase 3)
+        panelToolbar.Controls.Add(labelIsoMax); // 260709Cl 追加 (Phase 3)
         panelToolbar.Controls.Add(labelBreadcrumb);
         panelToolbar.Controls.Add(buttonHome);
         panelToolbar.Controls.Add(buttonForward);
@@ -93,9 +98,34 @@ partial class FormGroupRelations
         labelBreadcrumb.AutoEllipsis = true;
         labelBreadcrumb.Location = new System.Drawing.Point(150, 4);
         labelBreadcrumb.Name = "labelBreadcrumb";
-        labelBreadcrumb.Size = new System.Drawing.Size(720, 26);
+        //labelBreadcrumb.Size = new System.Drawing.Size(720, 26);
+        labelBreadcrumb.Size = new System.Drawing.Size(420, 26); // 260709Cl: 右側に同型 index スピナーを配置するため短縮
         labelBreadcrumb.TabIndex = 3;
         labelBreadcrumb.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+        //
+        // labelIsoMax (260709Cl 追加、Phase 3)
+        //
+        labelIsoMax.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+        labelIsoMax.AutoEllipsis = true;
+        labelIsoMax.Location = new System.Drawing.Point(576, 4);
+        labelIsoMax.Name = "labelIsoMax";
+        labelIsoMax.Size = new System.Drawing.Size(250, 26);
+        labelIsoMax.TabIndex = 4;
+        labelIsoMax.Text = "Isomorphic subgroups:  index ≤";
+        labelIsoMax.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+        //
+        // numericIsoMax (260709Cl 追加、Phase 3)
+        //
+        numericIsoMax.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+        numericIsoMax.Location = new System.Drawing.Point(832, 5);
+        numericIsoMax.Maximum = new decimal(new int[] { 27, 0, 0, 0 });
+        numericIsoMax.Minimum = new decimal(new int[] { 2, 0, 0, 0 });
+        numericIsoMax.Name = "numericIsoMax";
+        numericIsoMax.Size = new System.Drawing.Size(44, 23);
+        numericIsoMax.TabIndex = 5;
+        numericIsoMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+        numericIsoMax.Value = new decimal(new int[] { 4, 0, 0, 0 });
+        numericIsoMax.ValueChanged += numericIsoMax_ValueChanged;
         // 
         // buttonHome
         // 
@@ -451,6 +481,7 @@ partial class FormGroupRelations
         Text = "Group Relations";
         panelToolbar.ResumeLayout(false);
         panelToolbar.PerformLayout();
+        ((System.ComponentModel.ISupportInitialize)numericIsoMax).EndInit(); // 260709Cl 追加
         panelBanner.ResumeLayout(false);
         splitMain.Panel1.ResumeLayout(false);
         splitMain.Panel2.ResumeLayout(false);
@@ -476,6 +507,8 @@ partial class FormGroupRelations
 
     private System.Windows.Forms.ToolTip toolTip;
     private System.Windows.Forms.Panel panelToolbar;
+    private System.Windows.Forms.Label labelIsoMax; // 260709Cl 追加 (Phase 3)
+    private System.Windows.Forms.NumericUpDown numericIsoMax; // 260709Cl 追加 (Phase 3)
     private System.Windows.Forms.Button buttonBack;
     private System.Windows.Forms.Button buttonForward;
     private System.Windows.Forms.Button buttonHome;
