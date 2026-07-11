@@ -26,8 +26,16 @@ public partial class FormGroupRelations : FormBase
     private int _crystalSeries = -1;
     /// <summary>いま閲覧中の空間群 (通し番号)。</summary>
     private int _currentSeries = -1;
-    private readonly Stack<int> _back = new();
-    private readonly Stack<int> _forward = new();
+    //private readonly Stack<int> _back = new();
+    //private readonly Stack<int> _forward = new();
+    // 260711Cl (codex R12): 履歴を series 番号から hop (経由した関係+向き) へ拡張。生の履歴は chain でなく
+    // walk なので、Diagram の多階層表示には BuildSelectedBranch() で単調な「選択パス」へ還元して使う。
+    // branch 再構成に oldest→newest の走査が要るため List (末尾=最新、スタック的に使用)。
+    private readonly List<NavigationHop> _back = [];
+    private readonly List<NavigationHop> _forward = [];
+
+    /// <summary>ナビゲーション 1 回分。Via=null は境界 (Home / 明示ロードなど関係を経由しない遷移)。260711Cl 追加 (codex R12)。</summary>
+    private sealed record NavigationHop(int FromSeries, int ToSeries, GroupRelation Via, bool SupergroupUp);
 
     // 現在閲覧中の群の関係 (グラフ・詳細タブ共有)。260705Cl: TSubgroup/TSubgroupFinder.TSupergroup を
     // 統合した共通 DTO GroupRelation に置換 (Phase 2e)。
@@ -160,14 +168,19 @@ public partial class FormGroupRelations : FormBase
     #endregion
 
     #region ナビゲーション
-    /// <summary>閲覧対象を切り替え、ツリー・詳細・グラフを再構築する。</summary>
-    private void NavigateTo(int seriesNumber, bool pushHistory = true)
+    /// <summary>閲覧対象を切り替え、ツリー・詳細・グラフを再構築する。
+    /// 260711Cl シグネチャ変更 (旧: NavigateTo(int seriesNumber, bool pushHistory = true)):
+    /// 経由した関係 via を履歴 hop に記録する (codex R12、多階層 Bärnighausen 表示用)。向き (上昇/下降) は
+    /// 呼び出し元に持たせず「遷移先が via の親側か」で導出する (フラグ渡しの取り違えを構造的に排除)。</summary>
+    private void NavigateTo(int seriesNumber, bool pushHistory = true, GroupRelation via = null)
     {
         if (seriesNumber < 0 || seriesNumber >= SymmetryStatic.TotalSpaceGroupNumber)
             return;
         if (pushHistory && _currentSeries >= 0)
         {
-            _back.Push(_currentSeries);
+            //_back.Push(_currentSeries);
+            bool up = via != null && via.ParentSeriesNumber == seriesNumber; // 260711Cl: 親側へ向かう遷移 = 上昇
+            _back.Add(new NavigationHop(_currentSeries, seriesNumber, via, up));
             _forward.Clear();
         }
         _currentSeries = seriesNumber;
@@ -378,15 +391,49 @@ public partial class FormGroupRelations : FormBase
     private void buttonBack_Click(object sender, EventArgs e)
     {
         if (_back.Count == 0) return;
-        _forward.Push(_currentSeries);
-        NavigateTo(_back.Pop(), pushHistory: false);
+        // 260711Cl (codex R12): hop を _back→_forward へ移し FromSeries を表示 (kind/index/向きが往復後も残る)。
+        var hop = _back[^1];
+        _back.RemoveAt(_back.Count - 1);
+        _forward.Add(hop);
+        NavigateTo(hop.FromSeries, pushHistory: false);
     }
 
     private void buttonForward_Click(object sender, EventArgs e)
     {
         if (_forward.Count == 0) return;
-        _back.Push(_currentSeries);
-        NavigateTo(_forward.Pop(), pushHistory: false);
+        var hop = _forward[^1]; // 260711Cl (codex R12)
+        _forward.RemoveAt(_forward.Count - 1);
+        _back.Add(hop);
+        NavigateTo(hop.ToSeries, pushHistory: false);
+    }
+
+    /// <summary>260711Cl 追加 (codex R12): 閲覧履歴 (walk — 上昇・往復・Home を含み得る) を、Diagram の
+    /// 多階層 Bärnighausen 表示に使える単調な「選択パス」(現在群の祖先チェーン、最古→直近親) へ還元する。
+    /// 各要素の Via はその祖先から 1 段下 (次の要素、末尾なら現在群) への下降関係。
+    /// 規則: 下降 hop = 末尾へ追加 / 既知祖先への上昇 = そこまで切り詰め / 未知超群への上昇・境界 (Via=null) = re-root。</summary>
+    private List<(int Series, GroupRelation Via)> BuildSelectedBranch()
+    {
+        var branch = new List<(int Series, GroupRelation Via)>();
+        foreach (var hop in _back)
+        {
+            if (hop.Via == null)
+            {
+                branch.Clear(); // 境界 (Home / 関係を経由しない遷移)
+            }
+            else if (!hop.SupergroupUp)
+            {
+                branch.Add((hop.FromSeries, hop.Via)); // 下降: 親 (From) を祖先列の末尾へ
+            }
+            else
+            {
+                int idx = branch.FindLastIndex(b => b.Series == hop.ToSeries);
+                if (idx >= 0)
+                    branch.RemoveRange(idx, branch.Count - idx); // 既知祖先へ戻った (その祖先が新しい現在群)
+                else
+                    branch.Clear(); // 未知の超群へ昇った: re-root
+            }
+        }
+        return branch;
     }
 
     private void buttonHome_Click(object sender, EventArgs e)
@@ -573,8 +620,12 @@ public partial class FormGroupRelations : FormBase
 
     private void treeRelations_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
     {
-        if (e.Node.Tag is NodeTag tag && tag.TargetSeries >= 0)
-            NavigateTo(tag.TargetSeries);
+        //if (e.Node.Tag is NodeTag tag && tag.TargetSeries >= 0)
+        //    NavigateTo(tag.TargetSeries);
+        // 260711Cl (codex R12): 経由関係と向きを履歴 hop に記録。series 同一 (self-isomorphic) への dblclick は
+        // 「同型だが異なる埋め込み」を series では表現できないため履歴に積まない (選択のみで扱う)。
+        if (e.Node.Tag is NodeTag tag && tag.TargetSeries >= 0 && tag.TargetSeries != _currentSeries)
+            NavigateTo(tag.TargetSeries, via: tag.Relation);
     }
     #endregion
 
@@ -973,7 +1024,17 @@ public partial class FormGroupRelations : FormBase
         // 3 段レイアウト: 上=極小超群, 中=現在, 下=極大部分群。どの種別 (t/k/isomorphic) も「一段」の関係なので
         // 同じ段に混在させ (Bärnighausen 図の慣行)、辺ラベル t2 / k2 / i3 と色で種別を示す。
         var cur = SymmetryStatic.Symmetries[_currentSeries];
-        int midY = h / 2, topY = (int)(h * 0.16), botY = (int)(h * 0.84);
+        //int midY = h / 2, topY = (int)(h * 0.16), botY = (int)(h * 0.84);
+        // 260711Cl (codex R12): 選択パス (BuildSelectedBranch = 履歴を単調化した祖先チェーン) の分だけ
+        // 行を追加する動的レイアウト。branch = [最古祖先, …, 直近親]。直近親は超群行に混ぜて強調
+        // (focus+context)、それより上の祖先 (最大 3、超過は「⋮ +N」) を親ノードの真上に縦積みする。
+        var branch = BuildSelectedBranch();
+        int ancShown = Math.Min(Math.Max(branch.Count - 1, 0), 3);
+        int ancMore = Math.Max(branch.Count - 1 - ancShown, 0);
+        int rows = ancShown + 3;
+        int yTop = (int)(h * (branch.Count > 0 ? 0.08 : 0.16)), ySpan = (int)(h * (branch.Count > 0 ? 0.84 : 0.68));
+        int RowY(int i) => yTop + ySpan * i / (rows - 1); // branch 無し: 0.16h/0.50h/0.84h = 従来レイアウトと一致
+        int topY = RowY(ancShown), midY = RowY(ancShown + 1), botY = RowY(ancShown + 2);
         //var nodeSize = new Size(88, 40);
         //int maxPerRow = Math.Max(3, (w - 40) / (nodeSize.Width + 10)); // 横あふれ防止 (幅から動的に算出)
         // 260709Cl: 混雑時はノード幅を 88→66 px に縮小して 1 行の容量を稼ぐ (フォーム既定幅で Pm-3m の
@@ -993,6 +1054,16 @@ public partial class FormGroupRelations : FormBase
              AggregateForGraph(_ksubs.Where(s => s.Kind == GroupRelationKind.K), bySupergroup: false),
              AggregateForGraph(_ksubs.Where(s => s.Kind == GroupRelationKind.Isomorphic), bySupergroup: false)],
             maxPerRow, out int botOverflow);
+        // 260711Cl (codex R12): 選択パスの直近親は必ず超群行に表示する (SelectRow の枠あふれ・逆引き未完了で
+        // リストに無い場合は、経由した下降関係そのものを超群側視点で流用してノード化する)。
+        if (branch.Count > 0 && !topRow.Any(grp => grp[0].ParentSeriesNumber == branch[^1].Series))
+        {
+            var parentRel = _supers.FirstOrDefault(s => s.ParentSeriesNumber == branch[^1].Series)
+                ?? _ksupers.FirstOrDefault(s => s.ParentSeriesNumber == branch[^1].Series)
+                ?? branch[^1].Via;
+            topRow.Insert(0, [parentRel]);
+        }
+
         int rowMax = Math.Max(topRow.Count + (topOverflow > 0 ? 1 : 0), botRow.Count + (botOverflow > 0 ? 1 : 0));
         var nodeSize = rowMax <= Math.Max(3, (w - 40) / (88 + 10)) ? new Size(88, 40) : new Size(66, 40);
         var curRect = NodeRect(w / 2, midY, nodeSize);
@@ -1046,6 +1117,50 @@ public partial class FormGroupRelations : FormBase
 
         DrawNode(g, curRect, cur, true, false, _currentSeries);
         _graphNodes.Add(new GraphNode { Rect = curRect, TargetSeries = _currentSeries }); // 現在ノード (選択なし・遷移 no-op)
+
+        // 260711Cl (codex R12): 選択パス (祖先チェーン) の描画。直近親 (超群行内) を強調枠+親→現在の辺を
+        // パス色で強調し、その真上に祖先を縦積み (辺ラベル = 経由した関係の kind+index)。祖先ノードは
+        // クリック=経由関係の詳細表示、dblclick=その祖先へ遷移 (BuildSelectedBranch が切り詰めを処理)。
+        if (branch.Count > 0)
+        {
+            int pi = topRow.FindIndex(grp => grp[0].ParentSeriesNumber == branch[^1].Series);
+            if (pi >= 0) // (強制包含済みなので常に成立するはずだが防御的に)
+            {
+                var pathColor = Color.FromArgb(120, 87, 166); // パス色 (紫系 — t/k/i の 3 色と衝突しない)
+                using var pathPen = new Pen(pathColor, 2.4f);
+                using var pathEdge = new Pen(Color.FromArgb(150, pathColor), 2.2f);
+                using var pathFg = new SolidBrush(pathColor);
+                var parentRect = superRects[pi];
+                // 親→現在の辺 (既存の細い辺の上へ強調重ね描き)
+                var viaLast = branch[^1].Via;
+                DrawEdge(g, pathEdge, Center(parentRect), Center(curRect));
+                DrawEdgeLabel(g, edgeFont, pathFg, labelBg, Mid(Center(parentRect), Center(curRect)), $"{KindChar(viaLast.Kind)}{viaLast.Index}");
+                using (var pp = Rounded(parentRect, 8))
+                    g.DrawPath(pathPen, pp);
+                // 祖先の縦積み (branch[^2] が親の 1 段上、以降さかのぼる)
+                var below = parentRect;
+                for (int a = 0; a < ancShown; a++)
+                {
+                    var (ancSeries, ancVia) = branch[branch.Count - 2 - a];
+                    var rect = NodeRect(Center(parentRect).X, RowY(ancShown - 1 - a), nodeSize);
+                    DrawEdge(g, pathEdge, Center(rect), Center(below));
+                    DrawEdgeLabel(g, edgeFont, pathFg, labelBg, Mid(Center(rect), Center(below)), $"{KindChar(ancVia.Kind)}{ancVia.Index}");
+                    DrawNode(g, rect, SymmetryStatic.Symmetries[ancSeries], false, false, ancSeries);
+                    using (var ap = Rounded(rect, 8))
+                        g.DrawPath(pathPen, ap);
+                    _graphNodes.Add(new GraphNode { Rect = rect, TargetSeries = ancSeries, Relations = [ancVia], ViewFromChild = false });
+                    below = rect;
+                }
+                if (ancMore > 0)
+                {
+                    using var moreFont = new Font("Segoe UI", 8f);
+                    string more = $"⋮ +{ancMore}";
+                    var sz = g.MeasureString(more, moreFont);
+                    using var moreFg = new SolidBrush(SystemColors.GrayText);
+                    g.DrawString(more, moreFont, moreFg, Center(below).X - sz.Width / 2, below.Y - sz.Height - 3);
+                }
+            }
+        }
 
         // 右下の恒常注記: isomorphic 辺があるときのみ「i: index ≤ 4 のみ」(詳細な説明はツリー側の注記が担う)
         bool hasIso = _ksubs.Any(s => s.Kind == GroupRelationKind.Isomorphic) || _ksupers.Any(s => s.Kind == GroupRelationKind.Isomorphic);
@@ -1233,7 +1348,8 @@ public partial class FormGroupRelations : FormBase
         //    NavigateTo(series);
         var node = HitTestGraph(e.Location); // 260709Cl: GraphNode 化 (isomorphic は TargetSeries == 現在 series なので自然に no-op)
         if (node != null && node.TargetSeries >= 0 && node.TargetSeries != _currentSeries)
-            NavigateTo(node.TargetSeries);
+            //NavigateTo(node.TargetSeries);
+            NavigateTo(node.TargetSeries, via: node.Relations is { Length: > 0 } rels ? rels[0] : null); // 260711Cl (codex R12)
     }
     #endregion
 
