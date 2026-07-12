@@ -14,6 +14,7 @@ using System.Linq;
 //using System.Net; //260317Cl WebClient→HttpClient
 using System.Net.Http;
 using System.Reflection;
+using System.Runtime.InteropServices; // 260712Cl 追加: CollectionsMarshal.AsSpan 用
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
@@ -179,7 +180,9 @@ public partial class CrystalDatabaseControl : UserControlBase
         try
         {
             sw.Restart();
-            if (filename.ToLower().EndsWith("cdb3"))
+            // 260712Cl 変更: ToLower() の一時文字列生成+CurrentCulture 依存を避け、序数比較の EndsWith に置換
+            // if (filename.ToLower().EndsWith("cdb3")) // 260712Cl 変更前
+            if (filename.EndsWith("cdb3", StringComparison.OrdinalIgnoreCase))
             {
                 using var fs = new FileStream(filename, FileMode.Open, FileAccess.Read);
                 int flag = readByte(fs), total = readInt(fs);
@@ -299,7 +302,10 @@ public partial class CrystalDatabaseControl : UserControlBase
 
             //最後まで来ている時で、かつ閾値以下の容量で、かつこれまで一度も分割もしていない場合
             if (i == bytes.Length - 1 && byteList.Count <= thresholdBytes && fileCounter == 0)
-                fs.Write([.. byteList], 0, byteList.Count);//最初のファイルに書き込んで終了
+                // 260712Cl 変更: [.. byteList] は最大 thresholdBytes(~35MB) の List<byte> を毎回 byte[] へ全コピーする。
+                // CollectionsMarshal.AsSpan で内部配列を直接書き込み、余分な確保+コピーを排除 (同期 Write 中に byteList は不変)。
+                // fs.Write([.. byteList], 0, byteList.Count);//最初のファイルに書き込んで終了 // 260712Cl 変更前
+                fs.Write(CollectionsMarshal.AsSpan(byteList));//最初のファイルに書き込んで終了
 
             //最後まで来ている時か、閾値以上の容量の場合
             else if (i == bytes.Length - 1 || byteList.Count > thresholdBytes)
@@ -307,7 +313,9 @@ public partial class CrystalDatabaseControl : UserControlBase
                 if (fileCounter == 0)
                     Directory.CreateDirectory(fn[..^5]);
                 using (var fs1 = new FileStream(header + fileCounter.ToString("000"), FileMode.Create, FileAccess.Write))
-                    fs1.Write([.. byteList], 0, byteList.Count);
+                    // 260712Cl 変更: 上記と同じく全コピーを避けて内部配列を直接書き込み
+                    // fs1.Write([.. byteList], 0, byteList.Count); // 260712Cl 変更前
+                    fs1.Write(CollectionsMarshal.AsSpan(byteList));
                 fileSize.Add(byteList.Count);
                 byteList.Clear();
 
@@ -434,7 +442,9 @@ public partial class CrystalDatabaseControl : UserControlBase
         if (!File.Exists(path))
             return null;
         using var fs = new FileStream(path, FileMode.Open);
-        return MD5.Create().ComputeHash(fs);
+        // 260712Cl 変更: MD5.Create() は IDisposable を返すが未 Dispose だった。静的 MD5.HashData(Stream) で同一ハッシュを算出しつつ破棄漏れを解消。
+        // return MD5.Create().ComputeHash(fs); // 260712Cl 変更前
+        return MD5.HashData(fs);
     }
 
     /// <summary>

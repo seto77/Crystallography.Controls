@@ -69,14 +69,16 @@ namespace Crystallography.Controls
 
         private void contextMenuStripBody_Closing(object sender, ToolStripDropDownClosingEventArgs e)
         {
-            double.TryParse(toolStripTextBoxMimimum.Text, out double min);
-            if (min < Maximum && Minimum != min)
+            // 260712Cl 修正: TryParse の戻り値を無視していたため、空欄/無効テキストで閉じると min/max=0 が採用され Minimum/Maximum が 0 に化けていた。
+            // パース成功時のみ適用するよう戻り値を条件に含める。
+            // double.TryParse(toolStripTextBoxMimimum.Text, out double min); if (min < Maximum && Minimum != min) // 260712Cl 変更前
+            if (double.TryParse(toolStripTextBoxMimimum.Text, out double min) && min < Maximum && Minimum != min)
             {
                 Minimum = min;
                 LimitChanged?.Invoke(this, e);
             }
-            double.TryParse(toolStripTextBoxMaximum.Text, out double max);
-            if (max > Minimum && Maximum != max)
+            // double.TryParse(toolStripTextBoxMaximum.Text, out double max); if (max > Minimum && Maximum != max) // 260712Cl 変更前
+            if (double.TryParse(toolStripTextBoxMaximum.Text, out double max) && max > Minimum && Maximum != max)
             {
                 Maximum = max;
                 LimitChanged?.Invoke(this, e);
