@@ -1593,8 +1593,7 @@ public partial class FormGroupRelations : FormBase
         // t- では T_H=T_G なので mod1 判定で厳密。
         var gTable = SymmetryElementsTable.FromOperations(SymmetryElementsTable.ExpandedOperations(parentSn), parentSn);
         if (gTable == null) { DrawElementsCenteredNote(g, w, h, "—", SystemColors.GrayText); return; }
-        var hSigs = s.Operations.Select(op => OperationSignature(new SymmetryOperation(op, parentSn))).ToHashSet();
-        var hTable = gTable.FilterByOperationMembership(op => hSigs.Contains(OperationSignature(op)));
+        var hTable = gTable.FilterByOperationMembership(s.Operations); // 260713Cl: baseline 自身を H メンバーシップで色分け (署名判定は engine 内)
 
         // 上部ラベル領域を空けて図を描く (図は topBand の下から)。
         int topBand = 40;
@@ -1663,19 +1662,7 @@ public partial class FormGroupRelations : FormBase
         ]);
     }
 
-    /// <summary>260713Cl 追加: 対称操作の表現非依存な同一性キー = 線形部 R (基底ベクトルへの ApplyMatrix 3 列) と
-    /// 並進 t (SeitzTranslation) を [0,1) に折り畳んだ 12 整数タプル。(Order,Sense,Direction) の内部表現差に依らず
-    /// 同一 Seitz 操作を判定できる (H メンバーシップ判定用)。呼び出し前に親 seriesNumber へ付け替えて isHex を揃えること。</summary>
-    private static (long, long, long, long, long, long, long, long, long, long, long, long) OperationSignature(in SymmetryOperation op)
-    {
-        var (ax, ay, az) = op.ApplyMatrix(1, 0, 0);
-        var (bx, by, bz) = op.ApplyMatrix(0, 1, 0);
-        var (cx, cy, cz) = op.ApplyMatrix(0, 0, 1);
-        var t = op.SeitzTranslation;
-        static long R6(double x) => (long)Math.Round(x * 1e6);
-        static long M1(double x) { double m = x - Math.Floor(x); if (m > 1 - 1e-7) m -= 1; return (long)Math.Round(m * 1e6); } // [0,1) 折り畳み (境界ガード)
-        return (R6(ax), R6(ay), R6(az), R6(bx), R6(by), R6(bz), R6(cx), R6(cy), R6(cz), M1(t.U), M1(t.V), M1(t.W));
-    }
+    // 260713Cl: OperationSignature (操作署名) は SymmetryElementsTable.FilterByOperationMembership 側へ移設 (engine に集約)。
 
     private static void DrawElementsCenteredNote(Graphics g, int w, int h, string text, Color color)
     {
