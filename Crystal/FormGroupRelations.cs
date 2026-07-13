@@ -1564,20 +1564,25 @@ public partial class FormGroupRelations : FormBase
             DrawElementsCenteredNote(g, w, h, Loc(en: "Select a subgroup relation to see which symmetry elements are retained or lost.", ja: "部分群関係を選択すると、どの対称要素が保持・消失するかを表示します。", de: "Wählen Sie eine Untergruppenrelation, um zu sehen, welche Symmetrieelemente erhalten bleiben oder verloren gehen.", fr: "Sélectionnez une relation de sous-groupe pour voir quels éléments de symétrie sont conservés ou perdus.", es: "Seleccione una relación de subgrupo para ver qué elementos de simetría se conservan o se pierden.", pt: "Selecione uma relação de subgrupo para ver quais elementos de simetria são mantidos ou perdidos.", it: "Seleziona una relazione di sottogruppo per vedere quali elementi di simmetria sono mantenuti o persi.", ru: "Выберите отношение подгруппы, чтобы увидеть, какие элементы симметрии сохраняются или утрачиваются.", zhHans: "选择一个子群关系以查看哪些对称要素被保持或失去。", zhHant: "選擇一個子群關係以查看哪些對稱要素被保持或失去。", ko: "부분군 관계를 선택하면 어떤 대칭 요소가 유지되거나 사라지는지 표시됩니다."), SystemColors.GrayText);
             return;
         }
-        if (s.Kind != GroupRelationKind.T)
+        // 260713Cl (③-2 k- 対応): t- と「胞が拡大しない k-」(= centering 除去、SublatticeBasis の行列式が親慣用胞 1 個分)
+        // は親胞1セルにそのまま重ね描く (T_H=同一慣用胞なので mod-1 membership が正しく、中心化が生む screw/glide が
+        // 失われるのが赤で出る)。胞が拡大する関係 (isomorphic 全般・拡大 k-) は tiling が要るので現状は注記。
+        bool sameCell = s.Kind == GroupRelationKind.T
+            || (s.SublatticeBasis != null && Math.Abs(Det3(s.SublatticeBasis) - 1.0) < 1e-6);
+        if (!sameCell)
         {
             DrawElementsCenteredNote(g, w, h, Loc(
-                en: "The symmetry-element overlay is available for translationengleiche (t-) subgroups only. For klassengleiche (k-) and isomorphic relations the cell enlarges, so see the Domains & Twins and New reflections tabs for the lost lattice symmetry.",
-                ja: "対称要素の重ね描きは translationengleiche (t-) 部分群でのみ提供しています。klassengleiche (k-)・同型関係では胞が拡大するため、失われる格子対称は Domains & Twins / New reflections タブをご覧ください。",
-                de: "Die Symmetrieelement-Überlagerung ist nur für translationengleiche (t-) Untergruppen verfügbar. Bei klassengleichen (k-) und isomorphen Relationen vergrößert sich die Zelle; siehe die Registerkarten Domänen & Zwillinge und Neue Reflexe für die verlorene Gittersymmetrie.",
-                fr: "La superposition des éléments de symétrie n'est disponible que pour les sous-groupes translationengleiche (t-). Pour les relations klassengleiche (k-) et isomorphes, la maille s'agrandit ; voir les onglets Domaines & Macles et Nouvelles réflexions pour la symétrie de réseau perdue.",
-                es: "La superposición de elementos de simetría solo está disponible para subgrupos translationengleiche (t-). En las relaciones klassengleiche (k-) e isomorfas la celda se amplía; consulte las pestañas Dominios y maclas y Nuevas reflexiones para la simetría de red perdida.",
-                pt: "A sobreposição de elementos de simetria está disponível apenas para subgrupos translationengleiche (t-). Nas relações klassengleiche (k-) e isomorfas a célula aumenta; veja as abas Domínios e geminações e Novas reflexões para a simetria de rede perdida.",
-                it: "La sovrapposizione degli elementi di simmetria è disponibile solo per i sottogruppi translationengleiche (t-). Nelle relazioni klassengleiche (k-) e isomorfe la cella si ingrandisce; vedere le schede Domini e geminazioni e Nuove riflessioni per la simmetria reticolare persa.",
-                ru: "Наложение элементов симметрии доступно только для translationengleiche (t-) подгрупп. Для klassengleiche (k-) и изоморфных отношений ячейка увеличивается; см. вкладки «Домены и двойники» и «Новые отражения» для утраченной симметрии решётки.",
-                zhHans: "对称要素重叠仅适用于 translationengleiche (t-) 子群。对于 klassengleiche (k-) 和同型关系，胞会扩大，失去的点阵对称请参见「畴与双晶」和「新反射」选项卡。",
-                zhHant: "對稱要素重疊僅適用於 translationengleiche (t-) 子群。對於 klassengleiche (k-) 與同型關係，胞會擴大，失去的點陣對稱請參見「疇與雙晶」與「新反射」索引標籤。",
-                ko: "대칭 요소 겹쳐 그리기는 translationengleiche (t-) 부분군에서만 제공됩니다. klassengleiche (k-) 및 동형 관계에서는 셀이 확대되므로, 잃어버린 격자 대칭은 도메인·쌍정 및 새 반사 탭을 참조하세요."), SystemColors.GrayText);
+                en: "The symmetry-element overlay is shown for relations that keep the conventional cell (translationengleiche subgroups and centring-removing klassengleiche ones). This relation enlarges the cell, so the lost lattice symmetry is shown on the Domains & Twins and New reflections tabs instead.",
+                ja: "対称要素の重ね描きは、慣用胞が変わらない関係 (translationengleiche 部分群と、中心化を外す klassengleiche 部分群) について表示します。この関係は胞が拡大するため、失われる格子対称は Domains & Twins / New reflections タブをご覧ください。",
+                de: "Die Symmetrieelement-Überlagerung wird für Relationen gezeigt, die die konventionelle Zelle beibehalten (translationengleiche Untergruppen und zentrierungsentfernende klassengleiche). Diese Relation vergrößert die Zelle; die verlorene Gittersymmetrie wird daher auf den Registerkarten Domänen & Zwillinge und Neue Reflexe gezeigt.",
+                fr: "La superposition des éléments de symétrie est affichée pour les relations qui conservent la maille conventionnelle (sous-groupes translationengleiche et klassengleiche qui suppriment un centrage). Cette relation agrandit la maille ; la symétrie de réseau perdue est donc montrée sur les onglets Domaines & Macles et Nouvelles réflexions.",
+                es: "La superposición de elementos de simetría se muestra para las relaciones que conservan la celda convencional (subgrupos translationengleiche y klassengleiche que eliminan un centrado). Esta relación amplía la celda; por tanto, la simetría de red perdida se muestra en las pestañas Dominios y maclas y Nuevas reflexiones.",
+                pt: "A sobreposição de elementos de simetria é mostrada para relações que mantêm a célula convencional (subgrupos translationengleiche e klassengleiche que removem uma centragem). Esta relação amplia a célula; por isso a simetria de rede perdida é mostrada nas abas Domínios e geminações e Novas reflexões.",
+                it: "La sovrapposizione degli elementi di simmetria è mostrata per le relazioni che mantengono la cella convenzionale (sottogruppi translationengleiche e klassengleiche che rimuovono una centratura). Questa relazione ingrandisce la cella; la simmetria reticolare persa è quindi mostrata nelle schede Domini e geminazioni e Nuove riflessioni.",
+                ru: "Наложение элементов симметрии показывается для отношений, сохраняющих условную ячейку (translationengleiche подгруппы и klassengleiche, снимающие центрировку). Это отношение увеличивает ячейку, поэтому утраченная симметрия решётки показана на вкладках «Домены и двойники» и «Новые отражения».",
+                zhHans: "对称要素重叠适用于保持惯用胞的关系 (translationengleiche 子群，以及去除心式的 klassengleiche 子群)。此关系会扩大胞，因此失去的点阵对称请参见「畴与双晶」和「新反射」选项卡。",
+                zhHant: "對稱要素重疊適用於保持慣用胞的關係 (translationengleiche 子群，以及去除心式的 klassengleiche 子群)。此關係會擴大胞，因此失去的點陣對稱請參見「疇與雙晶」與「新反射」索引標籤。",
+                ko: "대칭 요소 겹쳐 그리기는 관용 셀을 유지하는 관계 (translationengleiche 부분군과 중심화를 제거하는 klassengleiche 부분군) 에 대해 표시됩니다. 이 관계는 셀을 확대하므로, 잃어버린 격자 대칭은 도메인·쌍정 및 새 반사 탭을 참조하세요."), SystemColors.GrayText);
             return;
         }
 
@@ -1620,7 +1625,8 @@ public partial class FormGroupRelations : FormBase
         string projName = axis switch { ProjectionAxis.A => "a", ProjectionAxis.B => "b", _ => "c" };
         string parentName = SeitzNotation.PrettyHM(parentSym.SpaceGroupHMStr);
         string childName = s.ChildSeriesNumber >= 0 ? SeitzNotation.PrettyHM(s.ChildLabel) : s.PointGroupHM;
-        g.DrawString($"{parentName}  →  {childName}    ·    t{s.Index}    ·    ⟂ {projName}", titleFont, titleFg, 6, 5);
+        char kindChar = s.Kind switch { GroupRelationKind.K => 'k', GroupRelationKind.Isomorphic => 'i', _ => 't' }; // 260713Cl: 関係種別 (旧: t 固定)
+        g.DrawString($"{parentName}  →  {childName}    ·    {kindChar}{s.Index}    ·    ⟂ {projName}", titleFont, titleFg, 6, 5);
         // 凡例スウォッチ
         float lx = 6, ly = 23;
         using (var retPen = new Pen(ElemRetainedColor, 2.4f))
@@ -1663,6 +1669,11 @@ public partial class FormGroupRelations : FormBase
     }
 
     // 260713Cl: OperationSignature (操作署名) は SymmetryElementsTable.FilterByOperationMembership 側へ移設 (engine に集約)。
+
+    /// <summary>260713Cl 追加: row-major 9 要素の 3×3 行列の行列式。SublatticeBasis (T_H 基底、親慣用胞単位) の
+    /// 体積比判定に使う (=1 なら慣用胞不変=centering 除去、>1 なら胞拡大)。</summary>
+    private static double Det3(double[] m) =>
+        m[0] * (m[4] * m[8] - m[5] * m[7]) - m[1] * (m[3] * m[8] - m[5] * m[6]) + m[2] * (m[3] * m[7] - m[4] * m[6]);
 
     private static void DrawElementsCenteredNote(Graphics g, int w, int h, string text, Color color)
     {
