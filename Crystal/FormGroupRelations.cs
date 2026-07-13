@@ -1536,7 +1536,7 @@ public partial class FormGroupRelations : FormBase
     // k-/isomorphic は胞が拡大し (T_H ⊂ T_G)、親胞への折り畳みで別胞の retained コピーが lost 位置に重なる
     // 誤りが生じ得るため、v1 では対象外の注記を表示する (codex R 相談で確定)。
 
-    private static readonly Color ElemLostColor = Color.FromArgb(206, 66, 56);   // lost = 赤 (失われる対称要素)
+    private static readonly Color ElemLostColor = Color.FromArgb(216, 110, 100); // lost = 赤 (失われる対称要素、260713Cl やや薄く=控えめに #D86E64)
     private static readonly Color ElemRetainedColor = Color.FromArgb(20, 20, 20); // retained = 黒 (H で保持)
 
     private void RenderElements()
@@ -1652,8 +1652,10 @@ public partial class FormGroupRelations : FormBase
         return bmp;
     }
 
-    /// <summary>260713Cl 追加: 矩形 <paramref name="rect"/> に baseline を lost 色(赤)で、retained を retained 色(黒)で
-    /// 2 パス ColorMatrix ティント合成する (親胞1セル分の描画)。tiling では各タイル矩形にこれを呼ぶ。</summary>
+    /// <summary>260713Cl 追加: 矩形 <paramref name="rect"/> に 3 パス ColorMatrix ティント合成する (親胞1セル分の描画)。
+    /// L1=baseline を lost 色(赤)で下地 → L2=retained を retained 色(黒)で上書き → L3=lost かつ retained と非共存の要素を
+    /// 赤で最前面 (孤立 lost が黒/白ハローに隠れないように。降格スポットは L3 から除外され L2 の黒が残る)。tiling では各タイル
+    /// 矩形にこれを呼ぶ。</summary>
     private void DrawElementsCell(Graphics g, Rectangle rect, int sn, ProjectionAxis axis, SymmetryElementsTable baseline, SymmetryElementsTable retained)
     {
         using (var bmpB = RenderElementsLayer(rect.Width, rect.Height, sn, axis, baseline))
@@ -1667,6 +1669,14 @@ public partial class FormGroupRelations : FormBase
         {
             attrR.SetColorMatrix(TintMatrix(ElemRetainedColor));
             g.DrawImage(bmpR, rect, 0, 0, bmpR.Width, bmpR.Height, GraphicsUnit.Pixel, attrR);
+        }
+        // L3 (260713Cl): retained と幾何 carrier が非共存な lost 要素を赤で最前面に重ねる。retained の黒 (と白ハロー) が
+        // 近接 lost を覆う問題への対処。降格スポット (同一直線/平面上に retained が居る lost) は除外し L2 の黒を残す。
+        using (var bmpL = RenderElementsLayer(rect.Width, rect.Height, sn, axis, baseline.LostNotCoincidentWith(retained)))
+        using (var attrL = new ImageAttributes())
+        {
+            attrL.SetColorMatrix(TintMatrix(ElemLostColor));
+            g.DrawImage(bmpL, rect, 0, 0, bmpL.Width, bmpL.Height, GraphicsUnit.Pixel, attrL);
         }
     }
 
