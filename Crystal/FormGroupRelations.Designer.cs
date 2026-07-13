@@ -51,6 +51,8 @@ partial class FormGroupRelations
         pictureBoxGraph = new System.Windows.Forms.PictureBox();
         tabPointGroups = new System.Windows.Forms.TabPage(); // 260712Cl 追加 (③-4): 点群 Hasse 図
         pictureBoxPointGroups = new System.Windows.Forms.PictureBox(); // 260712Cl 追加
+        tabElements = new System.Windows.Forms.TabPage(); // 260713Cl 追加 (③-2): 対称要素 lost/retained
+        pictureBoxElements = new System.Windows.Forms.PictureBox(); // 260713Cl 追加
         panelToolbar.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)numericIsoMax).BeginInit(); // 260709Cl 追加
         panelBanner.SuspendLayout();
@@ -73,6 +75,8 @@ partial class FormGroupRelations
         ((System.ComponentModel.ISupportInitialize)pictureBoxGraph).BeginInit();
         tabPointGroups.SuspendLayout(); // 260712Cl 追加
         ((System.ComponentModel.ISupportInitialize)pictureBoxPointGroups).BeginInit(); // 260712Cl 追加
+        tabElements.SuspendLayout(); // 260713Cl 追加
+        ((System.ComponentModel.ISupportInitialize)pictureBoxElements).BeginInit(); // 260713Cl 追加
         SuspendLayout();
         // 
         // toolTip
@@ -225,6 +229,7 @@ partial class FormGroupRelations
         tabDetail.Controls.Add(tabReflections);
         tabDetail.Controls.Add(tabDiagram);
         tabDetail.Controls.Add(tabPointGroups); // 260712Cl 追加
+        tabDetail.Controls.Add(tabElements); // 260713Cl 追加
         tabDetail.Dock = System.Windows.Forms.DockStyle.Fill;
         tabDetail.Location = new System.Drawing.Point(0, 0);
         tabDetail.Name = "tabDetail";
@@ -494,6 +499,28 @@ partial class FormGroupRelations
         pictureBoxPointGroups.SizeChanged += pictureBoxPointGroups_SizeChanged;
         pictureBoxPointGroups.MouseClick += pictureBoxPointGroups_MouseClick;
         //
+        // tabElements (260713Cl 追加 ③-2: 対称要素 lost/retained 重ね描き)
+        //
+        tabElements.Controls.Add(pictureBoxElements);
+        tabElements.Location = new System.Drawing.Point(4, 24);
+        tabElements.Name = "tabElements";
+        tabElements.Padding = new System.Windows.Forms.Padding(3);
+        tabElements.Size = new System.Drawing.Size(568, 434);
+        tabElements.TabIndex = 6;
+        tabElements.Text = "Elements";
+        tabElements.UseVisualStyleBackColor = true;
+        //
+        // pictureBoxElements (260713Cl 追加)
+        //
+        pictureBoxElements.BackColor = System.Drawing.Color.White;
+        pictureBoxElements.Dock = System.Windows.Forms.DockStyle.Fill;
+        pictureBoxElements.Location = new System.Drawing.Point(3, 3);
+        pictureBoxElements.Name = "pictureBoxElements";
+        pictureBoxElements.Size = new System.Drawing.Size(562, 428);
+        pictureBoxElements.TabIndex = 0;
+        pictureBoxElements.TabStop = false;
+        pictureBoxElements.SizeChanged += pictureBoxElements_SizeChanged;
+        //
         // FormGroupRelations
         //
         AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -532,6 +559,8 @@ partial class FormGroupRelations
         ((System.ComponentModel.ISupportInitialize)pictureBoxGraph).EndInit();
         tabPointGroups.ResumeLayout(false); // 260712Cl 追加
         ((System.ComponentModel.ISupportInitialize)pictureBoxPointGroups).EndInit(); // 260712Cl 追加
+        tabElements.ResumeLayout(false); // 260713Cl 追加
+        ((System.ComponentModel.ISupportInitialize)pictureBoxElements).EndInit(); // 260713Cl 追加
         ResumeLayout(false);
     }
 
@@ -571,4 +600,6 @@ partial class FormGroupRelations
     private System.Windows.Forms.PictureBox pictureBoxGraph;
     private System.Windows.Forms.TabPage tabPointGroups; // 260712Cl 追加 (③-4)
     private System.Windows.Forms.PictureBox pictureBoxPointGroups; // 260712Cl 追加
+    private System.Windows.Forms.TabPage tabElements; // 260713Cl 追加 (③-2)
+    private System.Windows.Forms.PictureBox pictureBoxElements; // 260713Cl 追加
 }

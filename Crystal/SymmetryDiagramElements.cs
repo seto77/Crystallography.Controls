@@ -214,8 +214,12 @@ public class SymmetryDiagramElements : SymmetryDiagramCommon
     }
 
     /// <summary>(260504Cl 追加) 与えられた <see cref="Graphics"/> 上に対称要素図を描画する。
-    /// 呼び出し側で背景クリア・<see cref="Graphics.SmoothingMode"/> 等の初期化を行うこと。</summary>
-    public static void DrawSymmetryElements(Graphics g, Size clientSize, int seriesNumber, ProjectionAxis axis = ProjectionAxis.C)
+    /// 呼び出し側で背景クリア・<see cref="Graphics.SmoothingMode"/> 等の初期化を行うこと。
+    /// 260713Cl (③-2): <paramref name="tableOverride"/> を渡すと要素データを <see cref="SymmetryElementsTable.Get"/> でなく
+    /// それから取る (レイアウト・投影・晶系判定は <paramref name="seriesNumber"/> のまま)。lost/retained 重ね描みで
+    /// 親レイアウト上に部分群 H の要素テーブルを流し込むのに使う。</summary>
+    public static void DrawSymmetryElements(Graphics g, Size clientSize, int seriesNumber, ProjectionAxis axis = ProjectionAxis.C,
+                                            SymmetryElementsTable tableOverride = null) // 260713Cl 追加
     {
         if (!TryGetSym(seriesNumber, out var sym, out seriesNumber, out var msg))
         {
@@ -231,7 +235,7 @@ public class SymmetryDiagramElements : SymmetryDiagramCommon
         DrawCellAndAxes(g, layout, proj, sym, halfQuadrant, showAxisLabels: false); // (260505Cl) 対称要素図では軸ラベル ("o", a, b 等) を出さない。一般位置図側だけで表示。
         if (halfQuadrant) DrawUpperLeftQuadrantLabel(g);
 
-        var table = SymmetryElementsTable.Get(seriesNumber);
+        var table = tableOverride ?? SymmetryElementsTable.Get(seriesNumber); // 260713Cl (③-2): override 優先
         if (table == null) return;
 
         using var pen        = new Pen(Color.Black, DefaultPenWidth);
