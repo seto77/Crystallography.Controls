@@ -154,11 +154,14 @@ namespace Crystallography.Controls
 
             #endregion テキストの設定
 
+            // 260712Cl 変更: 111 個の同一 Font (GDI ハンドル) をループ内で個別生成していた。Font は不変で複数コントロール共有が安全なため 1 個を使い回す。
+            var symbolFont = new Font(WineCompat.Resolve("Segoe UI Symbol"), 9F, FontStyle.Regular, GraphicsUnit.Point, 0); //260610Cl Wine時フォント切替
             for (int i = 1; i < 112; i++)
             {
                 button[i].AutoSize = true;
                 button[i].AutoSizeMode = AutoSizeMode.GrowAndShrink;
-                button[i].Font = new Font(WineCompat.Resolve("Segoe UI Symbol"), 9F, FontStyle.Regular, GraphicsUnit.Point, 0); //260610Cl Wine時フォント切替
+                // button[i].Font = new Font(WineCompat.Resolve("Segoe UI Symbol"), 9F, FontStyle.Regular, GraphicsUnit.Point, 0); //260610Cl // 260712Cl 変更前 (ループ内生成)
+                button[i].Font = symbolFont;
                 if (i != 0)
                 {
                     Controls.Add(button[i]);

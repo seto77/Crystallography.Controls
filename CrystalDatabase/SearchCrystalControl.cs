@@ -155,7 +155,9 @@ public partial class SearchCrystalControl : UserControlBase
         var table = CrystalDatabaseControl.Table;
         var dMin = double.MaxValue;
         if (prm.D1 != 0) dMin = Math.Min(dMin, prm.D1 * (1 - 2 * prm.D1Err));
-        if (prm.D2 != 0) dMin = Math.Min(dMin, prm.D2 * (1 - 2 * prm.D3Err));
+        // 260712Cl 修正: D2 の許容誤差に D3Err を使っていたコピペミス (前後行の D1×D1Err / D3×D3Err パターンから明白)。D2Err > D3Err のとき dMin が浅くなり候補が検索漏れしていた。
+        // if (prm.D2 != 0) dMin = Math.Min(dMin, prm.D2 * (1 - 2 * prm.D3Err)); // 260712Cl 変更前
+        if (prm.D2 != 0) dMin = Math.Min(dMin, prm.D2 * (1 - 2 * prm.D2Err));
         if (prm.D3 != 0) dMin = Math.Min(dMin, prm.D3 * (1 - 2 * prm.D3Err));
 
         var ignoreScatteringFactor = checkBoxIgnoreScatteringFactor.Checked;
@@ -319,7 +321,8 @@ public partial class SearchCrystalControl : UserControlBase
         try
         {
             skipProgressEvent = true;
-            ProgressChanged?.Invoke(sender, (double)e.ProgressPercentage / CrystalDatabaseControl.Table.Count, $"Searching... {sw.ElapsedMilliseconds / 1000.0:f2} msec.");
+            // 260712Cl 修正: ElapsedMilliseconds/1000.0 は秒値なのに単位が "msec." だった (CrystalDatabaseControl 側の "sec." とも不一致)。
+            ProgressChanged?.Invoke(sender, (double)e.ProgressPercentage / CrystalDatabaseControl.Table.Count, $"Searching... {sw.ElapsedMilliseconds / 1000.0:f2} sec.");
         }
         catch { }
         finally { skipProgressEvent = false; }
@@ -349,7 +352,7 @@ public partial class SearchCrystalControl : UserControlBase
         this.Enabled = true;
 
         Thread.Sleep(100);
-        ProgressChanged?.Invoke(sender, 1.0, $"Completion of search. {sw.ElapsedMilliseconds / 1000.0:f2} msec.");
+        ProgressChanged?.Invoke(sender, 1.0, $"Completion of search. {sw.ElapsedMilliseconds / 1000.0:f2} sec.");// 260712Cl 修正: 秒値なのに "msec." だった単位表記を修正
         // 260428Cl Application.DoEvents() を削除 (RunWorkerCompleted は UI スレッドで動作するため不要)
 
 
