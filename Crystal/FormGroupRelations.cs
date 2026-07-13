@@ -1601,9 +1601,9 @@ public partial class FormGroupRelations : FormBase
             for (int r = 0; r < rows; r++)
                 for (int c = 0; c < cols; c++)
                 {
-                    var sub = new Rectangle(diagRect.X + c * diagRect.Width / cols, diagRect.Y + (rows - 1 - r) * diagRect.Height / rows,
-                                            diagRect.Width / cols, diagRect.Height / rows); // 画面は上が下段格子 (b 等は上向き慣例)
-                    var off = new double[3]; off[axA] = c; off[axB] = r; // 親格子タイルオフセット (面内 2 軸)
+                    var sub = new Rectangle(diagRect.X + c * diagRect.Width / cols, diagRect.Y + r * diagRect.Height / rows,
+                                            diagRect.Width / cols, diagRect.Height / rows); // 画面横=b(c列), 縦=a(r行)。a は下向きなので行=a offset そのまま
+                    var off = new double[3]; off[axA] = c; off[axB] = r; // off[b]=c, off[a]=r (親格子タイルオフセット)
                     var retTile = gTable.FilterRetainedInTile(s.Operations, s.SublatticeBasis, off[0], off[1], off[2]);
                     DrawElementsCell(g, sub, parentSn, axis, gTable, retTile);
                 }
@@ -1613,7 +1613,7 @@ public partial class FormGroupRelations : FormBase
         }
         else
         {
-            DrawElementsEnlargedNote(g, w, h); // 斜交 P・非直交投影・全軸拡大 (面直折り畳み) は注記
+            DrawElementsEnlargedNote(g, w, h); // c 軸方向拡大 (面直折り畳み)・斜交 P・非直交投影 (hex/monoclinic) は注記
             return;
         }
 
@@ -1687,8 +1687,8 @@ public partial class FormGroupRelations : FormBase
         if (cs is not (3 or 4 or 7)) return false; // ⟂c で a⊥b が保証される直交系のみ
         int na = (int)Math.Round(Math.Abs(P[0])), nb = (int)Math.Round(Math.Abs(P[4])), nc = (int)Math.Round(Math.Abs(P[8]));
         if (nc != 1) return false; // c (視線=投影軸) の拡大は面内で表せない → 注記
-        axis = ProjectionAxis.C; // 標準の下向き c 図に確定
-        axA = 0; axB = 1; cols = na; rows = nb; // 面内 a,b タイル
+        axis = ProjectionAxis.C; // 標準の下向き c 図 (ITA 原点左上: 画面横=b 軸[右], 画面縦=a 軸[下])
+        axA = 1; axB = 0; cols = nb; rows = na; // 横タイル=b (n_b 列), 縦タイル=a (n_a 行)。axA(=c列)→b, axB(=r行)→a
         return cols * rows > 1;
     }
 
