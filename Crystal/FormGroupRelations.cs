@@ -1566,25 +1566,11 @@ public partial class FormGroupRelations : FormBase
         }
         // 260713Cl (③-2 k- 対応): t- と「胞が拡大しない k-」(= centering 除去、SublatticeBasis の行列式が親慣用胞 1 個分)
         // は親胞1セルにそのまま重ね描く (T_H=同一慣用胞なので mod-1 membership が正しく、中心化が生む screw/glide が
-        // 失われるのが赤で出る)。胞が拡大する関係 (isomorphic 全般・拡大 k-) は tiling が要るので現状は注記。
+        // 失われるのが赤で出る)。胞が拡大する関係 (isomorphic 全般・拡大 k-) は拡大胞をタイル描画する (K2)。
+        // ただし斜交 P・非直交投影 (hex/monoclinic 等で 2D タイルが平行四辺形) は難所なので、直交投影+対角 P+面内拡大の
+        // 扱えるケースのみタイル描画し、それ以外の拡大は注記 (下記 DrawElementsEnlargedNote)。
         bool sameCell = s.Kind == GroupRelationKind.T
             || (s.SublatticeBasis != null && Math.Abs(Det3(s.SublatticeBasis) - 1.0) < 1e-6);
-        if (!sameCell)
-        {
-            DrawElementsCenteredNote(g, w, h, Loc(
-                en: "The symmetry-element overlay is shown for relations that keep the conventional cell (translationengleiche subgroups and centring-removing klassengleiche ones). This relation enlarges the cell, so the lost lattice symmetry is shown on the Domains & Twins and New reflections tabs instead.",
-                ja: "対称要素の重ね描きは、慣用胞が変わらない関係 (translationengleiche 部分群と、中心化を外す klassengleiche 部分群) について表示します。この関係は胞が拡大するため、失われる格子対称は Domains & Twins / New reflections タブをご覧ください。",
-                de: "Die Symmetrieelement-Überlagerung wird für Relationen gezeigt, die die konventionelle Zelle beibehalten (translationengleiche Untergruppen und zentrierungsentfernende klassengleiche). Diese Relation vergrößert die Zelle; die verlorene Gittersymmetrie wird daher auf den Registerkarten Domänen & Zwillinge und Neue Reflexe gezeigt.",
-                fr: "La superposition des éléments de symétrie est affichée pour les relations qui conservent la maille conventionnelle (sous-groupes translationengleiche et klassengleiche qui suppriment un centrage). Cette relation agrandit la maille ; la symétrie de réseau perdue est donc montrée sur les onglets Domaines & Macles et Nouvelles réflexions.",
-                es: "La superposición de elementos de simetría se muestra para las relaciones que conservan la celda convencional (subgrupos translationengleiche y klassengleiche que eliminan un centrado). Esta relación amplía la celda; por tanto, la simetría de red perdida se muestra en las pestañas Dominios y maclas y Nuevas reflexiones.",
-                pt: "A sobreposição de elementos de simetria é mostrada para relações que mantêm a célula convencional (subgrupos translationengleiche e klassengleiche que removem uma centragem). Esta relação amplia a célula; por isso a simetria de rede perdida é mostrada nas abas Domínios e geminações e Novas reflexões.",
-                it: "La sovrapposizione degli elementi di simmetria è mostrata per le relazioni che mantengono la cella convenzionale (sottogruppi translationengleiche e klassengleiche che rimuovono una centratura). Questa relazione ingrandisce la cella; la simmetria reticolare persa è quindi mostrata nelle schede Domini e geminazioni e Nuove riflessioni.",
-                ru: "Наложение элементов симметрии показывается для отношений, сохраняющих условную ячейку (translationengleiche подгруппы и klassengleiche, снимающие центрировку). Это отношение увеличивает ячейку, поэтому утраченная симметрия решётки показана на вкладках «Домены и двойники» и «Новые отражения».",
-                zhHans: "对称要素重叠适用于保持惯用胞的关系 (translationengleiche 子群，以及去除心式的 klassengleiche 子群)。此关系会扩大胞，因此失去的点阵对称请参见「畴与双晶」和「新反射」选项卡。",
-                zhHant: "對稱要素重疊適用於保持慣用胞的關係 (translationengleiche 子群，以及去除心式的 klassengleiche 子群)。此關係會擴大胞，因此失去的點陣對稱請參見「疇與雙晶」與「新反射」索引標籤。",
-                ko: "대칭 요소 겹쳐 그리기는 관용 셀을 유지하는 관계 (translationengleiche 부분군과 중심화를 제거하는 klassengleiche 부분군) 에 대해 표시됩니다. 이 관계는 셀을 확대하므로, 잃어버린 격자 대칭은 도메인·쌍정 및 새 반사 탭을 참조하세요."), SystemColors.GrayText);
-            return;
-        }
 
         int parentSn = s.ParentSeriesNumber;
         var parentSym = SymmetryStatic.Symmetries[parentSn];
@@ -1598,24 +1584,37 @@ public partial class FormGroupRelations : FormBase
         // t- では T_H=T_G なので mod1 判定で厳密。
         var gTable = SymmetryElementsTable.FromOperations(SymmetryElementsTable.ExpandedOperations(parentSn), parentSn);
         if (gTable == null) { DrawElementsCenteredNote(g, w, h, "—", SystemColors.GrayText); return; }
-        var hTable = gTable.FilterByOperationMembership(s.Operations); // 260713Cl: baseline 自身を H メンバーシップで色分け (署名判定は engine 内)
-
         // 上部ラベル領域を空けて図を描く (図は topBand の下から)。
         int topBand = 40;
         var diagRect = new Rectangle(0, topBand, w, Math.Max(50, h - topBand));
 
-        // pass1: 親 G の完全テーブル → 赤ティント。pass2: H テーブル → 黒。透明ビットマップに描いて合成。
-        using (var bmpParent = RenderElementsLayer(diagRect.Width, diagRect.Height, parentSn, axis, gTable))
-        using (var attrParent = new ImageAttributes())
+        if (sameCell)
         {
-            attrParent.SetColorMatrix(TintMatrix(ElemLostColor));
-            g.DrawImage(bmpParent, diagRect, 0, 0, bmpParent.Width, bmpParent.Height, GraphicsUnit.Pixel, attrParent);
+            // 慣用胞不変 (t- / centering 除去 k-): 親胞1セルに baseline(赤) + retained(黒)。
+            var hTable = gTable.FilterByOperationMembership(s.Operations); // baseline 自身を H メンバーシップで色分け (署名判定は engine 内)
+            DrawElementsCell(g, diagRect, parentSn, axis, gTable, hTable);
         }
-        using (var bmpChild = RenderElementsLayer(diagRect.Width, diagRect.Height, parentSn, axis, hTable))
-        using (var attrChild = new ImageAttributes())
+        else if (TryComputeEnlargedTiling(s, parentSym, ref axis, out int cols, out int rows, out int axA, out int axB))
         {
-            attrChild.SetColorMatrix(TintMatrix(ElemRetainedColor));
-            g.DrawImage(bmpChild, diagRect, 0, 0, bmpChild.Width, bmpChild.Height, GraphicsUnit.Pixel, attrChild);
+            // 胞拡大 (直交投影+対角P+面内拡大、K2): 拡大胞を cols×rows の親胞タイルで描画し、タイルごとに mod-T_H
+            // membership (FilterRetainedInTile) で色分け。各タイルは同じ親図で、色 (どのコピーが H に残るか) だけが変わる。
+            for (int r = 0; r < rows; r++)
+                for (int c = 0; c < cols; c++)
+                {
+                    var sub = new Rectangle(diagRect.X + c * diagRect.Width / cols, diagRect.Y + (rows - 1 - r) * diagRect.Height / rows,
+                                            diagRect.Width / cols, diagRect.Height / rows); // 画面は上が下段格子 (b 等は上向き慣例)
+                    var off = new double[3]; off[axA] = c; off[axB] = r; // 親格子タイルオフセット (面内 2 軸)
+                    var retTile = gTable.FilterRetainedInTile(s.Operations, s.SublatticeBasis, off[0], off[1], off[2]);
+                    DrawElementsCell(g, sub, parentSn, axis, gTable, retTile);
+                }
+            using var gridPen = new Pen(Color.FromArgb(150, 195, 215), 1f); // 親胞タイル境界 (薄水色)
+            for (int c = 1; c < cols; c++) { int x = diagRect.X + c * diagRect.Width / cols; g.DrawLine(gridPen, x, diagRect.Y, x, diagRect.Bottom); }
+            for (int r = 1; r < rows; r++) { int y = diagRect.Y + r * diagRect.Height / rows; g.DrawLine(gridPen, diagRect.X, y, diagRect.Right, y); }
+        }
+        else
+        {
+            DrawElementsEnlargedNote(g, w, h); // 斜交 P・非直交投影・全軸拡大 (面直折り畳み) は注記
+            return;
         }
 
         // 上部: 関係ラベル + 凡例 (retained=黒 / lost=赤) + 投影方向。
@@ -1652,6 +1651,60 @@ public partial class FormGroupRelations : FormBase
         SymmetryDiagramElements.DrawSymmetryElements(g, bmp.Size, seriesNumber, axis, tableOverride);
         return bmp;
     }
+
+    /// <summary>260713Cl 追加: 矩形 <paramref name="rect"/> に baseline を lost 色(赤)で、retained を retained 色(黒)で
+    /// 2 パス ColorMatrix ティント合成する (親胞1セル分の描画)。tiling では各タイル矩形にこれを呼ぶ。</summary>
+    private void DrawElementsCell(Graphics g, Rectangle rect, int sn, ProjectionAxis axis, SymmetryElementsTable baseline, SymmetryElementsTable retained)
+    {
+        using (var bmpB = RenderElementsLayer(rect.Width, rect.Height, sn, axis, baseline))
+        using (var attrB = new ImageAttributes())
+        {
+            attrB.SetColorMatrix(TintMatrix(ElemLostColor));
+            g.DrawImage(bmpB, rect, 0, 0, bmpB.Width, bmpB.Height, GraphicsUnit.Pixel, attrB);
+        }
+        using (var bmpR = RenderElementsLayer(rect.Width, rect.Height, sn, axis, retained))
+        using (var attrR = new ImageAttributes())
+        {
+            attrR.SetColorMatrix(TintMatrix(ElemRetainedColor));
+            g.DrawImage(bmpR, rect, 0, 0, bmpR.Width, bmpR.Height, GraphicsUnit.Pixel, attrR);
+        }
+    }
+
+    /// <summary>260713Cl 追加 (K2): 胞拡大関係を<b>曖昧さなく</b>タイル描画できるか判定する。視覚的に成立するのは
+    /// 「⟂c 投影 (下向き c の標準 ITA 図) + 面内 (a,b) のみ拡大 (c は mult==1) + 直交系 (orthorhombic/tetragonal/cubic)
+    /// + 対角 P」のケースに限る。この時、失われる要素 (半 a/b 位置の回転/らせん軸など) は a-b 面内の別位置に描かれ
+    /// 重ならない。c 軸方向の拡大 (c'=nc) を ⟂a/⟂b で見ると ⊥c ミラー等が投影で高さ方向に潰れ retained/lost が重なる
+    /// ため、これは扱わず false (→注記) とする。斜交 P・hex/monoclinic・全軸拡大も false。
+    /// できる場合 axis を ⟂c に確定し、タイル格子 (cols=a方向, rows=b方向) と面内 2 軸のインデックス (axA=a=横,
+    /// axB=b=縦) を返す。</summary>
+    private static bool TryComputeEnlargedTiling(GroupRelation s, Symmetry parentSym, ref ProjectionAxis axis,
+                                                 out int cols, out int rows, out int axA, out int axB)
+    {
+        cols = rows = 1; axA = 0; axB = 1;
+        if (s.TransformP is not { Length: 9 } P || s.SublatticeBasis == null) return false;
+        for (int i = 0; i < 9; i++) if (i is not (0 or 4 or 8) && Math.Abs(P[i]) > 1e-6) return false; // 対角のみ
+        int cs = parentSym.CrystalSystemNumber;
+        if (cs is not (3 or 4 or 7)) return false; // ⟂c で a⊥b が保証される直交系のみ
+        int na = (int)Math.Round(Math.Abs(P[0])), nb = (int)Math.Round(Math.Abs(P[4])), nc = (int)Math.Round(Math.Abs(P[8]));
+        if (nc != 1) return false; // c (視線=投影軸) の拡大は面内で表せない → 注記
+        axis = ProjectionAxis.C; // 標準の下向き c 図に確定
+        axA = 0; axB = 1; cols = na; rows = nb; // 面内 a,b タイル
+        return cols * rows > 1;
+    }
+
+    /// <summary>260713Cl 追加 (K2): タイル描画できない胞拡大 (斜交/非直交投影/c 軸方向=視線方向の拡大) の注記。</summary>
+    private void DrawElementsEnlargedNote(Graphics g, int w, int h) => DrawElementsCenteredNote(g, w, h, Loc(
+        en: "This cell-enlarging relation is not shown as a symmetry-element overlay: its cell change is oblique/non-orthogonal, or it enlarges the cell along the viewing axis (c), where the lost symmetry cannot be drawn without ambiguity. The lost lattice symmetry is on the Domains & Twins and New reflections tabs.",
+        ja: "この胞拡大関係は対称要素の重ね描きでは表示しません: 胞の変化が斜交/非直交か、視線方向 (c 軸) に胞を拡大しており、失われる対称を曖昧さなく描けないためです。失われる格子対称は Domains & Twins / New reflections タブをご覧ください。",
+        de: "Diese zellvergrößernde Relation wird nicht als Symmetrieelement-Überlagerung gezeigt: Die Zelländerung ist schiefwinklig/nicht orthogonal, oder sie vergrößert die Zelle entlang der Blickachse (c), wo die verlorene Symmetrie nicht eindeutig darstellbar ist. Die verlorene Gittersymmetrie steht auf den Registerkarten Domänen & Zwillinge und Neue Reflexe.",
+        fr: "Cette relation qui agrandit la maille n'est pas montrée comme superposition d'éléments de symétrie : le changement de maille est oblique/non orthogonal, ou elle agrandit la maille selon l'axe de visée (c), où la symétrie perdue ne peut être tracée sans ambiguïté. La symétrie de réseau perdue est sur les onglets Domaines & Macles et Nouvelles réflexions.",
+        es: "Esta relación que amplía la celda no se muestra como superposición de elementos de simetría: el cambio de celda es oblicuo/no ortogonal, o amplía la celda a lo largo del eje de visión (c), donde la simetría perdida no puede dibujarse sin ambigüedad. La simetría de red perdida está en las pestañas Dominios y maclas y Nuevas reflexiones.",
+        pt: "Esta relação que amplia a célula não é mostrada como sobreposição de elementos de simetria: a mudança de célula é oblíqua/não ortogonal, ou amplia a célula ao longo do eixo de visão (c), onde a simetria perdida não pode ser desenhada sem ambiguidade. A simetria de rede perdida está nas abas Domínios e geminações e Novas reflexões.",
+        it: "Questa relazione che ingrandisce la cella non è mostrata come sovrapposizione di elementi di simmetria: il cambio di cella è obliquo/non ortogonale, oppure ingrandisce la cella lungo l'asse di vista (c), dove la simmetria persa non può essere disegnata senza ambiguità. La simmetria reticolare persa è nelle schede Domini e geminazioni e Nuove riflessioni.",
+        ru: "Это отношение с увеличением ячейки не показано как наложение элементов симметрии: изменение ячейки косоугольное/неортогональное, либо ячейка увеличена вдоль оси наблюдения (c), где утраченную симметрию нельзя изобразить однозначно. Утраченная симметрия решётки — на вкладках «Домены и двойники» и «Новые отражения».",
+        zhHans: "此扩大胞的关系不以对称要素重叠显示: 胞的变化为斜交/非正交，或沿视线轴 (c 轴) 扩大胞，失去的对称无法无歧义地绘制。失去的点阵对称请参见「畴与双晶」和「新反射」选项卡。",
+        zhHant: "此擴大胞的關係不以對稱要素重疊顯示: 胞的變化為斜交/非正交，或沿視線軸 (c 軸) 擴大胞，失去的對稱無法無歧義地繪製。失去的點陣對稱請參見「疇與雙晶」與「新反射」索引標籤。",
+        ko: "이 셀을 확대하는 관계는 대칭 요소 겹쳐 그리기로 표시하지 않습니다: 셀 변화가 사교/비직교이거나, 시선 축(c) 방향으로 셀을 확대하여 잃어버린 대칭을 모호함 없이 그릴 수 없기 때문입니다. 잃어버린 격자 대칭은 도메인·쌍정 및 새 반사 탭에 있습니다."), SystemColors.GrayText);
 
     /// <summary>260713Cl 追加: グレースケールのインク (黒線+白ハロー+グレー AA) を「黒→target・白→白・グレー→線形補間」
     /// で着色する ColorMatrix (out = target + L·(white−target)、L はグレースケール値)。α は保持。</summary>
