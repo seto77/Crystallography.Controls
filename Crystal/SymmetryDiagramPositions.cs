@@ -114,6 +114,76 @@ public class SymmetryDiagramPositions : SymmetryDiagramCommon
         if (isCubic) DrawCubicTriangles(g, layout, proj, allPoints, tx, ty, tz, displayMaxS);
         DrawClusters(g, placements, labelFont, scale, projAxisIdx, circleRadius);
     }
+
+    /// <summary>260713Cl 追加 (Elements/Positions): 親 G の一般位置を、点ごとに外部から渡された色
+    /// (部分群 H の副軌道分類) で描く。<paramref name="pointColors"/> は <see cref="WyckoffPosition.GeneratePositions"/> の
+    /// 返す点の順序に対応させる (呼び出し側と同じ <paramref name="testPoint"/> を渡すこと)。クラスタ化・ラベル衝突回避は
+    /// 行わず 1 点ずつ ○ (proper) / コンマ付き ○ (improper) + 高さラベルを描く (色分け=分裂の可視化が目的)。
+    /// 立方晶 [111] orbit の薄灰三角は色分けの邪魔になるため描かない。</summary>
+    public static void DrawGeneralPositionsColored(Graphics g, Size clientSize, int seriesNumber, ProjectionAxis axis,
+                                                   (double X, double Y, double Z) testPoint, Color[] pointColors, bool drawCell = true)
+    {
+        if (!TryGetSym(seriesNumber, out var sym, out seriesNumber, out var msg))
+        {
+            if (msg != null) DrawCenteredText(g, clientSize, msg, Color.Gray);
+            return;
+        }
+        var actualAxis = ResolveProjectionAxis(sym, axis);
+        var proj = GetProjection(actualAxis);
+        bool halfQuadrant = IsCubicFLattice(sym);
+        double displayMaxS = halfQuadrant ? 0.5 : 1.0;
+        var layout = ComputeCellLayout(clientSize, sym, actualAxis, halfQuadrant);
+        if (halfQuadrant) DrawUpperLeftQuadrantLabel(g);
+        if (drawCell) DrawCellAndAxes(g, layout, proj, sym, halfQuadrant, showAxisLabels: false);
+
+        bool isCubic = sym.CrystalSystemNumber == 7;
+        double cellSize = Math.Min(
+            Math.Sqrt(layout.Horz.X * layout.Horz.X + layout.Horz.Y * layout.Horz.Y),
+            Math.Sqrt(layout.Vert.X * layout.Vert.X + layout.Vert.Y * layout.Vert.Y));
+        float scale = isCubic ? CubicScale : 1f;
+        float circleRadius = (float)(CircleRadiusFraction * cellSize) * scale;
+        float dotR = CommaDotR * scale;
+        var labelFont = isCubic ? CubicClusterLabelFont : ClusterLabelFont;
+        var (tx, ty, tz) = testPoint;
+        var pts = SymmetryStatic.WyckoffPositions[seriesNumber][0].GeneratePositions(tx, ty, tz);
+
+        using var whiteFill = new SolidBrush(Color.White);
+        // 260714Cl: Pen/SolidBrush を色 (副軌道パレット ≤10 色 + 黒 fallback) でキャッシュする
+        // (旧: ループ内で using var pen/brush を毎点確保 → 最大 ~192 点 × 2 の GDI ハンドル生成/破棄が発生)。
+        var penCache = new Dictionary<Color, Pen>();
+        var brushCache = new Dictionary<Color, SolidBrush>();
+        try
+        {
+            for (int i = 0; i < pts.Length; i++)
+            {
+                var p = pts[i];
+                var (sx, sy, sz) = proj.ToScreen(p.X, p.Y, p.Z);
+                bool mirrored = p.Operation.Order < 0;
+                string label = ComputeDepthLabel(p.Operation, sz, proj, tx, ty, tz);
+                var color = pointColors != null && i < pointColors.Length ? pointColors[i] : Color.Black;
+                if (!penCache.TryGetValue(color, out var pen)) penCache[color] = pen = new Pen(color, CirclePenWidth);
+                if (!brushCache.TryGetValue(color, out var brush)) brushCache[color] = brush = new SolidBrush(color);
+                foreach (var (x, y) in EdgeReplicatedPoints(sx, sy, displayMaxS))
+                {
+                    var pt = layout.ToScreen(x, y);
+                    g.FillEllipse(whiteFill, pt.X - circleRadius, pt.Y - circleRadius, 2 * circleRadius, 2 * circleRadius);
+                    g.DrawEllipse(pen, pt.X - circleRadius, pt.Y - circleRadius, 2 * circleRadius, 2 * circleRadius);
+                    if (mirrored)
+                        g.FillEllipse(brush, pt.X - dotR, pt.Y - dotR, 2 * dotR, 2 * dotR);
+                    if (!string.IsNullOrEmpty(label))
+                    {
+                        var lsz = MeasureTightString(g, label, labelFont);
+                        DrawTightString(g, brush, label, labelFont, pt.X + circleRadius + LabelGapH, pt.Y - circleRadius - lsz.Height + LabelGapV);
+                    }
+                }
+            }
+        }
+        finally
+        {
+            foreach (var pen in penCache.Values) pen.Dispose();
+            foreach (var brush in brushCache.Values) brush.Dispose();
+        }
+    }
     #endregion
 
     #region 等価点の収集

@@ -219,7 +219,8 @@ public class SymmetryDiagramElements : SymmetryDiagramCommon
     /// それから取る (レイアウト・投影・晶系判定は <paramref name="seriesNumber"/> のまま)。lost/retained 重ね描みで
     /// 親レイアウト上に部分群 H の要素テーブルを流し込むのに使う。</summary>
     public static void DrawSymmetryElements(Graphics g, Size clientSize, int seriesNumber, ProjectionAxis axis = ProjectionAxis.C,
-                                            SymmetryElementsTable tableOverride = null) // 260713Cl 追加
+                                            SymmetryElementsTable tableOverride = null, // 260713Cl 追加
+                                            bool drawCell = true) // 260713Cl 追加 (Elements/Positions): 単位胞を呼び出し側でブルー描画するため抑制可能に
     {
         if (!TryGetSym(seriesNumber, out var sym, out seriesNumber, out var msg))
         {
@@ -232,8 +233,13 @@ public class SymmetryDiagramElements : SymmetryDiagramCommon
         bool halfQuadrant = IsCubicFLattice(sym);
         double displayMaxS = halfQuadrant ? 0.5 : 1.0; // (260505Ch) clip ではなく描画対象座標そのものを制限する。
         var layout = ComputeCellLayout(clientSize, sym, actualAxis, halfQuadrant);
-        DrawCellAndAxes(g, layout, proj, sym, halfQuadrant, showAxisLabels: false); // (260505Cl) 対称要素図では軸ラベル ("o", a, b 等) を出さない。一般位置図側だけで表示。
-        if (halfQuadrant) DrawUpperLeftQuadrantLabel(g);
+        // 260713Cl (Elements/Positions): lost/retained ティントで胞線が潰れるため、FormGroupRelations は
+        // drawCell:false で胞を抜き、別途 DrawCellOnly でティントせずブルーの胞を最初に描く。
+        if (drawCell)
+        {
+            DrawCellAndAxes(g, layout, proj, sym, halfQuadrant, showAxisLabels: false); // (260505Cl) 対称要素図では軸ラベル ("o", a, b 等) を出さない。一般位置図側だけで表示。
+            if (halfQuadrant) DrawUpperLeftQuadrantLabel(g);
+        }
 
         var table = tableOverride ?? SymmetryElementsTable.Get(seriesNumber); // 260713Cl (③-2): override 優先
         if (table == null) return;
@@ -332,6 +338,21 @@ public class SymmetryDiagramElements : SymmetryDiagramCommon
         DrawPerpendicularRotationMarks(ctx, table, actualAxis, isCubic: isCubic); // 260510Cl: cubic 限定で -4 と -1 が同位置に重なる場合は -4 を抑制 (ITA: 4_n と -1 で表記)。Fd-3m(1) vertex のように -1 が同位置に無い -4 はそのまま描画。
         DrawInversions(ctx, table.InversionCenters);
         if (isCubicHigh) DrawCubicStereonetInsets(ctx, table, actualAxis, stereonetPositions);
+    }
+
+    /// <summary>260713Cl 追加 (Elements/Positions): 単位胞の枠・補助線だけをブルー (CellOutlineColor) で描く。
+    /// 対称要素の lost/retained ティントで胞線が潰れるのを避けるため、FormGroupRelations が要素レイヤの前に
+    /// これをティントせず単独で呼ぶ (レイアウト・投影・F 格子 1/4 判定は <see cref="DrawSymmetryElements"/> と同じ)。</summary>
+    public static void DrawCellOnly(Graphics g, Size clientSize, int seriesNumber, ProjectionAxis axis = ProjectionAxis.C)
+    {
+        if (!TryGetSym(seriesNumber, out var sym, out seriesNumber, out _))
+            return;
+        var actualAxis = ResolveProjectionAxis(sym, axis);
+        var proj = GetProjection(actualAxis);
+        bool halfQuadrant = IsCubicFLattice(sym);
+        var layout = ComputeCellLayout(clientSize, sym, actualAxis, halfQuadrant);
+        DrawCellAndAxes(g, layout, proj, sym, halfQuadrant, showAxisLabels: false);
+        if (halfQuadrant) DrawUpperLeftQuadrantLabel(g);
     }
     #endregion
 

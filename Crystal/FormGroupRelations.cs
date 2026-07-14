@@ -1524,20 +1524,38 @@ public partial class FormGroupRelations : FormBase
     }
     #endregion
 
-    #region 対称要素 lost/retained 重ね描き (Elements タブ) — 260713Cl 追加 (③-2、codex 相談)
-    // 選択した関係 G → H について、G の空間群対称要素図 (ITA 風) の上に、H で保持される要素 (retained) を
-    // 黒、失われる要素 (lost) を赤で色分け表示する。実装は「2 パス + ビットマップ ColorMatrix ティント」:
-    //   pass1 = 親 G の完全な要素テーブルを赤にティントして下地に (lost baseline)、
-    //   pass2 = H.Operations から SymmetryElementsTable.FromOperations で再構築した H の要素テーブルを
-    //           黒 (無ティント) で上書き。retained は黒が赤を覆い、lost は赤が残る。4→2 は赤4回+黒2回。
-    // 既存の 2299 行の描画器 (SymmetryDiagramElements) には tableOverride 引数 1 個を足しただけで、色分けは
-    // 後段のビットマップ処理で行う (描画器は無改修)。
-    // v1 は translationengleiche (t-) 部分群のみ: t- では T_H = T_G なので H 要素の Mod1 折り畳みが厳密に正しい。
-    // k-/isomorphic は胞が拡大し (T_H ⊂ T_G)、親胞への折り畳みで別胞の retained コピーが lost 位置に重なる
-    // 誤りが生じ得るため、v1 では対象外の注記を表示する (codex R 相談で確定)。
+    #region 対称要素 lost/retained 重ね描き + 一般位置 副軌道色分け (Elements & Positions タブ) — 260713Cl 追加 (③-2、codex 相談)、260714Cl 一般位置/黄色化 追記
+    // 選択した関係 G → H について、左に G の空間群対称要素図 (ITA 風) を重ね描き、右に G の一般位置を H の副軌道で
+    // 色分けする (軌道分裂の可視化)。左の実装は「3 レイヤ + ビットマップ ColorMatrix ティント」合成 (DrawElementsCell):
+    //   L1 = 単位胞を青 (無ティント) で最下層に敷く (RenderCellLayer / DrawCellOnly)、
+    //   L2 = H.Operations から再構築した baseline を H メンバーシップで絞った retained を黒 (ティント) で重ね、
+    //   L3 = retained と幾何 carrier を共有しない lost (LostNotCoincidentWith) だけを黄 (ティント) で最前面に。
+    //        降格スポット (4→2 等、retained と同座標の lost) は L3 から除外され黒の retained だけが残る。
+    // 既存の描画器 (SymmetryDiagramElements) には tableOverride と drawCell の 2 引数を足しただけ (描画器本体は無改修)。
+    // t- と「胞が拡大しない k-」(中心化除去、SublatticeBasis 行列式 1) は T_H=同一慣用胞なので Mod1 折り畳みが厳密。
+    // 胞が拡大する k-/isomorphic はタイル描画可能なケース (直交投影+対角P+面内拡大) のみ扱い、それ以外は注記 (codex R 相談で確定)。
+    // 右の色分けは sameCell かつ非 Rho 設定でのみ (Rho は描画側が Hex 解決するため色計算と点順が食い違う)。
 
-    private static readonly Color ElemLostColor = Color.FromArgb(216, 110, 100); // lost = 赤 (失われる対称要素、260713Cl やや薄く=控えめに #D86E64)
+    // 260713Cl: lost = 黄色 (失われる対称要素)。白背景での視認性を考え、純黄より濃いめの金色寄り (#E0A800)。
+    // 旧: Color.FromArgb(216, 110, 100) 薄い赤 #D86E64 → ユーザー指示で黄色へ変更。
+    private static readonly Color ElemLostColor = Color.FromArgb(224, 168, 0);
     private static readonly Color ElemRetainedColor = Color.FromArgb(20, 20, 20); // retained = 黒 (H で保持)
+
+    /// <summary>260713Cl 追加 (Elements/Positions): 一般位置図で H の副軌道 (分裂) を色分けするパレット。
+    /// lost の黄色と紛れないよう黄は除外。クラス数 (= index) が要素数を超えたら循環使用。</summary>
+    private static readonly Color[] OrbitPalette =
+    [
+        Color.FromArgb(200,  30,  30), // red
+        Color.FromArgb( 30,  90, 200), // blue
+        Color.FromArgb( 20, 150,  60), // green
+        Color.FromArgb(200, 110,   0), // orange
+        Color.FromArgb(150,  40, 180), // purple
+        Color.FromArgb(  0, 150, 160), // teal
+        Color.FromArgb(180,  20, 120), // magenta
+        Color.FromArgb( 90,  90,  90), // gray
+        Color.FromArgb(120, 120,  20), // olive
+        Color.FromArgb( 70, 130, 180), // steel blue
+    ];
 
     private void RenderElements()
     {
@@ -1549,7 +1567,7 @@ public partial class FormGroupRelations : FormBase
             g.SmoothingMode = SmoothingMode.AntiAlias;
             g.Clear(Color.White);
             try { DrawElements(g, w, h); }
-            catch (Exception ex) { DrawElementsCenteredNote(g, w, h, "render error: " + ex.Message, Color.FromArgb(160, 60, 60)); } // 260713Cl: 例外を空白でなく可視化
+            catch (Exception ex) { DrawElementsCenteredNote(g, new RectangleF(0, 0, w, h), "render error: " + ex.Message, Color.FromArgb(160, 60, 60)); } // 260713Cl: 例外を空白でなく可視化
         }
         var old = pictureBoxElements.Image;
         pictureBoxElements.Image = bmp;
@@ -1561,12 +1579,12 @@ public partial class FormGroupRelations : FormBase
         var s = _selectedRelation;
         if (s == null)
         {
-            DrawElementsCenteredNote(g, w, h, Loc(en: "Select a subgroup relation to see which symmetry elements are retained or lost.", ja: "部分群関係を選択すると、どの対称要素が保持・消失するかを表示します。", de: "Wählen Sie eine Untergruppenrelation, um zu sehen, welche Symmetrieelemente erhalten bleiben oder verloren gehen.", fr: "Sélectionnez une relation de sous-groupe pour voir quels éléments de symétrie sont conservés ou perdus.", es: "Seleccione una relación de subgrupo para ver qué elementos de simetría se conservan o se pierden.", pt: "Selecione uma relação de subgrupo para ver quais elementos de simetria são mantidos ou perdidos.", it: "Seleziona una relazione di sottogruppo per vedere quali elementi di simmetria sono mantenuti o persi.", ru: "Выберите отношение подгруппы, чтобы увидеть, какие элементы симметрии сохраняются или утрачиваются.", zhHans: "选择一个子群关系以查看哪些对称要素被保持或失去。", zhHant: "選擇一個子群關係以查看哪些對稱要素被保持或失去。", ko: "부분군 관계를 선택하면 어떤 대칭 요소가 유지되거나 사라지는지 표시됩니다."), SystemColors.GrayText);
+            DrawElementsCenteredNote(g, new RectangleF(0, 0, w, h), Loc(en: "Select a subgroup relation to see which symmetry elements are retained or lost.", ja: "部分群関係を選択すると、どの対称要素が保持・消失するかを表示します。", de: "Wählen Sie eine Untergruppenrelation, um zu sehen, welche Symmetrieelemente erhalten bleiben oder verloren gehen.", fr: "Sélectionnez une relation de sous-groupe pour voir quels éléments de symétrie sont conservés ou perdus.", es: "Seleccione una relación de subgrupo para ver qué elementos de simetría se conservan o se pierden.", pt: "Selecione uma relação de subgrupo para ver quais elementos de simetria são mantidos ou perdidos.", it: "Seleziona una relazione di sottogruppo per vedere quali elementi di simmetria sono mantenuti o persi.", ru: "Выберите отношение подгруппы, чтобы увидеть, какие элементы симметрии сохраняются или утрачиваются.", zhHans: "选择一个子群关系以查看哪些对称要素被保持或失去。", zhHant: "選擇一個子群關係以查看哪些對稱要素被保持或失去。", ko: "부분군 관계를 선택하면 어떤 대칭 요소가 유지되거나 사라지는지 표시됩니다."), SystemColors.GrayText);
             return;
         }
         // 260713Cl (③-2 k- 対応): t- と「胞が拡大しない k-」(= centering 除去、SublatticeBasis の行列式が親慣用胞 1 個分)
         // は親胞1セルにそのまま重ね描く (T_H=同一慣用胞なので mod-1 membership が正しく、中心化が生む screw/glide が
-        // 失われるのが赤で出る)。胞が拡大する関係 (isomorphic 全般・拡大 k-) は拡大胞をタイル描画する (K2)。
+        // 失われるのが黄で出る)。胞が拡大する関係 (isomorphic 全般・拡大 k-) は拡大胞をタイル描画する (K2)。
         // ただし斜交 P・非直交投影 (hex/monoclinic 等で 2D タイルが平行四辺形) は難所なので、直交投影+対角 P+面内拡大の
         // 扱えるケースのみタイル描画し、それ以外の拡大は注記 (下記 DrawElementsEnlargedNote)。
         bool sameCell = s.Kind == GroupRelationKind.T
@@ -1578,21 +1596,26 @@ public partial class FormGroupRelations : FormBase
         // 260713Cl (codex approach a): baseline (G) を親の展開済み操作から 1 つ構築し、retained (H) は
         // **baseline 自身の対称要素を H メンバーシップで絞った部分テーブル** (FilterByOperationMembership) にする。
         // FromOperations は非単調 (要素導出が全操作集合に依存) なので、別テーブルを独立構築すると同一要素の代表点が
-        // ずれ赤ゴーストになる (PART 14a で C/A/I/R 系多数)。baseline の raw 要素を再利用すれば代表点がピクセル厳密に
-        // 一致し、絞った raw 軸から主軸を再導出するので 4→2 の降格 (赤4回+黒2回) も正しく出る。
+        // ずれゴーストになる (PART 14a で C/A/I/R 系多数)。baseline の raw 要素を再利用すれば代表点がピクセル厳密に
+        // 一致し、絞った raw 軸から主軸を再導出するので 4→2 の降格も正しく出る。
         // メンバーシップ = 各要素が表す操作 (署名: 線形部 R + 並進 mod1) が H.Operations の署名集合に含まれるか。
         // t- では T_H=T_G なので mod1 判定で厳密。
         var gTable = SymmetryElementsTable.FromOperations(SymmetryElementsTable.ExpandedOperations(parentSn), parentSn);
-        if (gTable == null) { DrawElementsCenteredNote(g, w, h, "—", SystemColors.GrayText); return; }
-        // 上部ラベル領域を空けて図を描く (図は topBand の下から)。
-        int topBand = 40;
-        var diagRect = new Rectangle(0, topBand, w, Math.Max(50, h - topBand));
+        if (gTable == null) { DrawElementsCenteredNote(g, new RectangleF(0, 0, w, h), "—", SystemColors.GrayText); return; }
 
+        // 260713Cl (Elements/Positions): 上部ラベル帯を空け、その下を左=対称要素図・右=一般位置図に 2 分割する (ITA の空間群図と同じ並び)。
+        int topBand = 40, gap = 10;
+        int halfW = (w - gap) / 2;
+        int diagH = Math.Max(50, h - topBand);
+        var leftRect = new Rectangle(0, topBand, Math.Max(20, halfW), diagH);
+        var rightRect = new Rectangle(halfW + gap, topBand, Math.Max(20, w - halfW - gap), diagH);
+
+        // --- 左: 対称要素 (retained=黒 / lost=黄) --- 260713Cl 追加 (左右分割)
         if (sameCell)
         {
-            // 慣用胞不変 (t- / centering 除去 k-): 親胞1セルに baseline(赤) + retained(黒)。
+            // 慣用胞不変 (t- / centering 除去 k-): 親胞1セルに 単位胞(青) + retained(黒) + 非共存 lost(黄)。
             var hTable = gTable.FilterByOperationMembership(s.Operations); // baseline 自身を H メンバーシップで色分け (署名判定は engine 内)
-            DrawElementsCell(g, diagRect, parentSn, axis, gTable, hTable);
+            DrawElementsCell(g, leftRect, parentSn, axis, gTable, hTable);
         }
         else if (TryComputeEnlargedTiling(s, parentSym, ref axis, out int cols, out int rows, out int axA, out int axB))
         {
@@ -1601,23 +1624,76 @@ public partial class FormGroupRelations : FormBase
             for (int r = 0; r < rows; r++)
                 for (int c = 0; c < cols; c++)
                 {
-                    var sub = new Rectangle(diagRect.X + c * diagRect.Width / cols, diagRect.Y + r * diagRect.Height / rows,
-                                            diagRect.Width / cols, diagRect.Height / rows); // 画面横=b(c列), 縦=a(r行)。a は下向きなので行=a offset そのまま
+                    var sub = new Rectangle(leftRect.X + c * leftRect.Width / cols, leftRect.Y + r * leftRect.Height / rows,
+                                            leftRect.Width / cols, leftRect.Height / rows); // 画面横=b(c列), 縦=a(r行)。a は下向きなので行=a offset そのまま
                     var off = new double[3]; off[axA] = c; off[axB] = r; // off[b]=c, off[a]=r (親格子タイルオフセット)
                     var retTile = gTable.FilterRetainedInTile(s.Operations, s.SublatticeBasis, off[0], off[1], off[2]);
                     DrawElementsCell(g, sub, parentSn, axis, gTable, retTile);
                 }
             using var gridPen = new Pen(Color.FromArgb(150, 195, 215), 1f); // 親胞タイル境界 (薄水色)
-            for (int c = 1; c < cols; c++) { int x = diagRect.X + c * diagRect.Width / cols; g.DrawLine(gridPen, x, diagRect.Y, x, diagRect.Bottom); }
-            for (int r = 1; r < rows; r++) { int y = diagRect.Y + r * diagRect.Height / rows; g.DrawLine(gridPen, diagRect.X, y, diagRect.Right, y); }
+            for (int c = 1; c < cols; c++) { int x = leftRect.X + c * leftRect.Width / cols; g.DrawLine(gridPen, x, leftRect.Y, x, leftRect.Bottom); }
+            for (int r = 1; r < rows; r++) { int y = leftRect.Y + r * leftRect.Height / rows; g.DrawLine(gridPen, leftRect.X, y, leftRect.Right, y); }
         }
         else
         {
-            DrawElementsEnlargedNote(g, w, h); // c 軸方向拡大 (面直折り畳み)・斜交 P・非直交投影 (hex/monoclinic) は注記
-            return;
+            DrawElementsEnlargedNote(g, leftRect); // c 軸方向拡大 (面直折り畳み)・斜交 P・非直交投影 (hex/monoclinic) は注記
         }
 
-        // 上部: 関係ラベル + 凡例 (retained=黒 / lost=赤) + 投影方向。
+        // --- 右: 一般位置 (H の副軌道ごとに色分け = 軌道分裂の可視化) ---
+        // 260714Cl: 菱面体 Rho 設定の親は描画側 (DrawGeneralPositionsColored→TryGetSym) が Hex 系列へ解決するため、色計算
+        // (ComputeOrbitColors は生 parentSn) と点の多重度・順序が食い違い色ズレ/黒点になる。Rho は色分けせず注記する。
+        bool rhoParent = SymmetryElementsTable.ResolveRhoToHex(parentSn) != parentSn;
+        if (sameCell && !rhoParent)
+        {
+            // 親 G の一般位置 (1 軌道) が H で index 個の副軌道に分裂する様子を、副軌道ごとの色で描く (mod-1 で H-同値判定)。
+            var testPoint = SymmetryDiagramPositions.GetTestPoint(parentSym);
+            var colors = ComputeOrbitColors(parentSn, s.Operations, testPoint);
+            using var posBmp = RenderPositionsLayer(rightRect.Width, rightRect.Height, parentSn, axis, testPoint, colors);
+            g.DrawImage(posBmp, rightRect);
+        }
+        else if (sameCell) // 260714Cl: rhoParent (同一胞だが Rho 設定) — 色分け不可のため注記
+        {
+            DrawElementsCenteredNote(g, rightRect, Loc(
+                en: "Orbit-splitting colors are not shown for a rhombohedral group in the rhombohedral-axes (Rho) setting.",
+                ja: "菱面体軸 (Rho) 設定の三方晶群では、軌道分裂の色分けは表示しません。",
+                de: "Für eine rhomboedrische Gruppe in der rhomboedrischen Achsenaufstellung (Rho) werden keine Bahnaufspaltungsfarben angezeigt.",
+                fr: "Les couleurs d'éclatement d'orbite ne sont pas affichées pour un groupe rhomboédrique dans le repère à axes rhomboédriques (Rho).",
+                es: "Los colores de división de órbita no se muestran para un grupo romboédrico en la configuración de ejes romboédricos (Rho).",
+                pt: "As cores de divisão de órbita não são mostradas para um grupo romboédrico na configuração de eixos romboédricos (Rho).",
+                it: "I colori della scissione dell'orbita non vengono mostrati per un gruppo romboedrico nell'impostazione ad assi romboedrici (Rho).",
+                ru: "Цвета расщепления орбиты не отображаются для ромбоэдрической группы в ромбоэдрической установке осей (Rho).",
+                zhHans: "对于菱面体轴 (Rho) 设置下的三方晶群，不显示轨道分裂的颜色。",
+                zhHant: "對於菱面體軸 (Rho) 設定下的三方晶群，不顯示軌道分裂的顏色。",
+                ko: "능면체 축 (Rho) 설정의 삼방정계 군에서는 궤도 분리 색상을 표시하지 않습니다."), SystemColors.GrayText);
+        }
+        else
+        {
+            // 胞拡大 (K2 タイル / 注記) では mod-T_H の副軌道判定が親胞内 mod-1 と一致しないため、色分けは同一胞関係のみ。
+            DrawElementsCenteredNote(g, rightRect, Loc( // 260714Cl: Rectangle→RectangleF は暗黙変換 (旧: new RectangleF(rightRect.X, ...))
+                en: "Orbit splitting of the general position is shown in color only for same-cell (t-) relations.",
+                ja: "一般位置の軌道分裂は、同一胞 (t-) 関係のときのみ色分け表示します。",
+                de: "Die Bahnaufspaltung der allgemeinen Lage wird nur für zellerhaltende (t-) Relationen farblich dargestellt.",
+                fr: "L'éclatement d'orbite de la position générale n'est affiché en couleur que pour les relations à maille conservée (t-).",
+                es: "La división de órbita de la posición general se muestra en color solo para relaciones de misma celda (t-).",
+                pt: "A divisão de órbita da posição geral é mostrada em cores apenas para relações de mesma célula (t-).",
+                it: "La scissione dell'orbita della posizione generale è mostrata a colori solo per relazioni a cella invariata (t-).",
+                ru: "Расщепление орбиты общей позиции показано цветом только для отношений с той же ячейкой (t-).",
+                zhHans: "一般位置的轨道分裂仅在同胞 (t-) 关系时以颜色显示。",
+                zhHant: "一般位置的軌道分裂僅在同胞 (t-) 關係時以顏色顯示。",
+                ko: "일반 위치의 궤도 분리는 동일 셀 (t-) 관계에서만 색으로 표시됩니다."), SystemColors.GrayText);
+        }
+
+        // --- 中央の区切り線 + 各図の小見出し --- 260713Cl 追加 (左右分割)
+        using (var divPen = new Pen(Color.FromArgb(210, 210, 210), 1f))
+            g.DrawLine(divPen, halfW + gap / 2f, topBand, halfW + gap / 2f, h);
+        using (var capFont = new Font("Segoe UI", 8f))
+        using (var capFg = new SolidBrush(SystemColors.GrayText))
+        {
+            g.DrawString(Loc(en: "Symmetry elements", ja: "対称要素", de: "Symmetrieelemente", fr: "Éléments de symétrie", es: "Elementos de simetría", pt: "Elementos de simetria", it: "Elementi di simmetria", ru: "Элементы симметрии", zhHans: "对称要素", zhHant: "對稱要素", ko: "대칭 요소"), capFont, capFg, leftRect.X + 4, topBand + 2);
+            g.DrawString(Loc(en: "General positions", ja: "一般位置", de: "Allgemeine Lagen", fr: "Positions générales", es: "Posiciones generales", pt: "Posições gerais", it: "Posizioni generali", ru: "Общие позиции", zhHans: "一般位置", zhHant: "一般位置", ko: "일반 위치"), capFont, capFg, rightRect.X + 4, topBand + 2);
+        }
+
+        // --- 上部 (全幅): 関係ラベル + 凡例 (retained=黒 / lost=黄) + 投影方向。
         using var titleFont = new Font("Segoe UI", 8.75f, FontStyle.Bold);
         using var legendFont = new Font("Segoe UI", 8f);
         using var titleFg = new SolidBrush(Color.Black);
@@ -1639,39 +1715,104 @@ public partial class FormGroupRelations : FormBase
             g.DrawString(Loc(en: "lost", ja: "消失", de: "verloren", fr: "perdu", es: "perdido", pt: "perdido", it: "perso", ru: "утрачено", zhHans: "消失", zhHant: "消失", ko: "소실"), legendFont, lostFg, lx2 + 24, ly);
     }
 
-    /// <summary>260713Cl 追加: 透明背景のビットマップへ対称要素図を1パス描画して返す (ティントは呼び出し側)。
-    /// tableOverride 非 null なら H の要素テーブルを親レイアウトで描く。</summary>
-    private static Bitmap RenderElementsLayer(int w, int h, int seriesNumber, ProjectionAxis axis, SymmetryElementsTable tableOverride)
+    /// <summary>260714Cl 追加 (Elements/Positions): 透明背景 (g.Clear しない = 黒線/白ハロー/グレー AA のみ) +
+    /// グレースケール AA のレイヤ用ビットマップを生成し、<paramref name="draw"/> で 1 パス描いて返す共通ファクトリ。
+    /// Render{Elements,Cell,Positions}Layer の同一足場 (Bitmap/Graphics/SmoothingMode/TextRenderingHint) を集約したもの。
+    /// 基底 <c>NewBitmap</c> は白クリア + AntiAlias hint なので透明レイヤには使えず、専用の本ヘルパを置く。</summary>
+    private static Bitmap RenderTransparentLayer(int w, int h, Action<Graphics, Size> draw)
     {
         var bmp = new Bitmap(Math.Max(1, w), Math.Max(1, h));
         using var g = Graphics.FromImage(bmp);
         g.SmoothingMode = SmoothingMode.AntiAlias;
         g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit; // 透明背景では ClearType 不可 (グレースケール AA)
-        // g.Clear しない = 透明のまま (黒線/白ハロー/グレー AA のみが乗る)。
-        SymmetryDiagramElements.DrawSymmetryElements(g, bmp.Size, seriesNumber, axis, tableOverride);
+        draw(g, bmp.Size);
         return bmp;
     }
 
-    /// <summary>260713Cl 追加: 矩形 <paramref name="rect"/> に 3 パス ColorMatrix ティント合成する (親胞1セル分の描画)。
-    /// L1=baseline を lost 色(赤)で下地 → L2=retained を retained 色(黒)で上書き → L3=lost かつ retained と非共存の要素を
-    /// 赤で最前面 (孤立 lost が黒/白ハローに隠れないように。降格スポットは L3 から除外され L2 の黒が残る)。tiling では各タイル
-    /// 矩形にこれを呼ぶ。</summary>
+    /// <summary>260713Cl 追加: 透明背景のビットマップへ対称要素図を1パス描画して返す (ティントは呼び出し側)。
+    /// tableOverride 非 null なら H の要素テーブルを親レイアウトで描く。単位胞は別レイヤ (RenderCellLayer) で
+    /// ブルー描画するため、ここでは drawCell:false で抜く (ティントで胞線が潰れるのを回避)。</summary>
+    private static Bitmap RenderElementsLayer(int w, int h, int seriesNumber, ProjectionAxis axis, SymmetryElementsTable tableOverride)
+        => RenderTransparentLayer(w, h, (g, size) => // 260714Cl: 共通足場へ集約
+            SymmetryDiagramElements.DrawSymmetryElements(g, size, seriesNumber, axis, tableOverride, drawCell: false)); // 260713Cl: 胞は別レイヤ
+
+    /// <summary>260713Cl 追加 (Elements/Positions): 単位胞の枠・補助線だけをブルーで透明背景ビットマップへ描いて返す
+    /// (ティントしない。要素レイヤの下に敷く)。</summary>
+    private static Bitmap RenderCellLayer(int w, int h, int seriesNumber, ProjectionAxis axis)
+        => RenderTransparentLayer(w, h, (g, size) => SymmetryDiagramElements.DrawCellOnly(g, size, seriesNumber, axis)); // 260714Cl: 共通足場へ集約
+
+    /// <summary>260713Cl 追加 (Elements/Positions): 親 G の一般位置を H の副軌道色で透明背景ビットマップへ描いて返す
+    /// (ブルーの単位胞 + 色分け ○)。</summary>
+    private static Bitmap RenderPositionsLayer(int w, int h, int seriesNumber, ProjectionAxis axis,
+                                               (double X, double Y, double Z) testPoint, Color[] pointColors)
+        => RenderTransparentLayer(w, h, (g, size) => // 260714Cl: 共通足場へ集約
+            SymmetryDiagramPositions.DrawGeneralPositionsColored(g, size, seriesNumber, axis, testPoint, pointColors, drawCell: true));
+
+    /// <summary>260713Cl 追加 (Elements/Positions): 親 G の一般位置 (GeneratePositions 順) を、部分群 H の副軌道で
+    /// 分類した色配列を返す。H 操作で結ばれる点を union-find で束ね、束ごとに OrbitPalette を順に割り当てる。
+    /// sameCell (T_H=T_G / centering 除去) 前提で、H 操作を作用させ mod-1 で一致する親点を同一軌道とみなす
+    /// (t- では T_H=T_G なので厳密、centering 除去 k- でも H は縮んだ並進しか持たないので慣用胞内 mod-1 で正しい)。</summary>
+    private static Color[] ComputeOrbitColors(int parentSn, SymmetryOperation[] hOps, (double X, double Y, double Z) testPoint)
+    {
+        var pts = SymmetryStatic.WyckoffPositions[parentSn][0].GeneratePositions(testPoint.X, testPoint.Y, testPoint.Z);
+        int n = pts.Length;
+        var uf = new int[n];
+        for (int i = 0; i < n; i++) uf[i] = i;
+        int Find(int a) { while (uf[a] != a) { uf[a] = uf[uf[a]]; a = uf[a]; } return a; }
+        void Union(int a, int b) { int ra = Find(a), rb = Find(b); if (ra != rb) uf[ra] = rb; }
+
+        static long M(double v) { double m = v - Math.Floor(v); if (m > 1 - 1e-5) m -= 1; return (long)Math.Round(m * 1e5); }
+        static (long, long, long) Key(double x, double y, double z) => (M(x), M(y), M(z));
+        var idx = new Dictionary<(long, long, long), int>();
+        for (int i = 0; i < n; i++) idx[Key(pts[i].X, pts[i].Y, pts[i].Z)] = i;
+
+        if (hOps != null)
+            foreach (var op in hOps)
+            {
+                var hh = new SymmetryOperation(op, parentSn);
+                var t = hh.SeitzTranslation;
+                for (int i = 0; i < n; i++)
+                {
+                    var (rx, ry, rz) = hh.ApplyMatrix(pts[i].X, pts[i].Y, pts[i].Z);
+                    if (idx.TryGetValue(Key(rx + t.U, ry + t.V, rz + t.W), out int j))
+                        Union(i, j);
+                }
+            }
+
+        var rootColor = new Dictionary<int, Color>();
+        var colors = new Color[n];
+        for (int i = 0; i < n; i++)
+        {
+            int r = Find(i);
+            if (!rootColor.TryGetValue(r, out var col))
+            {
+                col = OrbitPalette[rootColor.Count % OrbitPalette.Length];
+                rootColor[r] = col;
+            }
+            colors[i] = col;
+        }
+        return colors;
+    }
+
+    /// <summary>260713Cl 追加: 矩形 <paramref name="rect"/> に単位胞(青)→retained(黒)→非共存 lost(黄) の順で
+    /// 合成描画する (親胞1セル分)。単位胞は ColorMatrix ティントを掛けずブルーで最初に敷き、その上に対称要素の
+    /// retained/lost をティントで重ねる。lost は <see cref="SymmetryElementsTable.LostNotCoincidentWith"/> で
+    /// retained と幾何 carrier を共有する要素 (4_2→2 の降格スポットなど) を除外してから描くので、降格スポットでは
+    /// 黄色は出ず黒の retained だけが残る (旧: baseline 全体を黄で下地に敷いていたため 4_2 が黄で透けていた)。
+    /// tiling では各タイル矩形にこれを呼ぶ。</summary>
     private void DrawElementsCell(Graphics g, Rectangle rect, int sn, ProjectionAxis axis, SymmetryElementsTable baseline, SymmetryElementsTable retained)
     {
-        using (var bmpB = RenderElementsLayer(rect.Width, rect.Height, sn, axis, baseline))
-        using (var attrB = new ImageAttributes())
-        {
-            attrB.SetColorMatrix(TintMatrix(ElemLostColor));
-            g.DrawImage(bmpB, rect, 0, 0, bmpB.Width, bmpB.Height, GraphicsUnit.Pixel, attrB);
-        }
+        // 単位胞をブルーで最初に (ティントせず) 図の一番下に敷く。
+        using (var bmpCell = RenderCellLayer(rect.Width, rect.Height, sn, axis))
+            g.DrawImage(bmpCell, rect);
+        // retained (H で保持) を黒で。
         using (var bmpR = RenderElementsLayer(rect.Width, rect.Height, sn, axis, retained))
         using (var attrR = new ImageAttributes())
         {
             attrR.SetColorMatrix(TintMatrix(ElemRetainedColor));
             g.DrawImage(bmpR, rect, 0, 0, bmpR.Width, bmpR.Height, GraphicsUnit.Pixel, attrR);
         }
-        // L3 (260713Cl): retained と幾何 carrier が非共存な lost 要素を赤で最前面に重ねる。retained の黒 (と白ハロー) が
-        // 近接 lost を覆う問題への対処。降格スポット (同一直線/平面上に retained が居る lost) は除外し L2 の黒を残す。
+        // 非共存 lost (retained と carrier を共有しない失われる要素) だけを黄色で上に重ねる。降格スポットの lost は除外済み。
         using (var bmpL = RenderElementsLayer(rect.Width, rect.Height, sn, axis, baseline.LostNotCoincidentWith(retained)))
         using (var attrL = new ImageAttributes())
         {
@@ -1702,8 +1843,9 @@ public partial class FormGroupRelations : FormBase
         return cols * rows > 1;
     }
 
-    /// <summary>260713Cl 追加 (K2): タイル描画できない胞拡大 (斜交/非直交投影/c 軸方向=視線方向の拡大) の注記。</summary>
-    private void DrawElementsEnlargedNote(Graphics g, int w, int h) => DrawElementsCenteredNote(g, w, h, Loc(
+    /// <summary>260713Cl 追加 (K2): タイル描画できない胞拡大 (斜交/非直交投影/c 軸方向=視線方向の拡大) の注記。
+    /// 260713Cl: 左右分割に伴い注記を描く矩形 (対称要素側) を受け取るよう変更。</summary>
+    private void DrawElementsEnlargedNote(Graphics g, RectangleF area) => DrawElementsCenteredNote(g, area, Loc(
         en: "This cell-enlarging relation is not shown as a symmetry-element overlay: its cell change is oblique/non-orthogonal, or it enlarges the cell along the viewing axis (c), where the lost symmetry cannot be drawn without ambiguity. The lost lattice symmetry is on the Domains & Twins and New reflections tabs.",
         ja: "この胞拡大関係は対称要素の重ね描きでは表示しません: 胞の変化が斜交/非直交か、視線方向 (c 軸) に胞を拡大しており、失われる対称を曖昧さなく描けないためです。失われる格子対称は Domains & Twins / New reflections タブをご覧ください。",
         de: "Diese zellvergrößernde Relation wird nicht als Symmetrieelement-Überlagerung gezeigt: Die Zelländerung ist schiefwinklig/nicht orthogonal, oder sie vergrößert die Zelle entlang der Blickachse (c), wo die verlorene Symmetrie nicht eindeutig darstellbar ist. Die verlorene Gittersymmetrie steht auf den Registerkarten Domänen & Zwillinge und Neue Reflexe.",
@@ -1738,12 +1880,13 @@ public partial class FormGroupRelations : FormBase
     private static double Det3(double[] m) =>
         m[0] * (m[4] * m[8] - m[5] * m[7]) - m[1] * (m[3] * m[8] - m[5] * m[6]) + m[2] * (m[3] * m[7] - m[4] * m[6]);
 
-    private static void DrawElementsCenteredNote(Graphics g, int w, int h, string text, Color color)
+    /// <summary>260713Cl: 注記を <paramref name="area"/> 内に中央寄せで描く (旧: 全キャンバス幅 w,h 版。左右分割で矩形指定へ)。</summary>
+    private static void DrawElementsCenteredNote(Graphics g, RectangleF area, string text, Color color)
     {
         using var font = new Font("Segoe UI", 9.5f);
         using var fg = new SolidBrush(color);
         using var sf = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
-        var rect = new RectangleF(w * 0.1f, h * 0.1f, w * 0.8f, h * 0.8f);
+        var rect = new RectangleF(area.X + area.Width * 0.06f, area.Y + area.Height * 0.06f, area.Width * 0.88f, area.Height * 0.88f);
         g.DrawString(text, font, fg, rect, sf);
     }
 
@@ -1801,19 +1944,20 @@ public partial class FormGroupRelations : FormBase
         // 260712Cl 追加 (③-4): 点群 Hasse 図タブ
         tabPointGroups.Text = Loc(en: "Point groups", ja: "点群", de: "Punktgruppen", fr: "Groupes ponctuels", es: "Grupos puntuales", pt: "Grupos pontuais", it: "Gruppi puntuali", ru: "Точечные группы", zhHans: "点群", zhHant: "點群", ko: "점군");
         // 260713Cl 追加 (③-2): 対称要素 lost/retained タブ
-        tabElements.Text = Loc(en: "Elements", ja: "対称要素", de: "Elemente", fr: "Éléments", es: "Elementos", pt: "Elementos", it: "Elementi", ru: "Элементы", zhHans: "对称要素", zhHant: "對稱要素", ko: "대칭 요소");
+        // 260713Cl: 一般位置図を右に併記したため Elements → Elements & Positions へ改称。
+        tabElements.Text = Loc(en: "Elements & Positions", ja: "対称要素・一般位置", de: "Elemente & Lagen", fr: "Éléments et positions", es: "Elementos y posiciones", pt: "Elementos e posições", it: "Elementi e posizioni", ru: "Элементы и позиции", zhHans: "对称要素与一般位置", zhHant: "對稱要素與一般位置", ko: "대칭 요소·일반 위치");
         toolTip.SetToolTip(pictureBoxElements, Loc(
-            en: "For the selected t-subgroup relation, overlays the parent's symmetry-element diagram (ITA style): elements retained in the subgroup are drawn in black, elements lost are drawn in red. A 4-fold that degrades to a 2-fold shows as a red 4-fold with a black 2-fold on top.",
-            ja: "選択した t-部分群関係について、親の対称要素図 (ITA 風) を重ね描きします。部分群で保持される要素は黒、失われる要素は赤で描かれます。4回軸が2回軸に退化する場合は赤い4回記号の上に黒い2回記号が重なります。",
-            de: "Überlagert für die gewählte t-Untergruppenrelation das Symmetrieelement-Diagramm des Elters (ITA-Stil): in der Untergruppe erhaltene Elemente werden schwarz, verlorene rot gezeichnet. Eine zu einer 2-zähligen Achse reduzierte 4-zählige erscheint als rote 4-zählige mit schwarzer 2-zähliger darüber.",
-            fr: "Pour la relation de sous-groupe t- sélectionnée, superpose le diagramme des éléments de symétrie du parent (style ITA) : les éléments conservés dans le sous-groupe sont en noir, les éléments perdus en rouge. Un axe 4 réduit à un axe 2 apparaît comme un axe 4 rouge avec un axe 2 noir par-dessus.",
-            es: "Para la relación de subgrupo t- seleccionada, superpone el diagrama de elementos de simetría del padre (estilo ITA): los elementos conservados en el subgrupo se dibujan en negro y los perdidos en rojo. Un eje 4 que se degrada a un eje 2 se muestra como un eje 4 rojo con un eje 2 negro encima.",
-            pt: "Para a relação de subgrupo t- selecionada, sobrepõe o diagrama de elementos de simetria do pai (estilo ITA): os elementos mantidos no subgrupo são desenhados em preto e os perdidos em vermelho. Um eixo 4 que se reduz a um eixo 2 aparece como um eixo 4 vermelho com um eixo 2 preto por cima.",
-            it: "Per la relazione di sottogruppo t- selezionata, sovrappone il diagramma degli elementi di simmetria del genitore (stile ITA): gli elementi mantenuti nel sottogruppo sono in nero, quelli persi in rosso. Un asse 4 che degrada a un asse 2 appare come un asse 4 rosso con un asse 2 nero sopra.",
-            ru: "Для выбранного отношения t-подгруппы накладывает диаграмму элементов симметрии родителя (стиль ITA): элементы, сохранённые в подгруппе, рисуются чёрным, утраченные — красным. Ось 4-го порядка, понизившаяся до 2-го, показывается как красная ось 4 с чёрной осью 2 поверх.",
-            zhHans: "对于所选的 t-子群关系，叠加母群的对称要素图 (ITA 风格)：子群中保持的要素以黑色绘制，失去的要素以红色绘制。退化为二次轴的四次轴显示为红色四次记号上叠加黑色二次记号。",
-            zhHant: "對於所選的 t-子群關係，疊加母群的對稱要素圖 (ITA 風格)：子群中保持的要素以黑色繪製，失去的要素以紅色繪製。退化為二次軸的四次軸顯示為紅色四次記號上疊加黑色二次記號。",
-            ko: "선택한 t-부분군 관계에 대해 부모의 대칭 요소 도표 (ITA 방식) 를 겹쳐 그립니다. 부분군에서 유지되는 요소는 검정, 사라지는 요소는 빨강으로 그려집니다. 2회축으로 퇴화하는 4회축은 빨간 4회 기호 위에 검은 2회 기호로 표시됩니다."));
+            en: "Left: overlays the parent's symmetry-element diagram (ITA style) for the selected subgroup relation — the unit cell is blue, elements retained in the subgroup are black, elements lost are yellow. Where a lost element sits on a retained one (e.g. a 4-fold degrading to a 2-fold) only the retained (black) element is drawn. Right: the parent's general positions, colored by how the orbit splits into the subgroup's sub-orbits.",
+            ja: "左: 選択した部分群関係について親の対称要素図 (ITA 風) を重ね描きします。単位胞は青、部分群で保持される要素は黒、失われる要素は黄色です。失われる要素が保持要素と同じ位置にある場合 (例: 4回軸が2回軸に退化) は保持側 (黒) だけを描きます。右: 親の一般位置を、部分群の副軌道への分裂に応じて色分けします。",
+            de: "Links: überlagert das Symmetrieelement-Diagramm des Elters (ITA-Stil) für die gewählte Untergruppenrelation — die Elementarzelle ist blau, erhaltene Elemente schwarz, verlorene gelb. Sitzt ein verlorenes Element auf einem erhaltenen (z. B. eine zu einer 2-zähligen reduzierte 4-zählige Achse), wird nur das erhaltene (schwarze) gezeichnet. Rechts: die allgemeinen Lagen des Elters, eingefärbt nach der Aufspaltung der Bahn in die Teilbahnen der Untergruppe.",
+            fr: "À gauche : superpose le diagramme des éléments de symétrie du parent (style ITA) pour la relation de sous-groupe sélectionnée — la maille est bleue, les éléments conservés en noir, les éléments perdus en jaune. Lorsqu'un élément perdu coïncide avec un élément conservé (p. ex. un axe 4 réduit à un axe 2), seul l'élément conservé (noir) est tracé. À droite : les positions générales du parent, colorées selon l'éclatement de l'orbite en sous-orbites du sous-groupe.",
+            es: "Izquierda: superpone el diagrama de elementos de simetría del padre (estilo ITA) para la relación de subgrupo seleccionada — la celda es azul, los elementos conservados en negro y los perdidos en amarillo. Cuando un elemento perdido coincide con uno conservado (p. ej. un eje 4 que se degrada a un eje 2) solo se dibuja el conservado (negro). Derecha: las posiciones generales del padre, coloreadas según cómo se divide la órbita en las suborbitas del subgrupo.",
+            pt: "Esquerda: sobrepõe o diagrama de elementos de simetria do pai (estilo ITA) para a relação de subgrupo selecionada — a célula é azul, os elementos mantidos em preto e os perdidos em amarelo. Quando um elemento perdido coincide com um mantido (p. ex. um eixo 4 que se reduz a um eixo 2) apenas o mantido (preto) é desenhado. Direita: as posições gerais do pai, coloridas conforme a órbita se divide nas suborbitas do subgrupo.",
+            it: "Sinistra: sovrappone il diagramma degli elementi di simmetria del genitore (stile ITA) per la relazione di sottogruppo selezionata — la cella è blu, gli elementi mantenuti in nero e quelli persi in giallo. Quando un elemento perso coincide con uno mantenuto (es. un asse 4 che degrada a un asse 2) viene disegnato solo il mantenuto (nero). Destra: le posizioni generali del genitore, colorate secondo la scissione dell'orbita nelle sotto-orbite del sottogruppo.",
+            ru: "Слева: накладывает диаграмму элементов симметрии родителя (стиль ITA) для выбранного отношения подгруппы — ячейка синяя, сохранённые элементы чёрные, утраченные жёлтые. Если утраченный элемент совпадает с сохранённым (например, ось 4-го порядка, понизившаяся до 2-го), рисуется только сохранённый (чёрный). Справа: общие позиции родителя, окрашенные по расщеплению орбиты на подорбиты подгруппы.",
+            zhHans: "左: 对所选的子群关系叠加母群的对称要素图 (ITA 风格) — 单位胞为蓝色，保持的要素为黑色，失去的要素为黄色。当失去的要素与保持的要素位于同一位置 (例如四次轴退化为二次轴) 时仅绘制保持的 (黑色) 要素。右: 母群的一般位置，按轨道分裂为子群副轨道的方式着色。",
+            zhHant: "左: 對所選的子群關係疊加母群的對稱要素圖 (ITA 風格) — 單位胞為藍色，保持的要素為黑色，失去的要素為黃色。當失去的要素與保持的要素位於同一位置 (例如四次軸退化為二次軸) 時僅繪製保持的 (黑色) 要素。右: 母群的一般位置，按軌道分裂為子群副軌道的方式著色。",
+            ko: "왼쪽: 선택한 부분군 관계에 대해 부모의 대칭 요소 도표 (ITA 방식) 를 겹쳐 그립니다 — 단위 셀은 파랑, 유지되는 요소는 검정, 사라지는 요소는 노랑입니다. 사라지는 요소가 유지되는 요소와 같은 위치에 있으면 (예: 4회축이 2회축으로 퇴화) 유지되는 (검정) 요소만 그립니다. 오른쪽: 부모의 일반 위치를 궤도가 부분군의 부분 궤도로 분리되는 방식에 따라 색으로 구분합니다."));
         toolTip.SetToolTip(pictureBoxPointGroups, Loc(
             en: "Hasse diagram of the 32 crystallographic point-group types (vertical axis: group order). The current point group is haloed. Click a node to highlight its subgroup types (blue) and supergroup types (orange); numbers on the edges are the index (order ratio). Click empty space to return to the current group.",
             ja: "32 の結晶学的点群型のハッセ図 (縦軸は群の位数)。現在の点群はハローで表示されます。ノードをクリックすると部分群型 (青) と超群型 (橙) を強調し、辺の数字は index (位数比) です。余白をクリックすると現在の点群に戻ります。",
