@@ -1534,7 +1534,7 @@ public partial class FormGroupRelations : FormBase
     // 既存の描画器 (SymmetryDiagramElements) には tableOverride と drawCell の 2 引数を足しただけ (描画器本体は無改修)。
     // t- と「胞が拡大しない k-」(中心化除去、SublatticeBasis 行列式 1) は T_H=同一慣用胞なので Mod1 折り畳みが厳密。
     // 胞が拡大する k-/isomorphic はタイル描画可能なケース (直交投影+対角P+面内拡大) のみ扱い、それ以外は注記 (codex R 相談で確定)。
-    // 右の色分けは sameCell かつ非 Rho 設定でのみ (Rho は描画側が Hex 解決するため色計算と点順が食い違う)。
+    // Rho 設定親 (R 群菱面体軸) は要素/一般位置とも rho 基底を Hex レイアウトに描けないため図全体を注記に置換し Hex 設定へ誘導 (260714Cl 図全体ゲート化)。
 
     // 260713Cl: lost = 黄色 (失われる対称要素)。白背景での視認性を考え、純黄より濃いめの金色寄り (#E0A800)。
     // 旧: Color.FromArgb(216, 110, 100) 薄い赤 #D86E64 → ユーザー指示で黄色へ変更。
@@ -1603,6 +1603,28 @@ public partial class FormGroupRelations : FormBase
         var gTable = SymmetryElementsTable.FromOperations(SymmetryElementsTable.ExpandedOperations(parentSn), parentSn);
         if (gTable == null) { DrawElementsCenteredNote(g, new RectangleF(0, 0, w, h), "—", SystemColors.GrayText); return; }
 
+        // 260714Cl: Rho 設定親 (R 群菱面体軸) では対称要素図 (gTable=FromOperations(生 parentSn)) も一般位置図も rho 基底のまま。
+        // 描画側は TryGetSym→ResolveRhoToHex で Hex フレーム (hex 胞レイアウト・⊥c 投影・IsAxisInPlane 等の軸分類) に解決するため、
+        // rho 基底の要素/点を Hex で描くと幾何が破綻する (例: [111]_rho の 3 回軸が面直 ▲ でなく体対角斜め軸に誤分類され、
+        // R32/R-3m 等の 2 回軸・鏡映面も Normal/Direction が rho 基底のため誤配置)。両パネルとも描かず図全体を注記に置換し、
+        // ITA 標準の Hex 設定へ誘導する (右パネルの色分けだけでなく左パネルも同じ理由で不正なので図全体をゲートする)。
+        if (SymmetryElementsTable.ResolveRhoToHex(parentSn) != parentSn)
+        {
+            DrawElementsCenteredNote(g, new RectangleF(0, 0, w, h), Loc(
+                en: "This group is shown in the rhombohedral-axes (Rho) setting; the symmetry-element and general-position diagrams are available only in the hexagonal-axes (Hex) setting of the same R space group.",
+                ja: "この群は菱面体軸 (Rho) 設定で表示されています。対称要素図・一般位置図は、同じ R 空間群の六方軸 (Hex) 設定でのみ表示できます。",
+                de: "Diese Gruppe wird in der rhomboedrischen Achsenaufstellung (Rho) angezeigt; die Symmetrieelement- und Allgemeinlage-Diagramme sind nur in der hexagonalen Achsenaufstellung (Hex) derselben R-Raumgruppe verfügbar.",
+                fr: "Ce groupe est affiché dans le repère à axes rhomboédriques (Rho) ; les diagrammes des éléments de symétrie et des positions générales ne sont disponibles que dans le repère à axes hexagonaux (Hex) du même groupe d'espace R.",
+                es: "Este grupo se muestra en la configuración de ejes romboédricos (Rho); los diagramas de elementos de simetría y de posiciones generales solo están disponibles en la configuración de ejes hexagonales (Hex) del mismo grupo espacial R.",
+                pt: "Este grupo é mostrado na configuração de eixos romboédricos (Rho); os diagramas de elementos de simetria e de posições gerais só estão disponíveis na configuração de eixos hexagonais (Hex) do mesmo grupo espacial R.",
+                it: "Questo gruppo è mostrato nell'impostazione ad assi romboedrici (Rho); i diagrammi degli elementi di simmetria e delle posizioni generali sono disponibili solo nell'impostazione ad assi esagonali (Hex) dello stesso gruppo spaziale R.",
+                ru: "Эта группа показана в ромбоэдрической установке осей (Rho); диаграммы элементов симметрии и общих позиций доступны только в гексагональной установке осей (Hex) той же R-пространственной группы.",
+                zhHans: "该群以菱面体轴 (Rho) 设置显示；对称要素图与一般位置图仅在同一 R 空间群的六方轴 (Hex) 设置下可用。",
+                zhHant: "該群以菱面體軸 (Rho) 設定顯示；對稱要素圖與一般位置圖僅在同一 R 空間群的六方軸 (Hex) 設定下可用。",
+                ko: "이 군은 능면체 축 (Rho) 설정으로 표시됩니다. 대칭 요소 도표와 일반 위치 도표는 동일한 R 공간군의 육방 축 (Hex) 설정에서만 볼 수 있습니다."), SystemColors.GrayText);
+            return;
+        }
+
         // 260713Cl (Elements/Positions): 上部ラベル帯を空け、その下を左=対称要素図・右=一般位置図に 2 分割する (ITA の空間群図と同じ並び)。
         int topBand = 40, gap = 10;
         int halfW = (w - gap) / 2;
@@ -1639,32 +1661,15 @@ public partial class FormGroupRelations : FormBase
             DrawElementsEnlargedNote(g, leftRect); // c 軸方向拡大 (面直折り畳み)・斜交 P・非直交投影 (hex/monoclinic) は注記
         }
 
-        // --- 右: 一般位置 (H の副軌道ごとに色分け = 軌道分裂の可視化) ---
-        // 260714Cl: 菱面体 Rho 設定の親は描画側 (DrawGeneralPositionsColored→TryGetSym) が Hex 系列へ解決するため、色計算
-        // (ComputeOrbitColors は生 parentSn) と点の多重度・順序が食い違い色ズレ/黒点になる。Rho は色分けせず注記する。
-        bool rhoParent = SymmetryElementsTable.ResolveRhoToHex(parentSn) != parentSn;
-        if (sameCell && !rhoParent)
+        // --- 右: 一般位置 (H の副軌道ごとに色分け = 軌道分裂の可視化) --- 260713Cl 追加 (左右分割)
+        // (Rho 設定親は上で図全体をゲート済み。ここは非 Rho の sameCell=色分け / それ以外=拡大注記の 2 分岐。260714Cl)
+        if (sameCell)
         {
             // 親 G の一般位置 (1 軌道) が H で index 個の副軌道に分裂する様子を、副軌道ごとの色で描く (mod-1 で H-同値判定)。
             var testPoint = SymmetryDiagramPositions.GetTestPoint(parentSym);
             var colors = ComputeOrbitColors(parentSn, s.Operations, testPoint);
             using var posBmp = RenderPositionsLayer(rightRect.Width, rightRect.Height, parentSn, axis, testPoint, colors);
             g.DrawImage(posBmp, rightRect);
-        }
-        else if (sameCell) // 260714Cl: rhoParent (同一胞だが Rho 設定) — 色分け不可のため注記
-        {
-            DrawElementsCenteredNote(g, rightRect, Loc(
-                en: "Orbit-splitting colors are not shown for a rhombohedral group in the rhombohedral-axes (Rho) setting.",
-                ja: "菱面体軸 (Rho) 設定の三方晶群では、軌道分裂の色分けは表示しません。",
-                de: "Für eine rhomboedrische Gruppe in der rhomboedrischen Achsenaufstellung (Rho) werden keine Bahnaufspaltungsfarben angezeigt.",
-                fr: "Les couleurs d'éclatement d'orbite ne sont pas affichées pour un groupe rhomboédrique dans le repère à axes rhomboédriques (Rho).",
-                es: "Los colores de división de órbita no se muestran para un grupo romboédrico en la configuración de ejes romboédricos (Rho).",
-                pt: "As cores de divisão de órbita não são mostradas para um grupo romboédrico na configuração de eixos romboédricos (Rho).",
-                it: "I colori della scissione dell'orbita non vengono mostrati per un gruppo romboedrico nell'impostazione ad assi romboedrici (Rho).",
-                ru: "Цвета расщепления орбиты не отображаются для ромбоэдрической группы в ромбоэдрической установке осей (Rho).",
-                zhHans: "对于菱面体轴 (Rho) 设置下的三方晶群，不显示轨道分裂的颜色。",
-                zhHant: "對於菱面體軸 (Rho) 設定下的三方晶群，不顯示軌道分裂的顏色。",
-                ko: "능면체 축 (Rho) 설정의 삼방정계 군에서는 궤도 분리 색상을 표시하지 않습니다."), SystemColors.GrayText);
         }
         else
         {
