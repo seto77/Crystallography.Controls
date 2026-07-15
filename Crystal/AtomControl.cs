@@ -54,21 +54,19 @@ public partial class AtomControl : UserControlBase
         set
         {
             atmicPositionError = value;
-            if (!value)
-            {
-                tableLayoutPanel1.ColumnStyles[4].SizeType = tableLayoutPanel1.ColumnStyles[7].SizeType = SizeType.Absolute;
-                tableLayoutPanel1.ColumnStyles[4].Width = tableLayoutPanel1.ColumnStyles[7].Width = 0;
-                numericBoxXerr.TabStop = numericBoxYerr.TabStop = numericBoxZerr.TabStop = numericBoxOccerr.TabStop = false;
-            }
-            else
-            {
-                foreach (int i in (int[])[1, 3, 4, 6, 7])
-                {
-                    tableLayoutPanel1.ColumnStyles[i].SizeType = SizeType.Percent;
-                    tableLayoutPanel1.ColumnStyles[i].Width = 20;
-                }
-                numericBoxXerr.TabStop = numericBoxYerr.TabStop = numericBoxZerr.TabStop = numericBoxOccerr.TabStop = true;
-            }
+            //260715Cl 整理: err 列の表示切替が ColumnStyles 幅操作から Visible 切替に変わり、両分岐が bool 値違いのみになったため if/else を畳んだ (直下の DebyeWallerError と同形)
+            //if (!value)
+            //{
+            //    tableLayoutPanel1.ColumnStyles[4].SizeType = tableLayoutPanel1.ColumnStyles[7].SizeType = SizeType.Absolute;
+            //    tableLayoutPanel1.ColumnStyles[4].Width = tableLayoutPanel1.ColumnStyles[7].Width = 0;
+            //}
+            //else foreach (int i in (int[])[1, 3, 4, 6, 7])
+            //{
+            //    tableLayoutPanel1.ColumnStyles[i].SizeType = SizeType.Percent;
+            //    tableLayoutPanel1.ColumnStyles[i].Width = 20;
+            //}
+            numericBoxXerr.Visible = numericBoxYerr.Visible = numericBoxZerr.Visible = numericBoxOccerr.Visible = value;
+            numericBoxXerr.TabStop = numericBoxYerr.TabStop = numericBoxZerr.TabStop = numericBoxOccerr.TabStop = value;
         }
     }
     private bool atmicPositionError = false;

@@ -198,6 +198,49 @@ public partial class DataGridViewLatexTextBoxCell : DataGridViewTextBoxCell
     [GeneratedRegex(@"(?<![\\\w}])(-?\d+)\/(\d+)(?![\w{])")]
     private static partial Regex PlainFractionRegex();
 
+    /// <summary>LaTeX ソース文字列をコピー用の読みやすいプレーンテキストへ展開する。260715Cl 追加。</summary>
+    /// <remarks>
+    /// MiniTable のセルに現れる結晶学表記のコマンド群 (\bar, \overline, \mathrm, \frac, \perp, \parallel,
+    /// \mid, \, など) を対象にした軽量変換で、汎用 LaTeX パーサではない。上線 (\bar{3}) は CIF や文献の
+    /// 入力慣用に合わせて ASCII の "-3" へ展開する (FormSymmetryInformation.ToLatex 系変換のほぼ逆向き)。
+    /// 例: "x,\,\bar{y},\,z" → "x, -y, z" / "\{\,2_{100}\mid 0,0,0\,\}" → "{ 2_100 | 0,0,0 }"。
+    /// </remarks>
+    public static string LatexToPlainText(string latex)
+    {
+        if (string.IsNullOrWhiteSpace(latex))
+            return latex ?? "";
+
+        var s = latex;
+        // Seitz 記号などのリテラル波括弧 \{ \} は、後段のグルーピング波括弧除去に巻き込まれないよう退避する。
+        s = s.Replace(@"\{", "\u0001").Replace(@"\}", "\u0002");
+        s = LatexFracRegex().Replace(s, "$1/$2");                        // \frac{A}{B} → A/B
+        s = LatexBarRegex().Replace(s, "-$1");                           // \bar{X} / \overline{X} → -X
+        s = LatexMathrmRegex().Replace(s, "$1");                         // \mathrm{X} → X
+        s = s.Replace(@"\perp ", "⊥").Replace(@"\perp", "⊥");            // ToLatex が挿入する後続スペースごと戻す
+        s = s.Replace(@"\parallel ", "∥").Replace(@"\parallel", "∥");
+        s = s.Replace(@"\mid", " | ");
+        s = s.Replace(@"\!", "").Replace(@"\;", " ").Replace(@"\:", " ").Replace(@"\,", " ").Replace(@"\ ", " ");
+        s = s.Replace("{", "").Replace("}", "");                         // グルーピング波括弧は除去 (^{X}/_{X} も ^X/_X になる)
+        s = LatexUnknownCommandRegex().Replace(s, "$1");                 // 未知の \cmd はコマンド名だけ残す
+        s = s.Replace('\u0001', '{').Replace('\u0002', '}');
+        return LatexSpaceRunRegex().Replace(s, " ").Trim();              // 連続空白を 1 個へ圧縮
+    }
+
+    [GeneratedRegex(@"\\frac\{([^{}]*)\}\{([^{}]*)\}")]
+    private static partial Regex LatexFracRegex(); // 260715Cl 追加
+
+    [GeneratedRegex(@"\\(?:bar|overline)\{([^{}]*)\}")]
+    private static partial Regex LatexBarRegex(); // 260715Cl 追加
+
+    [GeneratedRegex(@"\\mathrm\{([^{}]*)\}")]
+    private static partial Regex LatexMathrmRegex(); // 260715Cl 追加
+
+    [GeneratedRegex(@"\\([A-Za-z]+)")]
+    private static partial Regex LatexUnknownCommandRegex(); // 260715Cl 追加
+
+    [GeneratedRegex(@" {2,}")]
+    private static partial Regex LatexSpaceRunRegex(); // 260715Cl 追加
+
     private Rectangle GetContentBounds(Rectangle cellBounds, DataGridViewCellStyle cellStyle, DataGridViewAdvancedBorderStyle advancedBorderStyle)
     {
         var border = BorderWidths(advancedBorderStyle);

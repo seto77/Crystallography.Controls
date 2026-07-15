@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices; // 260715Cl 追加 (Clipboard 失敗時の ExternalException)
+using System.Text; // 260715Cl 追加 (コピー文字列の組み立て)
 using System.Windows.Forms;
 using XamlMath;
+using static Crystallography.Localization; // 260715Cl 追加 (コピーメニュー文言の方式② Loc)
 
 namespace Crystallography.Controls;
 
@@ -55,6 +58,7 @@ public class MiniTable : DpiAwareDataGridView
         ApplyRowHeightSettings(updateContainerHeight: false); // 260708Ch
         base.TabStop = false;
         ApplyCellPadding(); // 260708Ch: 自動列幅にも反映されるセル内余白を既定適用
+        DoubleBuffered = true; // 260715Cl 追加: コピー範囲ハイライトの点灯/消灯で全面 Invalidate するためちらつき防止
     }
 
     #region 公開オプション (表示専用テーブルとして意味のあるものだけ)
@@ -265,6 +269,7 @@ public class MiniTable : DpiAwareDataGridView
         base.OnPaint(e);
         if (ShouldDrawDesignTimePreview())
             DrawDesignTimePreview(e.Graphics); // 260707Ch: Rows を増やさずデザイン時だけ見本行を重ね描き
+        DrawCopyHighlight(e.Graphics); // 260715Cl 追加: コピーメニュー表示中の対象範囲ハイライト
     }
 
     /// <summary>
@@ -385,7 +390,8 @@ public class MiniTable : DpiAwareDataGridView
 
     private void DrawDesignTimePreview(Graphics g)
     {
-        var visibleColumns = Columns.Cast<DataGridViewColumn>().Where(c => c.Visible).OrderBy(c => c.DisplayIndex).ToArray();
+        var visibleColumns = VisibleColumnsInDisplayOrder(); //260715Cl 変更: 可視列の列挙をコピー系ヘルパーと共通化
+        //var visibleColumns = Columns.Cast<DataGridViewColumn>().Where(c => c.Visible).OrderBy(c => c.DisplayIndex).ToArray();//260715Cl 変更前
         var rowHeight = ManualRowHeight >= 0
             ? ScaleForDpi(ResolveFixedRowHeight(), CurrentDpi) // 260708Ch: 実行時と同じ DPI スケールをデザイン時プレビューにも適用
             : Math.Max(RowTemplate.Height, Font.Height + 8); // 260708Ch
@@ -652,6 +658,393 @@ public class MiniTable : DpiAwareDataGridView
             + (RowHeadersVisible ? RowHeadersWidth : 0)
             + Columns.GetColumnsWidth(DataGridViewElementStates.Visible)
             + 2;
+    }
+
+    #endregion
+
+    #region コピー用コンテキストメニュー (右クリック) 260715Cl 追加
+
+    private enum CopyHighlightScope { None, Cell, Row, Table }
+
+    private ContextMenuStrip copyMenu;
+    private ToolStripMenuItem copyCellItem, copyCellPlainItem, copyRowItem, copyRowPlainItem,
+        copyTableItem, copyTablePlainItem, copyTableTabularItem, copyTableImageItem;
+    private int contextRow = -1, contextColumn = -1; // 右クリックされたセル位置 (セル外は -1)
+    private CopyHighlightScope highlightScope;
+
+    /// <summary>右クリックでクリップボードへのコピーメニューを表示するか。260715Cl 追加。</summary>
+    /// <remarks>消費側フォームが <see cref="Control.ContextMenuStrip"/> を独自に設定している場合、内蔵メニューはそちらへ譲って表示しない。</remarks>
+    [DefaultValue(true), Category("MiniTable")]
+    [Description("右クリックでクリップボードへのコピーメニューを表示します。ContextMenuStrip を独自に設定した場合は表示されません。")]
+    public bool EnableCopyContextMenu { get; set; } = true;
+
+    protected override void OnMouseUp(MouseEventArgs e) // コンテキストメニューの Windows 流儀に合わせボタンを離した時点で表示する
+    {
+        base.OnMouseUp(e);
+        if (e.Button != MouseButtons.Right || !EnableCopyContextMenu || ContextMenuStrip != null || DesignMode)
+            return;
+
+        var hit = HitTest(e.X, e.Y);
+        contextRow = hit.RowIndex;
+        contextColumn = hit.ColumnIndex;
+        EnsureCopyMenu();
+        UpdateCopyMenu();
+        SetCopyHighlight(DefaultCopyHighlight()); // メニューが開いた時点から対象セルを示す (どのセルを右クリックしたかの視覚フィードバック)
+        copyMenu.Show(this, e.Location);
+    }
+
+    private CopyHighlightScope DefaultCopyHighlight()
+        => contextRow >= 0 && contextColumn >= 0 ? CopyHighlightScope.Cell : CopyHighlightScope.None;
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+            copyMenu?.Dispose(); // 260715Cl 追加: 内蔵コンテキストメニューはデザイナ所有でないため自前で破棄
+        base.Dispose(disposing);
+    }
+
+    private void EnsureCopyMenu()
+    {
+        if (copyMenu != null)
+            return;
+
+        copyCellItem = CreateCopyItem(CopyHighlightScope.Cell, (_, _) => CopyCell(expand: false));
+        copyCellPlainItem = CreateCopyItem(CopyHighlightScope.Cell, (_, _) => CopyCell(expand: true));
+        copyRowItem = CreateCopyItem(CopyHighlightScope.Row, (_, _) => CopyRow(expand: false));
+        copyRowPlainItem = CreateCopyItem(CopyHighlightScope.Row, (_, _) => CopyRow(expand: true));
+        copyTableItem = CreateCopyItem(CopyHighlightScope.Table, (_, _) => CopyTable(expand: false));
+        copyTablePlainItem = CreateCopyItem(CopyHighlightScope.Table, (_, _) => CopyTable(expand: true));
+        copyTableTabularItem = CreateCopyItem(CopyHighlightScope.Table, (_, _) => CopyTableTabular());
+        copyTableImageItem = CreateCopyItem(CopyHighlightScope.Table, (_, _) => CopyTableImage());
+
+        copyMenu = new ContextMenuStrip { ShowImageMargin = false, ShowItemToolTips = true };
+        copyMenu.Items.AddRange(new ToolStripItem[]
+        {
+            copyCellItem, copyCellPlainItem, new ToolStripSeparator(),
+            copyRowItem, copyRowPlainItem, new ToolStripSeparator(),
+            copyTableItem, copyTablePlainItem, copyTableTabularItem, copyTableImageItem
+        });
+        copyMenu.Closed += (_, _) => SetCopyHighlight(CopyHighlightScope.None);
+    }
+
+    /// <summary>コピーメニュー 1 項目を生成する。ホバー中は対象範囲 (セル/行/表) をハイライトし、離れたら既定 (対象セル) へ戻す。</summary>
+    private ToolStripMenuItem CreateCopyItem(CopyHighlightScope scope, EventHandler onClick)
+    {
+        var item = new ToolStripMenuItem();
+        item.Click += onClick;
+        item.MouseEnter += (_, _) => SetCopyHighlight(scope);
+        item.MouseLeave += (_, _) => SetCopyHighlight(DefaultCopyHighlight());
+        return item;
+    }
+
+    private void SetCopyHighlight(CopyHighlightScope scope)
+    {
+        if (highlightScope == scope)
+            return;
+        //260715Cl 変更: メニュー項目ホバー毎の全面 Invalidate をやめ、旧・新ハイライト矩形の合併領域のみ無効化 (行数の多い表での全セル再ペイント抑制)
+        var prev = GetCopyScopeRect(highlightScope);
+        highlightScope = scope;
+        var next = GetCopyScopeRect(scope);
+        // 空矩形を Union に混ぜると (0,0) 起点まで無効領域が膨らむため、非空側のみ採用する
+        var dirty = prev.IsEmpty ? next : next.IsEmpty ? prev : Rectangle.Union(prev, next);
+        if (dirty.Width > 0 && dirty.Height > 0)
+        {
+            dirty.Inflate(2, 2); // 枠線 (幅 1.5〜2px) の描き残し防止
+            Invalidate(dirty);
+        }
+    }
+
+    /// <summary>メニューを開くたびに文言 (現在の UI カルチャ)・有効状態・ツールチップを設定し直す。実行時の言語切替に追従する。</summary>
+    private void UpdateCopyMenu()
+    {
+        var hasLatex = Columns.Cast<DataGridViewColumn>().Any(c => c.Visible && c.CellTemplate is DataGridViewLatexTextBoxCell);
+        var hasCell = contextRow >= 0 && contextColumn >= 0;
+        var hasRow = contextRow >= 0;
+        var hasRows = Rows.Count > 0;
+
+        var cell = Loc(en: "Copy cell", ja: "セルをコピー", de: "Zelle kopieren", fr: "Copier la cellule", es: "Copiar celda", pt: "Copiar célula", it: "Copia cella", ru: "Копировать ячейку", zhHans: "复制单元格", zhHant: "複製儲存格", ko: "셀 복사");
+        var row = Loc(en: "Copy row", ja: "行をコピー", de: "Zeile kopieren", fr: "Copier la ligne", es: "Copiar fila", pt: "Copiar linha", it: "Copia riga", ru: "Копировать строку", zhHans: "复制行", zhHant: "複製列", ko: "행 복사");
+        var table = Loc(en: "Copy table", ja: "表をコピー", de: "Tabelle kopieren", fr: "Copier le tableau", es: "Copiar tabla", pt: "Copiar tabela", it: "Copia tabella", ru: "Копировать таблицу", zhHans: "复制表格", zhHant: "複製表格", ko: "표 복사");
+        // 数式列を持たない表では raw/展開の対比が存在しないため、サフィックスなしの素朴な文言にして展開系項目を隠す。
+        var raw = hasLatex ? Loc(en: " (raw LaTeX)", ja: " (LaTeX のまま)", de: " (LaTeX-Quelltext)", fr: " (source LaTeX)", es: " (código LaTeX)", pt: " (código LaTeX)", it: " (sorgente LaTeX)", ru: " (исходный LaTeX)", zhHans: " (LaTeX 源码)", zhHant: " (LaTeX 原始碼)", ko: " (LaTeX 원본)") : "";
+        var expand = Loc(en: " (expand formulas to text)", ja: " (数式をテキストに展開)", de: " (Formeln als Text)", fr: " (formules en texte)", es: " (fórmulas como texto)", pt: " (fórmulas como texto)", it: " (formule come testo)", ru: " (формулы как текст)", zhHans: " (公式展开为文本)", zhHant: " (公式展開為文字)", ko: " (수식을 텍스트로 변환)");
+
+        copyCellItem.Text = cell + raw;
+        copyCellPlainItem.Text = cell + expand;
+        copyRowItem.Text = row + raw;
+        copyRowPlainItem.Text = row + expand;
+        copyTableItem.Text = table + raw;
+        copyTablePlainItem.Text = table + expand;
+        copyTableTabularItem.Text = Loc(en: "Copy table as LaTeX tabular", ja: "表を LaTeX 表 (tabular) としてコピー", de: "Tabelle als LaTeX-tabular kopieren", fr: "Copier le tableau en tabular LaTeX", es: "Copiar tabla como tabular de LaTeX", pt: "Copiar tabela como tabular LaTeX", it: "Copia tabella come tabular LaTeX", ru: "Копировать таблицу как LaTeX tabular", zhHans: "以 LaTeX tabular 复制表格", zhHant: "以 LaTeX tabular 複製表格", ko: "표를 LaTeX tabular로 복사");
+        copyTableImageItem.Text = Loc(en: "Copy table as image", ja: "表を画像としてコピー", de: "Tabelle als Bild kopieren", fr: "Copier le tableau en image", es: "Copiar tabla como imagen", pt: "Copiar tabela como imagem", it: "Copia tabella come immagine", ru: "Копировать таблицу как изображение", zhHans: "以图像复制表格", zhHant: "以影像複製表格", ko: "표를 이미지로 복사");
+
+        copyCellPlainItem.Visible = copyRowPlainItem.Visible = copyTablePlainItem.Visible = hasLatex;
+        copyCellItem.Enabled = copyCellPlainItem.Enabled = hasCell;
+        copyRowItem.Enabled = copyRowPlainItem.Enabled = hasRow;
+        copyTableItem.Enabled = copyTablePlainItem.Enabled = copyTableTabularItem.Enabled = copyTableImageItem.Enabled = hasRows;
+
+        // セル系 2 項目のツールチップ末尾に、実際にコピーされる内容のプレビューを付ける
+        // (生ソースと展開後を開いたまま見比べられる。Selectable=false で選択表示がない表の対象確認も兼ねる)。
+        var willCopy = Loc(en: "Will copy:", ja: "コピーされる内容:", de: "Wird kopiert:", fr: "Sera copié :", es: "Se copiará:", pt: "Será copiado:", it: "Verrà copiato:", ru: "Будет скопировано:", zhHans: "将复制:", zhHant: "將複製:", ko: "복사될 내용:");
+        static string Preview(string s) => s.Length > 40 ? s[..40] + "…" : s;
+        string PreviewLine(bool expanded) => hasCell ? $"\n{willCopy} \"{Preview(GetCellText(contextRow, contextColumn, expanded))}\"" : "";
+
+        copyCellItem.ToolTipText = Loc(
+            en: "Copies the cell as-is; formulas stay in LaTeX source form.",
+            ja: "セルの内容をそのままコピーします。数式は LaTeX ソースのままです。",
+            de: "Kopiert die Zelle unverändert; Formeln bleiben LaTeX-Quelltext.",
+            fr: "Copie la cellule telle quelle ; les formules restent en source LaTeX.",
+            es: "Copia la celda tal cual; las fórmulas quedan como código LaTeX.",
+            pt: "Copia a célula como está; as fórmulas permanecem em código LaTeX.",
+            it: "Copia la cella così com'è; le formule restano in sorgente LaTeX.",
+            ru: "Копирует ячейку как есть; формулы остаются в виде исходного LaTeX.",
+            zhHans: "按原样复制单元格；公式保持 LaTeX 源码。",
+            zhHant: "按原樣複製儲存格；公式保持 LaTeX 原始碼。",
+            ko: "셀 내용을 그대로 복사합니다. 수식은 LaTeX 원본으로 유지됩니다.") + PreviewLine(false);
+        copyCellPlainItem.ToolTipText = Loc(
+            en: "Expands formulas to plain text before copying (e.g. \\bar{3} → -3).",
+            ja: "数式を読みやすいテキストに展開してコピーします (例: \\bar{3} → -3)。",
+            de: "Wandelt Formeln vor dem Kopieren in Klartext um (z. B. \\bar{3} → -3).",
+            fr: "Convertit les formules en texte brut avant la copie (ex. \\bar{3} → -3).",
+            es: "Convierte las fórmulas a texto plano antes de copiar (p. ej. \\bar{3} → -3).",
+            pt: "Converte as fórmulas em texto simples antes de copiar (ex.: \\bar{3} → -3).",
+            it: "Converte le formule in testo semplice prima di copiare (es. \\bar{3} → -3).",
+            ru: "Преобразует формулы в обычный текст перед копированием (напр. \\bar{3} → -3).",
+            zhHans: "复制前将公式展开为纯文本 (例: \\bar{3} → -3)。",
+            zhHant: "複製前將公式展開為純文字 (例: \\bar{3} → -3)。",
+            ko: "복사 전에 수식을 일반 텍스트로 변환합니다 (예: \\bar{3} → -3).") + PreviewLine(true);
+        copyRowItem.ToolTipText = Loc(
+            en: "Copies this row as tab-separated text; formulas stay in LaTeX.",
+            ja: "この行をタブ区切りテキストでコピーします。数式は LaTeX ソースのままです。",
+            de: "Kopiert diese Zeile als tabulatorgetrennten Text; Formeln bleiben LaTeX.",
+            fr: "Copie cette ligne en texte séparé par tabulations ; formules en LaTeX.",
+            es: "Copia esta fila como texto separado por tabulaciones; fórmulas en LaTeX.",
+            pt: "Copia esta linha como texto separado por tabulações; fórmulas em LaTeX.",
+            it: "Copia questa riga come testo separato da tabulazioni; formule in LaTeX.",
+            ru: "Копирует строку как текст с табуляцией; формулы остаются в LaTeX.",
+            zhHans: "以制表符分隔文本复制该行；公式保持 LaTeX。",
+            zhHant: "以定位字元分隔文字複製該列；公式保持 LaTeX。",
+            ko: "이 행을 탭 구분 텍스트로 복사합니다. 수식은 LaTeX로 유지됩니다.");
+        copyRowPlainItem.ToolTipText = Loc(
+            en: "Copies this row as tab-separated text, expanding formulas to plain text.",
+            ja: "この行をタブ区切りテキストでコピーします。数式はテキストに展開します。",
+            de: "Kopiert diese Zeile als tabulatorgetrennten Text; Formeln als Klartext.",
+            fr: "Copie cette ligne en texte séparé par tabulations, formules en texte brut.",
+            es: "Copia esta fila como texto separado por tabulaciones, fórmulas como texto.",
+            pt: "Copia esta linha como texto separado por tabulações, fórmulas como texto.",
+            it: "Copia questa riga come testo separato da tabulazioni, formule come testo.",
+            ru: "Копирует строку как текст с табуляцией, формулы — обычным текстом.",
+            zhHans: "以制表符分隔文本复制该行，公式展开为纯文本。",
+            zhHant: "以定位字元分隔文字複製該列，公式展開為純文字。",
+            ko: "이 행을 탭 구분 텍스트로 복사하며 수식을 텍스트로 변환합니다.");
+        copyTableItem.ToolTipText = Loc(
+            en: "Copies the whole table as tab-separated text with headers (pastes into Excel). Formulas stay in LaTeX.",
+            ja: "表全体をヘッダー付きのタブ区切りテキストでコピーします (Excel 等へ貼り付け可)。数式は LaTeX ソースのままです。",
+            de: "Kopiert die ganze Tabelle mit Kopfzeile als tabulatorgetrennten Text (für Excel). Formeln bleiben LaTeX.",
+            fr: "Copie tout le tableau avec en-têtes en texte tabulé (collable dans Excel). Formules en LaTeX.",
+            es: "Copia toda la tabla con encabezados como texto tabulado (pegable en Excel). Fórmulas en LaTeX.",
+            pt: "Copia toda a tabela com cabeçalhos como texto tabulado (colável no Excel). Fórmulas em LaTeX.",
+            it: "Copia l'intera tabella con intestazioni come testo tabulato (incollabile in Excel). Formule in LaTeX.",
+            ru: "Копирует всю таблицу с заголовками как текст с табуляцией (для Excel). Формулы остаются в LaTeX.",
+            zhHans: "以带表头的制表符分隔文本复制整个表格 (可粘贴到 Excel)。公式保持 LaTeX。",
+            zhHant: "以帶表頭的定位字元分隔文字複製整個表格 (可貼上到 Excel)。公式保持 LaTeX。",
+            ko: "표 전체를 머리글 포함 탭 구분 텍스트로 복사합니다 (Excel에 붙여넣기 가능). 수식은 LaTeX로 유지됩니다.");
+        copyTablePlainItem.ToolTipText = Loc(
+            en: "Copies the whole table as tab-separated text with headers, expanding formulas to plain text.",
+            ja: "表全体をヘッダー付きのタブ区切りテキストでコピーします。数式はテキストに展開します。",
+            de: "Kopiert die ganze Tabelle mit Kopfzeile als tabulatorgetrennten Text; Formeln als Klartext.",
+            fr: "Copie tout le tableau avec en-têtes en texte tabulé, formules en texte brut.",
+            es: "Copia toda la tabla con encabezados como texto tabulado, fórmulas como texto.",
+            pt: "Copia toda a tabela com cabeçalhos como texto tabulado, fórmulas como texto.",
+            it: "Copia l'intera tabella con intestazioni come testo tabulato, formule come testo.",
+            ru: "Копирует всю таблицу с заголовками, формулы — обычным текстом.",
+            zhHans: "以带表头的制表符分隔文本复制整个表格，公式展开为纯文本。",
+            zhHant: "以帶表頭的定位字元分隔文字複製整個表格，公式展開為純文字。",
+            ko: "표 전체를 머리글 포함 탭 구분 텍스트로 복사하며 수식을 텍스트로 변환합니다.");
+        copyTableTabularItem.ToolTipText = Loc(
+            en: "Copies the whole table as a LaTeX tabular environment, ready to paste into a manuscript.",
+            ja: "表全体を LaTeX の tabular 環境としてコピーします (論文原稿への貼り付け用)。",
+            de: "Kopiert die ganze Tabelle als LaTeX-tabular-Umgebung (für Manuskripte).",
+            fr: "Copie tout le tableau comme environnement tabular LaTeX (pour un manuscrit).",
+            es: "Copia toda la tabla como entorno tabular de LaTeX (para un manuscrito).",
+            pt: "Copia toda a tabela como ambiente tabular LaTeX (para um manuscrito).",
+            it: "Copia l'intera tabella come ambiente tabular LaTeX (per un manoscritto).",
+            ru: "Копирует всю таблицу как окружение LaTeX tabular (для рукописи).",
+            zhHans: "将整个表格复制为 LaTeX tabular 环境 (用于论文稿件)。",
+            zhHant: "將整個表格複製為 LaTeX tabular 環境 (用於論文稿件)。",
+            ko: "표 전체를 LaTeX tabular 환경으로 복사합니다 (논문 원고용).");
+        copyTableImageItem.ToolTipText = Loc(
+            en: "Copies the table as an image, exactly as rendered (for slides and documents).",
+            ja: "表を見たままの画像としてコピーします (スライドや文書への貼り付け用)。",
+            de: "Kopiert die Tabelle als Bild, genau wie dargestellt (für Folien und Dokumente).",
+            fr: "Copie le tableau en image, tel qu'affiché (pour diapositives et documents).",
+            es: "Copia la tabla como imagen, tal como se muestra (para diapositivas y documentos).",
+            pt: "Copia a tabela como imagem, exatamente como exibida (para slides e documentos).",
+            it: "Copia la tabella come immagine, esattamente come visualizzata (per slide e documenti).",
+            ru: "Копирует таблицу как изображение, как она отображается (для слайдов и документов).",
+            zhHans: "以显示原样将表格复制为图像 (用于幻灯片和文档)。",
+            zhHant: "以顯示原樣將表格複製為影像 (用於簡報和文件)。",
+            ko: "표를 화면에 표시된 그대로 이미지로 복사합니다 (슬라이드/문서용).");
+    }
+
+    /// <summary>可視列を表示順に返す (コピー系・デザイン時プレビューの共通経路)。</summary>
+    private DataGridViewColumn[] VisibleColumnsInDisplayOrder()
+        => Columns.Cast<DataGridViewColumn>().Where(c => c.Visible).OrderBy(c => c.DisplayIndex).ToArray();
+
+    /// <summary>セル 1 個分のコピー文字列。LaTeX セルはソース (expand=true なら平文へ展開)、通常セルは表示文字列 (Format 適用後)。</summary>
+    private string GetCellText(int rowIndex, int columnIndex, bool expand)
+    {
+        var cell = Rows[rowIndex].Cells[columnIndex];
+        if (cell is DataGridViewLatexTextBoxCell)
+        {
+            var text = Convert.ToString(cell.Value) ?? "";
+            return expand ? DataGridViewLatexTextBoxCell.LatexToPlainText(text) : text;
+        }
+        return Convert.ToString(cell.FormattedValue) ?? "";
+    }
+
+    private void CopyCell(bool expand)
+    {
+        if (contextRow < 0 || contextRow >= Rows.Count || contextColumn < 0 || contextColumn >= Columns.Count)
+            return; // メニュー表示中に SetRows/SetColumns で作り替えられた場合の保険
+        SetClipboardText(GetCellText(contextRow, contextColumn, expand));
+    }
+
+    private void CopyRow(bool expand)
+    {
+        if (contextRow < 0 || contextRow >= Rows.Count)
+            return;
+        SetClipboardText(string.Join("\t", VisibleColumnsInDisplayOrder().Select(c => GetCellText(contextRow, c.Index, expand))));
+    }
+
+    private void CopyTable(bool expand)
+    {
+        var cols = VisibleColumnsInDisplayOrder();
+        if (cols.Length == 0)
+            return;
+        var sb = new StringBuilder();
+        sb.AppendLine(string.Join("\t", cols.Select(c => c.HeaderText)));
+        foreach (DataGridViewRow r in Rows)
+            sb.AppendLine(string.Join("\t", cols.Select(c => GetCellText(r.Index, c.Index, expand))));
+        SetClipboardText(sb.ToString());
+    }
+
+    private void CopyTableTabular()
+    {
+        var cols = VisibleColumnsInDisplayOrder();
+        if (cols.Length == 0)
+            return;
+
+        static string ColSpec(DataGridViewColumn c) => c.DefaultCellStyle.Alignment switch
+        {
+            DataGridViewContentAlignment.TopCenter or DataGridViewContentAlignment.MiddleCenter or DataGridViewContentAlignment.BottomCenter => "c",
+            DataGridViewContentAlignment.TopRight or DataGridViewContentAlignment.MiddleRight or DataGridViewContentAlignment.BottomRight => "r",
+            _ => "l"
+        };
+
+        var sb = new StringBuilder();
+        sb.AppendLine(@"\begin{tabular}{" + string.Concat(cols.Select(ColSpec)) + "}");
+        sb.AppendLine(@"\hline");
+        sb.AppendLine(string.Join(" & ", cols.Select(c => EscapeTabular(c.HeaderText))) + @" \\");
+        sb.AppendLine(@"\hline");
+        foreach (DataGridViewRow r in Rows)
+            sb.AppendLine(string.Join(" & ", cols.Select(c => TabularCellText(r.Index, c.Index))) + @" \\");
+        sb.AppendLine(@"\hline");
+        sb.AppendLine(@"\end{tabular}");
+        SetClipboardText(sb.ToString());
+    }
+
+    /// <summary>tabular 用のセル文字列。LaTeX セルは math mode ($...$) で囲み、通常セルは特殊文字をエスケープする。</summary>
+    private string TabularCellText(int rowIndex, int columnIndex)
+    {
+        //260715Cl 変更: セル文字列の取得規約 (LaTeX セル=Value / 通常セル=FormattedValue) を GetCellText へ一本化
+        var text = GetCellText(rowIndex, columnIndex, expand: false);
+        if (Rows[rowIndex].Cells[columnIndex] is DataGridViewLatexTextBoxCell)
+            return string.IsNullOrWhiteSpace(text) ? "" : "$" + text + "$";
+        return EscapeTabular(text);
+    }
+
+    private static string EscapeTabular(string s)
+    {
+        if (string.IsNullOrEmpty(s))
+            return "";
+        var sb = new StringBuilder(s.Length + 8);
+        foreach (var ch in s)
+            sb.Append(ch switch
+            {
+                '\\' => @"\textbackslash{}",
+                '&' => @"\&",
+                '%' => @"\%",
+                '$' => @"\$",
+                '#' => @"\#",
+                '_' => @"\_",
+                '{' => @"\{",
+                '}' => @"\}",
+                '~' => @"\textasciitilde{}",
+                '^' => @"\textasciicircum{}",
+                _ => ch.ToString()
+            });
+        return sb.ToString();
+    }
+
+    private void CopyTableImage()
+    {
+        if (Rows.Count == 0)
+            return;
+        SetCopyHighlight(CopyHighlightScope.None); // ハイライトを画像に写り込ませない (Closed より先に Click が処理される場合の保険)
+        using var bmp = new Bitmap(Math.Max(1, Width), Math.Max(1, Height));
+        DrawToBitmap(bmp, new Rectangle(0, 0, bmp.Width, bmp.Height));
+        //260715Cl 変更: コントロール全体ではなく表のコンテンツ領域 (ハイライトが示す範囲) だけを画像化し、余白の写り込みを防ぐ
+        var rect = Rectangle.Intersect(GetCopyScopeRect(CopyHighlightScope.Table), new Rectangle(0, 0, bmp.Width, bmp.Height));
+        if (rect.Width <= 0 || rect.Height <= 0)
+            return;
+        using var cropped = bmp.Clone(rect, bmp.PixelFormat);
+        try { Clipboard.SetImage(cropped); }
+        catch (ExternalException) { } // 他プロセスがクリップボードを占有している場合は静かに諦める
+    }
+
+    private static void SetClipboardText(string text)
+    {
+        try { Clipboard.SetDataObject(text, true); }
+        catch (ExternalException) { } // 他プロセスがクリップボードを占有している場合は静かに諦める
+    }
+
+    /// <summary>コピー対象範囲 (セル/行/表) のクライアント座標矩形。表はヘッダ+全行のコンテンツ領域で、
+    /// ハイライト描画と画像コピーの共通定義 (ハイライトが示す範囲=コピーされる範囲)。260715Cl 追加</summary>
+    private Rectangle GetCopyScopeRect(CopyHighlightScope scope)
+    {
+        var content = new Rectangle(0, 0,
+            Math.Min(ClientSize.Width, Columns.GetColumnsWidth(DataGridViewElementStates.Visible)),
+            Math.Min(ClientSize.Height, (ColumnHeadersVisible ? ColumnHeadersHeight : 0) + Rows.GetRowsHeight(DataGridViewElementStates.Visible)));
+        return scope switch
+        {
+            CopyHighlightScope.None => Rectangle.Empty,
+            CopyHighlightScope.Cell => contextRow >= 0 && contextRow < Rows.Count && contextColumn >= 0 && contextColumn < Columns.Count
+                ? GetCellDisplayRectangle(contextColumn, contextRow, true) : Rectangle.Empty,
+            CopyHighlightScope.Row => contextRow >= 0 && contextRow < Rows.Count
+                ? Rectangle.Intersect(GetRowDisplayRectangle(contextRow, true), content) : Rectangle.Empty,
+            _ => content
+        };
+    }
+
+    /// <summary>コピー対象範囲 (セル/行/表) の半透明ハイライトを重ね描きする。選択状態 (CurrentCell/Selected) には一切触れない。</summary>
+    private void DrawCopyHighlight(Graphics g)
+    {
+        if (highlightScope == CopyHighlightScope.None)
+            return;
+
+        var rect = GetCopyScopeRect(highlightScope); //260715Cl 変更: 矩形算出を GetCopyScopeRect へ集約 (Row/Table で別イディオムだったのを統一)
+        if (rect.Width <= 0 || rect.Height <= 0)
+            return;
+
+        // ハイコントラストでは半透明フィルが効きにくいため枠線のみ太めに描く。
+        if (!SystemInformation.HighContrast)
+        {
+            using var fill = new SolidBrush(Color.FromArgb(48, SystemColors.Highlight));
+            g.FillRectangle(fill, rect);
+        }
+        using var pen = new Pen(SystemColors.Highlight, SystemInformation.HighContrast ? 2f : 1.5f);
+        g.DrawRectangle(pen, rect.X + 0.75f, rect.Y + 0.75f, rect.Width - 1.5f, rect.Height - 1.5f);
     }
 
     #endregion
