@@ -307,6 +307,7 @@
             // numericBoxOccerr
             // 
             numericBoxOccerr.BackColor = System.Drawing.SystemColors.Control;
+            numericBoxOccerr.DecimalPlaces = 6;
             resources.ApplyResources(numericBoxOccerr, "numericBoxOccerr");
             numericBoxOccerr.Name = "numericBoxOccerr";
             numericBoxOccerr.SkipEventDuringInput = false;
@@ -320,6 +321,7 @@
             // numericBoxOcc
             // 
             numericBoxOcc.BackColor = System.Drawing.SystemColors.Control;
+            numericBoxOcc.DecimalPlaces = 6;
             resources.ApplyResources(numericBoxOcc, "numericBoxOcc");
             numericBoxOcc.Name = "numericBoxOcc";
             numericBoxOcc.ShowFraction = true;
@@ -334,6 +336,7 @@
             // numericBoxZ
             // 
             numericBoxZ.BackColor = System.Drawing.SystemColors.Control;
+            numericBoxZ.DecimalPlaces = 6;
             resources.ApplyResources(numericBoxZ, "numericBoxZ");
             numericBoxZ.Name = "numericBoxZ";
             numericBoxZ.ShowFraction = true;
@@ -347,6 +350,7 @@
             // numericBoxYerr
             // 
             numericBoxYerr.BackColor = System.Drawing.SystemColors.Control;
+            numericBoxYerr.DecimalPlaces = 6;
             resources.ApplyResources(numericBoxYerr, "numericBoxYerr");
             numericBoxYerr.Name = "numericBoxYerr";
             numericBoxYerr.SkipEventDuringInput = false;
@@ -360,6 +364,7 @@
             // numericBoxXerr
             // 
             numericBoxXerr.BackColor = System.Drawing.SystemColors.Control;
+            numericBoxXerr.DecimalPlaces = 6;
             resources.ApplyResources(numericBoxXerr, "numericBoxXerr");
             numericBoxXerr.Name = "numericBoxXerr";
             numericBoxXerr.SkipEventDuringInput = false;
@@ -373,6 +378,7 @@
             // numericBoxY
             // 
             numericBoxY.BackColor = System.Drawing.SystemColors.Control;
+            numericBoxY.DecimalPlaces = 6;
             resources.ApplyResources(numericBoxY, "numericBoxY");
             numericBoxY.Name = "numericBoxY";
             numericBoxY.ShowFraction = true;
@@ -386,6 +392,7 @@
             // numericBoxX
             // 
             numericBoxX.BackColor = System.Drawing.SystemColors.Control;
+            numericBoxX.DecimalPlaces = 6;
             resources.ApplyResources(numericBoxX, "numericBoxX");
             numericBoxX.Name = "numericBoxX";
             numericBoxX.ShowFraction = true;
@@ -399,6 +406,7 @@
             // numericBoxZerr
             // 
             numericBoxZerr.BackColor = System.Drawing.SystemColors.Control;
+            numericBoxZerr.DecimalPlaces = 6;
             resources.ApplyResources(numericBoxZerr, "numericBoxZerr");
             numericBoxZerr.Name = "numericBoxZerr";
             numericBoxZerr.SkipEventDuringInput = false;
