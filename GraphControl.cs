@@ -940,7 +940,8 @@ public partial class GraphControl : UserControlBase
                     MinimalY = 0;
                 else
                     MinimalY *= 1.1;
-                MaximalY *= 1.1;
+                //MaximalY *= 1.1; // 旧: 全データが負のとき上限がデータ側へ縮み、最大値を描画範囲外にしていた
+                MaximalY *= MaximalY < 0 ? 0.9 : 1.1; // (260715Ch) 負の上限は 0 方向へ広げる
             }
             else
             {
@@ -1824,7 +1825,8 @@ public partial class GraphControl : UserControlBase
     {
         if (MouseRangingMode)
         {
-            Pen pen = new(Brushes.Gray) { DashStyle = DashStyle.Dash };
+            //Pen pen = new(Brushes.Gray) { DashStyle = DashStyle.Dash }; // 旧: Paint のたびに GDI Pen が未解放
+            using Pen pen = new(Brushes.Gray) { DashStyle = DashStyle.Dash }; // (260715Ch)
             e.Graphics.DrawRectangle(pen, Math.Min(MouseRangeStart.X, MouseRangeEnd.X), Math.Min(MouseRangeStart.Y, MouseRangeEnd.Y),
                 Math.Abs(MouseRangeStart.X - MouseRangeEnd.X), Math.Abs(MouseRangeStart.Y - MouseRangeEnd.Y));
         }
