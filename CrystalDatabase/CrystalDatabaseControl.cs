@@ -238,7 +238,9 @@ public partial class CrystalDatabaseControl : UserControlBase
         bindingSource.Position = 0;
     }
 
-    private void ReadDatabaseWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+    /// <summary>260717Cl 統合 (旧: ReadDatabaseWorker_/SaveDatabaseWorker_/DownloadCodWorker_ProgressChanged):
+    /// 3 つの BackgroundWorker で本体が完全同一だったため 1 ハンドラへ (Designer 側 3 箇所の配線も付け替え)。</summary>
+    private void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
     {
         (double progress, string message) = ((double Progress, string Message))e.UserState;
         ProgressChanged?.Invoke(sender, progress, message);
@@ -372,12 +374,8 @@ public partial class CrystalDatabaseControl : UserControlBase
         }
     }
 
-    private void SaveDatabaseWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-    {
-        (double progress, string message) = ((double Progress, string Message))e.UserState;
-        ProgressChanged?.Invoke(sender, progress, message);
-        // 260428Cl Application.DoEvents() を削除 (BackgroundWorker の ProgressChanged は UI スレッドで動作するため不要)
-    }
+    // 260717Cl: worker_ProgressChanged へ統合 (本体が完全同一だった)。
+    //private void SaveDatabaseWorker_ProgressChanged(object sender, ProgressChangedEventArgs e) { … }
 
     private void SaveDatabaseWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
     {
@@ -590,12 +588,8 @@ public partial class CrystalDatabaseControl : UserControlBase
         }
     }
 
-    private void DownloadCodWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-    {
-        (double progress, string message) = ((double Progress, string Message))e.UserState;
-        ProgressChanged?.Invoke(sender, progress, message);
-        // 260428Cl Application.DoEvents() を削除 (BackgroundWorker の ProgressChanged は UI スレッドで動作するため不要)
-    }
+    // 260717Cl: worker_ProgressChanged へ統合 (本体が完全同一だった)。
+    //private void DownloadCodWorker_ProgressChanged(object sender, ProgressChangedEventArgs e) { … }
 
     private void DownloadCodWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
     {

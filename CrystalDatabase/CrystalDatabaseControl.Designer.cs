@@ -91,7 +91,7 @@
             ReadDatabaseWorker.WorkerReportsProgress = true;
             ReadDatabaseWorker.WorkerSupportsCancellation = true;
             ReadDatabaseWorker.DoWork += ReadDatabaseWorker_DoWork;
-            ReadDatabaseWorker.ProgressChanged += ReadDatabaseWorker_ProgressChanged;
+            ReadDatabaseWorker.ProgressChanged += worker_ProgressChanged; // 260717Cl: 同一本体の 3 ハンドラを統合
             ReadDatabaseWorker.RunWorkerCompleted += ReadDatabaseWorker_RunWorkerCompleted;
             // 
             // dataGridView
@@ -298,7 +298,7 @@
             SaveDatabaseWorker.WorkerReportsProgress = true;
             SaveDatabaseWorker.WorkerSupportsCancellation = true;
             SaveDatabaseWorker.DoWork += SaveDatabaseWorker_DoWork;
-            SaveDatabaseWorker.ProgressChanged += SaveDatabaseWorker_ProgressChanged;
+            SaveDatabaseWorker.ProgressChanged += worker_ProgressChanged; // 260717Cl: 同上
             SaveDatabaseWorker.RunWorkerCompleted += SaveDatabaseWorker_RunWorkerCompleted;
             // 
             // bindingNavigator
@@ -388,7 +388,7 @@
             DownloadCodWorker.WorkerReportsProgress = true;
             DownloadCodWorker.WorkerSupportsCancellation = true;
             DownloadCodWorker.DoWork += DownloadCodWorker_DoWork;
-            DownloadCodWorker.ProgressChanged += DownloadCodWorker_ProgressChanged;
+            DownloadCodWorker.ProgressChanged += worker_ProgressChanged; // 260717Cl: 同上
             DownloadCodWorker.RunWorkerCompleted += DownloadCodWorker_RunWorkerCompleted;
             // 
             // checkBoxAMCSD

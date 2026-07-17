@@ -498,8 +498,10 @@ public partial class CrystalControl : UserControlBase
             Crystal.ExportCIF(dlg.FileName);
     }
 
-    private void beamInteractionToolStripMenuItem_Click(object sender, EventArgs e) => FormBeamInteraction.Visible = !FormBeamInteraction.Visible;
-    private void symmetryInformationToolStripMenuItem_Click(object sender, EventArgs e) => FormSymmetryInformation.Visible = !FormSymmetryInformation.Visible;
+    // 260717Cl: ボタン側 (buttonBeamInteraction_Click / buttonSymmetryInfo_Click) と同一トグルの二重定義だったため削除し、
+    // Designer の配線をボタン側ハンドラへ付け替え。
+    //private void beamInteractionToolStripMenuItem_Click(object sender, EventArgs e) => FormBeamInteraction.Visible = !FormBeamInteraction.Visible;
+    //private void symmetryInformationToolStripMenuItem_Click(object sender, EventArgs e) => FormSymmetryInformation.Visible = !FormSymmetryInformation.Visible;
 
     private void sendThisCrystalToOtherSoftwareToolStripMenuItem_Click(object sender, EventArgs e)
     {

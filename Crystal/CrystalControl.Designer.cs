@@ -1110,13 +1110,13 @@
             // 
             beamInteractionToolStripMenuItem.Name = "beamInteractionToolStripMenuItem";
             resources.ApplyResources(beamInteractionToolStripMenuItem, "beamInteractionToolStripMenuItem");
-            beamInteractionToolStripMenuItem.Click += beamInteractionToolStripMenuItem_Click;
+            beamInteractionToolStripMenuItem.Click += buttonBeamInteraction_Click; // 260717Cl: 同一トグルのハンドラ二重定義を統合
             // 
             // symmetryInformationToolStripMenuItem
             // 
             symmetryInformationToolStripMenuItem.Name = "symmetryInformationToolStripMenuItem";
             resources.ApplyResources(symmetryInformationToolStripMenuItem, "symmetryInformationToolStripMenuItem");
-            symmetryInformationToolStripMenuItem.Click += symmetryInformationToolStripMenuItem_Click;
+            symmetryInformationToolStripMenuItem.Click += buttonSymmetryInfo_Click; // 260717Cl: 同上
             // 
             // toolStripSeparator2
             // 

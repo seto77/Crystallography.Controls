@@ -1003,8 +1003,10 @@ public partial class FormBeamInteraction : FormBase
     //// <summary>X線係数モードラジオの状態 (0:µ/ρ質量 1:µ線 2:透過率)。260607Cl 追加。</summary>
     //private int AttenCoeffMode() => radioButtonAttenLinMu.Checked ? 1 : radioButtonAttenTrans.Checked ? 2 : 0; // 260717Cl: 呼び出し 1 箇所のみのためインライン化
 
-    /// <summary>係数モードラジオの変更ハンドラ (解除側は無視)。260607Cl 追加。</summary>
-    private void attenCoeff_OptionChanged(object sender, EventArgs e)
+    /// <summary>X線係数モード / 電子物性量ラジオ共通の変更ハンドラ (解除側は無視)。260607Cl 追加。
+    /// 260717Cl 統合 (旧: attenCoeff_OptionChanged / elecQuantity_OptionChanged): バイト同一の 2 ハンドラを 1 本化し、
+    /// Designer 側 9 箇所の配線を本ハンドラへ付け替え。</summary>
+    private void attenuationOption_CheckedChanged(object sender, EventArgs e)
     {
         if (sender is RadioButton { Checked: false }) return;
         UpdateAttenuation();
@@ -1012,11 +1014,6 @@ public partial class FormBeamInteraction : FormBase
 
     //260607Cl ラムダをデザイナ登録可能な名前付きハンドラへ (Form 全体でイベントはデザイナ登録に統一)
     private void numericBoxAttenThickness_ValueChanged(object sender, EventArgs e) => UpdateAttenuation();
-    private void elecQuantity_OptionChanged(object sender, EventArgs e)
-    {
-        if (sender is RadioButton { Checked: false }) return;
-        UpdateAttenuation();
-    }
     private void tabControl_SelectedIndexChanged(object sender, EventArgs e) => UpdateAllTabs(); // 散乱タブも含めタブ切替で更新 (各 Update は非選択タブを自己 return)
 
     private void DrawXrayAttenuationGraph((int z, double occ)[] els, double totalMass, double currentE)
