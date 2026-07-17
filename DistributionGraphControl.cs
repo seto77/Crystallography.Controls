@@ -388,14 +388,19 @@ namespace Crystallography.Controls
             }
         }
 
+        /// <summary>260717Cl 追加 (/simplify): 1-2-5-10 目盛り間隔の選択梯子 (X/Y の 2 箇所に同型コピペされていたものを集約。純関数・出力不変)。</summary>
+        private static float Gradiation(double lower, double upper)
+        {
+            double d = (upper - lower) / Math.Pow(10, (int)Math.Log10(upper - lower));
+            if (d < 1.6) return (float)Math.Pow(10, (int)Math.Log10(upper - lower) - 1);
+            if (d < 3.2) return (float)(2 * Math.Pow(10, (int)Math.Log10(upper - lower) - 1));
+            if (d < 8.0) return (float)(5 * Math.Pow(10, (int)Math.Log10(upper - lower) - 1));
+            return (float)(10 * Math.Pow(10, (int)Math.Log10(upper - lower) - 1));
+        }
+
         public void DrawDivision()
         {
-            float xGradiation;//ここより角度目盛りの描画
-            double d = (UpperX - LowerX) / Math.Pow(10, (int)Math.Log10(UpperX - LowerX));
-            if (d < 1.6) xGradiation = (float)(Math.Pow(10, (int)Math.Log10(UpperX - LowerX) - 1));
-            else if (d < 3.2) xGradiation = (float)(2 * Math.Pow(10, (int)Math.Log10(UpperX - LowerX) - 1));
-            else if (d < 8.0) xGradiation = (float)(5 * Math.Pow(10, (int)Math.Log10(UpperX - LowerX) - 1));
-            else xGradiation = (float)(10 * Math.Pow(10, (int)Math.Log10(UpperX - LowerX) - 1));
+            float xGradiation = Gradiation(LowerX, UpperX);//ここより角度目盛りの描画 (260717Cl: 梯子を Gradiation へ集約)
 
             //Pen pen = new Pen(DivisionLineColor, 1); // (260611Ch) 旧: 再代入ごとの Pen が未解放
             using var divisionPen = new Pen(DivisionLineColor, 1); // (260611Ch)
@@ -425,12 +430,7 @@ namespace Crystallography.Controls
                 G.DrawLine(subLinePen, ConvToPicBoxCoord(i * xGradiation, 0).X, pictureBox.Height - OriginPosition.Y, ConvToPicBoxCoord(i * xGradiation, 0).X, 0); // (260611Ch)
             }
 
-            float yGradiation;//ここより強度目盛りの描画
-            d = (UpperY - LowerY) / Math.Pow(10, (int)Math.Log10(UpperY - LowerY));
-            if (d < 1.6) yGradiation = (float)(Math.Pow(10, (int)Math.Log10(UpperY - LowerY) - 1));
-            else if (d < 3.2) yGradiation = (float)(2 * Math.Pow(10, (int)Math.Log10(UpperY - LowerY) - 1));
-            else if (d < 8.0) yGradiation = (float)(5 * Math.Pow(10, (int)Math.Log10(UpperY - LowerY) - 1));
-            else yGradiation = (float)(10 * Math.Pow(10, (int)Math.Log10(UpperY - LowerY) - 1));
+            float yGradiation = Gradiation(LowerY, UpperY);//ここより強度目盛りの描画 (260717Cl: 梯子を Gradiation へ集約)
 
             G.DrawLine(divisionPen, OriginPosition.X, 0, OriginPosition.X, pictureBox.Height - OriginPosition.Y);
             for (int i = (int)(LowerY / yGradiation) + 1; i < UpperY / yGradiation; i++)

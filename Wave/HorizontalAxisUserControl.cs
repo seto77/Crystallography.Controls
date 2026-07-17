@@ -12,6 +12,14 @@ public partial class HorizontalAxisUserControl : UserControlBase
     public event MyEventHandler AxisPropertyChanged;
 
     public bool SkipAxisPropertyChangedEvent = false;
+
+    /// <summary>260717Cl 追加 (/simplify): SkipAxisPropertyChangedEvent ガード付きの AxisPropertyChanged 発火
+    /// (旧: 同一のガード付き Invoke 1 行が約 19 箇所の setter/handler に反復していた)。</summary>
+    private void RaiseAxisPropertyChanged()
+    {
+        if (!SkipAxisPropertyChangedEvent)
+            AxisPropertyChanged?.Invoke();
+    }
     #region プロパティ
 
     // 260426Cl 削除: DesignMode は UserControlBase で同等の実装を提供しているため重複定義を撤去
@@ -66,17 +74,19 @@ public partial class HorizontalAxisUserControl : UserControlBase
 
             if (WaveColor == WaveColor.Monochrome)
             {
-                if (WaveSource == WaveSource.Electron || WaveSource == WaveSource.Neutron)
-                    WaveLength = value.WaveLength;
-                else if (XrayNumber == 0)
+                // 260717Cl: 本体が同一だった先頭 2 分岐を || で統合 (評価順は不変)。
+                //if (WaveSource == WaveSource.Electron || WaveSource == WaveSource.Neutron)
+                //    WaveLength = value.WaveLength;
+                //else if (XrayNumber == 0)
+                //    WaveLength = value.WaveLength;
+                if (WaveSource is WaveSource.Electron or WaveSource.Neutron || XrayNumber == 0)
                     WaveLength = value.WaveLength;
                 else
                     waveLengthControl.SetCharacteristicXray();
             }
             SkipAxisPropertyChangedEvent = tmp;
 
-            if (!SkipAxisPropertyChangedEvent)
-                AxisPropertyChanged?.Invoke();
+            RaiseAxisPropertyChanged();
         }
     }
 
@@ -112,7 +122,7 @@ public partial class HorizontalAxisUserControl : UserControlBase
             else if (value == HorizontalAxis.WaveNumber)
                 radioButtonWavenumber.Checked = true;
 
-            if (!SkipAxisPropertyChangedEvent) AxisPropertyChanged?.Invoke();
+            RaiseAxisPropertyChanged();
         }
         get
         {
@@ -143,7 +153,7 @@ public partial class HorizontalAxisUserControl : UserControlBase
         set
         {
             waveLengthControl.WaveLengthText = value;
-            if (!SkipAxisPropertyChangedEvent) AxisPropertyChanged?.Invoke();
+            RaiseAxisPropertyChanged();
         }
         get => waveLengthControl.WaveLengthText;
     }
@@ -156,7 +166,7 @@ public partial class HorizontalAxisUserControl : UserControlBase
         set
         {
             waveLengthControl.WaveLength = value;
-            if (!SkipAxisPropertyChangedEvent) AxisPropertyChanged?.Invoke();
+            RaiseAxisPropertyChanged();
         }
         get => waveLengthControl.WaveLength;
     }
@@ -172,7 +182,7 @@ public partial class HorizontalAxisUserControl : UserControlBase
                 if (numericBoxTwoTheta.Value != Convert.ToDouble(value))
                 {
                     numericBoxTwoTheta.Value = Convert.ToDouble(value);
-                    if (!SkipAxisPropertyChangedEvent) AxisPropertyChanged?.Invoke();
+                    RaiseAxisPropertyChanged();
                 }
             }
             catch { }
@@ -192,7 +202,7 @@ public partial class HorizontalAxisUserControl : UserControlBase
                 numericBoxTwoTheta.Value = value / Math.PI * 180.0;
                 // 260426Cl 修正: 他の setter と同様に SkipAxisPropertyChangedEvent を尊重するように変更
                 //AxisPropertyChanged?.Invoke();
-                if (!SkipAxisPropertyChangedEvent) AxisPropertyChanged?.Invoke();
+                RaiseAxisPropertyChanged();
             }
         }
         get => numericBoxTwoTheta.Value / 180.0 * Math.PI;
@@ -211,7 +221,7 @@ public partial class HorizontalAxisUserControl : UserControlBase
             radioButtonEnergyUnitEv.Checked = (value == EnergyUnitEnum.eV);
             radioButtonEnergyUnitKev.Checked = (value == EnergyUnitEnum.KeV);
             radioButtonEnergyUnitMev.Checked = (value == EnergyUnitEnum.MeV);
-            if (!SkipAxisPropertyChangedEvent) AxisPropertyChanged?.Invoke();
+            RaiseAxisPropertyChanged();
         }
         get
         {
@@ -236,7 +246,7 @@ public partial class HorizontalAxisUserControl : UserControlBase
                 return;
             radioButtonDspacingUnitAng.Checked = (value == LengthUnitEnum.Angstrom);
             radioButtonDspacingUnitNm.Checked = (value == LengthUnitEnum.NanoMeter);
-            if (!SkipAxisPropertyChangedEvent) AxisPropertyChanged?.Invoke();
+            RaiseAxisPropertyChanged();
         }
         get
         {
@@ -259,7 +269,7 @@ public partial class HorizontalAxisUserControl : UserControlBase
                 return;
             radioButtonWavenumberUnitNmInv.Checked = value == LengthUnitEnum.NanoMeterInverse;
             radioButtonWavenumberAngInv.Checked = value == LengthUnitEnum.AngstromInverse;
-            if (!SkipAxisPropertyChangedEvent) AxisPropertyChanged?.Invoke();
+            RaiseAxisPropertyChanged();
         }
         get
         {
@@ -285,7 +295,7 @@ public partial class HorizontalAxisUserControl : UserControlBase
             radioButtonAngleUnitMilliRadian.Checked = value == AngleUnitEnum.MilliRadian;
 
 
-            if (!SkipAxisPropertyChangedEvent) AxisPropertyChanged?.Invoke();
+            RaiseAxisPropertyChanged();
         }
         get
         {
@@ -316,8 +326,7 @@ public partial class HorizontalAxisUserControl : UserControlBase
             // 260426Cl 修正: 購読者が居ないと NullReferenceException になっていたため null 条件演算子に変更
             //if (!SkipAxisPropertyChangedEvent)
             //    AxisPropertyChanged();
-            if (!SkipAxisPropertyChangedEvent)
-                AxisPropertyChanged?.Invoke();
+            RaiseAxisPropertyChanged();
         }
         get
         {
@@ -337,7 +346,7 @@ public partial class HorizontalAxisUserControl : UserControlBase
             try
             {
                 numericBoxTofAngle.Value = Convert.ToDouble(value);
-                if (!SkipAxisPropertyChangedEvent) AxisPropertyChanged?.Invoke();
+                RaiseAxisPropertyChanged();
             }
             catch { }
         }
@@ -354,7 +363,7 @@ public partial class HorizontalAxisUserControl : UserControlBase
             if (value > 0 && numericBoxTofAngle.Value != value / Math.PI * 180.0)
             {
                 numericBoxTofAngle.Value = value / Math.PI * 180.0;
-                if (!SkipAxisPropertyChangedEvent) AxisPropertyChanged?.Invoke();
+                RaiseAxisPropertyChanged();
             }
         }
         get => numericBoxTofAngle.Value / 180.0 * Math.PI;
@@ -372,7 +381,7 @@ public partial class HorizontalAxisUserControl : UserControlBase
                 if (numericBoxTofLength.Value != value)
                 {
                     numericBoxTofLength.Value = value;
-                    if (!SkipAxisPropertyChangedEvent) AxisPropertyChanged?.Invoke();
+                    RaiseAxisPropertyChanged();
                 }
             }
             catch { }
@@ -396,7 +405,7 @@ public partial class HorizontalAxisUserControl : UserControlBase
                 radioButtonElectron.Checked = true;
             else if (value == WaveSource.Neutron)
                 radioButtonNeutron.Checked = true;
-            if (!SkipAxisPropertyChangedEvent) AxisPropertyChanged?.Invoke();
+            RaiseAxisPropertyChanged();
         }
         get
         {
@@ -426,7 +435,7 @@ public partial class HorizontalAxisUserControl : UserControlBase
                 radioButtonFlatWhite.Checked = true;
             else if (value == WaveColor.CustomWhite)
                 radioButtonCustomWhite.Checked = true;
-            if (!SkipAxisPropertyChangedEvent) AxisPropertyChanged?.Invoke();
+            RaiseAxisPropertyChanged();
         }
         get
         {
@@ -451,7 +460,7 @@ public partial class HorizontalAxisUserControl : UserControlBase
             if (waveLengthControl.XrayWaveSourceElementNumber == value)
                 return;
             waveLengthControl.XrayWaveSourceElementNumber = value;
-            if (!SkipAxisPropertyChangedEvent) AxisPropertyChanged?.Invoke();
+            RaiseAxisPropertyChanged();
         }
         get => waveLengthControl.XrayWaveSourceElementNumber;
     }
@@ -466,7 +475,7 @@ public partial class HorizontalAxisUserControl : UserControlBase
             if (waveLengthControl.XrayWaveSourceLine == value)
                 return;
             waveLengthControl.XrayWaveSourceLine = value;
-            if (!SkipAxisPropertyChangedEvent) AxisPropertyChanged?.Invoke();
+            RaiseAxisPropertyChanged();
         }
         get => waveLengthControl.XrayWaveSourceLine;
     }
@@ -481,7 +490,7 @@ public partial class HorizontalAxisUserControl : UserControlBase
             if (waveLengthControl.Energy == value)
                 return;
             waveLengthControl.Energy = value;
-            if (!SkipAxisPropertyChangedEvent) AxisPropertyChanged?.Invoke();
+            RaiseAxisPropertyChanged();
         }
         get => waveLengthControl.Energy;
     }
@@ -495,7 +504,7 @@ public partial class HorizontalAxisUserControl : UserControlBase
             if (waveLengthControl.EnergyText == value)
                 return;
             waveLengthControl.EnergyText = value;
-            if (!SkipAxisPropertyChangedEvent) AxisPropertyChanged?.Invoke();
+            RaiseAxisPropertyChanged();
         }
         get => waveLengthControl.EnergyText;
     }

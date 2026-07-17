@@ -135,11 +135,9 @@ public class GraphicsBox : PictureBox
     /// <summary>コントロール初期状態を設定する。</summary>
     private void InitializeGraphicBox()
     {
-        SetStyle(ControlStyles.AllPaintingInWmPaint, true);
-        SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
-        SetStyle(ControlStyles.ResizeRedraw, true);
-        SetStyle(ControlStyles.SupportsTransparentBackColor, true);
-        SetStyle(ControlStyles.Selectable, true); // (260322Ch) マウス操作後に Focus を受けてホイールを取りやすくする
+        // 260717Cl: SetStyle はフラグ enum の OR 指定を受け付けるため 5 連呼びを 1 呼び出しへ統合。
+        SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw |
+                 ControlStyles.SupportsTransparentBackColor | ControlStyles.Selectable, true); // Selectable: (260322Ch) マウス操作後に Focus を受けてホイールを取りやすくする
         DoubleBuffered = true;
     }
 

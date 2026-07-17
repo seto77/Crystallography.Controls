@@ -176,12 +176,6 @@ public partial class LatticePlaneControl : UserControlBase
     #endregion
 
     private void dataGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
-    {
-        if (e.RowIndex < 0 || dataGridView.Columns[e.ColumnIndex] != iDataGridViewTextBoxColumn) return;
-        var row = dataGridView.Rows[e.RowIndex];
-        var h = Convert.ToInt32(row.Cells[hDataGridViewTextBoxColumn.Index].Value);
-        var k = Convert.ToInt32(row.Cells[kDataGridViewTextBoxColumn.Index].Value);
-        e.Value = (-h - k).ToString();
-        e.FormattingApplied = true;
-    }
+        // 260717Cl: FormBeamInteraction/BoundControl と 3 連コピペだった i=−(h+k) 表示を ControlHelper へ集約
+        => ControlHelper.FormatMillerBravaisI(dataGridView, e, iDataGridViewTextBoxColumn, hDataGridViewTextBoxColumn, kDataGridViewTextBoxColumn);
 }

@@ -151,22 +151,14 @@ public partial class FormMacro : FormBase
 
         if (checkBoxSamples.Checked)
         {
-            // 未保存変更の確認
-            if (_isDirty && _previousSelectedIndex >= 0 && _previousSelectedIndex < listBoxMacro.Items.Count)
+            // 未保存変更の確認 (260717Cl: listBox_SelectedIndexChanged と重複していた確認ダイアログを ConfirmSaveDirty へ集約)
+            if (!ConfirmSaveDirty())
             {
-                var dr = MessageBox.Show(
-                    "Save changes to the current macro?",
-                    "Unsaved changes",
-                    MessageBoxButtons.YesNoCancel,
-                    MessageBoxIcon.Warning);
-                if (dr == DialogResult.Cancel || (dr == DialogResult.Yes && !saveCurrentToIndex(_previousSelectedIndex)))
-                {
-                    // Cancel / 保存失敗 → checkBoxSamples を元に戻す (CheckedChanged 再入は _suppress で無効化)
-                    _suppressSamplesToggleEvent = true;
-                    try { checkBoxSamples.Checked = false; }
-                    finally { _suppressSamplesToggleEvent = false; }
-                    return;
-                }
+                // Cancel / 保存失敗 → checkBoxSamples を元に戻す (CheckedChanged 再入は _suppress で無効化)
+                _suppressSamplesToggleEvent = true;
+                try { checkBoxSamples.Checked = false; }
+                finally { _suppressSamplesToggleEvent = false; }
+                return;
             }
 
             // 現在のユーザーマクロを退避してサンプルを読み込む
@@ -489,6 +481,21 @@ public partial class FormMacro : FormBase
     }
 
     // 260414Cl 追加 現在のテキストボックス内容を指定インデックスへ書き戻す (Replace 相当)
+    /// <summary>260717Cl 追加 (/simplify): 未保存変更の確認ダイアログ (Yes=旧選択へ保存 / No=破棄 / Cancel=中断)。
+    /// 続行してよければ true。巻き戻し処理は呼び出し側に残す (checkBoxSamples 復元 / SelectedIndex 復元で異なるため)。
+    /// 旧: 同一の 12 行ブロックが checkBoxSamples_CheckedChanged / listBox_SelectedIndexChanged に重複していた。</summary>
+    private bool ConfirmSaveDirty()
+    {
+        if (!_isDirty || _previousSelectedIndex < 0 || _previousSelectedIndex >= listBoxMacro.Items.Count)
+            return true;
+        var dr = MessageBox.Show(
+            "Save changes to the current macro?",
+            "Unsaved changes",
+            MessageBoxButtons.YesNoCancel,
+            MessageBoxIcon.Warning);
+        return dr != DialogResult.Cancel && !(dr == DialogResult.Yes && !saveCurrentToIndex(_previousSelectedIndex));
+    }
+
     private bool saveCurrentToIndex(int index)
     {
         if (index < 0 || index >= listBoxMacro.Items.Count) return false;
@@ -627,23 +634,13 @@ public partial class FormMacro : FormBase
         }
 
         // 260414Cl 追加 未保存編集がある場合は確認ダイアログ
-        if (_isDirty && _previousSelectedIndex >= 0 && _previousSelectedIndex < listBoxMacro.Items.Count)
+        // Yes: 旧選択に書き戻して続行。保存失敗 (名前空) は Cancel 扱いで巻き戻し / No: 破棄して続行 / Cancel: 旧選択に戻す
+        if (!ConfirmSaveDirty()) // 260717Cl: checkBoxSamples 側と重複していた確認ダイアログを ConfirmSaveDirty へ集約
         {
-            var dr = MessageBox.Show(
-                "Save changes to the current macro?",
-                "Unsaved changes",
-                MessageBoxButtons.YesNoCancel,
-                MessageBoxIcon.Warning);
-            // Yes: 旧選択に書き戻して続行。保存失敗 (名前空) は Cancel 扱いで巻き戻し
-            // No:  破棄してそのまま新選択を読み込む
-            // Cancel: 新選択を無視して旧選択に戻す
-            if (dr == DialogResult.Cancel || (dr == DialogResult.Yes && !saveCurrentToIndex(_previousSelectedIndex)))
-            {
-                skipEvent = true;
-                try { listBoxMacro.SelectedIndex = _previousSelectedIndex; }
-                finally { skipEvent = false; }
-                return;
-            }
+            skipEvent = true;
+            try { listBoxMacro.SelectedIndex = _previousSelectedIndex; }
+            finally { skipEvent = false; }
+            return;
         }
 
         if (listBoxMacro.SelectedIndex >= 0)

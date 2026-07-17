@@ -34,6 +34,10 @@ public partial class CrystalDatabaseControl : UserControlBase
     //260317Cl 追加 HttpClientはstaticで再利用
     private static readonly HttpClient httpClient = new() { Timeout = TimeSpan.FromSeconds(600) };
 
+    // 260717Cl (/simplify): ReadCOD/DownloadCodWorker に散在していた同一リテラル (URL 2 箇所・パス連結 9 箇所) を集約。
+    private const string CodUrlHeader = "https://github.com/seto77/CSManager/raw/master/COD/";
+    private static string CodDatabasePath => UserAppDataPath + "COD.cdb3";
+
     #region フィールド、メソッド、イベント
     // (260322Ch) WFO1000: Microsoft ??????????????????? ???????????
     [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
@@ -138,7 +142,7 @@ public partial class CrystalDatabaseControl : UserControlBase
         InitializeComponent();
         Table = dataSet.DataTableCrystalDatabase;
 
-        typeof(DataGridView).GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(dataGridView, true, null);
+        ControlHelper.EnableDoubleBuffering(dataGridView); // 260717Cl: 6 ファイル重複のリフレクション 1 行を ControlHelper へ集約
     }
     #endregion
 
@@ -469,17 +473,17 @@ public partial class CrystalDatabaseControl : UserControlBase
     /// <returns>正常に読み込めた場合はtrue, 途中キャンセルされたりした場合はfalse</returns>
     public bool ReadCOD()
     {
-        var (Valid, DataNum, FileNum, FileSizes, CheckSums) = CheckDatabaseFiles(UserAppDataPath + "COD.cdb3", true);
-        string urlHeader = "https://github.com/seto77/CSManager/raw/master/COD/";
+        var (Valid, DataNum, FileNum, FileSizes, CheckSums) = CheckDatabaseFiles(CodDatabasePath, true); // 260717Cl: パス連結を CodDatabasePath へ集約
+        string urlHeader = CodUrlHeader; // 260717Cl: 同一リテラル 2 箇所を定数へ集約
         if (Valid)
         {//適切にダウンロードされている場合
             try//web上に新しいデータがあるかどうかをチェック
             {
                 //260317Cl WebClient→HttpClient
-                //if (new WebClient().DownloadData(new Uri(urlHeader + "COD.cdb3")).SequenceEqual(File.ReadAllBytes(UserAppDataPath + "COD.cdb3")))
-                if (httpClient.GetByteArrayAsync(urlHeader + "COD.cdb3").Result.SequenceEqual(File.ReadAllBytes(UserAppDataPath + "COD.cdb3")))
+                //if (new WebClient().DownloadData(new Uri(urlHeader + "COD.cdb3")).SequenceEqual(File.ReadAllBytes(CodDatabasePath)))
+                if (httpClient.GetByteArrayAsync(urlHeader + "COD.cdb3").Result.SequenceEqual(File.ReadAllBytes(CodDatabasePath)))
                 {//ローカルのCODが最新版の場合
-                    ReadDatabase(UserAppDataPath + "COD.cdb3");
+                    ReadDatabase(CodDatabasePath);
                     return true;
                 }
                 else
@@ -488,7 +492,7 @@ public partial class CrystalDatabaseControl : UserControlBase
                         "  Use the current database: No\r\n  Cancel database loading: Cancel", "  New database is available", MessageBoxButtons.YesNoCancel);
 
                     if (result == DialogResult.No) //Noの場合 (更新せずに現状を読み込む場合)
-                        ReadDatabase(UserAppDataPath + "COD.cdb3");
+                        ReadDatabase(CodDatabasePath);
 
                     if (result == DialogResult.No || result == DialogResult.Cancel)//NoかCancelの場合
                         return false;
@@ -497,7 +501,7 @@ public partial class CrystalDatabaseControl : UserControlBase
             }
             catch //WEBが落ちている場合は、現状のCODを読み込む 
             {
-                ReadDatabase(UserAppDataPath + "COD.cdb3");
+                ReadDatabase(CodDatabasePath);
                 return true;
             }
         }
@@ -519,7 +523,7 @@ public partial class CrystalDatabaseControl : UserControlBase
             Application.DoEvents();
         }
         //this.Enabled = true;
-        ReadDatabase(UserAppDataPath + "COD.cdb3");
+        ReadDatabase(CodDatabasePath);
         return true;
     }
 
@@ -528,7 +532,7 @@ public partial class CrystalDatabaseControl : UserControlBase
     private void DownloadCodWorker_DoWork(object sender, DoWorkEventArgs e)
     {
 
-        string urlHeader = "https://github.com/seto77/CSManager/raw/master/COD/";
+        string urlHeader = CodUrlHeader; // 260717Cl: 同一リテラル 2 箇所を定数へ集約
         var UserAppDataPath = (string)e.Argument;
 
         //ここからCODをダウンロード
@@ -536,13 +540,13 @@ public partial class CrystalDatabaseControl : UserControlBase
         {
             sw.Restart();
             //260317Cl WebClient→HttpClient
-            //new WebClient().DownloadFile(new Uri(urlHeader + "COD.cdb3"), UserAppDataPath + "COD.cdb3");
+            //new WebClient().DownloadFile(new Uri(urlHeader + "COD.cdb3"), CodDatabasePath);
             var cdb3Data = httpClient.GetByteArrayAsync(urlHeader + "COD.cdb3").Result;
-            File.WriteAllBytes(UserAppDataPath + "COD.cdb3", cdb3Data);
+            File.WriteAllBytes(CodDatabasePath, cdb3Data);
 
             Directory.CreateDirectory(UserAppDataPath + "COD");
 
-            var (_, DataNum, FileNum, FileSizes, CheckSums) = CheckDatabaseFiles(UserAppDataPath + "COD.cdb3", false);
+            var (_, DataNum, FileNum, FileSizes, CheckSums) = CheckDatabaseFiles(CodDatabasePath, false);
 
             //260317Cl WebClient→HttpClient 並列ダウンロード
             var total = FileSizes.Sum();

@@ -159,7 +159,7 @@ public partial class CrystalControl : UserControlBase
     private void CrystalForm_Load(object sender, EventArgs e)
     {
         textBoxTitle.Size = new Size(tabPageReference.Width - textBoxTitle.Location.X - 2, tabPageReference.Height - textBoxTitle.Location.Y - 2);
-        typeof(UserControl).GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(this, true, null);
+        ControlHelper.EnableDoubleBuffering(this); // 260717Cl: 6 ファイル重複のリフレクション 1 行を ControlHelper へ集約
     }
 
     public event EventHandler BeamInteraction_VisibleChanged;

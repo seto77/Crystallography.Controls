@@ -46,33 +46,24 @@ public partial class ChemicalFormulaInputControl : UserControlBase
     {
         int z = comboBoxElement.SelectedIndex + 1;
 
-        if (z == 1) numericBoxValence.Value = 1;
-        else if (z == 5) numericBoxValence.Value = 3;
-        else if (z == 6 || z == 14) numericBoxValence.Value = 4;
-        else if (z == 7) numericBoxValence.Value = 5;
-        else if (z == 15) numericBoxValence.Value = 5;
-        else if (z == 16) numericBoxValence.Value = 6;
-        else if (z >= 25 && z <= 30) numericBoxValence.Value = 2;
-        else if (z == 33) numericBoxValence.Value = 3;
-        else if (z == 34) numericBoxValence.Value = 4;
-        else if (z >= 43 && z <= 45) numericBoxValence.Value = 4;
-        else if (z == 46) numericBoxValence.Value = 2;
-        else if (z == 47) numericBoxValence.Value = 4;
-        else if (z == 48) numericBoxValence.Value = 2;
-        else if (z == 49) numericBoxValence.Value = 3;
-        else if (z == 50) numericBoxValence.Value = 4;
-        else if (z == 51) numericBoxValence.Value = 3;
-        else if (z == 52) numericBoxValence.Value = 4;
-        else if (z == 53) numericBoxValence.Value = 5;
-        else if (z == 75) numericBoxValence.Value = 7;
-        else if (z == 76) numericBoxValence.Value = 8;
-        else if (z == 84) numericBoxValence.Value = 4;
-        else if (z == 87) numericBoxValence.Value = 1;
-        else if (z == 91) numericBoxValence.Value = 5;
-        else if (AtomStatic.XrayScatteringWK[z][^1].Valence > 0)
-            numericBoxValence.Value = AtomStatic.XrayScatteringWK[z][^1].Valence;
-        else
-            numericBoxValence.Value = 0;
+        // 260717Cl: 23 連の if-else チェーンを or/範囲パターンの switch 式へ集約 (元素→価数のマッピングは不変)。
+        //if (z == 1) numericBoxValence.Value = 1;
+        //else if (z == 5) ... 3; (6,14→4 / 7,15→5 / 16→6 / 25..30→2 / 33→3 / 34→4 / 43..45→4 / 46→2 / 47→4 / 48→2 /
+        //  49→3 / 50→4 / 51→3 / 52→4 / 53→5 / 75→7 / 76→8 / 84→4 / 87→1 / 91→5)
+        //else if (AtomStatic.XrayScatteringWK[z][^1].Valence > 0) numericBoxValence.Value = AtomStatic.XrayScatteringWK[z][^1].Valence;
+        //else numericBoxValence.Value = 0;
+        numericBoxValence.Value = z switch
+        {
+            1 or 87 => 1,
+            (>= 25 and <= 30) or 46 or 48 => 2,
+            5 or 33 or 49 or 51 => 3,
+            6 or 14 or 34 or (>= 43 and <= 45) or 47 or 50 or 52 or 84 => 4,
+            7 or 15 or 53 or 91 => 5,
+            16 => 6,
+            75 => 7,
+            76 => 8,
+            _ => AtomStatic.XrayScatteringWK[z][^1].Valence > 0 ? AtomStatic.XrayScatteringWK[z][^1].Valence : 0,
+        };
         numericBoxValence_ValueChanged(sender, e);
     }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq; // 260717Cl 追加: CheckedCrystalList の Cast 用
 using System.Windows.Forms;
 
 namespace Crystallography.Controls;
@@ -34,11 +35,7 @@ public partial class FormCrystalSelection : FormBase
     [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
     public bool LoadMode
     {
-        set
-        {
-            loadMode = value; saveMode = !value;
-            buttonLoadOrSave.Text = saveMode ? "Save" : "Load";
-        }
+        set => SaveMode = !value; // 260717Cl: SaveMode setter と鏡像重複していた同期ロジックを委譲へ (結果の状態は同一)
         get => loadMode;
     }
 
@@ -79,15 +76,7 @@ public partial class FormCrystalSelection : FormBase
     }
 
     public Crystal[] CheckedCrystalList
-    {
-        get
-        {
-            List<Crystal> crystalList = [];
-            for (int i = 0; i < checkedListBox1.CheckedItems.Count; i++)
-                crystalList.Add((Crystal)checkedListBox1.CheckedItems[i]);
-            return [.. crystalList];
-        }
-    }
+        => [.. checkedListBox1.CheckedItems.Cast<Crystal>()]; // 260717Cl: 手動ループ+二重配列化を collection expression へ (出力同一)
 
     public void SetCrystalList(List<Crystal> crystals)
     {
@@ -115,7 +104,8 @@ public partial class FormCrystalSelection : FormBase
 
     private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
     {
-        if (CheckedCrystalList.Length > e.Index && CheckedCrystalList[e.Index].Reserved)
+        var list = CheckedCrystalList; // 260717Cl: 呼ぶたび配列を再構築する getter の二重評価を 1 回に
+        if (list.Length > e.Index && list[e.Index].Reserved)
             e.NewValue = CheckState.Checked;
     }
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq; // 260717Cl 追加: uiBodyFamilies の初期化式用
 using System.Windows.Forms;
 
 namespace Crystallography.Controls
@@ -46,15 +47,8 @@ namespace Crystallography.Controls
 
         // UI 本文フォント集合 = SupportedCultures の各 FontFamily。Times/Courier/Segoe UI Symbol/Tahoma 等は
         // 含まれない (= 役割フォント扱いで言語軸では触らない)。
-        private static readonly HashSet<string> uiBodyFamilies = BuildUiBodyFamilies();
-
-        private static HashSet<string> BuildUiBodyFamilies()
-        {
-            var set = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            foreach (var c in SupportedCultures.All)
-                set.Add(c.FontFamily);
-            return set;
-        }
+        // 260717Cl: 呼び出し 1 箇所のビルダーメソッド BuildUiBodyFamilies をコンストラクタ 1 式へインライン化 (要素・comparer とも不変)。
+        private static readonly HashSet<string> uiBodyFamilies = new(SupportedCultures.All.Select(c => c.FontFamily), StringComparer.OrdinalIgnoreCase);
 
         public static bool IsUiBodyFont(string family) => family != null && uiBodyFamilies.Contains(family);
 

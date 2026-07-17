@@ -140,7 +140,8 @@ public partial class PyRichTextBox : RichTextBox
 
         if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
         {
-            int n = new List<string>(AutoCompleteItems).IndexOf(txt);
+            //int n = new List<string>(AutoCompleteItems).IndexOf(txt);
+        int n = Array.IndexOf(AutoCompleteItems, txt); // 260717Cl: DrawItem のたびの List 全コピーを Array.IndexOf へ (結果同一・割り当てゼロ)
             if (n >= 0)
                 tooltip.Show(ToolTipItems[n], this, listBox.Right, e.Bounds.Y + listBox.Top, 30000);
         }

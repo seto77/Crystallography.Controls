@@ -886,10 +886,12 @@ public partial class GraphControl : UserControlBase
 
         try
         {
-            double minX = destProfileList.Where(d => d != null && d.Pt.Count != 0).Min(d => d.Pt.Min(p => p.X));
-            double maxX = destProfileList.Where(d => d != null && d.Pt.Count != 0).Max(d => d.Pt.Max(p => p.X));
-            double minY = destProfileList.Where(d => d != null && d.Pt.Count != 0).Min(d => d.Pt.Min(p => p.Y));
-            double maxY = destProfileList.Where(d => d != null && d.Pt.Count != 0).Max(d => d.Pt.Max(p => p.Y));
+            // 260717Cl: 同一フィルタの 4 連評価を 1 回に集約 (Min/Max の結果は不変)。
+            var valid = destProfileList.Where(d => d != null && d.Pt.Count != 0).ToList();
+            double minX = valid.Min(d => d.Pt.Min(p => p.X));
+            double maxX = valid.Max(d => d.Pt.Max(p => p.X));
+            double minY = valid.Min(d => d.Pt.Min(p => p.Y));
+            double maxY = valid.Max(d => d.Pt.Max(p => p.Y));
 
             if (Miscellaneous.IsFiniteNumber(minX, maxX, minY, maxY))
             {
@@ -907,27 +909,24 @@ public partial class GraphControl : UserControlBase
                 return;
             }
 
-            if (!XLog)
-            {
-                double space = (MaximalX - MinimalX) * 0.01;
-                MinimalX -= space;
-                MaximalX += space;
-            }
+            // 260717Cl: !XLog 分岐と XLog&&!isIntegerX 分岐の本体が完全同一だったため統合 (space 計算 3 連も 1 回に)。
+            //if (!XLog)
+            //{
+            //    double space = (MaximalX - MinimalX) * 0.01;
+            //    MinimalX -= space;
+            //    MaximalX += space;
+            //}
+            //else
+            //{
+            //    if (isIntegerX) { double space = ...; MinimalX = 0; MaximalX += space; }
+            //    else { double space = ...; MinimalX -= space; MaximalX += space; }
+            //}
+            double spaceX = (MaximalX - MinimalX) * 0.01;
+            if (XLog && isIntegerX)
+                MinimalX = 0;
             else
-            {
-                if (isIntegerX)
-                {
-                    double space = (MaximalX - MinimalX) * 0.01;
-                    MinimalX = 0;
-                    MaximalX += space;
-                }
-                else
-                {
-                    double space = (MaximalX - MinimalX) * 0.01;
-                    MinimalX -= space;
-                    MaximalX += space;
-                }
-            }
+                MinimalX -= spaceX;
+            MaximalX += spaceX;
 
             //260607Cl 横軸下限を0に固定 (非Log かつ生データの最小Xが0以上のとき。padding 後の負側余白も消して厳密に0始点へ)
             if (FixLowerXToZero && !XLog && minX >= 0)
@@ -1362,15 +1361,20 @@ public partial class GraphControl : UserControlBase
         double d = max - min;
         string str;
 
+        // 260717Cl (/simplify): 同一の 1-2-5-10 刻み選択梯子が線形軸/対数軸 (d<0.5) の 2 箇所にコピーされていたため集約 (純関数・出力不変)。
+        static double Step(double span, int maxDiv)
+        {
+            double unit = Math.Pow(10, Math.Floor(Math.Log10(span / maxDiv)));
+            if (span / unit < maxDiv) return unit;
+            if (span / unit / 2 < maxDiv) return unit * 2;
+            if (span / unit / 5 < maxDiv) return unit * 5;
+            if (span / unit / 10 < maxDiv) return unit * 10;
+            return 1;
+        }
+
         if (!log)
         {
-            double step = 1;
-            double unit = Math.Pow(10, Math.Floor(Math.Log10(d / maxDiv)));
-            if (d / unit < maxDiv) step = unit;
-            else if (d / unit / 2 < maxDiv) step = unit * 2;
-            else if (d / unit / 5 < maxDiv) step = unit * 5;
-            else if (d / unit / 10 < maxDiv) step = unit * 10;
-
+            double step = Step(d, maxDiv); // 260717Cl
             var startI = min > 0 ? (int)(min / step) + 1 : (int)(min / step);
             for (int i = startI; i < max / step; i++)
             {
@@ -1402,12 +1406,7 @@ public partial class GraphControl : UserControlBase
             if (d < 0.5)
             {
                 double max2 = Math.Pow(10, max), min2 = Math.Pow(10, min);
-                double step = 1;
-                double unit = Math.Pow(10, Math.Floor(Math.Log10((max2 - min2) / maxDiv)));
-                if ((max2 - min2) / unit < maxDiv) step = unit;
-                else if ((max2 - min2) / unit / 2 < maxDiv) step = unit * 2;
-                else if ((max2 - min2) / unit / 5 < maxDiv) step = unit * 5;
-                else if ((max2 - min2) / unit / 10 < maxDiv) step = unit * 10;
+                double step = Step(max2 - min2, maxDiv); // 260717Cl: 刻み梯子を Step へ集約
 
                 for (int i = (int)(min2 / step) + 1; i < max2 / step; i++)
                     //260317Cl 変更: ContainsKey+Add → TryAdd

@@ -88,7 +88,7 @@ public class DpiAwareDataGridView : DataGridView
     protected override void OnColumnAdded(DataGridViewColumnEventArgs e)
     {
         base.OnColumnAdded(e);
-        StoreLogicalColumnMetrics(e.Column);
+        StoreLogicalColumnMetrics(e.Column, MetricsDpi); // 260717Cl: 1 行委譲オーバーロードをインライン化
     }
 
     protected override void OnColumnRemoved(DataGridViewColumnEventArgs e)
@@ -106,7 +106,7 @@ public class DpiAwareDataGridView : DataGridView
         // suppressMetricsUpdate 中の自動スケーリング以外は最新値を論理値として保存する
         // (ユーザの手動リサイズも論理値ベースラインとして取り込まれる)。
         if (!suppressMetricsUpdate)
-            StoreLogicalColumnMetrics(e.Column);
+            StoreLogicalColumnMetrics(e.Column, MetricsDpi); // 260717Cl: 1 行委譲オーバーロードをインライン化
     }
 
     // 260518Cl 追加: .NET 6+ の DataGridView は ScaleControl 内で列幅も自動スケールする。
@@ -129,7 +129,7 @@ public class DpiAwareDataGridView : DataGridView
     {
         base.OnRowHeadersWidthChanged(e);
         if (!suppressMetricsUpdate)
-            logicalRowHeadersWidth = ToLogicalPixels(RowHeadersWidth);
+            logicalRowHeadersWidth = ToLogicalPixels(RowHeadersWidth, MetricsDpi); // 260717Cl: 1 行委譲オーバーロードをインライン化
     }
 
     protected override void Dispose(bool disposing)
@@ -199,8 +199,10 @@ public class DpiAwareDataGridView : DataGridView
         }
     }
 
-    private void StoreLogicalColumnMetrics(DataGridViewColumn column)
-        => StoreLogicalColumnMetrics(column, MetricsDpi); // 260518Cl 追加: dpi キャッシュなし版 (イベント経路用)
+    // 260717Cl: 1 行委譲オーバーロード (260518Cl 追加の dpi キャッシュなし版) は呼び出し 2 箇所へインライン化して削除
+    // (「オーバーロードよりデフォルト引数/インライン」の規約に従う)。
+    //private void StoreLogicalColumnMetrics(DataGridViewColumn column)
+    //    => StoreLogicalColumnMetrics(column, MetricsDpi);
 
     private void StoreLogicalColumnMetrics(DataGridViewColumn column, int metricsDpi)
     {
@@ -251,8 +253,9 @@ public class DpiAwareDataGridView : DataGridView
         return AutoSizeColumnsMode == DataGridViewAutoSizeColumnsMode.None;
     }
 
-    private int ToLogicalPixels(int pixels)
-        => ToLogicalPixels(pixels, MetricsDpi);
+    // 260717Cl: 1 行委譲オーバーロードは呼び出し 1 箇所へインライン化して削除。
+    //private int ToLogicalPixels(int pixels)
+    //    => ToLogicalPixels(pixels, MetricsDpi);
 
     private static int ToLogicalPixels(int pixels, int metricsDpi)
         => Math.Max(1, (int)Math.Round(pixels * 96.0 / metricsDpi));

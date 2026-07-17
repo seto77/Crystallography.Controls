@@ -318,7 +318,7 @@ public partial class ScalablePictureBox : UserControlBase
             {
                 if (value.Width * value.Height == 0) return;
                 _pseudoBitmap = value;
-                minZoom = Math.Min((double)(this.ClientSize.Width - 1) / _pseudoBitmap.Width, (double)(this.ClientSize.Height - 1) / _pseudoBitmap.Height);
+                ResetMinimumZoomValue(); // 260717Cl: 同一計算式の重複を既存メソッド呼び出しへ (代入直後なので同値)
                 if (!FixZoomAndCenter)
                 {
                     Zoom = minZoom;
@@ -541,15 +541,11 @@ public partial class ScalablePictureBox : UserControlBase
         //     _Center = ConvertToSrcPt(e.Location);//イベントを起こさないように小文字のcenterに代入
         //     Zoom *= 2f;
         // }
-        if (e.Delta > 0 && MouseScaling)
-        {//拡大モード (260322Ch) ホイール上回転でズームインするように長年の向きを反転
+        // 260717Cl: 倍率係数以外が同一だった 2 分岐を統合 (上回転=ズームイン/下回転=ズームアウトの向きは 260322Ch のまま)。
+        if (e.Delta != 0 && MouseScaling)
+        {
             _Center = ConvertToSrcPt(e.Location);//イベントを起こさないように小文字のcenterに代入
-            Zoom *= 2f;
-        }
-        else if (e.Delta < 0 && MouseScaling)
-        {//縮小モード (260322Ch) ホイール下回転でズームアウト
-            _Center = ConvertToSrcPt(e.Location);//イベントを起こさないように小文字のcenterに代入
-            Zoom *= 0.5f;
+            Zoom *= e.Delta > 0 ? 2f : 0.5f;
         }
     }
 

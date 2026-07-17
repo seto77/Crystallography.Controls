@@ -803,19 +803,7 @@ public partial class NumericBox : UserControlBase
         // try/catch は textBox.Lines / SelectionStart 周辺で稀に発生する境界例外への保険
         try
         {
-            int count = 0, selectionLine = 0;
-            for (int i = 0; i < textBox.Lines.Length; i++)
-            {
-                count += textBox.Lines[i].Length + 2;
-                if (count > textBox.SelectionStart)
-                {
-                    selectionLine = i;
-                    break;
-                }
-            }
-            var formula = new string[selectionLine + 1];
-            Array.Copy(textBox.Lines, formula, selectionLine + 1);
-            var d = NumericalFormula.GetNumetricValue(formula);
+            var d = EvaluateFormulaAtCursor(); // 260717Cl: Calculate と丸ごと重複していたカーソル行特定→式評価を集約
             if (!double.IsNaN(d) && d != this.numericalValue)
             {
                 if (RestrictLimitValue)
@@ -851,11 +839,11 @@ public partial class NumericBox : UserControlBase
         KeyDown?.Invoke(sender, e);
     }
 
-    public void Calculate(object sender, EventArgs e)
+    /// <summary>260717Cl 追加 (/simplify): 先頭行からカーソル行までを数式として評価する
+    /// (textBox_TextChanged / Calculate に丸ごと重複していたカーソル行特定→式配列→評価の 12 行を集約)。</summary>
+    private double EvaluateFormulaAtCursor()
     {
-        //現在のカーソル位置のテキストを計算する
-        int count = 0;
-        int selectionLine = 0;
+        int count = 0, selectionLine = 0;
         for (int i = 0; i < textBox.Lines.Length; i++)
         {
             count += textBox.Lines[i].Length + 2;
@@ -865,9 +853,15 @@ public partial class NumericBox : UserControlBase
                 break;
             }
         }
-        string[] formula = new string[selectionLine + 1];
+        var formula = new string[selectionLine + 1];
         Array.Copy(textBox.Lines, formula, selectionLine + 1);
-        var d = NumericalFormula.GetNumetricValue(formula);
+        return NumericalFormula.GetNumetricValue(formula);
+    }
+
+    public void Calculate(object sender, EventArgs e)
+    {
+        //現在のカーソル位置のテキストを計算する
+        var d = EvaluateFormulaAtCursor(); // 260717Cl: textBox_TextChanged と重複していた 12 行を集約
         if (!double.IsNaN(d))
         {
             skipTextChangeEvent = true;

@@ -62,14 +62,20 @@ public partial class FormStrain : FormBase
 
         // crystalControl 側の操作で結晶が変わった時のみ呼ばれる。
         // FormStrain 自身が crystalControl を書き換える間はフラグで自分自身のイベントを無視する。
+        CaptureAndStrain(); // 260717Cl: VisibleChanged と重複していた 5 行を共通化
+
+        numericBoxStrain_ValueChanged(this, EventArgs.Empty);
+    }
+
+    /// <summary>260717Cl 追加 (/simplify): crystalControl の現内容を取り込み original として保存→歪み再適用。
+    /// crystalControl_CrystalChanged / FormStrain_VisibleChanged で重複していたフラグ制御込みの 5 行。</summary>
+    private void CaptureAndStrain()
+    {
         skipCrystalChangedEvent = true;
         CrystalControl.GenerateFromInterface();
         originalCrystal = Deep.Copy(CrystalControl.Crystal);
-
         SetStrainedCrystal();
         skipCrystalChangedEvent = false;
-
-        numericBoxStrain_ValueChanged(this, EventArgs.Empty);
     }
 
     private void numericBoxStrain_ValueChanged(object sender, EventArgs e)
@@ -117,11 +123,7 @@ public partial class FormStrain : FormBase
     {
         if (Visible)
         {
-            skipCrystalChangedEvent = true;
-            CrystalControl.GenerateFromInterface();
-            originalCrystal = Deep.Copy(CrystalControl.Crystal);
-            SetStrainedCrystal();
-            skipCrystalChangedEvent = false;
+            CaptureAndStrain(); // 260717Cl: crystalControl_CrystalChanged と重複していた 5 行を共通化
         }
         else
         {

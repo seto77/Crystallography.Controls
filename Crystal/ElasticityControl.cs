@@ -45,32 +45,27 @@ public partial class ElasticityControl : UserControlBase
     public Matrix<double> Compliance
     {
         get => compliance;
-        set
-        {
-            if (!IsValid6x6(value)) return;
-            radioButtonCompliance.Checked = true;
-            compliance = value;
-            ApplyMatrixToBoxes(value);
-            SetElasticity();
-            stiffness = compliance.TryInverse();
-            ValueChanged?.Invoke(this, EventArgs.Empty);
-        }
+        set => SetMatrix(value, isStiffness: false); // 260717Cl: Stiffness setter との鏡像コピペを SetMatrix へ統合
     }
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public Matrix<double> Stiffness
     {
         get => stiffness;
-        set
-        {
-            if (!IsValid6x6(value)) return;
-            radioButtonStiffness.Checked = true;
-            stiffness = value;
-            ApplyMatrixToBoxes(value);
-            SetElasticity();
-            compliance = stiffness.TryInverse();
-            ValueChanged?.Invoke(this, EventArgs.Empty);
-        }
+        set => SetMatrix(value, isStiffness: true); // 260717Cl: 同上
+    }
+
+    /// <summary>260717Cl 追加 (/simplify): Compliance/Stiffness setter で鏡像重複していた
+    /// 「検証→radio→代入→ボックス反映→SetElasticity→逆行列→通知」の共通本体 (処理順は旧 setter と同一)。</summary>
+    private void SetMatrix(Matrix<double> value, bool isStiffness)
+    {
+        if (!IsValid6x6(value)) return;
+        (isStiffness ? radioButtonStiffness : radioButtonCompliance).Checked = true;
+        if (isStiffness) stiffness = value; else compliance = value;
+        ApplyMatrixToBoxes(value);
+        SetElasticity();
+        if (isStiffness) compliance = stiffness.TryInverse(); else stiffness = compliance.TryInverse();
+        ValueChanged?.Invoke(this, EventArgs.Empty);
     }
 
     private static bool IsValid6x6(Matrix<double> m) => m != null && m.RowCount == 6 && m.ColumnCount == 6;

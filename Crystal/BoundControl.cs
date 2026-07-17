@@ -36,7 +36,7 @@ public partial class BoundControl : UserControlBase
     private Crystal crystal = null;
 
     private (int H, int K, int L) index => indexControl.Values;
-    private bool equivalency { get => checkBoxEquivalency.Checked; set => checkBoxEquivalency.Checked = value; }
+    //private bool equivalency { get => checkBoxEquivalency.Checked; set => checkBoxEquivalency.Checked = value; } // 260717Cl: setter 未使用・getter 1 箇所の素通しラッパーのためインライン化
     public double MaximumDistance => numericBoxMaximumDistanceFromOrigin.Value / 10;
 
     private readonly DataSet.DataTableBoundDataTable table;
@@ -61,12 +61,12 @@ public partial class BoundControl : UserControlBase
     {
         InitializeComponent();
         table = dataSet.DataTableBound;
-        typeof(DataGridView).GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(dataGridView, true, null);
+        ControlHelper.EnableDoubleBuffering(dataGridView); // 260717Cl: 6 ファイル重複のリフレクション 1 行を ControlHelper へ集約
     }
 
     #region Bound を画面下部から生成 / 画面下部にセット
     public Bound GetFromInterface() =>
-        new(true, Crystal, index.H, index.K, index.L, equivalency, numericBoxDistance.Value / 10, numericBoxTranslation.Value / 10, colorControl.Argb);
+        new(true, Crystal, index.H, index.K, index.L, checkBoxEquivalency.Checked, numericBoxDistance.Value / 10, numericBoxTranslation.Value / 10, colorControl.Argb); // 260717Cl: equivalency プロパティをインライン化
 
     private double ReciprocalLengthHKL() =>
         (index.H * Crystal.A_Star + index.K * Crystal.B_Star + index.L * Crystal.C_Star).Length;
@@ -215,15 +215,9 @@ public partial class BoundControl : UserControlBase
         ItemsChanged?.Invoke(this, EventArgs.Empty);
     }
 
-    // 260517Cl 追加: i = -(h+k) を CellFormatting で表示する (LatticePlaneControl と同じパターン、DataTable には保持しない)
+    // 260517Cl 追加: i = -(h+k) を CellFormatting で表示する (DataTable には保持しない)
     private void dataGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
-    {
-        if (e.RowIndex < 0 || dataGridView.Columns[e.ColumnIndex] != iDataGridViewTextBoxColumn) return;
-        var row = dataGridView.Rows[e.RowIndex];
-        var h = Convert.ToInt32(row.Cells[hDataGridViewTextBoxColumn.Index].Value);
-        var k = Convert.ToInt32(row.Cells[kDataGridViewTextBoxColumn.Index].Value);
-        e.Value = (-h - k).ToString();
-        e.FormattingApplied = true;
-    }
+        // 260717Cl: FormBeamInteraction/LatticePlaneControl と 3 連コピペだったため ControlHelper へ集約
+        => ControlHelper.FormatMillerBravaisI(dataGridView, e, iDataGridViewTextBoxColumn, hDataGridViewTextBoxColumn, kDataGridViewTextBoxColumn);
     #endregion
 }

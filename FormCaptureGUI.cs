@@ -416,23 +416,19 @@ public partial class FormCaptureGUI : FormBase
         }
     }
 
+    // 260717Cl (/simplify): Select All / Deselect All で真偽値のみ異なる同一ループを CheckAllNodes へ統合。
     /// <summary>Select All ボタン</summary>
-    private void buttonSelectAll_Click(object sender, EventArgs e)
-    {
-        foreach (TreeNode node in treeViewControls.Nodes)
-        {
-            node.Checked = true;
-            SetChildChecks(node, true);
-        }
-    }
+    private void buttonSelectAll_Click(object sender, EventArgs e) => CheckAllNodes(true);
 
     /// <summary>Deselect All ボタン</summary>
-    private void buttonDeselectAll_Click(object sender, EventArgs e)
+    private void buttonDeselectAll_Click(object sender, EventArgs e) => CheckAllNodes(false);
+
+    private void CheckAllNodes(bool isChecked)
     {
         foreach (TreeNode node in treeViewControls.Nodes)
         {
-            node.Checked = false;
-            SetChildChecks(node, false);
+            node.Checked = isChecked;
+            SetChildChecks(node, isChecked);
         }
     }
 

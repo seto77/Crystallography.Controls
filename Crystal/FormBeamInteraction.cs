@@ -37,7 +37,7 @@ public partial class FormBeamInteraction : FormBase
         // (260426Ch) 古い EventHandler 明示生成とコメント typo を整理
         // CrystalControl は外部から代入される参照 (このフォームの子コントロールでない) ためデザイナ登録不可 → コードで配線。260607Cl
         CrystalControl.CrystalChanged += crystalControl_CrystalChanged;
-        typeof(DataGridView).GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(dataGridView, true, null);
+        ControlHelper.EnableDoubleBuffering(dataGridView); // 260717Cl: 6 ファイル重複のリフレクション 1 行を ControlHelper へ集約
         InitializeReflectionsTab();       // 260607Cl
         InitializeScatteringFactorsTab(); // 260606Cl
         InitializeAttenuationTab();       // 260606Cl
@@ -276,12 +276,7 @@ public partial class FormBeamInteraction : FormBase
         Array.Sort(c.VectorOfG, (g1, g2) => g2.d.CompareTo(g1.d));
 
         // 一旦 bindingSource を解除
-        var dataMember = bindingSourceScatteringFactor.DataMember;
-        dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
-        dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
-        bindingSourceScatteringFactor.DataMember = "";
-
-        dataSet.DataTableScatteringFactor.Clear();
+        var dataMember = DetachScatteringGrid(); // 260717Cl: 2 箇所に重複していた解除手順 5 行を集約
         dataGridViewTextBoxColumnMulti.Visible = checkBoxHideEquivalentPlane.Checked;
         dataGridViewTextBoxColumnIntCondition.Visible = !checkBoxHideProhibitedPlanes.Checked;
         dataGridView.DefaultCellStyle.Format = "";
@@ -435,12 +430,7 @@ public partial class FormBeamInteraction : FormBase
         var waveSource = waveLengthControl.WaveSource;
 
         // 一旦 bindingSource を解除
-        var dataMember = bindingSourceScatteringFactor.DataMember;
-        dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
-        dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
-        bindingSourceScatteringFactor.DataMember = "";
-
-        dataSet.DataTableScatteringFactor.Clear();
+        var dataMember = DetachScatteringGrid(); // 260717Cl: 2 箇所に重複していた解除手順 5 行を集約
 
         var peaks = new List<(double twoTheta, double inten, int h, int k, int l)>();//260607Cl 回折ピークグラフ用 (掃引は分数指数があり得るため hkl ラベルは付けない)
         for (double h = numericBoxH_min.Value; h <= numericBoxH_max.Value + 1e-10; h += numericBoxH_step.Value)
@@ -479,14 +469,8 @@ public partial class FormBeamInteraction : FormBase
     }
 
     private void dataGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
-    {
-        if (e.RowIndex < 0 || e.ColumnIndex != dataGridViewTextBoxColumnI.Index) return;
-        var row = dataGridView.Rows[e.RowIndex];
-        var h = Convert.ToInt32(row.Cells[dataGridViewTextBoxColumnH.Index].Value);
-        var k = Convert.ToInt32(row.Cells[dataGridViewTextBoxColumnK.Index].Value);
-        e.Value = (-h - k).ToString(); // (260424Ch) TextBoxCell の表示値は string にして DataGridView の型不一致を避ける
-        e.FormattingApplied = true;
-    }
+        // 260717Cl: BoundControl/LatticePlaneControl と 3 連コピペだった i=−(h+k) 表示を ControlHelper へ集約
+        => ControlHelper.FormatMillerBravaisI(dataGridView, e, dataGridViewTextBoxColumnI, dataGridViewTextBoxColumnH, dataGridViewTextBoxColumnK);
     #endregion
 
     #region Scattering factors タブ (X線 / 電子線) 260606Cl 追加
@@ -701,7 +685,9 @@ public partial class FormBeamInteraction : FormBase
                 if (!double.IsNaN(s)) sPts.Add(new PointD(q, s));
             }
             if (fPts.Count > 0) profiles.Add(new Profile(fPts) { Color = el.Color, LineWidth = 1.6f, text = el.Name + " F(q)" });
-            if (sPts.Count > 0) profiles.Add(new Profile(sPts) { Color = Pale(el.Color), LineWidth = 1f, text = el.Name + " S(q)" });
+            // 260717Cl: 呼び出し 1 箇所の Pale をインライン化 (白へ 50% ブレンドして S(q) を F(q) と同系の淡色に)
+            var pale = Color.FromArgb((el.Color.R + 255) / 2, (el.Color.G + 255) / 2, (el.Color.B + 255) / 2);
+            if (sPts.Count > 0) profiles.Add(new Profile(sPts) { Color = pale, LineWidth = 1f, text = el.Name + " S(q)" });
         }
 
         graphControlScatteringFactor.GraphTitle = R("Graph.Title.FqSq");//260607Ch resx 化
@@ -718,8 +704,8 @@ public partial class FormBeamInteraction : FormBase
             graphControlScatteringFactor.ClearProfile();
     }
 
-    /// <summary>色を白へ 50% ブレンドして淡くする (S(q) を F(q) と同系色で区別するため)。260606Cl 追加。</summary>
-    private static Color Pale(Color c) => Color.FromArgb((c.R + 255) / 2, (c.G + 255) / 2, (c.B + 255) / 2);
+    //// <summary>色を白へ 50% ブレンドして淡くする (S(q) を F(q) と同系色で区別するため)。260606Cl 追加。</summary>
+    //private static Color Pale(Color c) => Color.FromArgb((c.R + 255) / 2, (c.G + 255) / 2, (c.B + 255) / 2); // 260717Cl: 呼び出し 1 箇所のみのためインライン化
 
     /// <summary>カーソル位置 s での各元素 f(s) を線種別 MiniTable に書き出す (X線→Xray表 / 電子→Electron表)。260607Cl</summary>
     private void UpdateScatteringTable(double sAng)
@@ -1002,8 +988,20 @@ public partial class FormBeamInteraction : FormBase
         DrawXrayAttenuationGraph(els, totalMass, e);
     }
 
-    /// <summary>X線係数モードラジオの状態 (0:µ/ρ質量 1:µ線 2:透過率)。260607Cl 追加。</summary>
-    private int AttenCoeffMode() => radioButtonAttenLinMu.Checked ? 1 : radioButtonAttenTrans.Checked ? 2 : 0;
+    /// <summary>260717Cl 追加 (/simplify): 反射表の再構築前に bindingSource を解除して表をクリアする共通足場
+    /// (SetSortedPlanes / numericBoxH_min_ValueChanged で 5 行が重複していた)。返り値は復元用の旧 DataMember。</summary>
+    private string DetachScatteringGrid()
+    {
+        var dataMember = bindingSourceScatteringFactor.DataMember;
+        dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+        dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+        bindingSourceScatteringFactor.DataMember = "";
+        dataSet.DataTableScatteringFactor.Clear();
+        return dataMember;
+    }
+
+    //// <summary>X線係数モードラジオの状態 (0:µ/ρ質量 1:µ線 2:透過率)。260607Cl 追加。</summary>
+    //private int AttenCoeffMode() => radioButtonAttenLinMu.Checked ? 1 : radioButtonAttenTrans.Checked ? 2 : 0; // 260717Cl: 呼び出し 1 箇所のみのためインライン化
 
     /// <summary>係数モードラジオの変更ハンドラ (解除側は無視)。260607Cl 追加。</summary>
     private void attenCoeff_OptionChanged(object sender, EventArgs e)
@@ -1026,7 +1024,7 @@ public partial class FormBeamInteraction : FormBase
         const double eMin = 1, eMax = 60;
         const int n = 300;
         bool xrl = Xraylib.Enabled;
-        int mode = AttenCoeffMode();                 //260607Cl 0:µ/ρ 1:µ 2:透過率
+        int mode = radioButtonAttenLinMu.Checked ? 1 : radioButtonAttenTrans.Checked ? 2 : 0; //260607Cl 0:µ/ρ 1:µ 2:透過率 (260717Cl: 呼び出し 1 箇所の AttenCoeffMode をインライン化)
         double rho = Crystal.Density;                // [g/cm³]
         double tCm = numericBoxAttenThickness.Value * 1e-4; // µm → cm (透過率用)
         double scale = mode == 1 ? rho : 1.0;        // 線吸収係数 µ = (µ/ρ)·ρ

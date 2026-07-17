@@ -106,7 +106,7 @@ public class LabelLaTeX : Control
         {
             if (base.AutoSize == value) return;
             base.AutoSize = value;
-            if (value) AdjustSize();
+            if (value) Size = GetPreferredSize(Size.Empty); // 260717Cl: 1 行ヘルパー AdjustSize をインライン化
         }
     }
 
@@ -173,7 +173,7 @@ public class LabelLaTeX : Control
         renderError = null;
 
         if (AutoSize && !IsDisposed)
-            AdjustSize();
+            Size = GetPreferredSize(Size.Empty); // 260717Cl: 1 行ヘルパー AdjustSize をインライン化
         Invalidate();
     }
 
@@ -362,8 +362,9 @@ public class LabelLaTeX : Control
         return flags;
     }
 
-    private void AdjustSize()
-    {
-        Size = GetPreferredSize(Size.Empty);
-    }
+    // 260717Cl: 1 行・呼び出し 2 箇所の AdjustSize はインライン化して削除。
+    //private void AdjustSize()
+    //{
+    //    Size = GetPreferredSize(Size.Empty);
+    //}
 }

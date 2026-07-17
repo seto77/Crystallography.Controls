@@ -52,7 +52,7 @@ public partial class BondInputControl : UserControlBase
     {
         InitializeComponent();
         table = dataSet.DataTableBond;
-        typeof(DataGridView).GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(dataGridView, true, null);
+        ControlHelper.EnableDoubleBuffering(dataGridView); // 260717Cl: 6 ファイル重複のリフレクション 1 行を ControlHelper へ集約
     }
 
     #region Bonds クラスを画面下部から生成 / にセット (表示は Å、内部は nm)

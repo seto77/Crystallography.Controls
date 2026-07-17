@@ -205,7 +205,7 @@ public partial class AtomControl : UserControlBase
         dataGridView.Columns["enabledColumn"].Visible = false;
         SkipEvent = false;
 
-        typeof(DataGridView).GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(dataGridView, true, null);
+        ControlHelper.EnableDoubleBuffering(dataGridView); // 260717Cl: 6 ファイル重複のリフレクション 1 行を ControlHelper へ集約
     }
 
     private void setTabPages()
@@ -433,35 +433,35 @@ public partial class AtomControl : UserControlBase
         }
     }
 
+    // 260717Cl (/simplify): Change 系 3 ボタンで重複していた「現在行取得→Replace→Position 復元」の足場を
+    // ReplaceCurrent へ集約 (各ボタンはタブ別の追加コピー処理だけを渡す)。
     private void buttonChange_Click(object sender, EventArgs e)
-    {
-        var pos = bindingSource.Position;
-        if (pos < 0) return;
-        Replace(GetFromInterface(), pos);
-        bindingSource.Position = pos;
-    }
+        => ReplaceCurrent();
 
     private void buttonChangeToSameElement_Click(object sender, EventArgs e)
-    {
-        var pos = bindingSource.Position;
-        if (pos < 0) return;
-        var atoms = GetFromInterface();
-        Replace(atoms, pos);
-        if (tabControl.SelectedTab == tabPageAppearance)
-            CopyAppearance(atoms, pos);
-        else if (tabControl.SelectedTab == tabPageDebyeWaller)
-            CopyDebyeWaller(atoms, pos, true);
-        bindingSource.Position = pos;
-    }
+        => ReplaceCurrent((atoms, pos) =>
+        {
+            if (tabControl.SelectedTab == tabPageAppearance)
+                CopyAppearance(atoms, pos);
+            else if (tabControl.SelectedTab == tabPageDebyeWaller)
+                CopyDebyeWaller(atoms, pos, true);
+        });
 
     private void buttonApplyToAllElements_Click(object sender, EventArgs e)
+        => ReplaceCurrent((atoms, pos) =>
+        {
+            if (tabControl.SelectedTab == tabPageDebyeWaller)
+                CopyDebyeWaller(atoms, pos, false);
+        });
+
+    /// <summary>260717Cl 追加 (/simplify): 現在行を interface の内容で置換する共通足場 (旧: 3 ハンドラに同型コピペ)。</summary>
+    private void ReplaceCurrent(Action<Atoms, int> extra = null)
     {
         var pos = bindingSource.Position;
         if (pos < 0) return;
         var atoms = GetFromInterface();
         Replace(atoms, pos);
-        if (tabControl.SelectedTab == tabPageDebyeWaller)
-            CopyDebyeWaller(atoms, pos, false);
+        extra?.Invoke(atoms, pos);
         bindingSource.Position = pos;
     }
 
