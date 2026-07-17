@@ -1541,21 +1541,20 @@ public partial class FormGroupRelations : FormBase
     private static readonly Color ElemLostColor = Color.FromArgb(224, 168, 0);
     private static readonly Color ElemRetainedColor = Color.FromArgb(20, 20, 20); // retained = 黒 (H で保持)
 
-    /// <summary>260713Cl 追加 (Elements/Positions): 一般位置図で H の副軌道 (分裂) を色分けするパレット。
-    /// lost の黄色と紛れないよう黄は除外。クラス数 (= index) が要素数を超えたら循環使用。</summary>
-    private static readonly Color[] OrbitPalette =
-    [
-        Color.FromArgb(200,  30,  30), // red
-        Color.FromArgb( 30,  90, 200), // blue
-        Color.FromArgb( 20, 150,  60), // green
-        Color.FromArgb(200, 110,   0), // orange
-        Color.FromArgb(150,  40, 180), // purple
-        Color.FromArgb(  0, 150, 160), // teal
-        Color.FromArgb(180,  20, 120), // magenta
-        Color.FromArgb( 90,  90,  90), // gray
-        Color.FromArgb(120, 120,  20), // olive
-        Color.FromArgb( 70, 130, 180), // steel blue
-    ];
+    // 旧 (260716Cl): 一般位置図で H の副軌道を色分けしていたパレット。retained/lost 2 色化 (ユーザー指示) に伴い廃止。
+    // private static readonly Color[] OrbitPalette =
+    // [
+    //     Color.FromArgb(200,  30,  30), // red
+    //     Color.FromArgb( 30,  90, 200), // blue
+    //     Color.FromArgb( 20, 150,  60), // green
+    //     Color.FromArgb(200, 110,   0), // orange
+    //     Color.FromArgb(150,  40, 180), // purple
+    //     Color.FromArgb(  0, 150, 160), // teal
+    //     Color.FromArgb(180,  20, 120), // magenta
+    //     Color.FromArgb( 90,  90,  90), // gray
+    //     Color.FromArgb(120, 120,  20), // olive
+    //     Color.FromArgb( 70, 130, 180), // steel blue
+    // ];
 
     private void RenderElements()
     {
@@ -1751,10 +1750,14 @@ public partial class FormGroupRelations : FormBase
     private static Bitmap RenderPositionsLayer(int w, int h, int seriesNumber, ProjectionAxis axis,
                                                (double X, double Y, double Z) testPoint, Color[] pointColors)
         => RenderTransparentLayer(w, h, (g, size) => // 260714Cl: 共通足場へ集約
-            SymmetryDiagramPositions.DrawGeneralPositionsColored(g, size, seriesNumber, axis, testPoint, pointColors, drawCell: true));
+            SymmetryDiagramPositions.DrawGeneralPositionsColored(g, size, seriesNumber, axis, testPoint, pointColors, drawCell: true,
+                                                                 lostColor: ElemLostColor)); // 260717Cl: split circle の lost 側記号 (縦線/コンマ/高さ) を黄で
 
     /// <summary>260713Cl 追加 (Elements/Positions): 親 G の一般位置 (GeneratePositions 順) を、部分群 H の副軌道で
-    /// 分類した色配列を返す。H 操作で結ばれる点を union-find で束ね、束ごとに OrbitPalette を順に割り当てる。
+    /// 分類した色配列を返す。H 操作で結ばれる点を union-find で束ねる。
+    /// 260716Cl: 色の割り当てを副軌道パレット循環 → retained/lost 2 色へ変更 (ユーザー指示)。
+    /// 代表点 (testPoint) を含む H 軌道 = H の一般位置として残る点 (retained, 黒)、
+    /// それ以外の副軌道 = 代表点の軌道から消失する点 (lost, 黄) — 対称要素図の配色と同じ。
     /// sameCell (T_H=T_G / centering 除去) 前提で、H 操作を作用させ mod-1 で一致する親点を同一軌道とみなす
     /// (t- では T_H=T_G なので厳密、centering 除去 k- でも H は縮んだ並進しか持たないので慣用胞内 mod-1 で正しい)。</summary>
     private static Color[] ComputeOrbitColors(int parentSn, SymmetryOperation[] hOps, (double X, double Y, double Z) testPoint)
@@ -1784,18 +1787,25 @@ public partial class FormGroupRelations : FormBase
                 }
             }
 
-        var rootColor = new Dictionary<int, Color>();
+        // 旧 (260716Cl): 副軌道ごとに OrbitPalette を循環割り当てしていた。
+        // var rootColor = new Dictionary<int, Color>();
+        // var colors = new Color[n];
+        // for (int i = 0; i < n; i++)
+        // {
+        //     int r = Find(i);
+        //     if (!rootColor.TryGetValue(r, out var col))
+        //     {
+        //         col = OrbitPalette[rootColor.Count % OrbitPalette.Length];
+        //         rootColor[r] = col;
+        //     }
+        //     colors[i] = col;
+        // }
+        // return colors;
+        // 260716Cl: 代表点を含む H 軌道 = retained (黒)、他の副軌道 = lost (黄)。対称要素図の凡例と共通。
+        int repRoot = idx.TryGetValue(Key(testPoint.X, testPoint.Y, testPoint.Z), out int rep) ? Find(rep) : Find(0);
         var colors = new Color[n];
         for (int i = 0; i < n; i++)
-        {
-            int r = Find(i);
-            if (!rootColor.TryGetValue(r, out var col))
-            {
-                col = OrbitPalette[rootColor.Count % OrbitPalette.Length];
-                rootColor[r] = col;
-            }
-            colors[i] = col;
-        }
+            colors[i] = Find(i) == repRoot ? ElemRetainedColor : ElemLostColor;
         return colors;
     }
 
@@ -1951,18 +1961,19 @@ public partial class FormGroupRelations : FormBase
         // 260713Cl 追加 (③-2): 対称要素 lost/retained タブ
         // 260713Cl: 一般位置図を右に併記したため Elements → Elements & Positions へ改称。
         tabElements.Text = Loc(en: "Elements & Positions", ja: "対称要素・一般位置", de: "Elemente & Lagen", fr: "Éléments et positions", es: "Elementos y posiciones", pt: "Elementos e posições", it: "Elementi e posizioni", ru: "Элементы и позиции", zhHans: "对称要素与一般位置", zhHant: "對稱要素與一般位置", ko: "대칭 요소·일반 위치");
+        // 260716Cl: 右パネルの説明を副軌道色分け → retained/lost 2 色 (代表点の軌道に残る点=黒 / 消失する点=黄) へ更新。
         toolTip.SetToolTip(pictureBoxElements, Loc(
-            en: "Left: overlays the parent's symmetry-element diagram (ITA style) for the selected subgroup relation — the unit cell is blue, elements retained in the subgroup are black, elements lost are yellow. Where a lost element sits on a retained one (e.g. a 4-fold degrading to a 2-fold) only the retained (black) element is drawn. Right: the parent's general positions, colored by how the orbit splits into the subgroup's sub-orbits.",
-            ja: "左: 選択した部分群関係について親の対称要素図 (ITA 風) を重ね描きします。単位胞は青、部分群で保持される要素は黒、失われる要素は黄色です。失われる要素が保持要素と同じ位置にある場合 (例: 4回軸が2回軸に退化) は保持側 (黒) だけを描きます。右: 親の一般位置を、部分群の副軌道への分裂に応じて色分けします。",
-            de: "Links: überlagert das Symmetrieelement-Diagramm des Elters (ITA-Stil) für die gewählte Untergruppenrelation — die Elementarzelle ist blau, erhaltene Elemente schwarz, verlorene gelb. Sitzt ein verlorenes Element auf einem erhaltenen (z. B. eine zu einer 2-zähligen reduzierte 4-zählige Achse), wird nur das erhaltene (schwarze) gezeichnet. Rechts: die allgemeinen Lagen des Elters, eingefärbt nach der Aufspaltung der Bahn in die Teilbahnen der Untergruppe.",
-            fr: "À gauche : superpose le diagramme des éléments de symétrie du parent (style ITA) pour la relation de sous-groupe sélectionnée — la maille est bleue, les éléments conservés en noir, les éléments perdus en jaune. Lorsqu'un élément perdu coïncide avec un élément conservé (p. ex. un axe 4 réduit à un axe 2), seul l'élément conservé (noir) est tracé. À droite : les positions générales du parent, colorées selon l'éclatement de l'orbite en sous-orbites du sous-groupe.",
-            es: "Izquierda: superpone el diagrama de elementos de simetría del padre (estilo ITA) para la relación de subgrupo seleccionada — la celda es azul, los elementos conservados en negro y los perdidos en amarillo. Cuando un elemento perdido coincide con uno conservado (p. ej. un eje 4 que se degrada a un eje 2) solo se dibuja el conservado (negro). Derecha: las posiciones generales del padre, coloreadas según cómo se divide la órbita en las suborbitas del subgrupo.",
-            pt: "Esquerda: sobrepõe o diagrama de elementos de simetria do pai (estilo ITA) para a relação de subgrupo selecionada — a célula é azul, os elementos mantidos em preto e os perdidos em amarelo. Quando um elemento perdido coincide com um mantido (p. ex. um eixo 4 que se reduz a um eixo 2) apenas o mantido (preto) é desenhado. Direita: as posições gerais do pai, coloridas conforme a órbita se divide nas suborbitas do subgrupo.",
-            it: "Sinistra: sovrappone il diagramma degli elementi di simmetria del genitore (stile ITA) per la relazione di sottogruppo selezionata — la cella è blu, gli elementi mantenuti in nero e quelli persi in giallo. Quando un elemento perso coincide con uno mantenuto (es. un asse 4 che degrada a un asse 2) viene disegnato solo il mantenuto (nero). Destra: le posizioni generali del genitore, colorate secondo la scissione dell'orbita nelle sotto-orbite del sottogruppo.",
-            ru: "Слева: накладывает диаграмму элементов симметрии родителя (стиль ITA) для выбранного отношения подгруппы — ячейка синяя, сохранённые элементы чёрные, утраченные жёлтые. Если утраченный элемент совпадает с сохранённым (например, ось 4-го порядка, понизившаяся до 2-го), рисуется только сохранённый (чёрный). Справа: общие позиции родителя, окрашенные по расщеплению орбиты на подорбиты подгруппы.",
-            zhHans: "左: 对所选的子群关系叠加母群的对称要素图 (ITA 风格) — 单位胞为蓝色，保持的要素为黑色，失去的要素为黄色。当失去的要素与保持的要素位于同一位置 (例如四次轴退化为二次轴) 时仅绘制保持的 (黑色) 要素。右: 母群的一般位置，按轨道分裂为子群副轨道的方式着色。",
-            zhHant: "左: 對所選的子群關係疊加母群的對稱要素圖 (ITA 風格) — 單位胞為藍色，保持的要素為黑色，失去的要素為黃色。當失去的要素與保持的要素位於同一位置 (例如四次軸退化為二次軸) 時僅繪製保持的 (黑色) 要素。右: 母群的一般位置，按軌道分裂為子群副軌道的方式著色。",
-            ko: "왼쪽: 선택한 부분군 관계에 대해 부모의 대칭 요소 도표 (ITA 방식) 를 겹쳐 그립니다 — 단위 셀은 파랑, 유지되는 요소는 검정, 사라지는 요소는 노랑입니다. 사라지는 요소가 유지되는 요소와 같은 위치에 있으면 (예: 4회축이 2회축으로 퇴화) 유지되는 (검정) 요소만 그립니다. 오른쪽: 부모의 일반 위치를 궤도가 부분군의 부분 궤도로 분리되는 방식에 따라 색으로 구분합니다."));
+            en: "Left: overlays the parent's symmetry-element diagram (ITA style) for the selected subgroup relation — the unit cell is blue, elements retained in the subgroup are black, elements lost are yellow. Where a lost element sits on a retained one (e.g. a 4-fold degrading to a 2-fold) only the retained (black) element is drawn. Right: the parent's general positions — points that remain in the subgroup's orbit of the representative point are black, points lost from that orbit are yellow.",
+            ja: "左: 選択した部分群関係について親の対称要素図 (ITA 風) を重ね描きします。単位胞は青、部分群で保持される要素は黒、失われる要素は黄色です。失われる要素が保持要素と同じ位置にある場合 (例: 4回軸が2回軸に退化) は保持側 (黒) だけを描きます。右: 親の一般位置のうち、部分群でも代表点の軌道に残る点を黒、その軌道から消失する点を黄色で示します。",
+            de: "Links: überlagert das Symmetrieelement-Diagramm des Elters (ITA-Stil) für die gewählte Untergruppenrelation — die Elementarzelle ist blau, erhaltene Elemente schwarz, verlorene gelb. Sitzt ein verlorenes Element auf einem erhaltenen (z. B. eine zu einer 2-zähligen reduzierte 4-zählige Achse), wird nur das erhaltene (schwarze) gezeichnet. Rechts: die allgemeinen Lagen des Elters — Punkte, die in der Untergruppen-Bahn des Repräsentanzpunkts verbleiben, sind schwarz, aus dieser Bahn verlorene Punkte gelb.",
+            fr: "À gauche : superpose le diagramme des éléments de symétrie du parent (style ITA) pour la relation de sous-groupe sélectionnée — la maille est bleue, les éléments conservés en noir, les éléments perdus en jaune. Lorsqu'un élément perdu coïncide avec un élément conservé (p. ex. un axe 4 réduit à un axe 2), seul l'élément conservé (noir) est tracé. À droite : les positions générales du parent — les points qui restent dans l'orbite du point représentatif sous le sous-groupe sont en noir, les points perdus de cette orbite en jaune.",
+            es: "Izquierda: superpone el diagrama de elementos de simetría del padre (estilo ITA) para la relación de subgrupo seleccionada — la celda es azul, los elementos conservados en negro y los perdidos en amarillo. Cuando un elemento perdido coincide con uno conservado (p. ej. un eje 4 que se degrada a un eje 2) solo se dibuja el conservado (negro). Derecha: las posiciones generales del padre — los puntos que permanecen en la órbita del punto representativo bajo el subgrupo son negros, y los perdidos de esa órbita, amarillos.",
+            pt: "Esquerda: sobrepõe o diagrama de elementos de simetria do pai (estilo ITA) para a relação de subgrupo selecionada — a célula é azul, os elementos mantidos em preto e os perdidos em amarelo. Quando um elemento perdido coincide com um mantido (p. ex. um eixo 4 que se reduz a um eixo 2) apenas o mantido (preto) é desenhado. Direita: as posições gerais do pai — os pontos que permanecem na órbita do ponto representativo sob o subgrupo são pretos, e os perdidos dessa órbita, amarelos.",
+            it: "Sinistra: sovrappone il diagramma degli elementi di simmetria del genitore (stile ITA) per la relazione di sottogruppo selezionata — la cella è blu, gli elementi mantenuti in nero e quelli persi in giallo. Quando un elemento perso coincide con uno mantenuto (es. un asse 4 che degrada a un asse 2) viene disegnato solo il mantenuto (nero). Destra: le posizioni generali del genitore — i punti che restano nell'orbita del punto rappresentativo sotto il sottogruppo sono neri, quelli persi da tale orbita gialli.",
+            ru: "Слева: накладывает диаграмму элементов симметрии родителя (стиль ITA) для выбранного отношения подгруппы — ячейка синяя, сохранённые элементы чёрные, утраченные жёлтые. Если утраченный элемент совпадает с сохранённым (например, ось 4-го порядка, понизившаяся до 2-го), рисуется только сохранённый (чёрный). Справа: общие позиции родителя — точки, остающиеся в орбите представительной точки под действием подгруппы, чёрные; точки, утраченные из этой орбиты, жёлтые.",
+            zhHans: "左: 对所选的子群关系叠加母群的对称要素图 (ITA 风格) — 单位胞为蓝色，保持的要素为黑色，失去的要素为黄色。当失去的要素与保持的要素位于同一位置 (例如四次轴退化为二次轴) 时仅绘制保持的 (黑色) 要素。右: 母群的一般位置 — 在子群下仍属于代表点轨道的点为黑色，从该轨道中消失的点为黄色。",
+            zhHant: "左: 對所選的子群關係疊加母群的對稱要素圖 (ITA 風格) — 單位胞為藍色，保持的要素為黑色，失去的要素為黃色。當失去的要素與保持的要素位於同一位置 (例如四次軸退化為二次軸) 時僅繪製保持的 (黑色) 要素。右: 母群的一般位置 — 在子群下仍屬於代表點軌道的點為黑色，從該軌道中消失的點為黃色。",
+            ko: "왼쪽: 선택한 부분군 관계에 대해 부모의 대칭 요소 도표 (ITA 방식) 를 겹쳐 그립니다 — 단위 셀은 파랑, 유지되는 요소는 검정, 사라지는 요소는 노랑입니다. 사라지는 요소가 유지되는 요소와 같은 위치에 있으면 (예: 4회축이 2회축으로 퇴화) 유지되는 (검정) 요소만 그립니다. 오른쪽: 부모의 일반 위치 — 부분군에서도 대표점의 궤도에 남는 점은 검정, 그 궤도에서 사라지는 점은 노랑으로 표시합니다."));
         toolTip.SetToolTip(pictureBoxPointGroups, Loc(
             en: "Hasse diagram of the 32 crystallographic point-group types (vertical axis: group order). The current point group is haloed. Click a node to highlight its subgroup types (blue) and supergroup types (orange); numbers on the edges are the index (order ratio). Click empty space to return to the current group.",
             ja: "32 の結晶学的点群型のハッセ図 (縦軸は群の位数)。現在の点群はハローで表示されます。ノードをクリックすると部分群型 (青) と超群型 (橙) を強調し、辺の数字は index (位数比) です。余白をクリックすると現在の点群に戻ります。",

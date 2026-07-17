@@ -173,11 +173,18 @@ public class SymmetryDiagramElements : SymmetryDiagramCommon
     private const double GlideZeroEps = 1e-6; // (260512Ch) glide coset 判定用のゼロ閾値。
     private const double GlideFractionEps = FracEps; // (260512Ch) 1/2, 1/4 成分の判定幅を既存の分数判定へ揃える。
 
-    /// <summary>(260512Ch) glide 並進を [-1/2, 1/2] の coset 代表として扱う共通ヘルパ。</summary>
+    /// <summary>(260512Ch) glide 並進を [-1/2, 1/2] の coset 代表として扱う共通ヘルパ。
+    /// 260716Cl: 半整数成分は +1/2 へ正準化する (-1/2 ≡ +1/2 mod 格子並進)。これをしないと同一 coset の
+    /// ±表現・格子並進差表現 (例: (0,±1/2,0) や (1/2,0,±1/2)) を別 glide と数え、Pbnm の b/n 映進が e 誤判定される。</summary>
     private readonly record struct GlideCoset(double X, double Y, double Z)
     {
+        // public static GlideCoset Centered(double x, double y, double z)
+        //     => new(CenterMod1(x), CenterMod1(y), CenterMod1(z)); // 旧 (260716Cl): ±1/2 が別表現のまま残っていた
         public static GlideCoset Centered(double x, double y, double z)
-            => new(CenterMod1(x), CenterMod1(y), CenterMod1(z));
+            => new(CanonHalf(CenterMod1(x)), CanonHalf(CenterMod1(y)), CanonHalf(CenterMod1(z))); // 260716Cl
+
+        /// <summary>260716Cl 追加: 半整数成分を +1/2 に揃える (mod 1 で ±1/2 は同一)。</summary>
+        private static double CanonHalf(double v) => IsHalfComponent(v) ? 0.5 : v;
 
         public double L1 => Math.Abs(X) + Math.Abs(Y) + Math.Abs(Z);
         public bool IsZero => L1 < GlideZeroEps;
@@ -188,8 +195,8 @@ public class SymmetryDiagramElements : SymmetryDiagramCommon
         public bool SameAs(GlideCoset other)
             => Math.Abs(X - other.X) + Math.Abs(Y - other.Y) + Math.Abs(Z - other.Z) < GlideZeroEps;
 
-        public bool OppositeOf(GlideCoset other)
-            => Math.Abs(X + other.X) + Math.Abs(Y + other.Y) + Math.Abs(Z + other.Z) < GlideZeroEps;
+        // public bool OppositeOf(GlideCoset other)
+        //     => Math.Abs(X + other.X) + Math.Abs(Y + other.Y) + Math.Abs(Z + other.Z) < GlideZeroEps; // 260716Cl: 半整数正準化により half-vector では常に false になるため廃止
 
         public static bool IsQuarterComponent(double v)
             => Math.Abs(Math.Abs(CenterMod1(v)) - 0.25) < GlideFractionEps;
@@ -1677,9 +1684,11 @@ public class SymmetryDiagramElements : SymmetryDiagramCommon
         var g2 = GlideCoset.Centered(x2, y2, z2); // (260512Ch)
         if (!g1.IsHalfVector || !g2.IsHalfVector) return false; // (260505Ch) e は half-glide coset の重なりとして判定する。
         if (g1.SameAs(g2)) return false;
-        if (g1.OppositeOf(g2))
-            return g1.HalfComponentCount == 1; // (260505Ch) axial half-glide の ± pair は e、face-diagonal half-glide の ± pair は通常 glide。
-        return true; // (260505Ch) 非平行な half-glide coset が同一幾何面に載る場合は e。
+        // 旧: if (g1.OppositeOf(g2))
+        // 旧:     return g1.HalfComponentCount == 1; // (260505Ch) axial half-glide の ± pair は e、face-diagonal half-glide の ± pair は通常 glide。
+        // 260716Cl: ±1/2 は同一 coset (格子並進差) であり、± pair はここに来る前に SameAs で吸収される。
+        //   この分岐が残っていると Pbnm の b 映進 (⊥a, ±b/2 表現) が e 誤判定されていた。
+        return true; // (260505Ch) 異なる half-glide coset が同一幾何面に載る場合は e。
     }
 
     private static bool IsPerpendicularDGlide(double gSx, double gSy, double gSz)

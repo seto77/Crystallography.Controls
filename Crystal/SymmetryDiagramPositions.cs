@@ -43,7 +43,8 @@ public class SymmetryDiagramPositions : SymmetryDiagramCommon
 
     /// <summary>(260505Cl 整理) クラスタ円縁とラベル間の隙間 (px)。水平方向は文字列の左右に LabelGapH、垂直方向は kerning 補正で LabelGapV を加減算。</summary>
     private const float LabelGapH = 1f;
-    private const float LabelGapV = 4f;
+    // private const float LabelGapV = 4f; // 旧: 円縁に 4px 食い込ませていた → 高さ記号 (+/− 等) が円と重なり読みにくい
+    private const float LabelGapV = -2f;   // 260717Cl: 円縁から 2px 離す (ユーザー要望: 高さ記号を円から離して読みやすく)
     #endregion
 
     /// <summary>(260503Cl) ラベル末尾文字 (x/y/z) を軸 index (0/1/2) に変換。
@@ -117,11 +118,17 @@ public class SymmetryDiagramPositions : SymmetryDiagramCommon
 
     /// <summary>260713Cl 追加 (Elements/Positions): 親 G の一般位置を、点ごとに外部から渡された色
     /// (部分群 H の副軌道分類) で描く。<paramref name="pointColors"/> は <see cref="WyckoffPosition.GeneratePositions"/> の
-    /// 返す点の順序に対応させる (呼び出し側と同じ <paramref name="testPoint"/> を渡すこと)。クラスタ化・ラベル衝突回避は
-    /// 行わず 1 点ずつ ○ (proper) / コンマ付き ○ (improper) + 高さラベルを描く (色分け=分裂の可視化が目的)。
+    /// 返す点の順序に対応させる (呼び出し側と同じ <paramref name="testPoint"/> を渡すこと)。
+    /// 260717Cl: 投影で重なる点 (Pbnm 等) が白 fill の重ね描きで片方潰れていたため、通常図 (DrawClusters) と同じ
+    /// クラスタ化 + ITC split circle (縦分割線 + 右半コンマ + 左右ラベル) 描画へ変更。色は点ごと (retained/lost) を保ち、
+    /// 片側が lost のクラスタでは縦分割線と lost 側のコンマ点・高さラベルを <paramref name="lostColor"/> (黄) で描く (ユーザー指示)。
+    /// ラベル衝突回避 (4 隅選択) は行わず、split=左上/右上・単独=右上 固定。
     /// 立方晶 [111] orbit の薄灰三角は色分けの邪魔になるため描かない。</summary>
+    // 旧シグネチャ (260717Cl): public static void DrawGeneralPositionsColored(Graphics g, Size clientSize, int seriesNumber, ProjectionAxis axis,
+    //                                                (double X, double Y, double Z) testPoint, Color[] pointColors, bool drawCell = true)
     public static void DrawGeneralPositionsColored(Graphics g, Size clientSize, int seriesNumber, ProjectionAxis axis,
-                                                   (double X, double Y, double Z) testPoint, Color[] pointColors, bool drawCell = true)
+                                                   (double X, double Y, double Z) testPoint, Color[] pointColors, bool drawCell = true,
+                                                   Color? lostColor = null) // 260717Cl: lost (消失) 側の記号を黄色く描くための色。null なら従来どおり点色のみ
     {
         if (!TryGetSym(seriesNumber, out var sym, out seriesNumber, out var msg))
         {
@@ -147,41 +154,126 @@ public class SymmetryDiagramPositions : SymmetryDiagramCommon
         var (tx, ty, tz) = testPoint;
         var pts = SymmetryStatic.WyckoffPositions[seriesNumber][0].GeneratePositions(tx, ty, tz);
 
+        // 旧 (260714Cl, クラスタ化なし・1 点ずつ描画。260717Cl に split circle 対応で置換):
+        // for (int i = 0; i < pts.Length; i++)
+        // {
+        //     var p = pts[i];
+        //     var (sx, sy, sz) = proj.ToScreen(p.X, p.Y, p.Z);
+        //     bool mirrored = p.Operation.Order < 0;
+        //     string label = ComputeDepthLabel(p.Operation, sz, proj, tx, ty, tz);
+        //     var color = pointColors != null && i < pointColors.Length ? pointColors[i] : Color.Black;
+        //     ... FillEllipse(白) → DrawEllipse(点色) → mirrored コンマ点 → 右上ラベル (重なる点は白 fill で後勝ち上書き) ...
+        // }
+
+        // 260717Cl: 全点を canvas 座標へ展開して色付き placement として収集。
+        var placements = new List<(float Px, float Py, bool Mirrored, string Label, Color Color)>();
+        for (int i = 0; i < pts.Length; i++)
+        {
+            var p = pts[i];
+            var (sx, sy, sz) = proj.ToScreen(p.X, p.Y, p.Z);
+            bool mirrored = p.Operation.Order < 0;
+            string label = ComputeDepthLabel(p.Operation, sz, proj, tx, ty, tz);
+            var color = pointColors != null && i < pointColors.Length ? pointColors[i] : Color.Black;
+            foreach (var (x, y) in EdgeReplicatedPoints(sx, sy, displayMaxS))
+            {
+                var pt = layout.ToScreen(x, y);
+                placements.Add((pt.X, pt.Y, mirrored, label, color));
+            }
+        }
+
+        // 260717Cl: greedy クラスタ化 (BuildClusters と同じ tol)。クラスタ内は (Mirrored, Label) ごとに 1 記号へまとめ、
+        // 同一記号に retained と lost が同居した場合は retained (非 lostColor) を優先する。
+        float tol = circleRadius * ClusterTolerance;
+        var assigned = new bool[placements.Count];
+        var clusters = new List<(float Cx, float Cy, List<(string Label, Color Color)> Proper, List<(string Label, Color Color)> Improper)>();
+        for (int s = 0; s < placements.Count; s++)
+        {
+            if (assigned[s]) continue;
+            var seed = placements[s];
+            var members = new List<(float Px, float Py, bool Mirrored, string Label, Color Color)> { seed };
+            assigned[s] = true;
+            for (int i = s + 1; i < placements.Count; i++)
+                if (!assigned[i] && Math.Abs(placements[i].Px - seed.Px) < tol && Math.Abs(placements[i].Py - seed.Py) < tol)
+                {
+                    members.Add(placements[i]);
+                    assigned[i] = true;
+                }
+            clusters.Add((members.Average(m => m.Px), members.Average(m => m.Py), LabelsBy(members, false), LabelsBy(members, true)));
+        }
+
         using var whiteFill = new SolidBrush(Color.White);
-        // 260714Cl: Pen/SolidBrush を色 (副軌道パレット ≤10 色 + 黒 fallback) でキャッシュする
+        // 260714Cl: Pen/SolidBrush を色 (retained/lost 2 色 + 黒 fallback) でキャッシュする
         // (旧: ループ内で using var pen/brush を毎点確保 → 最大 ~192 点 × 2 の GDI ハンドル生成/破棄が発生)。
         var penCache = new Dictionary<Color, Pen>();
         var brushCache = new Dictionary<Color, SolidBrush>();
         try
         {
-            for (int i = 0; i < pts.Length; i++)
+            // 1 パス目: 円・縦分割線・コンマ点 (後描きクラスタの白 fill が先描きラベルを潰さないよう、ラベルは 2 パス目で)。
+            foreach (var (cx, cy, proper, improper) in clusters)
             {
-                var p = pts[i];
-                var (sx, sy, sz) = proj.ToScreen(p.X, p.Y, p.Z);
-                bool mirrored = p.Operation.Order < 0;
-                string label = ComputeDepthLabel(p.Operation, sz, proj, tx, ty, tz);
-                var color = pointColors != null && i < pointColors.Length ? pointColors[i] : Color.Black;
-                if (!penCache.TryGetValue(color, out var pen)) penCache[color] = pen = new Pen(color, CirclePenWidth);
-                if (!brushCache.TryGetValue(color, out var brush)) brushCache[color] = brush = new SolidBrush(color);
-                foreach (var (x, y) in EdgeReplicatedPoints(sx, sy, displayMaxS))
+                var circleColor = Pick(proper.Concat(improper).Select(t => t.Color)); // retained が 1 つでも残る位置は輪郭=retained 色
+                g.FillEllipse(whiteFill, cx - circleRadius, cy - circleRadius, 2 * circleRadius, 2 * circleRadius);
+                g.DrawEllipse(GetPen(circleColor), cx - circleRadius, cy - circleRadius, 2 * circleRadius, 2 * circleRadius);
+                if (proper.Count > 0 && improper.Count > 0) // split: proper と improper が同一投影位置
                 {
-                    var pt = layout.ToScreen(x, y);
-                    g.FillEllipse(whiteFill, pt.X - circleRadius, pt.Y - circleRadius, 2 * circleRadius, 2 * circleRadius);
-                    g.DrawEllipse(pen, pt.X - circleRadius, pt.Y - circleRadius, 2 * circleRadius, 2 * circleRadius);
-                    if (mirrored)
-                        g.FillEllipse(brush, pt.X - dotR, pt.Y - dotR, 2 * dotR, 2 * dotR);
-                    if (!string.IsNullOrEmpty(label))
-                    {
-                        var lsz = MeasureTightString(g, label, labelFont);
-                        DrawTightString(g, brush, label, labelFont, pt.X + circleRadius + LabelGapH, pt.Y - circleRadius - lsz.Height + LabelGapV);
-                    }
+                    // 片側でも lost を含めば縦分割線を lostColor で描く (両側 retained なら輪郭色 = retained 色)。
+                    bool anyLost = lostColor.HasValue && proper.Concat(improper).Any(t => t.Color.ToArgb() == lostColor.Value.ToArgb());
+                    g.DrawLine(GetPen(anyLost ? lostColor.Value : circleColor), cx, cy - circleRadius, cx, cy + circleRadius);
+                    g.FillEllipse(GetBrush(Pick(improper.Select(t => t.Color))), cx + circleRadius * CommaSplitOffsetX - dotR, cy - dotR, 2 * dotR, 2 * dotR);
                 }
+                else if (improper.Count > 0)
+                    g.FillEllipse(GetBrush(Pick(improper.Select(t => t.Color))), cx - dotR, cy - dotR, 2 * dotR, 2 * dotR);
+            }
+            // 2 パス目: 高さラベル。split は proper=左上/improper=右上 (通常図の SplitLabelCornerPairs[0] と同じ既定)、単独=右上。
+            foreach (var (cx, cy, proper, improper) in clusters)
+            {
+                if (proper.Count > 0 && improper.Count > 0)
+                {
+                    StackColored(proper, cx, cy, isLeft: true);
+                    StackColored(improper, cx, cy, isLeft: false);
+                }
+                else
+                    StackColored(improper.Count > 0 ? improper : proper, cx, cy, isLeft: false);
             }
         }
         finally
         {
             foreach (var pen in penCache.Values) pen.Dispose();
             foreach (var brush in brushCache.Values) brush.Dispose();
+        }
+
+        Pen GetPen(Color c) { if (!penCache.TryGetValue(c, out var pen)) penCache[c] = pen = new Pen(c, CirclePenWidth); return pen; }
+        SolidBrush GetBrush(Color c) { if (!brushCache.TryGetValue(c, out var b)) brushCache[c] = b = new SolidBrush(c); return b; }
+
+        // retained (非 lostColor) の色があればそれを優先、無ければ先頭色 (= 全部 lost なら lostColor)。
+        Color Pick(IEnumerable<Color> cols)
+        {
+            Color first = Color.Black; bool has = false;
+            foreach (var c in cols)
+            {
+                if (!has) { first = c; has = true; }
+                if (lostColor == null || c.ToArgb() != lostColor.Value.ToArgb()) return c;
+            }
+            return first;
+        }
+
+        // クラスタ内の proper / improper 記号列: 一意ラベルを昇順に、色は retained 優先で代表させる。
+        List<(string Label, Color Color)> LabelsBy(List<(float Px, float Py, bool Mirrored, string Label, Color Color)> members, bool mirrored)
+            => members.Where(m => m.Mirrored == mirrored).GroupBy(m => m.Label)
+                      .Select(gr => (gr.Key, Pick(gr.Select(m => m.Color)))).OrderBy(t => t.Key).ToList();
+
+        // 高さラベルをクラスタ円の左上 (isLeft) / 右上に、各記号の色 (retained=黒 / lost=黄) で縦積みする。
+        void StackColored(List<(string Label, Color Color)> labels, float cx, float cy, bool isLeft)
+        {
+            int row = 0;
+            for (int i = 0; i < labels.Count; i++)
+            {
+                if (string.IsNullOrEmpty(labels[i].Label)) continue; // 旧コード同様、空ラベルは描かない
+                var sz = MeasureTightString(g, labels[i].Label, labelFont);
+                float x = isLeft ? cx - sz.Width - LabelGapH : cx + LabelGapH;
+                float y = cy - circleRadius - (++row) * sz.Height + LabelGapV;
+                DrawTightString(g, GetBrush(labels[i].Color), labels[i].Label, labelFont, x, y);
+            }
         }
     }
     #endregion
