@@ -337,7 +337,7 @@ public partial class CrystalControl : UserControlBase
         var dlg = new SaveFileDialog { Filter = "*.ctf|*.ctf" };
         if (dlg.ShowDialog() != DialogResult.OK) return;
 
-        var sw = new StreamWriter(dlg.FileName);
+        using var sw = new StreamWriter(dlg.FileName); // 260717Cl: 例外時にライタがリークする旧様式を using var へ (隣の txt 出力と同スタイル)
         sw.WriteLine("Channel Text File");
         sw.WriteLine("Prj\t OutPut from Recipro");
         sw.WriteLine("Author\t[Unknown]");
@@ -380,7 +380,7 @@ public partial class CrystalControl : UserControlBase
             }
             sw.WriteLine($"1\t0\t0\t0\t0\t{str}0\t0\t0");
         }
-        sw.Close();
+        //sw.Close(); // 260717Cl: using var 化に伴い不要
     }
 
     /// <summary>txt ファイルで出力 (オイラー角と密度)</summary>

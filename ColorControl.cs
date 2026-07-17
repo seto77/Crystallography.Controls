@@ -163,7 +163,7 @@ public partial class ColorControl : UserControlBase
 
     private void pictureBox_Click(object sender, EventArgs e)
     {
-        var colorDialog = new ColorDialog
+        using var colorDialog = new ColorDialog // 260717Cl: クリックごとに未解放インスタンスが残っていたため using var 化 (選択動作は不変)
         {
             Color = pictureBox.BackColor,
             AllowFullOpen = true,
