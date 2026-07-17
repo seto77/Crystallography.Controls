@@ -185,11 +185,11 @@ public partial class DataGridViewLatexTextBoxCell : DataGridViewTextBoxCell
             var numerator = match.Groups[1].Value;
             var denominator = match.Groups[2].Value;
             if (style == LatexFractionStyle.Vertical)
-                return numerator.StartsWith("-", StringComparison.Ordinal)
+                return numerator.StartsWith('-') /* 260717Cl: char 版は常に ordinal 比較 */
                     ? $@"-\frac{{{numerator[1..]}}}{{{denominator}}}"
                     : $@"\frac{{{numerator}}}{{{denominator}}}";
 
-            return numerator.StartsWith("-", StringComparison.Ordinal)
+            return numerator.StartsWith('-') /* 260717Cl: char 版は常に ordinal 比較 */
                 ? $@"-{{}}^{{{numerator[1..]}}}\!/_{{{denominator}}}"
                 : $@"{{}}^{{{numerator}}}\!/_{{{denominator}}}";
         });

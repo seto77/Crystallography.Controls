@@ -286,12 +286,12 @@ namespace Crystallography.Controls
 
             for (int i = 0; i < destData.Length; i++)
             {
-                if (!double.IsInfinity(destData[i].Center.X) && !double.IsNaN(destData[i].Center.X))
+                if (double.IsFinite(destData[i].Center.X))
                 {
                     MinimalX = Math.Min(destData[i].Center.X, MinimalX);
                     MaximalX = Math.Max(destData[i].Center.X, MaximalX);
                 }
-                if (!double.IsInfinity(destData[i].Center.Y) && !double.IsNaN(destData[i].Center.Y))
+                if (double.IsFinite(destData[i].Center.Y))
                 {
                     MinimalY = Math.Min(destData[i].Center.Y, MinimalY);
                     MaximalY = Math.Max(destData[i].Center.Y, MaximalY);

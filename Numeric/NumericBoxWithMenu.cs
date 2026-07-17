@@ -35,8 +35,7 @@ namespace Crystallography.Controls
         private void toolStripComboBoxIncrement_SelectedIndexChanged(object sender, EventArgs e)
         {
             // 260426Cl 修正: 余分なセミコロン (空文; 空ステートメント) を削除
-            double.TryParse(toolStripComboBoxIncrement.Text, out double inc);
-            if (inc > 0)
+            if (double.TryParse(toolStripComboBoxIncrement.Text, out double inc) && inc > 0) // 260717Cl: 戻り値条件化 (260712Cl の contextMenuStripBody_Closing と同形。失敗時 inc=0 で従来も不成立)
                 UpDown_Increment = inc;
         }
 
@@ -84,8 +83,7 @@ namespace Crystallography.Controls
                 LimitChanged?.Invoke(this, e);
             }
 
-            double.TryParse(toolStripTextBoxMouseSpeed.Text, out double speed);
-            if (speed > 0)
+            if (double.TryParse(toolStripTextBoxMouseSpeed.Text, out double speed) && speed > 0) // 260717Cl: 同上
                 mouseSpeed = speed;
         }
 

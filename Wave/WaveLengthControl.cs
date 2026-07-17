@@ -374,7 +374,8 @@ public partial class WaveLengthControl : UserControlBase
             numericBoxWaveLength.Enabled = false;
 
             comboBoxXrayLine.Items.Clear();
-            XrayLine[] temp = (XrayLine[])Enum.GetValues(typeof(XrayLine));
+            //XrayLine[] temp = (XrayLine[])Enum.GetValues(typeof(XrayLine));
+            var temp = Enum.GetValues<XrayLine>(); // 260717Cl: ジェネリック版でキャストと typeof を除去
             for (int i = 0; i < temp.Length; i++)
             {
                 if (!double.IsNaN(AtomStatic.CharacteristicXrayWavelength(comboBoxXRayElement.SelectedIndex, temp[i])))

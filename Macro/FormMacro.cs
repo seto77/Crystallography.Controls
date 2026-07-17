@@ -431,7 +431,7 @@ public partial class FormMacro : FormBase
             textBoxMacroName.Text = Path.GetFileNameWithoutExtension(filename);
         }
         finally { skipEvent = false; }
-        buttonAddMacro_Click(new object(), new EventArgs());
+        buttonAddMacro_Click(this, EventArgs.Empty); // 260717Cl: 無意味な new object()/new EventArgs() を慣用形へ (ハンドラは引数未使用)
     }
 
     private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -712,7 +712,7 @@ public partial class FormMacro : FormBase
         }
         // F10 次のステップに進む
         if (e.KeyCode == Keys.F10 && buttonNextStep.Visible)
-            buttonNextStep_Click(sender, new EventArgs());
+            buttonNextStep_Click(sender, EventArgs.Empty); // 260717Cl: new EventArgs() → EventArgs.Empty
     }
     #endregion
 

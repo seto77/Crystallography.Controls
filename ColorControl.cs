@@ -38,7 +38,7 @@ public partial class ColorControl : UserControlBase
 
     // 260531Cl 追加: 配置先 Form が標準 ToolTip でこの ColorControl 本体にチップを設定した場合の配布先 (内部子)。
     // swatch (pictureBox) とラベル上で hover してもチップが表示される (UserControlBase.RelayHostToolTip 参照)。
-    protected override Control[] GetToolTipTargets() => new Control[] { pictureBox, labelHeader, labelFooter };
+    protected override Control[] GetToolTipTargets() => [pictureBox, labelHeader, labelFooter]; // 260717Cl: collection expression 化
 
     // 260531Cl 追加: 独自プロパティ由来の内部 ToolTip。親がチップを設定した場合はこれを抑止して親のバルーンへ一本化する。
     protected internal override ToolTip InternalToolTip => toolTip;

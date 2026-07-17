@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq; // 260717Cl 追加: _pythonBuiltinNames/Tooltips の初期化式用
 using System.Windows.Forms;
 
 namespace Crystallography.Controls;
@@ -65,7 +66,7 @@ public partial class PyRichTextBox : RichTextBox
     [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
     public bool SuppressAutoComplete { get; set; } = false;
 
-    public string[] TextLines { get { return this.Text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None); } }
+    public string[] TextLines { get { return this.Text.Split(["\r\n", "\n"], StringSplitOptions.None); } } // 260717Cl: collection expression 化
 
     #endregion "プロパティ"
 
@@ -482,19 +483,20 @@ public partial class PyRichTextBox : RichTextBox
         ("math.radians(<deg>)",        "Convert degrees to radians"),
         ("math.degrees(<rad>)",        "Convert radians to degrees"),
     };
-    private static readonly string[] _pythonBuiltinNames;
-    private static readonly string[] _pythonBuiltinTooltips;
-    static PyRichTextBox()
-    {
-        int n = _pythonBuiltins.Length;
-        _pythonBuiltinNames = new string[n];
-        _pythonBuiltinTooltips = new string[n];
-        for (int i = 0; i < n; i++)
-        {
-            _pythonBuiltinNames[i] = _pythonBuiltins[i].name;
-            _pythonBuiltinTooltips[i] = _pythonBuiltins[i].tooltip;
-        }
-    }
+    // 260717Cl: 手動ループの static コンストラクタをフィールド初期化式へ (宣言順に初期化されるため _pythonBuiltins 参照は安全)。
+    private static readonly string[] _pythonBuiltinNames = [.. _pythonBuiltins.Select(b => b.name)];
+    private static readonly string[] _pythonBuiltinTooltips = [.. _pythonBuiltins.Select(b => b.tooltip)];
+    //static PyRichTextBox()
+    //{
+    //    int n = _pythonBuiltins.Length;
+    //    _pythonBuiltinNames = new string[n];
+    //    _pythonBuiltinTooltips = new string[n];
+    //    for (int i = 0; i < n; i++)
+    //    {
+    //        _pythonBuiltinNames[i] = _pythonBuiltins[i].name;
+    //        _pythonBuiltinTooltips[i] = _pythonBuiltins[i].tooltip;
+    //    }
+    //}
 
     [System.Runtime.InteropServices.DllImport("user32.dll")]
     private static extern int SendMessage(IntPtr hWnd, int msg, int wParam, int lParam);
@@ -504,8 +506,11 @@ public partial class PyRichTextBox : RichTextBox
     private Font _gutterFont;
     private int _gutterYOffset;
 
-    private static readonly System.Text.RegularExpressions.Regex _lineRegex
-        = new(@"line (\d+)", System.Text.RegularExpressions.RegexOptions.Compiled);
+    // 260717Cl: 実行時コンパイル Regex をコンパイル時生成の GeneratedRegex へ (クラスは partial 済み。挙動同一)。
+    //private static readonly System.Text.RegularExpressions.Regex _lineRegex
+    //    = new(@"line (\d+)", System.Text.RegularExpressions.RegexOptions.Compiled);
+    [System.Text.RegularExpressions.GeneratedRegex(@"line (\d+)")]
+    private static partial System.Text.RegularExpressions.Regex LineRegex();
 
     // 外部の Panel を行番号ガターとして紐付ける。Paint / TextChanged / VScroll 配線を自動で行う。
     // 2 回目以降の呼び出しは無視 (イベント二重配線防止)。
@@ -562,7 +567,7 @@ public partial class PyRichTextBox : RichTextBox
     // Python トレースバックから最後の "line N" (= 最内側フレーム) を抽出して該当行を選択
     public void HighlightErrorLineFromTraceback(string message)
     {
-        var matches = _lineRegex.Matches(message);
+        var matches = LineRegex().Matches(message); // 260717Cl: GeneratedRegex 化に追随
         if (matches.Count == 0) return;
         if (!int.TryParse(matches[^1].Groups[1].Value, out int ln)) return;
         int idx = ln - 1;

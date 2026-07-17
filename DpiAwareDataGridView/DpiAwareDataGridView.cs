@@ -220,12 +220,12 @@ public class DpiAwareDataGridView : DataGridView
             return;
 
         applyScheduled = true;
-        BeginInvoke((MethodInvoker)(() =>
+        BeginInvoke(() => // 260717Cl: .NET 6+ の BeginInvoke(Action) で (MethodInvoker) キャスト不要
         {
             applyScheduled = false;
             if (!IsDisposed)
                 ApplyDpiScaling();
-        }));
+        });
     }
 
     private void UpdateDpiSourceForm()

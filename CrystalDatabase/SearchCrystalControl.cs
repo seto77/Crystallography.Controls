@@ -268,7 +268,7 @@ public partial class SearchCrystalControl : UserControlBase
     static (int h, int k, int l) decomposeKey(in int key) => (((key << 2) >> 22) - 255, ((key << 12) >> 22) - 255, ((key << 22) >> 22) - 255);
 
     static readonly int zeroKey = (255 << 20) + (255 << 10) + 255;
-    static readonly (int h, int k, int l)[] directions = new[] { (1, 0, 0), (0, 1, 0), (0, -1, 0), (0, 0, 1), (0, 0, -1) };//(-1, 0, 0)は除いておく
+    static readonly (int h, int k, int l)[] directions = [(1, 0, 0), (0, 1, 0), (0, -1, 0), (0, 0, 1), (0, 0, -1)];//(-1, 0, 0)は除いておく (260717Cl: collection expression 化)
     static float[] calcDlist(double a, double b, double c, double alpha, double beta, double gamma, double dMin)
     {
         double SinAlfa = Math.Sin(alpha), CosAlfa = Math.Cos(alpha), CosBeta = Math.Cos(beta), CosGamma = Math.Cos(gamma);

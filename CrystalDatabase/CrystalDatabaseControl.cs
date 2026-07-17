@@ -1,7 +1,7 @@
 ﻿#region using
 using MemoryPack;
 using MemoryPack.Compression;
-using Microsoft.Scripting.Utils;
+//using Microsoft.Scripting.Utils; // 260717Cl: 未使用 using (ビルド検証済)
 using System;
 using System.Buffers;
 using System.Collections.Generic;
@@ -21,9 +21,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 //using Windows.Media.Core; //260405Cl 未使用のWinRT参照を削除
 //using Windows.UI.StartScreen; //260405Cl 未使用のWinRT参照を削除
-using ZLinq;
-using static Community.CsharpSqlite.Sqlite3;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+//using ZLinq; // 260717Cl: 未使用 using (ビルド検証済)
+//using static Community.CsharpSqlite.Sqlite3; // 260717Cl: 未使用 using (ビルド検証済)
+//using static System.Windows.Forms.VisualStyles.VisualStyleElement; // 260717Cl: 未使用 using (ビルド検証済)
 #endregion
 
 namespace Crystallography.Controls;

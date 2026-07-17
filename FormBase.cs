@@ -122,7 +122,8 @@ public partial class FormBase : Form
     {
         string core = text.EndsWith(HelpCoreEn, StringComparison.Ordinal) ? HelpCoreEn
                     : text.EndsWith(HelpCoreJa, StringComparison.Ordinal) ? HelpCoreJa : null;
-        return core == null ? text : text.Substring(0, text.Length - core.Length).TrimEnd(HelpPadChar, ' ');
+        //return core == null ? text : text.Substring(0, text.Length - core.Length).TrimEnd(HelpPadChar, ' ');
+        return core == null ? text : text[..^core.Length].TrimEnd(HelpPadChar, ' '); // 260717Cl: Substring → range 演算子 (同値)
     }
 
     //260605Cl 追加: baseText の後ろに全角スペースを何個入れれば core がキャプション右端 (ボタン手前) に来るかを算出する。

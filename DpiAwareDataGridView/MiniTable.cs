@@ -700,12 +700,12 @@ public class MiniTable : DpiAwareDataGridView
         copyTableImageItem = CreateCopyItem(CopyHighlightScope.Table, (_, _) => CopyTableImage());
 
         copyMenu = new ContextMenuStrip { ShowImageMargin = false, ShowItemToolTips = true };
-        copyMenu.Items.AddRange(new ToolStripItem[]
-        {
+        copyMenu.Items.AddRange( // 260717Cl: 明示配列生成を collection expression 化 (ToolStripItem[] オーバーロードに一意解決)
+        [
             copyCellItem, copyCellPlainItem, new ToolStripSeparator(),
             copyRowItem, copyRowPlainItem, new ToolStripSeparator(),
             copyTableItem, copyTablePlainItem, copyTableTabularItem, copyTableImageItem
-        });
+        ]);
         copyMenu.Closed += (_, _) => SetCopyHighlight(CopyHighlightScope.None);
     }
 

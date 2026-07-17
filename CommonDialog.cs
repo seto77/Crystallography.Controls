@@ -181,7 +181,7 @@ namespace Crystallography.Controls
         }
         #endregion
 
-        private void setToolTips() => textBox.Text = hint.Length > 0 ? hint[new Random().Next(hint.Length)] : "";
+        private void setToolTips() => textBox.Text = hint.Length > 0 ? hint[Random.Shared.Next(hint.Length)] : ""; // 260717Cl: 呼び出し毎の new Random() を Random.Shared へ (一様ランダム選択という意味は不変)
 
         private void checkBoxCloseWindow_CheckedChanged(object sender, EventArgs e)
         {

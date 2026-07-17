@@ -116,7 +116,7 @@ public partial class UserControlBase : UserControl
             inner?.SetToolTip(t, "");      // 子に対する内部 ToolTip(矩形) を抑止
             hostTT.SetToolTip(t, text);    // 親の ToolTip(バルーン) へ一本化(子の上でも表示)
             if (t is UserControlBase ucb)  // 子も複合(例: SizeControl 内の NumericBox)なら再帰
-                relayInto(hostTT, text, ucb, ucb.GetToolTipTargets() ?? Array.Empty<Control>(), ucb.InternalToolTip);
+                relayInto(hostTT, text, ucb, ucb.GetToolTipTargets() ?? [], ucb.InternalToolTip); // 260717Cl: Array.Empty → [] (同一のキャッシュ済み空配列に展開)
         }
     }
 

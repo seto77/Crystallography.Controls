@@ -172,7 +172,7 @@ public partial class NumericBox : UserControlBase
 
     // 260531Cl 追加: 配置先 Form が標準 ToolTip でこの NumericBox 本体にチップを設定した場合の配布先 (内部子)。
     // これにより textBox/ラベル上で hover してもチップが表示される (UserControlBase.RelayHostToolTip 参照)。
-    protected override System.Windows.Forms.Control[] GetToolTipTargets() => new System.Windows.Forms.Control[] { textBox, labelHeader, labelFooter };
+    protected override System.Windows.Forms.Control[] GetToolTipTargets() => [textBox, labelHeader, labelFooter]; // 260717Cl: collection expression 化 (完全修飾は MathNet.Numerics.Control との衝突回避のため必須)
 
     // 260531Cl 追加: 独自プロパティ由来の内部 ToolTip。親がチップを設定した場合はこれを抑止して親のバルーンへ一本化する。
     protected internal override System.Windows.Forms.ToolTip InternalToolTip => toolTip;
@@ -933,7 +933,7 @@ public partial class NumericBox : UserControlBase
             var format = formatSpecifierValid ? formatSpecifier : (DecimalPlaces >= 0 ? $"f{DecimalPlaces}" : "");
             text = numericalValue.ToString(format);
             if (TrimEndZero && text.Contains('.'))
-                text = text.TrimEnd(['0']).TrimEnd(['.']);
+                text = text.TrimEnd('0').TrimEnd('.'); // 260717Cl: 配列生成不要の char オーバーロードへ
 
             text = separateThousands(text);
         }
@@ -949,7 +949,7 @@ public partial class NumericBox : UserControlBase
         if (valueString.Contains(','))
             decimalPoint = ',';
 
-        var integer = valueString.Split([decimalPoint]);
+        var integer = valueString.Split(decimalPoint); // 260717Cl: 配列生成不要の char オーバーロードへ
         for (int i = integer[0].Length - 3; i > 0; i -= 3)
         {
             if (integer[0][i - 1] != '-')

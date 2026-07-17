@@ -69,7 +69,7 @@ namespace Crystallography.Controls
         }
 
         // 260531Cl 追加: UserControlBase の ToolTip 反映機構へ内部子・内部 ToolTip を公開 (NumericBox/ColorControl と同形)。
-        protected override Control[] GetToolTipTargets() => new Control[] { numericBoxWidth, numericBoxHeight, labelHeader, label1, label2, checkBoxKeepAspect };
+        protected override Control[] GetToolTipTargets() => [numericBoxWidth, numericBoxHeight, labelHeader, label1, label2, checkBoxKeepAspect]; // 260717Cl: collection expression 化
         protected internal override ToolTip InternalToolTip => toolTip;
 
         #endregion

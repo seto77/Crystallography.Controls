@@ -52,56 +52,56 @@ public partial class GraphControl : UserControlBase
     [Category(" 3. 描画範囲・操作")]
     [Description("X軸の描画範囲")]
     [DefaultValue(1.0)] //260607Cl 追加: 既定値と一致する冗長なデザイナ初期化を抑制
-    public double UpperX { get => upperX; set { if (!double.IsNaN(value) && !double.IsInfinity(value)) upperX = value; } }
+    public double UpperX { get => upperX; set { if (double.IsFinite(value)) upperX = value; } }
     private double upperX = 1;
 
     [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
     [Category(" 3. 描画範囲・操作")]
     [Description("X軸の描画範囲")]
     [DefaultValue(0.0)] //260607Cl 追加
-    public double LowerX { get => lowerX; set { if (!double.IsNaN(value) && !double.IsInfinity(value)) lowerX = value; } }
+    public double LowerX { get => lowerX; set { if (double.IsFinite(value)) lowerX = value; } }
     private double lowerX = 0;
 
     [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
     [Category(" 3. 描画範囲・操作")]
     [Description("Y軸の描画範囲")]
     [DefaultValue(1.0)] //260607Cl 追加
-    public double UpperY { get => upperY; set { if (!double.IsNaN(value) && !double.IsInfinity(value)) upperY = value; } }
+    public double UpperY { get => upperY; set { if (double.IsFinite(value)) upperY = value; } }
     private double upperY = 1;
 
     [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
     [Category(" 3. 描画範囲・操作")]
     [Description("Y軸の描画範囲")]
     [DefaultValue(0.0)] //260607Cl 追加
-    public double LowerY { get => lowerY; set { if (!double.IsNaN(value) && !double.IsInfinity(value)) lowerY = value; } }
+    public double LowerY { get => lowerY; set { if (double.IsFinite(value)) lowerY = value; } }
     private double lowerY = 0;
 
     [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
     [Category(" 3. 描画範囲・操作")]
     [Description("X軸の上下限")]
     [DefaultValue(1.0)] //260607Cl 追加
-    public double MaximalX { get => maximalX; set { if (!double.IsNaN(value) && !double.IsInfinity(value)) maximalX = value; } }
+    public double MaximalX { get => maximalX; set { if (double.IsFinite(value)) maximalX = value; } }
     private double maximalX = 1;
 
     [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
     [Category(" 3. 描画範囲・操作")]
     [Description("X軸の上下限")]
     [DefaultValue(0.0)] //260607Cl 追加
-    public double MinimalX { get => minimalX; set { if (!double.IsNaN(value) && !double.IsInfinity(value)) minimalX = value; } }
+    public double MinimalX { get => minimalX; set { if (double.IsFinite(value)) minimalX = value; } }
     private double minimalX = 0;
 
     [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
     [Category(" 3. 描画範囲・操作")]
     [Description("Y軸の上下限")]
     [DefaultValue(1.0)] //260607Cl 追加
-    public double MaximalY { get => maximalY; set { if (!double.IsNaN(value) && !double.IsInfinity(value)) maximalY = value; } }
+    public double MaximalY { get => maximalY; set { if (double.IsFinite(value)) maximalY = value; } }
     private double maximalY = 1;
 
     [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
     [Category(" 3. 描画範囲・操作")]
     [Description("Y軸の上下限")]
     [DefaultValue(0.0)] //260607Cl 追加
-    public double MinimalY { get => minimalY; set { if (!double.IsNaN(value) && !double.IsInfinity(value)) minimalY = value; } }
+    public double MinimalY { get => minimalY; set { if (double.IsFinite(value)) minimalY = value; } }
     private double minimalY = 0;
 
     /// <summary>描画範囲の矩形</summary>
@@ -112,16 +112,16 @@ public partial class GraphControl : UserControlBase
     {
         set
         {
-            if (!double.IsInfinity(value.X) && !double.IsNaN(value.X) && value.X <= MaximalX && value.X >= MinimalX)
+            if (double.IsFinite(value.X) && value.X <= MaximalX && value.X >= MinimalX)
                 LowerX = value.X;
 
-            if (!double.IsInfinity(value.Y) && !double.IsNaN(value.Y) && value.Y <= MaximalY && value.Y >= MinimalY)
+            if (double.IsFinite(value.Y) && value.Y <= MaximalY && value.Y >= MinimalY)
                 LowerY = value.Y;
 
-            if (!double.IsInfinity(value.Width) && !double.IsNaN(value.Width) && value.Width >= 0)
+            if (double.IsFinite(value.Width) && value.Width >= 0)
                 UpperX = Math.Min(LowerX + value.Width, MaximalX);
 
-            if (!double.IsInfinity(value.Height) && !double.IsNaN(value.Height) && value.Height >= 0)
+            if (double.IsFinite(value.Height) && value.Height >= 0)
                 UpperY = Math.Min(LowerY + value.Height, MaximalY);
         }
         get
@@ -1157,7 +1157,7 @@ public partial class GraphControl : UserControlBase
             if (double.IsNaN(verticalLineList[i].Y))
                 ptStart.Y = 0;
             var ptEnd = new PointF((float)ptStart.X, (float)(pictureBox.Height - originPosition.Y));
-            if (!double.IsNaN(ptStart.X) && !double.IsInfinity(ptStart.X))
+            if (double.IsFinite(ptStart.X))
             {
                 //G.DrawLine(new Pen(VerticalLineColor, selectedVerticalLineIndex == i ? 2f : 1f), ptStart, ptEnd); // (260611Ch) 旧: Pen が未解放
                 using var pen = new Pen(VerticalLineColor, selectedVerticalLineIndex == i ? 2f : 1f); // (260611Ch)
@@ -1165,7 +1165,7 @@ public partial class GraphControl : UserControlBase
             }
 
             //260603Cl 追加: 垂直線と各プロファイルの交点に丸マーカーを描画する (値はグラフに重ねず上部ラベルへ)
-            if (verticalLineMarkerVisible && !double.IsNaN(x) && !double.IsInfinity(x) && x >= LowerX && x <= UpperX)
+            if (verticalLineMarkerVisible && double.IsFinite(x) && x >= LowerX && x <= UpperX)
                 DrawVerticalLineMarkers(x);
         }
 
@@ -1185,7 +1185,7 @@ public partial class GraphControl : UserControlBase
             if (transformedX < dp.Pt[0].X || transformedX > dp.Pt[^1].X) continue;//範囲外は外挿しない
 
             double transformedY = dp.GetValue(transformedX, 2, 1);//隣接2点で線形補間 (描画される折れ線と一致)
-            if (double.IsNaN(transformedY) || double.IsInfinity(transformedY) || transformedY < LowerY || transformedY > UpperY) continue;
+            if (!double.IsFinite(transformedY) || transformedY < LowerY || transformedY > UpperY) continue;
 
             var color = srcProfileList[j] != null ? srcProfileList[j].Color : VerticalLineColor;
             var p = ConvToPicBoxCoord(transformedX, transformedY);
@@ -1219,7 +1219,7 @@ public partial class GraphControl : UserControlBase
             if (dp == null || dp.Pt == null || dp.Pt.Count < 2) continue;
             if (double.IsNaN(tx) || tx < dp.Pt[0].X || tx > dp.Pt[^1].X) continue;
             double ty = dp.GetValue(tx, 2, 1);
-            if (double.IsNaN(ty) || double.IsInfinity(ty)) continue;
+            if (!double.IsFinite(ty)) continue;
             double realY = yLog ? Math.Pow(10, ty) : ty;//実座標に戻す
             yValues.Add(realY.ToString(yFormat));
         }
@@ -1503,7 +1503,7 @@ public partial class GraphControl : UserControlBase
         foreach (var a in annotationList)
         {
             double x = xLog ? (a.X > 0 ? Math.Log10(a.X) : double.NaN) : a.X;
-            if (double.IsNaN(x) || double.IsInfinity(x) || x < LowerX || x > UpperX) continue;//範囲外はスキップ
+            if (!double.IsFinite(x) || x < LowerX || x > UpperX) continue;//範囲外はスキップ
             float px = ConvToPicBoxCoord(x, 0).X;
 
             if (a.GuideLine)//薄い点線の縦ガイド

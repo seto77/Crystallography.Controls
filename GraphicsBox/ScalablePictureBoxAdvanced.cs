@@ -22,7 +22,7 @@ public partial class ScalablePictureBoxAdvanced : UserControlBase
 
         InitializeComponent();
 
-        graphControl.VerticalLines = new[] { new PointD(0, 0), new PointD(0, 0) };
+        graphControl.VerticalLines = [new(0, 0), new(0, 0)]; // 260717Cl: collection expression 化
         comboBoxGradient.SelectedIndex = 0;
         comboBoxScale1.SelectedIndex = 1;
         comboBoxScale2.SelectedIndex = 0;
@@ -69,7 +69,7 @@ public partial class ScalablePictureBoxAdvanced : UserControlBase
         set
         {
             label.Visible = value;
-            UpdateUpperPanelVisibility(); // (260322Ch) panelUpper の表示条件を helper へ寄せる
+            panelUpper.Visible = value; // 260717Cl: 呼び出し 1 箇所の UpdateUpperPanelVisibility をインライン化 (将来 CopyButtonVisible 復帰時は表示条件を再集約)
         }
     }
 
@@ -376,10 +376,11 @@ public partial class ScalablePictureBoxAdvanced : UserControlBase
 
     #endregion プロパティ
 
-    private void UpdateUpperPanelVisibility()
-    {
-        panelUpper.Visible = MousePositionLabelVisible; // (260322Ch) 現状の表示条件を一箇所へ寄せ、将来 CopyButtonVisible 復帰時も直しやすくする
-    }
+    // 260717Cl: 1 行・呼び出し 1 箇所のためインライン化して削除。
+    //private void UpdateUpperPanelVisibility()
+    //{
+    //    panelUpper.Visible = MousePositionLabelVisible; // (260322Ch) 現状の表示条件を一箇所へ寄せ、将来 CopyButtonVisible 復帰時も直しやすくする
+    //}
 
     private void UpdateResolutionLabel()
     {
@@ -499,7 +500,7 @@ public partial class ScalablePictureBoxAdvanced : UserControlBase
         if (PseudoBitmap == null)
             return;
 
-        string text = "X: " + ((int)pt.X).ToString("0000") + ", Y: " + ((int)pt.Y).ToString();
+        string text = $"X: {(int)pt.X:0000}, Y: {(int)pt.Y}"; // 260717Cl: 連結+ToString を補間文字列へ (生成文字列は同一)
         if (scalablePictureBox.PseudoBitmap.IsSrcGray)
             text += ", Value: " + PseudoBitmap.GetPixelRawValue(pt);
         label.Text = text;

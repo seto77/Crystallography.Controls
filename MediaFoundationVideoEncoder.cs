@@ -4,6 +4,7 @@
 //                依存追加なし(OS の mfplat.dll / mfreadwrite.dll を直接 P/Invoke)。
 using System;
 using System.Runtime.InteropServices;
+using System.Threading; // 260717Cl 追加: Lock 用
 
 namespace Crystallography.Controls; // 260530Cl ReciPro から移動 (再利用のため public 化)
 
@@ -68,7 +69,7 @@ public sealed class MediaFoundationVideoEncoder : IDisposable
     #endregion
 
     private static bool _mfStarted;
-    private static readonly object _startupLock = new(); // 260530Cl 起動の排他 (UIスレッド構築 & プールスレッドエンコードから呼ばれる)
+    private static readonly Lock _startupLock = new(); // 260717Cl: object → System.Threading.Lock (.NET 9+ の専用ロック型)。260530Cl 起動の排他 (UIスレッド構築 & プールスレッドエンコードから呼ばれる)
     private static void EnsureStartup()
     {
         if (_mfStarted) return;
