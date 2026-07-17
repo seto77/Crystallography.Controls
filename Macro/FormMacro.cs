@@ -58,7 +58,7 @@ public partial class FormMacro : FormBase
                 string[] temp = value[i].Split('#', true);
 
                 for (int j = 0; j < temp.Length; j++)
-                    temp[j] = temp[j].Trim().TrimEnd();
+                    temp[j] = temp[j].Trim(); // 260717Cl: Trim() は末尾空白も除去するため .TrimEnd() は冗長
 
                 autoCompleteItems.Add(temp[0]);
                 toolTipItems.Add(temp.Length == 2 ? temp[1] : "");

@@ -198,7 +198,7 @@ public partial class FormCaptureGUI : FormBase
         };
 
         foreach (var childNode in childNodes)
-            AddChildNode(node, childNode);
+            node.Nodes.Add(childNode); // 260717Cl: 素通しヘルパー AddChildNode をインライン化
 
         return node;
     }
@@ -220,7 +220,7 @@ public partial class FormCaptureGUI : FormBase
         };
 
         foreach (var childNode in childNodes)
-            AddChildNode(node, childNode);
+            node.Nodes.Add(childNode); // 260717Cl: 素通しヘルパー AddChildNode をインライン化
 
         return node;
     }
@@ -330,7 +330,7 @@ public partial class FormCaptureGUI : FormBase
             };
 
             foreach (var grandChild in grandChildren)
-                AddChildNode(childNode, grandChild);
+                childNode.Nodes.Add(grandChild); // 260717Cl: 素通しヘルパー AddChildNode をインライン化
 
             childNodes.Add(childNode);
         }
@@ -343,10 +343,7 @@ public partial class FormCaptureGUI : FormBase
         return useCaptureExtenderMode && CaptureExtender.IsCaptureEnabled(component);
     }
 
-    private static void AddChildNode(TreeNode parentNode, TreeNode childNode)
-    {
-        parentNode.Nodes.Add(childNode); // (260323Ch) apply_patch の大きな差分を抑えるため Add を helper 化
-    }
+    // 260717Cl: AddChildNode はコメント自身が認めるとおり一時的なパッチ都合の素通しラッパーだったため、3 呼び出し箇所へインライン化して削除。
 
     private static string GetToolStripItemPathSegment(ToolStripItem item, int index)
     {
@@ -596,7 +593,7 @@ public partial class FormCaptureGUI : FormBase
         }
 
         // 260323Cl: ImageSharp で最大圧縮 (8ビットパレット + 最高圧縮レベル)
-        SaveCompressedPng(bmp, Path.Combine(outputDir, fileName));
+        bmp.Save(Path.Combine(outputDir, fileName), ImageFormat.Png); // 260717Cl: 素通し化した SaveCompressedPng をインライン化 (ImageSharp 撤去後は名前も実態と乖離)
         bmp.Dispose();
 
         var info = new Dictionary<string, object>
@@ -643,7 +640,7 @@ public partial class FormCaptureGUI : FormBase
         if (IsSolidColor(bmp))
             return;
 
-        SaveCompressedPng(bmp, Path.Combine(outputDir, fileName));
+        bmp.Save(Path.Combine(outputDir, fileName), ImageFormat.Png); // 260717Cl: 素通し化した SaveCompressedPng をインライン化 (ImageSharp 撤去後は名前も実態と乖離)
 
         var info = new Dictionary<string, object>
         {
@@ -841,14 +838,16 @@ public partial class FormCaptureGUI : FormBase
         }
     }
 
-    /// <summary>
-    /// 260323Cl 追加 / 260513Cl 改修: SixLabors.ImageSharp v4 ライセンス問題により System.Drawing 標準保存へ変更
-    /// Bitmap を PNG で保存する。
-    /// </summary>
-    private static void SaveCompressedPng(Bitmap bmp, string filePath)
-    {
+    // 260717Cl: ImageSharp 撤去 (260513Cl) 以降は bmp.Save への素通しで、名前 (Compressed) も実態と乖離していたため
+    // 2 呼び出し箇所へインライン化して削除。旧 ImageSharp 実装の記録は下のコメントに残す。
+    ///// <summary>
+    ///// 260323Cl 追加 / 260513Cl 改修: SixLabors.ImageSharp v4 ライセンス問題により System.Drawing 標準保存へ変更
+    ///// Bitmap を PNG で保存する。
+    ///// </summary>
+    //private static void SaveCompressedPng(Bitmap bmp, string filePath)
+    //{
         // 260513Cl: 8bit パレット量子化は ImageSharp 依存だったため削除。開発者ツール用なのでファイルサイズより依存削減を優先
-        bmp.Save(filePath, ImageFormat.Png);
+        //bmp.Save(filePath, ImageFormat.Png);
 
         // 260513Cl: 旧実装 (SixLabors.ImageSharp による 8bit パレット + BestCompression)
         // using var ms = new MemoryStream();
@@ -863,7 +862,7 @@ public partial class FormCaptureGUI : FormBase
         //     Quantizer = new WuQuantizer(new QuantizerOptions { MaxColors = 256 })
         // };
         // image.SaveAsPng(filePath, encoder);
-    }
+    //}
 
     /// <summary>ファイル名に使えない文字を置換</summary>
     private static string SanitizeFileName(string name)

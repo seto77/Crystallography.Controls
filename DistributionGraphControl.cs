@@ -463,11 +463,12 @@ namespace Crystallography.Controls
                 (float)(pictureBox.Height - originPosition.Y - BottomMargin - (pictureBox.Height - OriginPosition.Y - BottomMargin) / (UpperY - LowerY) * (y - LowerY)));
         }
 
-        private PointF ConvToPicBoxCoord(PointD p)
-        {//ピクチャーボックスの座標系に変換
-            return new PointF((float)((pictureBox.Width - OriginPosition.X) / (UpperX - LowerX) * (p.X - LowerX)) + OriginPosition.X,
-                (float)(pictureBox.Height - OriginPosition.Y - BottomMargin - (pictureBox.Height - OriginPosition.Y - BottomMargin) / (UpperY - LowerY) * (p.Y - LowerY)));
-        }
+        // 260717Cl: PointD 版は呼び出しゼロのデッドコード ((double,double) 版のみ使用) のため無効化。
+        //private PointF ConvToPicBoxCoord(PointD p)
+        //{//ピクチャーボックスの座標系に変換
+        //    return new PointF((float)((pictureBox.Width - OriginPosition.X) / (UpperX - LowerX) * (p.X - LowerX)) + OriginPosition.X,
+        //        (float)(pictureBox.Height - OriginPosition.Y - BottomMargin - (pictureBox.Height - OriginPosition.Y - BottomMargin) / (UpperY - LowerY) * (p.Y - LowerY)));
+        //}
 
         private PointD ConvToRealCoord(int x, int y)
         {//マウス座標をオリジナルの座標系に変換

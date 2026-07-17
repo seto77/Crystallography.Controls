@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
+//using System.Windows.Forms.VisualStyles; // 260717Cl: 260519Cl でコメントアウトされた旧 VisualStyleRenderer 実装のみが参照していた死に using (ビルド検証済)
 
 namespace Crystallography.Controls;
 

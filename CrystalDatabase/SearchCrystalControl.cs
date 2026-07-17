@@ -84,12 +84,15 @@ public partial class SearchCrystalControl : UserControlBase
     {
         if (firstTime)
         {
-            var parent = this.Parent;
-            while (parent is not Form && parent != null)
-                parent = parent.Parent;
-            if (parent == null)
+            //var parent = this.Parent;
+            //while (parent is not Form && parent != null)
+            //    parent = parent.Parent;
+            //if (parent == null)
+            //    return;
+            //var form = parent as Form;
+            var form = FindForm(); // 260717Cl: 手書きの親 Form 走査を BCL の Control.FindForm() へ (同一の親走査)
+            if (form == null)
                 return;
-            var form = parent as Form;
             formPeriodicTable.Owner = form;
 
             formPeriodicTable.Location = formPeriodicTable.Owner.PointToScreen(new System.Drawing.Point(100, 100));

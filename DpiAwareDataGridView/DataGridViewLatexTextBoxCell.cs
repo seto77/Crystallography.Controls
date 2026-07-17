@@ -257,7 +257,9 @@ public partial class DataGridViewLatexTextBoxCell : DataGridViewTextBoxCell
         return bounds;
     }
 
-    private static Rectangle Align(Size content, Rectangle bounds, DataGridViewContentAlignment alignment)
+    // 260717Cl: private → internal 化 (MiniTable に一字一句同一の Align が重複していたため、
+    // ResolveFont/FormatFractions と同様に本クラスへ一本化して共有)。
+    internal static Rectangle Align(Size content, Rectangle bounds, DataGridViewContentAlignment alignment)
     {
         var x = alignment switch
         {

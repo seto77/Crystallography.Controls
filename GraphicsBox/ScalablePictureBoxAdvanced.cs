@@ -30,23 +30,24 @@ public partial class ScalablePictureBoxAdvanced : UserControlBase
 
     #region プロパティ
 
-    /// <summary>VisualStudioデザイナーの編集の時はTrue</summary>
-    public new bool DesignMode
-    {
-        get
-        {
-            if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
-                return true;
-            Control ctrl = this;
-            while (ctrl != null)
-            {
-                if (ctrl.Site != null && ctrl.Site.DesignMode)
-                    return true;
-                ctrl = ctrl.Parent;
-            }
-            return false;
-        }
-    }
+    // 260717Cl: 基底 UserControlBase.DesignMode と完全に同義の二重定義だったため削除 (ScalablePictureBox 側と同じ整理)。
+    ///// <summary>VisualStudioデザイナーの編集の時はTrue</summary>
+    //public new bool DesignMode
+    //{
+    //    get
+    //    {
+    //        if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
+    //            return true;
+    //        Control ctrl = this;
+    //        while (ctrl != null)
+    //        {
+    //            if (ctrl.Site != null && ctrl.Site.DesignMode)
+    //                return true;
+    //            ctrl = ctrl.Parent;
+    //        }
+    //        return false;
+    //    }
+    //}
 
     /// <summary>スクロールバーが表示されているかどうか</summary>
     public bool ScrollBarVisible { get => scalablePictureBox.ScrollBarVisible; }

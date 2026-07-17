@@ -137,23 +137,25 @@ public partial class ScalablePictureBox : UserControlBase
 
     #region プロパティ
 
-    /// <summary>VisualStudioデザイナーの編集の時はTrue</summary>
-    public new bool DesignMode
-    {
-        get
-        {
-            if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
-                return true;
-            Control ctrl = this;
-            while (ctrl != null)
-            {
-                if (ctrl.Site != null && ctrl.Site.DesignMode)
-                    return true;
-                ctrl = ctrl.Parent;
-            }
-            return false;
-        }
-    }
+    // 260717Cl: 基底 UserControlBase.DesignMode (親走査つき) と完全に同義の二重定義だったため削除
+    // (NumericBox で 260426Cl に実施済みの整理と同じ。参照は基底プロパティへ透過的に解決される)。
+    ///// <summary>VisualStudioデザイナーの編集の時はTrue</summary>
+    //public new bool DesignMode
+    //{
+    //    get
+    //    {
+    //        if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
+    //            return true;
+    //        Control ctrl = this;
+    //        while (ctrl != null)
+    //        {
+    //            if (ctrl.Site != null && ctrl.Site.DesignMode)
+    //                return true;
+    //            ctrl = ctrl.Parent;
+    //        }
+    //        return false;
+    //    }
+    //}
 
     /// <summary>上下方向の反転をするかどうか</summary>
     [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
@@ -785,44 +787,45 @@ public partial class ScalablePictureBox : UserControlBase
 
     }
 
-    private void drawSymbols(PaintEventArgs e, List<PointD> spot, List<string> spotLabel, Brush brush1, Brush brush2, bool showLabel, int? emphasizeNum)
-    {
-        using var ff = new FontFamily(SymbolFontName); // (260322Ch) 旧 helper も同じ FontFamily 共通定数を使う
-        using Pen pen1 = new(brush1), pen2 = new(brush2);
-        if (spot != null && spot.Count > 0)
-            for (int i = 0; i < spot.Count; i++)
-            {
-                pen1.Width = pen2.Width = i == emphasizeNum ? 2f : 1f;
-
-                PointF pt = ConvertToClientPt(spot[i]).ToPointF();
-
-                e.Graphics.DrawLine(pen2, new PointF(pt.X - 4, pt.Y - 6), new PointF(pt.X + 6, pt.Y + 4));
-                e.Graphics.DrawLine(pen2, new PointF(pt.X - 6, pt.Y - 4), new PointF(pt.X + 4, pt.Y + 6));
-                e.Graphics.DrawLine(pen2, new PointF(pt.X + 4, pt.Y - 6), new PointF(pt.X - 6, pt.Y + 4));
-                e.Graphics.DrawLine(pen2, new PointF(pt.X + 6, pt.Y - 4), new PointF(pt.X - 4, pt.Y + 6));
-
-                e.Graphics.DrawLine(pen1, new PointF(pt.X - 5, pt.Y - 5), new PointF(pt.X + 5, pt.Y + 5));
-                e.Graphics.DrawLine(pen1, new PointF(pt.X + 5, pt.Y - 5), new PointF(pt.X - 5, pt.Y + 5));
-                pen1.Width = pen2.Width = 1f;
-                if (showLabel)
-                {
-                    using var gp = new GraphicsPath();
-                    string label = spotLabel == null || spotLabel.Count != spot.Count ? i.ToString("000") : spotLabel[i];
-                    gp.AddString(label, ff, (int)FontStyle.Bold, i == emphasizeNum ? 18f : 16f, new PointF(pt.X + 5, pt.Y + 5), StringFormat.GenericDefault);
-
-                    if (i == emphasizeNum)
-                    {
-                        e.Graphics.FillPath(brush2, gp);
-                        e.Graphics.DrawPath(pen1, gp);
-                    }
-                    else
-                    {
-                        e.Graphics.FillPath(brush1, gp);
-                        e.Graphics.DrawPath(pen2, gp);
-                    }
-                }
-            }
-    }
+    // 260717Cl: drawSymbols は private かつ生きた呼び出しゼロ (693 行の「//drawSymbols(e)」はシグネチャも不一致) のデッドコードだったため無効化。
+//    private void drawSymbols(PaintEventArgs e, List<PointD> spot, List<string> spotLabel, Brush brush1, Brush brush2, bool showLabel, int? emphasizeNum)
+//    {
+//        using var ff = new FontFamily(SymbolFontName); // (260322Ch) 旧 helper も同じ FontFamily 共通定数を使う
+//        using Pen pen1 = new(brush1), pen2 = new(brush2);
+//        if (spot != null && spot.Count > 0)
+//            for (int i = 0; i < spot.Count; i++)
+//            {
+//                pen1.Width = pen2.Width = i == emphasizeNum ? 2f : 1f;
+//
+//                PointF pt = ConvertToClientPt(spot[i]).ToPointF();
+//
+//                e.Graphics.DrawLine(pen2, new PointF(pt.X - 4, pt.Y - 6), new PointF(pt.X + 6, pt.Y + 4));
+//                e.Graphics.DrawLine(pen2, new PointF(pt.X - 6, pt.Y - 4), new PointF(pt.X + 4, pt.Y + 6));
+//                e.Graphics.DrawLine(pen2, new PointF(pt.X + 4, pt.Y - 6), new PointF(pt.X - 6, pt.Y + 4));
+//                e.Graphics.DrawLine(pen2, new PointF(pt.X + 6, pt.Y - 4), new PointF(pt.X - 4, pt.Y + 6));
+//
+//                e.Graphics.DrawLine(pen1, new PointF(pt.X - 5, pt.Y - 5), new PointF(pt.X + 5, pt.Y + 5));
+//                e.Graphics.DrawLine(pen1, new PointF(pt.X + 5, pt.Y - 5), new PointF(pt.X - 5, pt.Y + 5));
+//                pen1.Width = pen2.Width = 1f;
+//                if (showLabel)
+//                {
+//                    using var gp = new GraphicsPath();
+//                    string label = spotLabel == null || spotLabel.Count != spot.Count ? i.ToString("000") : spotLabel[i];
+//                    gp.AddString(label, ff, (int)FontStyle.Bold, i == emphasizeNum ? 18f : 16f, new PointF(pt.X + 5, pt.Y + 5), StringFormat.GenericDefault);
+//
+//                    if (i == emphasizeNum)
+//                    {
+//                        e.Graphics.FillPath(brush2, gp);
+//                        e.Graphics.DrawPath(pen1, gp);
+//                    }
+//                    else
+//                    {
+//                        e.Graphics.FillPath(brush1, gp);
+//                        e.Graphics.DrawPath(pen2, gp);
+//                    }
+//                }
+//            }
+//    }
 
     /// /// <summary>コントロール全体のペイントイベント</summary>
     public event PaintEventHandler PaintControl;

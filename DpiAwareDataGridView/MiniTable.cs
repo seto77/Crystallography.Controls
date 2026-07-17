@@ -505,7 +505,7 @@ public class MiniTable : DpiAwareDataGridView
             bitmap = LabelLaTeX.RenderLatexBitmap(DataGridViewLatexTextBoxCell.FormatFractions(text, LatexFractionStyle), latexFont, foreColor, CurrentDpi, LatexTexStyle, LatexThickness); // 260707Ch
             if (bitmap == null)
                 return false;
-            g.DrawImage(bitmap, Align(bitmap.Size, bounds, alignment));
+            g.DrawImage(bitmap, DataGridViewLatexTextBoxCell.Align(bitmap.Size, bounds, alignment)); // 260717Cl: 重複していた Align を共有版へ
             return true;
         }
         catch
@@ -537,26 +537,8 @@ public class MiniTable : DpiAwareDataGridView
         return flags;
     }
 
-    private static Rectangle Align(Size content, Rectangle bounds, DataGridViewContentAlignment alignment)
-    {
-        var x = alignment switch
-        {
-            DataGridViewContentAlignment.TopCenter or DataGridViewContentAlignment.MiddleCenter or DataGridViewContentAlignment.BottomCenter
-                => bounds.Left + (bounds.Width - content.Width) / 2,
-            DataGridViewContentAlignment.TopRight or DataGridViewContentAlignment.MiddleRight or DataGridViewContentAlignment.BottomRight
-                => bounds.Right - content.Width,
-            _ => bounds.Left,
-        };
-        var y = alignment switch
-        {
-            DataGridViewContentAlignment.MiddleLeft or DataGridViewContentAlignment.MiddleCenter or DataGridViewContentAlignment.MiddleRight
-                => bounds.Top + (bounds.Height - content.Height) / 2,
-            DataGridViewContentAlignment.BottomLeft or DataGridViewContentAlignment.BottomCenter or DataGridViewContentAlignment.BottomRight
-                => bounds.Bottom - content.Height,
-            _ => bounds.Top,
-        };
-        return new Rectangle(x, y, content.Width, content.Height);
-    }
+    // 260717Cl: DataGridViewLatexTextBoxCell.Align と一字一句同一だったため削除し、共有版 (internal 化) へ一本化。
+    //private static Rectangle Align(Size content, Rectangle bounds, DataGridViewContentAlignment alignment) { … }
 
     #endregion
 

@@ -702,12 +702,15 @@ public partial class CrystalDatabaseControl : UserControlBase
     {
         if (!this.DesignMode && !registResizeEvent)
         {
-            var parent = this.Parent;
-            while (parent is not Form && parent != null)
-                parent = parent.Parent;
-            if (parent == null)
+            //var parent = this.Parent;
+            //while (parent is not Form && parent != null)
+            //    parent = parent.Parent;
+            //if (parent == null)
+            //    return;
+            //var form = parent as Form;
+            var form = FindForm(); // 260717Cl: 手書きの親 Form 走査を BCL の Control.FindForm() へ (同一の親走査)
+            if (form == null)
                 return;
-            var form = parent as Form;
             form.ResizeBegin += (s, ea) => SuspendLayout();
             form.ResizeEnd += (s, ea) => ResumeLayout();
             registResizeEvent = true;

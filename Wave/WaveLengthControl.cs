@@ -232,7 +232,7 @@ public partial class WaveLengthControl : UserControlBase
         }
     }
 
-    private int _XrayWaveSourceElementNumber = 0;
+    //private int _XrayWaveSourceElementNumber = 0; // 260717Cl: 書き込み専用の死にフィールド (getter は comboBox.SelectedIndex を返す) のため削除
 
     /// <summary>X線の線源の元素を取得/設定</summary>
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
@@ -245,7 +245,7 @@ public partial class WaveLengthControl : UserControlBase
             if (value < comboBoxXRayElement.Items.Count && value >= 0)
             {
                 comboBoxXRayElement.SelectedIndex = value;
-                _XrayWaveSourceElementNumber = value;
+                //_XrayWaveSourceElementNumber = value; // 260717Cl: 死にフィールド削除に伴い除去
             }
         }
         get

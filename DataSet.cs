@@ -165,29 +165,15 @@ public partial class DataSet
 
     partial class DataTableScatteringFactorDataTable
     {
+        // 260717Cl (/simplify): int 版 / double 版で h,k,l 代入以外の本体 (~20 行) が完全重複していたため、
+        // 共通尾部を FillAndAddRow へ抽出。h,k,l は各オーバーロードで従来どおりの型のまま boxed 代入する (挙動不変)。
         public void Add(int h, int k, int l, int mult, double d, double twoTheta, Complex f, double relInt, string[] condition)
         {
             DataRow dr = this.NewDataTableScatteringFactorRow();
             dr[this.HColumn] = h;
             dr[this.KColumn] = k;
             dr[this.LColumn] = l;
-            dr[this.MultiColumn] = mult;
-            dr[this.DColumn] = d;
-            dr[this.QColumn] = Math.PI * 2 / d;
-            dr[this.TwoThetaColumn] = twoTheta;
-            dr[this.F_realColumn] = Math.Abs(f.Real) > 1E-18 ? f.Real : 0;
-            dr[this.F_invColumn] = Math.Abs(f.Imaginary) > 10E-18 ? f.Imaginary : 0;
-            dr[this.FColumn] = f.Magnitude > 1E-18 ? f.Magnitude : 0;
-            dr[this.F2Column] = f.Magnitude * f.Magnitude > 1E-18 ? f.Magnitude * f.Magnitude : 0;
-            dr[RelIntColumn] = relInt * 100 > 1E-18 ? relInt * 100 : 0;
-
-            var str = new System.Text.StringBuilder();
-            for (int m = 0; m < condition.Length; m++)
-                str.Append(m == 0 ? condition[m] : " & " + condition[m]);
-
-            dr[columnCondition] = str.ToString();
-
-            this.Rows.Add(dr);
+            FillAndAddRow(dr, mult, d, twoTheta, f, relInt, condition);
         }
 
         public void Add(double h, double k, double l, int mult, double d, double twoTheta, Complex f, double relInt, string[] condition)
@@ -196,6 +182,12 @@ public partial class DataSet
             dr[this.HColumn] = h;
             dr[this.KColumn] = k;
             dr[this.LColumn] = l;
+            FillAndAddRow(dr, mult, d, twoTheta, f, relInt, condition);
+        }
+
+        /// <summary>260717Cl 追加 (/simplify): Add(int,…)/Add(double,…) 共通の列充填 + 行追加。</summary>
+        private void FillAndAddRow(DataRow dr, int mult, double d, double twoTheta, Complex f, double relInt, string[] condition)
+        {
             dr[this.MultiColumn] = mult;
             dr[this.DColumn] = d;
             dr[this.QColumn] = Math.PI * 2 / d;
@@ -206,11 +198,11 @@ public partial class DataSet
             dr[this.F2Column] = f.Magnitude * f.Magnitude > 1E-18 ? f.Magnitude * f.Magnitude : 0;
             dr[RelIntColumn] = relInt * 100 > 1E-18 ? relInt * 100 : 0;
 
-            var str = new System.Text.StringBuilder();
-            for (int m = 0; m < condition.Length; m++)
-                str.Append(m == 0 ? condition[m] : " & " + condition[m]);
-
-            dr[columnCondition] = str.ToString();
+            //var str = new System.Text.StringBuilder();
+            //for (int m = 0; m < condition.Length; m++)
+            //    str.Append(m == 0 ? condition[m] : " & " + condition[m]);
+            //dr[columnCondition] = str.ToString();
+            dr[columnCondition] = string.Join(" & ", condition); // 260717Cl: 手動 StringBuilder ループと同一出力
 
             this.Rows.Add(dr);
         }
@@ -292,16 +284,9 @@ public partial class DataSet
         static readonly (string CrystalSystem, string PointGroup, string SpaceGroup) [] Coeff 
             = [.. SymmetryStatic.StrArray.Select(s =>
         {
-            var sg = s[3];
-            if (sg.Contains("sub"))
-                sg = sg.Replace("sub", "_");
-            if (sg.Contains("Hex"))
-                sg = sg.Replace("Hex", " H");
-            if (sg.Contains("Rho"))
-                sg = sg.Replace("Rho", " R");
-            if (sg.Contains("="))
-                sg = sg.Split("=")[0];
-           return (s[16], s[13], sg);
+            // 260717Cl (/simplify): Replace/Split は不一致時 no-op なので Contains ガードは冗長 (出力不変)。
+            var sg = s[3].Replace("sub", "_").Replace("Hex", " H").Replace("Rho", " R").Split('=')[0];
+            return (s[16], s[13], sg);
         })];
 
     }

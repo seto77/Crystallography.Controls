@@ -141,15 +141,15 @@ public class HelpAttribute(string text, string arg = "") : Attribute
 
         // 260414Cl name が null/空 の場合 "PDI..MethodName" のような空セクションが
         // 出ないよう連結を調整。root クラス自身に対しても呼べるようになった。
-        var ns = type.Namespace ?? "";
-        if (ns.Contains("PDIndexer")) ns = ns.Replace("PDIndexer", "PDI");
-        if (ns.Contains("IPAnalyzer")) ns = ns.Replace("IPAnalyzer", "IPA");
+        // 260717Cl: Replace は不一致時 no-op のため Contains ガードは冗長 (出力不変)。
+        var ns = (type.Namespace ?? "").Replace("PDIndexer", "PDI").Replace("IPAnalyzer", "IPA");
         var header = string.IsNullOrEmpty(name) ? ns + "." : ns + "." + name + ".";
 
-        foreach (var p in type.GetProperties().Where(e => e.GetCustomAttribute<HelpAttribute>() != null))
-            strList.Add(header + p.Name + "#" + p.GetCustomAttribute<HelpAttribute>().Text);
-        foreach (var m in type.GetMethods().Where(e => e.GetCustomAttribute<HelpAttribute>() != null && !e.IsSpecialName))
-            strList.Add(header + m.Name + "(" + m.GetCustomAttribute<HelpAttribute>().Argument + ")#" + m.GetCustomAttribute<HelpAttribute>().Text);
+        // 260717Cl: GetCustomAttribute の重複呼び出し (プロパティ 2 回・メソッド 3 回) を 1 回に集約 (出力不変)。
+        foreach (var (p, attr) in type.GetProperties().Select(e => (e, Attr: e.GetCustomAttribute<HelpAttribute>())).Where(t => t.Attr != null))
+            strList.Add(header + p.Name + "#" + attr.Text);
+        foreach (var (m, attr) in type.GetMethods().Select(e => (e, Attr: e.GetCustomAttribute<HelpAttribute>())).Where(t => t.Attr != null && !t.e.IsSpecialName))
+            strList.Add(header + m.Name + "(" + attr.Argument + ")#" + attr.Text);
 
         return strList;
     }
