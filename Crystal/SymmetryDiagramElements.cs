@@ -699,54 +699,25 @@ public class SymmetryDiagramElements : SymmetryDiagramCommon
         return true;
     }
 
+    // 260717Cl (/simplify): DrawDiagonalThreefoldPerp / DrawDiagonalTwofoldPerp は骨格 (foot 黒丸 → shaft1 →
+    // 中央記号 → 白丸 → shaft2) の ~20 行が逐語重複していたため DrawDiagonalAxisPerp へ集約。中央記号のみ
+    // order で分岐 (delegate 割り当てを避けるため callback でなく分岐方式)。描画順・Pen 構成は旧実装と同一で、
+    // 全 540 設定 × 3 軸のピクセルハーネスで回帰ゼロを確認済み。
     /// <summary>立方晶 [111] 系 体対角 3 回回転軸を ITC Vol.A 風に描画。foot 黒丸 → shaft1 → 三角 (重心に白丸) → shaft2 (dir 方向, 端 round) の構造。
     /// 三角は dir と CCW 90° 方向の 2 脚から成る直角三角形を画面 CCW 45° 回転、重心を shaft1 の端点に一致させる。
     /// finCount/edgeStep が非零なら 3_k 螺旋として三角の各頂点に fin (DrawScrewFins と同形式) を生やす。</summary>
     private static void DrawDiagonalThreefoldPerp(Graphics g, Brush fill, PointF anchor, float dirX, float dirY,
                                                   int finCount = 0, int edgeStep = 0)
-    {
-        PointF lineEnd = new(anchor.X + dirX * DiagonalShaft1Len, anchor.Y + dirY * DiagonalShaft1Len);
-        PointF tail    = new(lineEnd.X + dirX * DiagonalShaft2Len, lineEnd.Y + dirY * DiagonalShaft2Len);
-
-        const float invSqrt2 = 0.7071067811865475f;
-        float l1x = (dirX + dirY) * invSqrt2, l1y = (-dirX + dirY) * invSqrt2;
-        float l2x = (dirX - dirY) * invSqrt2, l2y = ( dirX + dirY) * invSqrt2;
-
-        float triLeg = DiagThreefoldTriLeg;
-        float legSumX = (l1x + l2x) * triLeg / 3f, legSumY = (l1y + l2y) * triLeg / 3f;
-        float cornerX = lineEnd.X - legSumX, cornerY = lineEnd.Y - legSumY;
-        PointF[] tri =
-        [
-            new(cornerX, cornerY),
-            new(cornerX + l1x * triLeg, cornerY + l1y * triLeg),
-            new(cornerX + l2x * triLeg, cornerY + l2y * triLeg),
-        ];
-
-        float halo = DiagThreefoldHaloWidth;
-        float dotR = halo * 0.5f;
-        using var haloPen    = new Pen(Color.White, halo)        { LineJoin = LineJoin.Round };
-        using var triHaloPen = new Pen(Color.White, halo * 0.5f) { LineJoin = LineJoin.Round };
-        using var shaft2Pen  = new Pen(Color.Black, OutlinePenWidth) { StartCap = LineCap.Round, EndCap = LineCap.Round };
-        using var blackPen   = new Pen(Color.Black, OutlinePenWidth);
-        using var white      = new SolidBrush(Color.White);
-
-        // 三角に黒 outline を被せて fin との辺アライメントを揃える (fin pen と同太さ)。
-        g.DrawLine(haloPen, anchor, lineEnd);
-        g.DrawLine(blackPen, anchor, lineEnd);
-        g.DrawPolygon(triHaloPen, tri);
-        g.FillPolygon(fill, tri);
-        g.DrawPolygon(blackPen, tri);
-        if (finCount > 0) DrawScrewFins(g, blackPen, tri, finCount, edgeStep, ScrewFinTailLen);
-        g.FillEllipse(white, lineEnd.X - dotR, lineEnd.Y - dotR, 2 * dotR, 2 * dotR);
-        g.DrawLine(haloPen, lineEnd, tail);
-        g.DrawLine(shaft2Pen, lineEnd, tail);
-        float footR = dotR * DiagThreefoldFootRatio;
-        g.FillEllipse(fill, anchor.X - footR, anchor.Y - footR, 2 * footR, 2 * footR);
-    }
+        => DrawDiagonalAxisPerp(g, fill, anchor, dirX, dirY, order: 3, screw: false, finCount, edgeStep);
 
     /// <summary>(260502Ch) 立方晶 [101]/[011] 系などの斜め 2/2_1 軸を ITC Vol.A 風に描画。
     /// shaft/foot は斜め 3 回軸と同じ要領、中心記号は通常の 2 回軸 lens をそのまま使う。</summary>
     private static void DrawDiagonalTwofoldPerp(Graphics g, Brush fill, PointF anchor, float dirX, float dirY, bool screw)
+        => DrawDiagonalAxisPerp(g, fill, anchor, dirX, dirY, order: 2, screw, finCount: 0, edgeStep: 0);
+
+    /// <summary>260717Cl 追加 (/simplify): 斜め軸描画の共通骨格 (上記 2 メソッドの本体を統合)。</summary>
+    private static void DrawDiagonalAxisPerp(Graphics g, Brush fill, PointF anchor, float dirX, float dirY,
+                                             int order, bool screw, int finCount, int edgeStep)
     {
         PointF lineEnd = new(anchor.X + dirX * DiagonalShaft1Len, anchor.Y + dirY * DiagonalShaft1Len);
         PointF tail    = new(lineEnd.X + dirX * DiagonalShaft2Len, lineEnd.Y + dirY * DiagonalShaft2Len);
@@ -760,8 +731,36 @@ public class SymmetryDiagramElements : SymmetryDiagramCommon
 
         g.DrawLine(haloPen, anchor, lineEnd);
         g.DrawLine(blackPen, anchor, lineEnd);
-        float lensRotationDeg = (float)(Math.Atan2(dirY, dirX) * 180.0 / Math.PI); // (260502Ch) 水平 shaft は現状維持、垂直 shaft は 90 度回転。
-        DrawTwofoldPerp(g, fill, lineEnd, screw, rotationDeg: lensRotationDeg);
+
+        if (order == 3)
+        {
+            const float invSqrt2 = 0.7071067811865475f;
+            float l1x = (dirX + dirY) * invSqrt2, l1y = (-dirX + dirY) * invSqrt2;
+            float l2x = (dirX - dirY) * invSqrt2, l2y = ( dirX + dirY) * invSqrt2;
+
+            float triLeg = DiagThreefoldTriLeg;
+            float legSumX = (l1x + l2x) * triLeg / 3f, legSumY = (l1y + l2y) * triLeg / 3f;
+            float cornerX = lineEnd.X - legSumX, cornerY = lineEnd.Y - legSumY;
+            PointF[] tri =
+            [
+                new(cornerX, cornerY),
+                new(cornerX + l1x * triLeg, cornerY + l1y * triLeg),
+                new(cornerX + l2x * triLeg, cornerY + l2y * triLeg),
+            ];
+
+            // 三角に黒 outline を被せて fin との辺アライメントを揃える (fin pen と同太さ)。
+            using var triHaloPen = new Pen(Color.White, halo * 0.5f) { LineJoin = LineJoin.Round };
+            g.DrawPolygon(triHaloPen, tri);
+            g.FillPolygon(fill, tri);
+            g.DrawPolygon(blackPen, tri);
+            if (finCount > 0) DrawScrewFins(g, blackPen, tri, finCount, edgeStep, ScrewFinTailLen);
+        }
+        else
+        {
+            float lensRotationDeg = (float)(Math.Atan2(dirY, dirX) * 180.0 / Math.PI); // (260502Ch) 水平 shaft は現状維持、垂直 shaft は 90 度回転。
+            DrawTwofoldPerp(g, fill, lineEnd, screw, rotationDeg: lensRotationDeg);
+        }
+
         g.FillEllipse(white, lineEnd.X - dotR, lineEnd.Y - dotR, 2 * dotR, 2 * dotR);
         g.DrawLine(haloPen, lineEnd, tail);
         g.DrawLine(shaft2Pen, lineEnd, tail);
