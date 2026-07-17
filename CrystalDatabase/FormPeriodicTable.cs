@@ -17,6 +17,25 @@ namespace Crystallography.Controls
 
         private readonly List<Button> button = new();
 
+        /// <summary>260717Cl 追加: 元素記号 (index = 原子番号、index 0 は未使用)。旧: コンストラクタ内の 111 行の個別代入列 (機械抽出で移設)。</summary>
+        private static readonly string[] ElementSymbols =
+        [
+            "", "H", "He", "Li", "Be", "B", "C", "N",
+            "O", "F", "Ne", "Na", "Mg", "Al", "Si", "P",
+            "S", "Cl", "Ar", "K", "Ca", "Sc", "Ti", "V",
+            "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn", "Ga",
+            "Ge", "As", "Se", "Br", "Kr", "Rb", "Sr", "Y",
+            "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag",
+            "Cd", "In", "Sn", "Sb", "Te", "I", "Xe", "Cs",
+            "Ba", "La", "Ce", "Pr", "Nd", "Pm", "Sm", "Eu",
+            "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu",
+            "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au",
+            "Hg", "Tl", "Pb", "Bi", "Po", "At", "Rn", "Fr",
+            "Ra", "Ac", "Th", "Pa", "U", "Np", "Pu", "Am",
+            "Cm", "Bk", "Cf", "Es", "Fm", "Md", "No", "Lr",
+            "Rf", "Db", "Sg", "Bh", "Hs", "Mt", "Ds", "Rg",
+        ];
+
         private readonly Color ExcludeColor = Color.LightCoral;
         private readonly Color IncludeColor = Color.LightBlue;
         private readonly Color NeutralColor = Color.LightYellow;
@@ -38,120 +57,9 @@ namespace Crystallography.Controls
                 button[i].Tag = i;
             }
 
-            #region テキストの設定
-
-            button[1].Text = "H";
-            button[2].Text = "He";
-            button[3].Text = "Li";
-            button[4].Text = "Be";
-            button[5].Text = "B";
-            button[6].Text = "C";
-            button[7].Text = "N";
-            button[8].Text = "O";
-            button[9].Text = "F";
-            button[10].Text = "Ne";
-            button[11].Text = "Na";
-            button[12].Text = "Mg";
-            button[13].Text = "Al";
-            button[14].Text = "Si";
-            button[15].Text = "P";
-            button[16].Text = "S";
-            button[17].Text = "Cl";
-            button[18].Text = "Ar";
-            button[19].Text = "K";
-            button[20].Text = "Ca";
-            button[21].Text = "Sc";
-            button[22].Text = "Ti";
-            button[23].Text = "V";
-            button[24].Text = "Cr";
-            button[25].Text = "Mn";
-            button[26].Text = "Fe";
-            button[27].Text = "Co";
-            button[28].Text = "Ni";
-            button[29].Text = "Cu";
-            button[30].Text = "Zn";
-            button[31].Text = "Ga";
-            button[32].Text = "Ge";
-            button[33].Text = "As";
-            button[34].Text = "Se";
-            button[35].Text = "Br";
-            button[36].Text = "Kr";
-            button[37].Text = "Rb";
-            button[38].Text = "Sr";
-            button[39].Text = "Y";
-            button[40].Text = "Zr";
-            button[41].Text = "Nb";
-            button[42].Text = "Mo";
-            button[43].Text = "Tc";
-            button[44].Text = "Ru";
-            button[45].Text = "Rh";
-            button[46].Text = "Pd";
-            button[47].Text = "Ag";
-            button[48].Text = "Cd";
-            button[49].Text = "In";
-            button[50].Text = "Sn";
-            button[51].Text = "Sb";
-            button[52].Text = "Te";
-            button[53].Text = "I";
-            button[54].Text = "Xe";
-            button[55].Text = "Cs";
-            button[56].Text = "Ba";
-            button[57].Text = "La";
-            button[58].Text = "Ce";
-            button[59].Text = "Pr";
-            button[60].Text = "Nd";
-            button[61].Text = "Pm";
-            button[62].Text = "Sm";
-            button[63].Text = "Eu";
-            button[64].Text = "Gd";
-            button[65].Text = "Tb";
-            button[66].Text = "Dy";
-            button[67].Text = "Ho";
-            button[68].Text = "Er";
-            button[69].Text = "Tm";
-            button[70].Text = "Yb";
-            button[71].Text = "Lu";
-            button[72].Text = "Hf";
-            button[73].Text = "Ta";
-            button[74].Text = "W";
-            button[75].Text = "Re";
-            button[76].Text = "Os";
-            button[77].Text = "Ir";
-            button[78].Text = "Pt";
-            button[79].Text = "Au";
-            button[80].Text = "Hg";
-            button[81].Text = "Tl";
-            button[82].Text = "Pb";
-            button[83].Text = "Bi";
-            button[84].Text = "Po";
-            button[85].Text = "At";
-            button[86].Text = "Rn";
-            button[87].Text = "Fr";
-            button[88].Text = "Ra";
-            button[89].Text = "Ac";
-            button[90].Text = "Th";
-            button[91].Text = "Pa";
-            button[92].Text = "U";
-            button[93].Text = "Np";
-            button[94].Text = "Pu";
-            button[95].Text = "Am";
-            button[96].Text = "Cm";
-            button[97].Text = "Bk";
-            button[98].Text = "Cf";
-            button[99].Text = "Es";
-            button[100].Text = "Fm";
-            button[101].Text = "Md";
-            button[102].Text = "No";
-            button[103].Text = "Lr";
-            button[104].Text = "Rf";
-            button[105].Text = "Db";
-            button[106].Text = "Sg";
-            button[107].Text = "Bh";
-            button[108].Text = "Hs";
-            button[109].Text = "Mt";
-            button[110].Text = "Ds";
-            button[111].Text = "Rg";
-
+            #region テキストの設定 (260717Cl: 111 行の個別代入列を ElementSymbols 配列 + ループへ短縮)
+            for (int i = 1; i < ElementSymbols.Length; i++)
+                button[i].Text = ElementSymbols[i];
             #endregion テキストの設定
 
             // 260712Cl 変更: 111 個の同一 Font (GDI ハンドル) をループ内で個別生成していた。Font は不変で複数コントロール共有が安全なため 1 個を使い回す。
@@ -162,12 +70,10 @@ namespace Crystallography.Controls
                 button[i].AutoSizeMode = AutoSizeMode.GrowAndShrink;
                 // button[i].Font = new Font(WineCompat.Resolve("Segoe UI Symbol"), 9F, FontStyle.Regular, GraphicsUnit.Point, 0); //260610Cl // 260712Cl 変更前 (ループ内生成)
                 button[i].Font = symbolFont;
-                if (i != 0)
-                {
-                    Controls.Add(button[i]);
-                    button[i].Click += new EventHandler(button_Click);
-                    button[i].BackColor = Color.LightYellow;
-                }
+                // 260717Cl: ループが i=1 開始のため常に真だった if (i != 0) ガードを除去。
+                Controls.Add(button[i]);
+                button[i].Click += new EventHandler(button_Click);
+                button[i].BackColor = Color.LightYellow;
             }
 
             int width = button.Max(e => e.Width);
@@ -236,24 +142,17 @@ namespace Crystallography.Controls
             this.Visible = false;
         }
 
-        private void buttonMayInclude_Click(object sender, EventArgs e)
-        {
-            for (int i = 1; i <= 111; i++)
-                button[i].BackColor = NeutralColor;
-        }
+        // 260717Cl (/simplify): 色定数のみ異なる同一ループ 3 連を SetAllColors へ集約。
+        private void buttonMayInclude_Click(object sender, EventArgs e) => SetAllColors(NeutralColor);
 
-        private void buttonMustInclude_Click(object sender, EventArgs e)
-        {
-            for (int i = 1; i <= 111; i++)
-            {
-                button[i].BackColor = IncludeColor;
-            }
-        }
+        private void buttonMustInclude_Click(object sender, EventArgs e) => SetAllColors(IncludeColor);
 
-        private void buttonMustExclude_Click(object sender, EventArgs e)
+        private void buttonMustExclude_Click(object sender, EventArgs e) => SetAllColors(ExcludeColor);
+
+        private void SetAllColors(Color color)
         {
             for (int i = 1; i <= 111; i++)
-                button[i].BackColor = ExcludeColor;
+                button[i].BackColor = color;
         }
 
         private void FormPeriodicTable_Load(object sender, EventArgs e)
