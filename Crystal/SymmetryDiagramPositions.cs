@@ -269,7 +269,7 @@ public class SymmetryDiagramPositions : SymmetryDiagramCommon
             for (int i = 0; i < labels.Count; i++)
             {
                 if (string.IsNullOrEmpty(labels[i].Label)) continue; // 旧コード同様、空ラベルは描かない
-                var sz = MeasureTightString(g, labels[i].Label, labelFont);
+                var sz = MeasureTightString(labels[i].Label, labelFont);
                 float x = isLeft ? cx - sz.Width - LabelGapH : cx + LabelGapH;
                 float y = cy - circleRadius - (++row) * sz.Height + LabelGapV;
                 DrawTightString(g, GetBrush(labels[i].Color), labels[i].Label, labelFont, x, y);
@@ -395,7 +395,7 @@ public class SymmetryDiagramPositions : SymmetryDiagramCommon
         var sizes = new Dictionary<string, SizeF>();
         foreach (var p in placements)
             // 旧: if (!sizes.ContainsKey(p.Label)) sizes[p.Label] = g.MeasureString(p.Label, labelFont);
-            if (!sizes.ContainsKey(p.Label)) sizes[p.Label] = MeasureTightString(g, p.Label, labelFont); // 260510Ch: Elements と同じ tight glyph bounds。
+            if (!sizes.ContainsKey(p.Label)) sizes[p.Label] = MeasureTightString(p.Label, labelFont); // 260510Ch: Elements と同じ tight glyph bounds。
         var infos = BuildClusters(placements, circleRadius);
         float dotR = CommaDotR * scale;
         var axes = new int[infos.Count];

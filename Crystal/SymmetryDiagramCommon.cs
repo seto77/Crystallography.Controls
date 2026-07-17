@@ -85,8 +85,9 @@ public abstract class SymmetryDiagramCommon
     #endregion
 
     #region tight text
-    /// <summary>GDI+ MeasureString が含む左右上下の余白を避け、glyph outline の正味 bounds を返す。260510Ch</summary>
-    protected static SizeF MeasureTightString(Graphics g, string text, Font font)
+    /// <summary>GDI+ MeasureString が含む左右上下の余白を避け、glyph outline の正味 bounds を返す。260510Ch
+    /// 260717Cl シグネチャ変更 (旧: MeasureTightString(Graphics g, string text, Font font)): 本体で未使用だった Graphics 引数を削除。</summary>
+    protected static SizeF MeasureTightString(string text, Font font)
         => GetTightTextGlyph(text, font).Size;
 
     /// <summary>glyph outline の正味左上が (x,y) になるように描画する。260510Ch</summary>
@@ -291,9 +292,9 @@ public abstract class SymmetryDiagramCommon
         if (!showAxisLabels) return;
         using var brush = new SolidBrush(Color.Black);
         // 260510Cl: 高さラベルと同じ tight glyph bounds を使い、AxisLabelGap が GDI+ の余白で食われないようにする。
-        var oSz = MeasureTightString(g, "o", AxisLabelFont);
-        var hSz = MeasureTightString(g, proj.HorzLabel, AxisLabelFont);
-        var vSz = MeasureTightString(g, proj.VertLabel, AxisLabelFont);
+        var oSz = MeasureTightString("o", AxisLabelFont);
+        var hSz = MeasureTightString(proj.HorzLabel, AxisLabelFont);
+        var vSz = MeasureTightString(proj.VertLabel, AxisLabelFont);
         DrawTightString(g, brush, "o", AxisLabelFont, c.TopLeft.X - oSz.Width - AxisLabelGap, c.TopLeft.Y - oSz.Height - AxisLabelGap);
         DrawTightString(g, brush, proj.HorzLabel, AxisLabelFont, tr.X + AxisLabelGap, tr.Y - hSz.Height - AxisLabelGap);
         DrawTightString(g, brush, proj.VertLabel, AxisLabelFont, bl.X - vSz.Width - AxisLabelGap, bl.Y + AxisLabelGap);

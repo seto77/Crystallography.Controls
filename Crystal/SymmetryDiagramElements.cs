@@ -281,7 +281,7 @@ public class SymmetryDiagramElements : SymmetryDiagramCommon
             Fill = fill, White = white,
             PerpendicularMirrors = [],
             DrawnSymmetryPlanes = [],
-            StereonetAnchorKeys = isCubicHigh ? CollectStereonetAnchorKeys(layout, stereonetPositions) : null,
+            StereonetAnchorKeys = isCubicHigh ? [.. stereonetPositions.Select(p => ScreenPointKey(layout.ToScreen(p.Sx, p.Sy)))] : null, // 260717Cl: 1 行・呼び出し 1 箇所の CollectStereonetAnchorKeys をインライン化
             DisplayMaxS = displayMaxS,
             // 旧: AllowEGlide = sym.CrystalSystemNumber != 5 && sym.CrystalSystemNumber != 6;
             AllowEGlide = allowEGlide, // 260510Ch: e-glide の可否は「投影面基底が直交するか」という一般条件へ集約。
@@ -339,7 +339,7 @@ public class SymmetryDiagramElements : SymmetryDiagramCommon
         // 同位置で垂直回転軸 (lens 等) と重なる場合は垂直軸を上に出すため、こちらを先に描く。
         // 260505Cl: m-3m / -43m 系では各 stereonet 位置に inset を描画し、
         // それらの位置にある斜め 3 回軸の cell-side 描画はスキップ。
-        HashSet<(long, long)> stereonetSkipKeys = isCubicHigh ? ComputeStereonetSkipKeys(stereonetPositions) : null;
+        HashSet<(long, long)> stereonetSkipKeys = isCubicHigh ? [.. stereonetPositions.Select(p => PeriodicPositionKey(p.Sx, p.Sy))] : null; // 260717Cl: 1 行・呼び出し 1 箇所の ComputeStereonetSkipKeys をインライン化
         DrawDiagonalRotationMarks(ctx, table, actualAxis, skipPositionKeys: stereonetSkipKeys);
         // 旧: DrawPerpendicularRotationMarks(ctx, table, actualAxis, isCubic: isCubic); // (260505Cl) cubic 限定で 4_n と -4 の重なりは -4 を優先。
         DrawPerpendicularRotationMarks(ctx, table, actualAxis, isCubic: isCubic); // 260510Cl: cubic 限定で -4 と -1 が同位置に重なる場合は -4 を抑制 (ITA: 4_n と -1 で表記)。Fd-3m(1) vertex のように -1 が同位置に無い -4 はそのまま描画。
@@ -426,10 +426,10 @@ public class SymmetryDiagramElements : SymmetryDiagramCommon
             var (sx, sy, sz) = ctx.Proj.ToScreen(ax.X, ax.Y, ax.Z);
             var key = ((int)Math.Round(Mod1(sx) * 10000), (int)Math.Round(Mod1(sy) * 10000));
             bool keepMinusFourWithLabel = isCubic && o == -4 && !inversionKeys.Contains(key); // 260510Ch
-            if (isCubic && o > 0 && absO == 4 && cubicMinusFourWithoutInversionKeys.Contains(key)) continue; // 260510Ch: -1 が無い同軸 -4 は 4_n より -4 を優先。
+            if (isCubic && o == 4 && cubicMinusFourWithoutInversionKeys.Contains(key)) continue; // 260510Ch: (260717Cl: o>0&&absO==4 → o==4 に簡約) -1 が無い同軸 -4 は 4_n より -4 を優先。
             if (keepMinusFourWithLabel && !drawnMinusFourKeys.Add(key)) continue; // 260510Ch: -4 高さラベルを同一投影位置で 1 個に畳む。
             if (absO == 2 && covered2.Contains(key)) continue; // (260503Ch) [ITA-D1] 高次点記号が同じ位置を定義するため、2 回点記号を省く。
-            if (absO == 3 && o > 0 && covered3.Contains(key)) continue; // (260503Ch) [ITA-D1] 6 回点記号が同じ位置を定義するため、3 回点記号を省く。
+            if (o == 3 && covered3.Contains(key)) continue; // (260503Ch) (260717Cl: absO==3&&o>0 → o==3 に簡約) [ITA-D1] 6 回点記号が同じ位置を定義するため、3 回点記号を省く。
             // 旧: if (o < 0 && properRotations.Contains((absO, key.Item1, key.Item2))) continue;
             if (o < 0 && properRotations.Contains((absO, key.Item1, key.Item2)) && !keepMinusFourWithLabel) continue; // (260503Ch) [ITA-D1] proper N と同位置の -N は重ねない。260512Ch: principal 側の負軸は -4 のみ。
             // 旧: if (isCubic && o > 0 && absO == 4 && ax.Screw && minusFourKeys.Contains(key)) continue; // (260505Cl) cubic で -4 と同位置の 4_n は抑制。
@@ -442,7 +442,7 @@ public class SymmetryDiagramElements : SymmetryDiagramCommon
             // 旧: bool keepMinusFourWithLabel = isCubic && o == -4 && minusFourKeys.Contains(key);
             // 260510Ch: -1 が同軸にある場合だけ -4 を suppress し、-1 が無い -4 は高さ付き -4 として残す。
             // 260510Ch: -1 が同軸にある -4 は suppress 済み。-1 が無い -4 は screw 置換せず高さ付き -4 として描く。
-            if (o < 0 && absO == 4 && !keepMinusFourWithLabel)
+            if (o == -4 && !keepMinusFourWithLabel) // 260717Cl: o<0&&absO==4 → o==-4 に簡約
             {
                 double zc = Mod1(sz);
                 if (Math.Abs(zc) > 1e-3 && Math.Abs(zc - 1) > 1e-3)
@@ -514,7 +514,7 @@ public class SymmetryDiagramElements : SymmetryDiagramCommon
     {
         float r = symbolR * radiusScale;
         // 旧: var sz = g.MeasureString(h, HeightLabelFont);
-        var sz = MeasureTightString(g, h, HeightLabelFont); // 260510Ch: glyph 正味サイズ。
+        var sz = MeasureTightString(h, HeightLabelFont); // 260510Ch: glyph 正味サイズ。
         // g.DrawString(h, HeightLabelFont, fill, pt.X + r + HeightLabelGapX, pt.Y - r - sz.Height + HeightLabelGapY); // 旧
         DrawTightString(g, fill, h, HeightLabelFont, pt.X + r + HeightLabelGapX, pt.Y - r - sz.Height + HeightLabelGapY); // 260510Ch
     }
@@ -855,8 +855,9 @@ public class SymmetryDiagramElements : SymmetryDiagramCommon
 
     /// <summary>(260505Cl) m-3m / -43m 系で stereonet inset を描く位置のスクリーン pixel キー集合。
     /// in-plane axis arrow を stereonet 輪郭の外側へずらす判定に用いる。</summary>
-    private static HashSet<(long X, long Y)> CollectStereonetAnchorKeys(CellLayout layout, (double Sx, double Sy)[] positions)
-        => [.. positions.Select(p => ScreenPointKey(layout.ToScreen(p.Sx, p.Sy)))]; // 260510Cl: foreach + Add を collection expr へ。
+    // 260717Cl: 1 行 LINQ・呼び出し 1 箇所のためインライン化して削除。
+    //private static HashSet<(long X, long Y)> CollectStereonetAnchorKeys(CellLayout layout, (double Sx, double Sy)[] positions)
+    //    => [.. positions.Select(p => ScreenPointKey(layout.ToScreen(p.Sx, p.Sy)))]; // 260510Cl: foreach + Add を collection expr へ。
 
     /// <summary>(260503Cl 追加) 紙面垂直回転軸 (2/3/4/6 と螺旋形・反転形) の position を screen 座標 key にして返す。
     /// 紙面平行軸の anchor が同位置に来ると、垂直軸の点記号 (lens / 多角形) と重なるため、shift 判定に使う。</summary>
@@ -944,7 +945,7 @@ public class SymmetryDiagramElements : SymmetryDiagramCommon
                 string h = HeightLabel(d.Sz);
                 if (h == null) continue; // (260503Ch) [ITA-D2] 高さ 0 は無標記、非ゼロ代表高さだけを表示する。
                 // 旧: var lbl = g.MeasureString(h, HeightLabelFont);
-                var lbl = MeasureTightString(g, h, HeightLabelFont); // 260510Ch: GDI+ の余白込み MeasureString ではなく glyph 正味サイズを使う。
+                var lbl = MeasureTightString(h, HeightLabelFont); // 260510Ch: GDI+ の余白込み MeasureString ではなく glyph 正味サイズを使う。
                 // (260502Ch) 非ゼロ高さは矢印先端にくっつけて表示する。
                 // (260503Cl) 4 回軸も 2 回軸も visualTip = anchor + ArrowVisualTipOffset*dir で同じ位置に到達する。
                 var tip = new PointF((float)(anchor.X + ArrowVisualTipOffset * d.OutUx), (float)(anchor.Y + ArrowVisualTipOffset * d.OutUy));
@@ -1098,7 +1099,7 @@ public class SymmetryDiagramElements : SymmetryDiagramCommon
 
         var glideReps = markers.Where(HasInPlaneGlide) .GroupBy(GlideKey) .Select(grp =>
             {
-                var marker = grp.OrderBy(m => HeightKey(m.Height)).First();
+                var marker = grp.MinBy(m => HeightKey(m.Height)); // 260717Cl: OrderBy+First → MinBy (安定・最小キー先頭で同値、全ソート回避。grp は GroupBy 由来で非空)
                 double sx = marker.GlideSx, sy = marker.GlideSy;
                 NormalizeDiamondGlideDirection(ref sx, ref sy);
                 return (Height: HeightKey(marker.Height), Sx: sx, Sy: sy, NG: IsNGlide(marker),
@@ -1188,7 +1189,7 @@ public class SymmetryDiagramElements : SymmetryDiagramCommon
             string lbl = HeightLabel(height);
             if (lbl == null) return; // (260503Ch) [ITA-D2] 高さ 0 は無標記、非ゼロ代表高さだけを表示する。
             // 旧: var ls = g.MeasureString(lbl, HeightLabelFont);
-            var ls = MeasureTightString(g, lbl, HeightLabelFont); // 260510Ch: glyph 正味サイズ。
+            var ls = MeasureTightString(lbl, HeightLabelFont); // 260510Ch: glyph 正味サイズ。
             float labelX = labelAtBottomLeft ? vEnd.X - ls.Width - ParallelMirrorLabelGap : maxX + ParallelMirrorLabelGap;
             float labelY = labelAtBottomLeft ? vEnd.Y + ParallelMirrorLabelGap            : ((apex.Y + hEnd.Y) - ls.Height) / 2;
             // g.DrawString(lbl, HeightLabelFont, fill, labelX, labelY); // 旧: DrawString/MeasureString の余白を含んでいた。
@@ -1292,7 +1293,7 @@ public class SymmetryDiagramElements : SymmetryDiagramCommon
         }
 
         bool latticeNodeLine = IsIntegralPerpendicularLineOffset(ctx, drafts[0]);
-        best = drafts.OrderBy(d => PerpendicularMirrorPriority(ctx.Proj, d, latticeNodeLine)).First(); // 260510Ch
+        best = drafts.MinBy(d => PerpendicularMirrorPriority(ctx.Proj, d, latticeNodeLine)); // 260510Ch (260717Cl: OrderBy+First → MinBy。直前で drafts[0] 参照済みのため非空)
         return true;
     }
 
@@ -1691,12 +1692,10 @@ public class SymmetryDiagramElements : SymmetryDiagramCommon
         return true; // (260505Ch) 異なる half-glide coset が同一幾何面に載る場合は e。
     }
 
-    private static bool IsPerpendicularDGlide(double gSx, double gSy, double gSz)
-        => GlideCoset.IsQuarterComponent(gSz) && (GlideCoset.IsQuarterComponent(gSx) || GlideCoset.IsQuarterComponent(gSy));
-
     private static MirrorGlideStyle GetMirrorGlideStyle(double gSx, double gSy, double gSz)
     {
-        if (IsPerpendicularDGlide(gSx, gSy, gSz)) return MirrorGlideStyle.DGlide;
+        // 260717Cl: 1 行・呼び出し 1 箇所の IsPerpendicularDGlide をインライン化。
+        if (GlideCoset.IsQuarterComponent(gSz) && (GlideCoset.IsQuarterComponent(gSx) || GlideCoset.IsQuarterComponent(gSy))) return MirrorGlideStyle.DGlide;
         bool hasInPlane = Math.Abs(gSx) > 1e-3 || Math.Abs(gSy) > 1e-3;
         bool hasDepth = Math.Abs(gSz) > 1e-3;
         return (hasInPlane, hasDepth) switch
@@ -1815,8 +1814,9 @@ public class SymmetryDiagramElements : SymmetryDiagramCommon
     }
 
     /// <summary>(260505Cl 追加) Mod1 し dedup した stereonet 位置キー集合。cell-side の 3 回軸描画スキップ判定に使う。</summary>
-    private static HashSet<(long, long)> ComputeStereonetSkipKeys((double Sx, double Sy)[] positions)
-        => [.. positions.Select(p => PeriodicPositionKey(p.Sx, p.Sy))]; // 260510Cl: foreach + Add を collection expr へ。
+    // 260717Cl: 1 行 LINQ・呼び出し 1 箇所のためインライン化して削除。
+    //private static HashSet<(long, long)> ComputeStereonetSkipKeys((double Sx, double Sy)[] positions)
+    //    => [.. positions.Select(p => PeriodicPositionKey(p.Sx, p.Sy))]; // 260510Cl: foreach + Add を collection expr へ。
 
     /// <summary>(260505Ch) unit-cell 周期位置の比較キー。1.0 近傍を 0.0 に折り畳み、境界上の foot を同一視する。</summary>
     private static (long X, long Y) PeriodicPositionKey(double sx, double sy)
@@ -1857,7 +1857,9 @@ public class SymmetryDiagramElements : SymmetryDiagramCommon
         {
             // site 判定は Mod1 で正規化した screen 位置 + Sz=0 を結晶座標に変換 (260506Cl: 1 行 switch にインライン化)。
             double sxKey = Mod1(sxScreen), syKey = Mod1(syScreen); // 260510Ch: F 格子も内部座標は通常セルの (a,b) のまま扱い、縮小は表示だけに限定する。
-            double axisSxKey = Mod1(sxScreen), axisSyKey = Mod1(syScreen); // 260510Ch: 斜め軸は実際の upper-left quadrant 位置で正しく拾えていたため、面用の 1/2 縮小補正を掛けない。
+            // 260717Cl: 面用の 1/2 縮小補正 (260510Ch) の撤廃後、axisSxKey/axisSyKey とその switch は上と完全同値の
+            // 死重複になっていたため削除 (斜め軸判定も同じ (xc,yc,zc) を使う)。ピクセルハーネスで回帰ゼロを確認済み。
+            //double axisSxKey = Mod1(sxScreen), axisSyKey = Mod1(syScreen);
             var (xc, yc, zc) = projAxis switch
             {
                 ProjectionAxis.C => (syKey, sxKey, 0.0),
@@ -1865,13 +1867,7 @@ public class SymmetryDiagramElements : SymmetryDiagramCommon
                 ProjectionAxis.B => (sxKey, 0.0, syKey),
                 _ => (0.0, 0.0, 0.0)
             };
-            var (axisXc, axisYc, axisZc) = projAxis switch
-            {
-                ProjectionAxis.C => (axisSyKey, axisSxKey, 0.0),
-                ProjectionAxis.A => (0.0, axisSyKey, axisSxKey),
-                ProjectionAxis.B => (axisSxKey, 0.0, axisSyKey),
-                _ => (0.0, 0.0, 0.0)
-            }; // 260510Ch
+            //var (axisXc, axisYc, axisZc) = projAxis switch { … }; // 260717Cl: 同上 (完全同値の二重 switch)
 
             // この site を通る (h,k,l) ごとに glide ベクトルを集約 → e-glide 検出のため。
             var groupedGlides = new Dictionary<(int H, int K, int L), List<GlideCoset>>(); // (260512Ch)
@@ -1893,7 +1889,7 @@ public class SymmetryDiagramElements : SymmetryDiagramCommon
             // (260505Cl 整理) 立方晶高対称群の stereonet 中心を通る 3 回軸は <111> proper のみで、3_1/3_2 螺旋は現れないため FinCount/EdgeStep は持たない。
             // 260510Cl: foreach + 手動 dedup を Where + DistinctBy へ。
             var siteAxes = diagonalAxes
-                .Where(ax => AxisPassesThroughSite(ax, axisXc, axisYc, axisZc))
+                .Where(ax => AxisPassesThroughSite(ax, xc, yc, zc)) // 260717Cl: axisXc/axisYc/axisZc は xc/yc/zc と同値だった
                 .DistinctBy(ax => (ax.Direction.U, ax.Direction.V, ax.Direction.W, ax.Order))
                 .Select(ax => (ax.Direction, ax.Order, ax.Screw))
                 .ToList();
