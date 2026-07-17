@@ -64,6 +64,37 @@ public class SymmetryDiagramPositions : SymmetryDiagramCommon
         _ => (0.05, 0.10, 0.20),
     };
 
+    /// <summary>260717Cl 追加 (/simplify): DrawGeneralPositions / DrawGeneralPositionsColored で逐語重複していた
+    /// プロローグ (設定解決 → 投影 → レイアウト → 1/4 領域ラベル → 縮尺・円半径・フォント決定) の共通化。
+    /// 各計算式は旧実装をそのまま移設 (ピクセル不変)。未定義設定は msg を描画して null を返す。</summary>
+    private sealed record PositionsScene(int SeriesNumber, Symmetry Sym, ProjectionAxis ActualAxis, Projection Proj,
+        bool HalfQuadrant, double DisplayMaxS, CellLayout Layout, bool IsCubic, float Scale, float CircleRadius, Font LabelFont);
+
+    private static PositionsScene TryCreatePositionsScene(Graphics g, Size clientSize, int seriesNumber, ProjectionAxis axis)
+    {
+        if (!TryGetSym(seriesNumber, out var sym, out seriesNumber, out var msg))
+        {
+            if (msg != null) DrawCenteredText(g, clientSize, msg, Color.Gray);
+            return null;
+        }
+        var actualAxis = ResolveProjectionAxis(sym, axis);
+        var proj = GetProjection(actualAxis);
+        // 260505Cl: 立方晶 F 格子は upper-left 1/4 領域だけ描画。
+        bool halfQuadrant = IsCubicFLattice(sym);
+        double displayMaxS = halfQuadrant ? 0.5 : 1.0; // (260505Ch) clip ではなく描画対象座標そのものを制限する。
+        var layout = ComputeCellLayout(clientSize, sym, actualAxis, halfQuadrant);
+        if (halfQuadrant) DrawUpperLeftQuadrantLabel(g);
+        // 立方晶系 (= 7) は等価点が密集しがちなので円・コンマ点・フォントを CubicScale 倍に縮小する。
+        bool isCubic = sym.CrystalSystemNumber == 7;
+        double cellSize = Math.Min(
+            Math.Sqrt(layout.Horz.X * layout.Horz.X + layout.Horz.Y * layout.Horz.Y),
+            Math.Sqrt(layout.Vert.X * layout.Vert.X + layout.Vert.Y * layout.Vert.Y));
+        float scale = isCubic ? CubicScale : 1f;
+        float circleRadius = (float)(CircleRadiusFraction * cellSize) * scale; // (260505Ch) 描画ごとの値として渡し、static 状態を持たない。
+        var labelFont = isCubic ? CubicClusterLabelFont : ClusterLabelFont;
+        return new PositionsScene(seriesNumber, sym, actualAxis, proj, halfQuadrant, displayMaxS, layout, isCubic, scale, circleRadius, labelFont);
+    }
+
     #region 公開 API
     /// <summary>新規 <see cref="Bitmap"/> を確保して一般位置図を描画して返す。
     /// (260506Cl) <paramref name="testPoint"/> を渡すと既定の <see cref="GetTestPoint"/> を上書きしてユーザー指定の一般位置で描画する。</summary>
@@ -82,28 +113,18 @@ public class SymmetryDiagramPositions : SymmetryDiagramCommon
     public static void DrawGeneralPositions(Graphics g, Size clientSize, int seriesNumber, ProjectionAxis axis = ProjectionAxis.C,
                                             (double X, double Y, double Z)? testPoint = null)
     {
-        if (!TryGetSym(seriesNumber, out var sym, out seriesNumber, out var msg))
-        {
-            if (msg != null) DrawCenteredText(g, clientSize, msg, Color.Gray);
-            return;
-        }
-        var actualAxis = ResolveProjectionAxis(sym, axis);
-        var proj = GetProjection(actualAxis);
-        // 260505Cl: 立方晶 F 格子は upper-left 1/4 領域だけ描画。
-        bool halfQuadrant = IsCubicFLattice(sym);
-        double displayMaxS = halfQuadrant ? 0.5 : 1.0; // (260505Ch) clip ではなく描画対象座標そのものを制限する。
-        var layout = ComputeCellLayout(clientSize, sym, actualAxis, halfQuadrant);
-        if (halfQuadrant) DrawUpperLeftQuadrantLabel(g);
-        DrawCellAndAxes(g, layout, proj, sym, halfQuadrant);
-        // 立方晶系 (= 7) は等価点が密集しがちなので円・コンマ点・フォントを CubicScale 倍に縮小し、
-        // [111] 軸 orbit の三角形も追加で描く。それ以外の結晶系は scale=1 で従来通り。
-        bool isCubic = sym.CrystalSystemNumber == 7;
-        double cellSize = Math.Min(
-            Math.Sqrt(layout.Horz.X * layout.Horz.X + layout.Horz.Y * layout.Horz.Y),
-            Math.Sqrt(layout.Vert.X * layout.Vert.X + layout.Vert.Y * layout.Vert.Y));
-        float scale = isCubic ? CubicScale : 1f;
-        float circleRadius = (float)(CircleRadiusFraction * cellSize) * scale; // (260505Ch) 描画ごとの値として渡し、static 状態を持たない。
-        var labelFont = isCubic ? CubicClusterLabelFont : ClusterLabelFont;
+        // 260717Cl (/simplify): DrawGeneralPositionsColored と逐語重複していたプロローグ ~20 行を
+        // TryCreatePositionsScene へ集約 (計算式は不変、ピクセルハーネスで回帰ゼロ確認済)。
+        var scene = TryCreatePositionsScene(g, clientSize, seriesNumber, axis);
+        if (scene == null) return;
+        seriesNumber = scene.SeriesNumber;
+        var (sym, proj, layout) = (scene.Sym, scene.Proj, scene.Layout);
+        var actualAxis = scene.ActualAxis;
+        double displayMaxS = scene.DisplayMaxS;
+        bool isCubic = scene.IsCubic;
+        float scale = scene.Scale, circleRadius = scene.CircleRadius;
+        var labelFont = scene.LabelFont;
+        DrawCellAndAxes(g, layout, proj, sym, scene.HalfQuadrant);
         var (tx, ty, tz) = testPoint ?? GetTestPoint(sym); // 260506Cl: ユーザー指定があればそれを使用
         // ProjectionAxis enum の値 (A=0, B=1, C=2) と AxisBrushes/Pens の index、変数 "xyz" の文字位置はすべて一致。
         int projAxisIdx = (int)actualAxis;
@@ -130,27 +151,16 @@ public class SymmetryDiagramPositions : SymmetryDiagramCommon
                                                    (double X, double Y, double Z) testPoint, Color[] pointColors, bool drawCell = true,
                                                    Color? lostColor = null) // 260717Cl: lost (消失) 側の記号を黄色く描くための色。null なら従来どおり点色のみ
     {
-        if (!TryGetSym(seriesNumber, out var sym, out seriesNumber, out var msg))
-        {
-            if (msg != null) DrawCenteredText(g, clientSize, msg, Color.Gray);
-            return;
-        }
-        var actualAxis = ResolveProjectionAxis(sym, axis);
-        var proj = GetProjection(actualAxis);
-        bool halfQuadrant = IsCubicFLattice(sym);
-        double displayMaxS = halfQuadrant ? 0.5 : 1.0;
-        var layout = ComputeCellLayout(clientSize, sym, actualAxis, halfQuadrant);
-        if (halfQuadrant) DrawUpperLeftQuadrantLabel(g);
-        if (drawCell) DrawCellAndAxes(g, layout, proj, sym, halfQuadrant, showAxisLabels: false);
-
-        bool isCubic = sym.CrystalSystemNumber == 7;
-        double cellSize = Math.Min(
-            Math.Sqrt(layout.Horz.X * layout.Horz.X + layout.Horz.Y * layout.Horz.Y),
-            Math.Sqrt(layout.Vert.X * layout.Vert.X + layout.Vert.Y * layout.Vert.Y));
-        float scale = isCubic ? CubicScale : 1f;
-        float circleRadius = (float)(CircleRadiusFraction * cellSize) * scale;
+        // 260717Cl (/simplify): DrawGeneralPositions と逐語重複していたプロローグを TryCreatePositionsScene へ集約。
+        var scene = TryCreatePositionsScene(g, clientSize, seriesNumber, axis);
+        if (scene == null) return;
+        seriesNumber = scene.SeriesNumber;
+        var (sym, proj, layout) = (scene.Sym, scene.Proj, scene.Layout);
+        double displayMaxS = scene.DisplayMaxS;
+        float scale = scene.Scale, circleRadius = scene.CircleRadius;
         float dotR = CommaDotR * scale;
-        var labelFont = isCubic ? CubicClusterLabelFont : ClusterLabelFont;
+        var labelFont = scene.LabelFont;
+        if (drawCell) DrawCellAndAxes(g, layout, proj, sym, scene.HalfQuadrant, showAxisLabels: false);
         var (tx, ty, tz) = testPoint;
         var pts = SymmetryStatic.WyckoffPositions[seriesNumber][0].GeneratePositions(tx, ty, tz);
 
