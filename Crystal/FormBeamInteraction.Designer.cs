@@ -835,7 +835,7 @@
             // 
             miniTableAttenEdges.AllowVerticalScroll = true;
             miniTableAttenEdges.AutoFitHeight = true;
-            miniTableAttenEdges.ColumnHeadersHeight = 26;
+            miniTableAttenEdges.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             miniTableAttenEdges.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { colEdgeElem, colEdgeZ, colEdgeEdge, colEdgeKeV, colEdgeJump });
             resources.ApplyResources(miniTableAttenEdges, "miniTableAttenEdges");
             miniTableAttenEdges.Name = "miniTableAttenEdges";
@@ -880,7 +880,7 @@
             // 
             miniTableAttenElectron.AllowVerticalScroll = true;
             miniTableAttenElectron.AutoFitHeight = true;
-            miniTableAttenElectron.ColumnHeadersHeight = 26;
+            miniTableAttenElectron.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             miniTableAttenElectron.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { colElecElem, colElecZ, colElecAt, colElecA });
             resources.ApplyResources(miniTableAttenElectron, "miniTableAttenElectron");
             miniTableAttenElectron.Name = "miniTableAttenElectron";
@@ -917,7 +917,7 @@
             // miniTableAttenNeutron
             // 
             miniTableAttenNeutron.AllowVerticalScroll = true;
-            miniTableAttenNeutron.ColumnHeadersHeight = 26;
+            miniTableAttenNeutron.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             miniTableAttenNeutron.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { colNeutElem, colNeutBcoh, colNeutScoh, colNeutAt });
             resources.ApplyResources(miniTableAttenNeutron, "miniTableAttenNeutron");
             miniTableAttenNeutron.Name = "miniTableAttenNeutron";
@@ -1268,7 +1268,7 @@
             // 
             miniTableFluorLines.AllowVerticalScroll = true;
             miniTableFluorLines.AutoFitHeight = true;
-            miniTableFluorLines.ColumnHeadersHeight = 26;
+            miniTableFluorLines.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             miniTableFluorLines.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { colFlElem, colFlLine, colFlE, colFlRelI, colFlOmega });
             resources.ApplyResources(miniTableFluorLines, "miniTableFluorLines");
             miniTableFluorLines.Name = "miniTableFluorLines";
