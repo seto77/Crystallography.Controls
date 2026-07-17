@@ -1625,11 +1625,16 @@ public partial class FormGroupRelations : FormBase
         }
 
         // 260713Cl (Elements/Positions): 上部ラベル帯を空け、その下を左=対称要素図・右=一般位置図に 2 分割する (ITA の空間群図と同じ並び)。
-        int topBand = 40, gap = 10;
+        // 260717Cl: 小見出し帯 (capBand) を図レイヤ領域から分離。F 格子 (halfQuadrant) ではレイヤ内 (0,2) に
+        // "Upper left quadrant only" ラベルが描かれ、topBand+2 の小見出しと完全に重なっていたため。
+        int topBand = 40, gap = 10, capBand = 18;
         int halfW = (w - gap) / 2;
-        int diagH = Math.Max(50, h - topBand);
-        var leftRect = new Rectangle(0, topBand, Math.Max(20, halfW), diagH);
-        var rightRect = new Rectangle(halfW + gap, topBand, Math.Max(20, w - halfW - gap), diagH);
+        // int diagH = Math.Max(50, h - topBand); // 旧: 小見出しと図レイヤが同じ矩形を共有
+        // var leftRect = new Rectangle(0, topBand, Math.Max(20, halfW), diagH);
+        // var rightRect = new Rectangle(halfW + gap, topBand, Math.Max(20, w - halfW - gap), diagH);
+        int diagH = Math.Max(50, h - topBand - capBand);
+        var leftRect = new Rectangle(0, topBand + capBand, Math.Max(20, halfW), diagH);
+        var rightRect = new Rectangle(halfW + gap, topBand + capBand, Math.Max(20, w - halfW - gap), diagH);
 
         // --- 左: 対称要素 (retained=黒 / lost=黄) --- 260713Cl 追加 (左右分割)
         if (sameCell)
