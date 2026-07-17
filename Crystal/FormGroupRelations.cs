@@ -12,7 +12,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging; // 260713Cl 追加 (③-2): ColorMatrix/ImageAttributes で lost/retained ティント
 using System.Linq;
-using System.Text;
+//using System.Text; // 260717Cl: FillDomainsTab の StringBuilder 廃止 (DomainHeader 集約) で未使用化
 using System.Threading.Tasks; // 260705Cl 追加: 超群索引のバックグラウンド構築
 using System.Windows.Forms;
 using static Crystallography.Localization; // コード側多言語化 Loc() (方式②)
@@ -61,6 +61,11 @@ public partial class FormGroupRelations : FormBase
     private bool _isoFailed;
     private int _isoGeneration; // 世代ガード (スピナー連打・ナビゲーション競合で古い結果を捨てる)
     private readonly Timer _isoDebounce = new() { Interval = 300 }; // スピナー変更の debounce (codex R11)
+
+    /// <summary>260717Cl 追加: StartIsoComputation のバックグラウンド計算結果 (軌道表 + 高指数拡張)。
+    /// 旧: Tuple.Create による Tuple (Item1/Item2 参照)。名前付き record へ現代化 (ComputeThenApplyOnUi の
+    /// class 制約は record class が満たす)。</summary>
+    private sealed record IsoResult(int[] Orbits, List<(GroupRelation Rel, int Orbit)> Extra);
 
     // グラフのヒットテスト用ノード矩形 (画面座標) と対応 series。
     //private readonly List<(Rectangle Rect, int Series)> _graphNodes = []; // 260709Cl: k-/isomorphic 辺の追加に伴い GraphNode へ拡張。
@@ -301,7 +306,8 @@ public partial class FormGroupRelations : FormBase
                 foreach (var r in rels)
                     extra.Add((r, orbs[r.ConjugacyClassId]));
             }
-            return Tuple.Create(orbits, extra);
+            //return Tuple.Create(orbits, extra);
+            return new IsoResult(orbits, extra); // 260717Cl: Tuple → 名前付き record
         }, result =>
         {
             if (gen != _isoGeneration || IsDisposed || _currentSeries != sn)
@@ -313,8 +319,10 @@ public partial class FormGroupRelations : FormBase
             }
             else
             {
-                _isoOrbits = result.Item1;
-                _isoExtra.AddRange(result.Item2);
+                //_isoOrbits = result.Item1;
+                //_isoExtra.AddRange(result.Item2);
+                _isoOrbits = result.Orbits;      // 260717Cl: Item1/Item2 → record プロパティ
+                _isoExtra.AddRange(result.Extra);
             }
             if (Visible)
                 BuildTree();
@@ -466,7 +474,8 @@ public partial class FormGroupRelations : FormBase
         else
             foreach (var s in kOnly)
                 kNode.Nodes.Add(MakeSubNode(s));
-        var iNode = subRoot.Nodes.Add(Loc(en: "isomorphic (series)", ja: "同型 (系列)", de: "isomorph (Serie)", fr: "isomorphes (série)", es: "isomorfos (serie)", pt: "isomorfos (série)", it: "isomorfi (serie)", ru: "изоморфные (серия)", zhHans: "同型 (系列)", zhHant: "同型 (系列)", ko: "동형 (계열)"));
+        string isoSeriesLabel = Loc(en: "isomorphic (series)", ja: "同型 (系列)", de: "isomorph (Serie)", fr: "isomorphes (série)", es: "isomorfos (serie)", pt: "isomorfos (série)", it: "isomorfi (serie)", ru: "изоморфные (серия)", zhHans: "同型 (系列)", zhHant: "同型 (系列)", ko: "동형 (계열)"); // 260717Cl: 部分群側/超群側で一字一句重複していた 11 言語 Loc を共有
+        var iNode = subRoot.Nodes.Add(isoSeriesLabel);
         //iNode.Nodes.Add(PendingNode()); // 260708Cl: 実データ化
         // 260709Cl (Phase 3): スピナー (numericIsoMax、2〜27) による高指数拡張と、normalizer 軌道 (系列) ごとの
         // 2 階層表示を実データ化 (R7 の保留を解除。軌道束ね = Phase 2 GetNormalizerOrbits(At)、codex R9-R11)。
@@ -530,7 +539,7 @@ public partial class FormGroupRelations : FormBase
         //ksNode.Nodes.Add(PendingNode()); // 260708Cl: 実データ化 (Phase 2d 後段、KSubgroupFinder.GetMinimalKSupergroups 逆引き)
         // 260709Cl: _ksupers には Kind=K と Kind=Isomorphic が混在する (GetMinimalKSupergroups は同型を含む逆引き)。
         // 部分群側と同様に isomorphic を専用枝へ分離する (Diagram の i ラベルとの分類整合。codex 相談 R8)。
-        var isSupNode = superRoot.Nodes.Add(Loc(en: "isomorphic (series)", ja: "同型 (系列)", de: "isomorph (Serie)", fr: "isomorphes (série)", es: "isomorfos (serie)", pt: "isomorfos (série)", it: "isomorfi (serie)", ru: "изоморфные (серия)", zhHans: "同型 (系列)", zhHant: "同型 (系列)", ko: "동형 (계열)"));
+        var isSupNode = superRoot.Nodes.Add(isoSeriesLabel); // 260717Cl: 重複 Loc を共有 (上記 isoSeriesLabel)
         if (_ksupersPending)
         {
             ksNode.Nodes.Add(ComputingNode());
@@ -598,9 +607,11 @@ public partial class FormGroupRelations : FormBase
 
     // 260708Cl: 全カテゴリ (t/k/isomorphic 部分群・t/k 超群) が実データ化され、プレースホルダは不要になったため削除。
     //private TreeNode PendingNode() => new(Loc(en: "Phase 2 data pending", ja: "Phase 2 データ待ち", de: "Phase-2-Daten ausstehend", fr: "Données Phase 2 à venir", es: "Datos de Fase 2 pendientes", pt: "Dados da Fase 2 pendentes", it: "Dati Fase 2 in attesa", ru: "Данные фазы 2 ожидаются", zhHans: "Phase 2 数据待补", zhHant: "Phase 2 資料待補", ko: "Phase 2 데이터 대기")) { ForeColor = SystemColors.GrayText };
-    private TreeNode NoneNode() => new(Loc(en: "none", ja: "なし", de: "keine", fr: "aucun", es: "ninguno", pt: "nenhum", it: "nessuno", ru: "нет", zhHans: "无", zhHant: "無", ko: "없음")) { ForeColor = SystemColors.GrayText };
-    private TreeNode ComputingNode() => new(Loc(en: "computing…", ja: "計算中…", de: "wird berechnet…", fr: "calcul en cours…", es: "calculando…", pt: "calculando…", it: "calcolo in corso…", ru: "вычисляется…", zhHans: "计算中…", zhHant: "計算中…", ko: "계산 중…")) { ForeColor = SystemColors.GrayText }; // 260705Cl 追加
-    private TreeNode FailedNode() => new(Loc(en: "computation failed", ja: "計算に失敗しました", de: "Berechnung fehlgeschlagen", fr: "échec du calcul", es: "el cálculo falló", pt: "o cálculo falhou", it: "calcolo non riuscito", ru: "вычисление не удалось", zhHans: "计算失败", zhHant: "計算失敗", ko: "계산 실패")) { ForeColor = SystemColors.GrayText }; // 260709Cl 追加 (codex R11: 失敗を空集合と区別)
+    private static TreeNode NoneNode() => new(Loc(en: "none", ja: "なし", de: "keine", fr: "aucun", es: "ninguno", pt: "nenhum", it: "nessuno", ru: "нет", zhHans: "无", zhHant: "無", ko: "없음")) { ForeColor = SystemColors.GrayText }; // 260717Cl: static 化 (インスタンス状態不使用)
+    /// <summary>260717Cl 追加: 「計算中…」文言。ComputingNode と DrawGraph の k-超群構築中注記で共有 (旧: 同一 Loc が 2 箇所に重複)。</summary>
+    private static string ComputingText => Loc(en: "computing…", ja: "計算中…", de: "wird berechnet…", fr: "calcul en cours…", es: "calculando…", pt: "calculando…", it: "calcolo in corso…", ru: "вычисляется…", zhHans: "计算中…", zhHant: "計算中…", ko: "계산 중…");
+    private static TreeNode ComputingNode() => new(ComputingText) { ForeColor = SystemColors.GrayText }; // 260705Cl 追加 (260717Cl: 文言を ComputingText へ・static 化)
+    private static TreeNode FailedNode() => new(Loc(en: "computation failed", ja: "計算に失敗しました", de: "Berechnung fehlgeschlagen", fr: "échec du calcul", es: "el cálculo falló", pt: "o cálculo falhou", it: "calcolo non riuscito", ru: "вычисление не удалось", zhHans: "计算失败", zhHant: "計算失敗", ko: "계산 실패")) { ForeColor = SystemColors.GrayText }; // 260709Cl 追加 (codex R11: 失敗を空集合と区別) (260717Cl: static 化)
 
     private enum NodeKind { Subgroup, Supergroup }
     private sealed class NodeTag
@@ -773,6 +784,18 @@ public partial class FormGroupRelations : FormBase
         miniTableOrbit.SetRows(rows);
     }
 
+    /// <summary>260717Cl 追加 (/simplify): Domains タブ冒頭の「ドメイン状態: Total/orientation/antiphase」ヘッダ。
+    /// 旧: k-/t- 両分岐が同一の 11 言語 Loc 3 連を StringBuilder でそれぞれ構築していた (文言はここへ移設)。</summary>
+    private static string DomainHeader(int total, int orientation, int antiphase)
+        => Loc(en: "Domain states on this transition:", ja: "この転移でのドメイン状態:", de: "Domänenzustände bei diesem Übergang:", fr: "États de domaine pour cette transition :", es: "Estados de dominio en esta transición:", pt: "Estados de domínio nesta transição:", it: "Stati di dominio in questa transizione:", ru: "Доменные состояния при этом переходе:", zhHans: "此相变的畴态:", zhHant: "此相變的疇態:", ko: "이 전이의 도메인 상태:") + Environment.NewLine +
+           $"   {Loc(en: "Total", ja: "総数", de: "Gesamt", fr: "Total", es: "Total", pt: "Total", it: "Totale", ru: "Всего", zhHans: "总数", zhHant: "總數", ko: "전체")} = {total}      " +
+           $"{Loc(en: "orientation", ja: "方位", de: "Orientierung", fr: "orientation", es: "orientación", pt: "orientação", it: "orientazione", ru: "ориентация", zhHans: "取向", zhHant: "取向", ko: "방위")} = {orientation}      " +
+           $"{Loc(en: "antiphase", ja: "反位相", de: "Antiphase", fr: "antiphase", es: "antifase", pt: "antifase", it: "antifase", ru: "антифаза", zhHans: "反相", zhHant: "反相", ko: "반위상")} = {antiphase}";
+
+    /// <summary>260717Cl 追加 (/simplify): 双晶/反位相テーブルの「(単一ドメイン)」行 (k-/t- 両分岐で重複していた Loc を共有)。</summary>
+    private static object[] SingleDomainRow()
+        => [Loc(en: "(single domain)", ja: "(単一ドメイン)", de: "(Einzeldomäne)", fr: "(domaine unique)", es: "(dominio único)", pt: "(domínio único)", it: "(dominio singolo)", ru: "(один домен)", zhHans: "(单畴)", zhHant: "(單疇)", ko: "(단일 도메인)"), ""];
+
     private void FillDomainsTab(GroupRelation s)
     {
         // 260708Cl (Phase 2d): k- (klassengleiche) は点群が変わらないため方位 (双晶) ドメインは常に 1。
@@ -782,14 +805,9 @@ public partial class FormGroupRelations : FormBase
         if (s.Kind != GroupRelationKind.T) // 260708Cl: Isomorphic も k ロジック (旧: == GroupRelationKind.K)
         {
             int totalK = s.Index;
-            var sbK = new StringBuilder();
-            sbK.AppendLine(Loc(en: "Domain states on this transition:", ja: "この転移でのドメイン状態:", de: "Domänenzustände bei diesem Übergang:", fr: "États de domaine pour cette transition :", es: "Estados de dominio en esta transición:", pt: "Estados de domínio nesta transição:", it: "Stati di dominio in questa transizione:", ru: "Доменные состояния при этом переходе:", zhHans: "此相变的畴态:", zhHant: "此相變的疇態:", ko: "이 전이의 도메인 상태:"));
-            sbK.AppendLine($"   {Loc(en: "Total", ja: "総数", de: "Gesamt", fr: "Total", es: "Total", pt: "Total", it: "Totale", ru: "Всего", zhHans: "总数", zhHant: "總數", ko: "전체")} = {totalK}      " +
-                           $"{Loc(en: "orientation", ja: "方位", de: "Orientierung", fr: "orientation", es: "orientación", pt: "orientação", it: "orientazione", ru: "ориентация", zhHans: "取向", zhHant: "取向", ko: "방위")} = 1      " +
-                           $"{Loc(en: "antiphase", ja: "反位相", de: "Antiphase", fr: "antiphase", es: "antifase", pt: "antifase", it: "antifase", ru: "антифаза", zhHans: "反相", zhHant: "反相", ko: "반위상")} = {totalK}");
-            sbK.AppendLine();
-            sbK.Append(Loc(en: "Antiphase (translation) domains are related by the lattice translations lost in the subgroup; they keep the same orientation, so the fundamental reflections coincide while the superlattice reflections interfere.", ja: "反位相 (並進) ドメインは、部分群で失われた格子並進によって関係づけられます。方位は同一なので基本反射は重なり合い、超格子反射で位相が干渉します。", de: "Antiphasen- (Translations-)Domänen sind durch die in der Untergruppe verlorenen Gittertranslationen verbunden; sie behalten dieselbe Orientierung, sodass die Grundreflexe zusammenfallen, während die Überstrukturreflexe interferieren.", fr: "Les domaines d'antiphase (de translation) sont reliés par les translations de réseau perdues dans le sous-groupe ; ils conservent la même orientation, de sorte que les réflexions fondamentales coïncident tandis que les réflexions de surstructure interfèrent.", es: "Los dominios de antifase (de traslación) están relacionados por las traslaciones de red perdidas en el subgrupo; mantienen la misma orientación, por lo que las reflexiones fundamentales coinciden mientras que las reflexiones de superestructura interfieren.", pt: "Os domínios de antifase (de translação) estão relacionados pelas translações de rede perdidas no subgrupo; mantêm a mesma orientação, de modo que as reflexões fundamentais coincidem enquanto as reflexões de superestrutura interferem.", it: "I domini di antifase (di traslazione) sono legati dalle traslazioni reticolari perse nel sottogruppo; mantengono la stessa orientazione, quindi le riflessioni fondamentali coincidono mentre le riflessioni di superstruttura interferiscono.", ru: "Антифазные (трансляционные) домены связаны трансляциями решётки, утраченными в подгруппе; они сохраняют одинаковую ориентацию, поэтому основные рефлексы совпадают, а сверхструктурные отражения интерферируют.", zhHans: "反相 (平移) 畴由子群中失去的点阵平移相联系；它们取向相同，故基本反射重合，而超结构反射发生干涉。", zhHant: "反相 (平移) 疇由子群中失去的點陣平移相聯繫；它們取向相同，故基本反射重合，而超結構反射發生干涉。", ko: "반위상 (병진) 도메인은 부분군에서 잃어버린 격자 병진으로 연결됩니다. 방위가 동일하므로 기본 반사는 겹치지만 초격자 반사에서 위상이 간섭합니다."));
-            labelDomains.Text = sbK.ToString();
+            // 260717Cl (/simplify): StringBuilder による同一ヘッダ構築 (t- 分岐と重複) を DomainHeader へ集約。
+            labelDomains.Text = DomainHeader(totalK, 1, totalK) + Environment.NewLine + Environment.NewLine +
+                Loc(en: "Antiphase (translation) domains are related by the lattice translations lost in the subgroup; they keep the same orientation, so the fundamental reflections coincide while the superlattice reflections interfere.", ja: "反位相 (並進) ドメインは、部分群で失われた格子並進によって関係づけられます。方位は同一なので基本反射は重なり合い、超格子反射で位相が干渉します。", de: "Antiphasen- (Translations-)Domänen sind durch die in der Untergruppe verlorenen Gittertranslationen verbunden; sie behalten dieselbe Orientierung, sodass die Grundreflexe zusammenfallen, während die Überstrukturreflexe interferieren.", fr: "Les domaines d'antiphase (de translation) sont reliés par les translations de réseau perdues dans le sous-groupe ; ils conservent la même orientation, de sorte que les réflexions fondamentales coïncident tandis que les réflexions de surstructure interfèrent.", es: "Los dominios de antifase (de traslación) están relacionados por las traslaciones de red perdidas en el subgrupo; mantienen la misma orientación, por lo que las reflexiones fundamentales coinciden mientras que las reflexiones de superestructura interfieren.", pt: "Os domínios de antifase (de translação) estão relacionados pelas translações de rede perdidas no subgrupo; mantêm a mesma orientação, de modo que as reflexões fundamentais coincidem enquanto as reflexões de superestrutura interferem.", it: "I domini di antifase (di traslazione) sono legati dalle traslazioni reticolari perse nel sottogruppo; mantengono la stessa orientazione, quindi le riflessioni fondamentali coincidono mentre le riflessioni di superstruttura interferiscono.", ru: "Антифазные (трансляционные) домены связаны трансляциями решётки, утраченными в подгруппе; они сохраняют одинаковую ориентацию, поэтому основные рефлексы совпадают, а сверхструктурные отражения интерферируют.", zhHans: "反相 (平移) 畴由子群中失去的点阵平移相联系；它们取向相同，故基本反射重合，而超结构反射发生干涉。", zhHant: "反相 (平移) 疇由子群中失去的點陣平移相聯繫；它們取向相同，故基本反射重合，而超結構反射發生干涉。", ko: "반위상 (병진) 도메인은 부분군에서 잃어버린 격자 병진으로 연결됩니다. 방위가 동일하므로 기본 반사는 겹치지만 초격자 반사에서 위상이 간섭합니다.");
 
             var rowsK = new List<object[]>();
             //foreach (var op in s.CosetRepresentatives)
@@ -811,7 +829,7 @@ public partial class FormGroupRelations : FormBase
                 rowsK.Add([seitz, desc]);
             }
             if (rowsK.Count == 0)
-                rowsK.Add([Loc(en: "(single domain)", ja: "(単一ドメイン)", de: "(Einzeldomäne)", fr: "(domaine unique)", es: "(dominio único)", pt: "(domínio único)", it: "(dominio singolo)", ru: "(один домен)", zhHans: "(单畴)", zhHant: "(單疇)", ko: "(단일 도메인)"), ""]);
+                rowsK.Add(SingleDomainRow()); // 260717Cl: t- 分岐と重複していた Loc を共有
             miniTableTwins.SetRows(rowsK);
             return;
         }
@@ -830,21 +848,16 @@ public partial class FormGroupRelations : FormBase
         int orientation = total;                             // t では全状態が方位 (双晶) 状態
         int translation = 1;                                 // 反位相 (並進) 状態は t では常に 1
 
-        var sb = new StringBuilder();
-        sb.AppendLine(Loc(en: "Domain states on this transition:", ja: "この転移でのドメイン状態:", de: "Domänenzustände bei diesem Übergang:", fr: "États de domaine pour cette transition :", es: "Estados de dominio en esta transición:", pt: "Estados de domínio nesta transição:", it: "Stati di dominio in questa transizione:", ru: "Доменные состояния при этом переходе:", zhHans: "此相变的畴态:", zhHant: "此相變的疇態:", ko: "이 전이의 도메인 상태:"));
-        sb.AppendLine($"   {Loc(en: "Total", ja: "総数", de: "Gesamt", fr: "Total", es: "Total", pt: "Total", it: "Totale", ru: "Всего", zhHans: "总数", zhHant: "總數", ko: "전체")} = {total}      " +
-                      $"{Loc(en: "orientation", ja: "方位", de: "Orientierung", fr: "orientation", es: "orientación", pt: "orientação", it: "orientazione", ru: "ориентация", zhHans: "取向", zhHant: "取向", ko: "방위")} = {orientation}      " +
-                      $"{Loc(en: "antiphase", ja: "反位相", de: "Antiphase", fr: "antiphase", es: "antifase", pt: "antifase", it: "antifase", ru: "антифаза", zhHans: "反相", zhHant: "反相", ko: "반위상")} = {translation}");
-        sb.AppendLine();
-        sb.Append(Loc(en: "Twin laws below are the reciprocal-space rotations that overlap the diffraction patterns of orientation domains.", ja: "下の双晶則は、方位ドメインの回折図形を重ねる逆空間回転です。", de: "Die Zwillingsgesetze unten sind die reziproken Rotationen, die die Beugungsbilder der Orientierungsdomänen überlagern.", fr: "Les lois de macle ci-dessous sont les rotations en espace réciproque qui superposent les clichés de diffraction des domaines d'orientation.", es: "Las leyes de macla siguientes son las rotaciones en espacio recíproco que superponen los patrones de difracción de los dominios de orientación.", pt: "As leis de geminação abaixo são as rotações no espaço recíproco que sobrepõem os padrões de difração dos domínios de orientação.", it: "Le leggi di geminazione sotto sono le rotazioni nello spazio reciproco che sovrappongono i pattern di diffrazione dei domini di orientazione.", ru: "Законы двойникования ниже — повороты в обратном пространстве, совмещающие дифракционные картины ориентационных доменов.", zhHans: "下方双晶律是使取向畴衍射图样重叠的倒易空间旋转。", zhHant: "下方雙晶律是使取向疇繞射圖樣重疊的倒易空間旋轉。", ko: "아래 쌍정 법칙은 방위 도메인의 회절 도형을 겹치는 역공간 회전입니다."));
-        labelDomains.Text = sb.ToString();
+        // 260717Cl (/simplify): StringBuilder による同一ヘッダ構築 (k- 分岐と重複) を DomainHeader へ集約。
+        labelDomains.Text = DomainHeader(total, orientation, translation) + Environment.NewLine + Environment.NewLine +
+            Loc(en: "Twin laws below are the reciprocal-space rotations that overlap the diffraction patterns of orientation domains.", ja: "下の双晶則は、方位ドメインの回折図形を重ねる逆空間回転です。", de: "Die Zwillingsgesetze unten sind die reziproken Rotationen, die die Beugungsbilder der Orientierungsdomänen überlagern.", fr: "Les lois de macle ci-dessous sont les rotations en espace réciproque qui superposent les clichés de diffraction des domaines d'orientation.", es: "Las leyes de macla siguientes son las rotaciones en espacio recíproco que superponen los patrones de difracción de los dominios de orientación.", pt: "As leis de geminação abaixo são as rotações no espaço recíproco que sobrepõem os padrões de difração dos domínios de orientação.", it: "Le leggi di geminazione sotto sono le rotazioni nello spazio reciproco che sovrappongono i pattern di diffrazione dei domini di orientazione.", ru: "Законы двойникования ниже — повороты в обратном пространстве, совмещающие дифракционные картины ориентационных доменов.", zhHans: "下方双晶律是使取向畴衍射图样重叠的倒易空间旋转。", zhHant: "下方雙晶律是使取向疇繞射圖樣重疊的倒易空間旋轉。", ko: "아래 쌍정 법칙은 방위 도메인의 회절 도형을 겹치는 역공간 회전입니다.");
 
         var rows = new List<object[]>();
         foreach (var op in s.CosetRepresentatives)
             //rows.Add([FormSymmetryInformation.SeitzToLatex(SeitzNotation.Seitz(op)), SeitzNotation.GeometricType(op)]); // 260708Ch: SeitzNotation.SeitzLatex に一本化 (構造化データから直接生成)
             rows.Add([SeitzNotation.SeitzLatex(op), SeitzNotation.GeometricType(op)]); // 260708Ch
         if (rows.Count == 0)
-            rows.Add([Loc(en: "(single domain)", ja: "(単一ドメイン)", de: "(Einzeldomäne)", fr: "(domaine unique)", es: "(dominio único)", pt: "(domínio único)", it: "(dominio singolo)", ru: "(один домен)", zhHans: "(单畴)", zhHant: "(單疇)", ko: "(단일 도메인)"), ""]);
+            rows.Add(SingleDomainRow()); // 260717Cl: k- 分岐と重複していた Loc を共有
         miniTableTwins.SetRows(rows);
     }
 
@@ -897,21 +910,50 @@ public partial class FormGroupRelations : FormBase
     #endregion
 
     #region Bärnighausen グラフ (Diagram タブ)
+    // 260717Cl (/simplify): Diagram / Point groups / Elements の 3 箇所に重複していたオフスクリーン描画の
+    // 足場 (Bitmap 生成→AntiAlias→白クリア→描画→Image 差し替え→旧 Image Dispose) を RenderToPictureBox へ集約。
+    //private void RenderGraph()
+    //{
+    //    int w = Math.Max(50, pictureBoxGraph.ClientSize.Width);
+    //    int h = Math.Max(50, pictureBoxGraph.ClientSize.Height);
+    //    var bmp = new Bitmap(w, h);
+    //    _graphNodes.Clear();
+    //    using (var g = Graphics.FromImage(bmp))
+    //    {
+    //        g.SmoothingMode = SmoothingMode.AntiAlias;
+    //        g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+    //        g.Clear(Color.White);
+    //        DrawGraph(g, w, h);
+    //    }
+    //    var old = pictureBoxGraph.Image;
+    //    pictureBoxGraph.Image = bmp;
+    //    old?.Dispose();
+    //}
     private void RenderGraph()
     {
-        int w = Math.Max(50, pictureBoxGraph.ClientSize.Width);
-        int h = Math.Max(50, pictureBoxGraph.ClientSize.Height);
-        var bmp = new Bitmap(w, h);
         _graphNodes.Clear();
+        RenderToPictureBox(pictureBoxGraph, DrawGraph, clearTypeText: true);
+    }
+
+    /// <summary>260717Cl 追加 (/simplify): PictureBox へのオフスクリーン描画の共通足場。白背景 + AntiAlias で
+    /// <paramref name="draw"/>(g, w, h) を 1 パス描き、Image を差し替えて旧 Image を破棄する。
+    /// <paramref name="clearTypeText"/> は GDI テキストを ClearType で描くタブ (Diagram / Point groups) 用
+    /// (Elements タブはレイヤ合成のため従来どおり既定のまま)。</summary>
+    private static void RenderToPictureBox(PictureBox box, Action<Graphics, int, int> draw, bool clearTypeText = false)
+    {
+        int w = Math.Max(50, box.ClientSize.Width);
+        int h = Math.Max(50, box.ClientSize.Height);
+        var bmp = new Bitmap(w, h);
         using (var g = Graphics.FromImage(bmp))
         {
             g.SmoothingMode = SmoothingMode.AntiAlias;
-            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            if (clearTypeText)
+                g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
             g.Clear(Color.White);
-            DrawGraph(g, w, h);
+            draw(g, w, h);
         }
-        var old = pictureBoxGraph.Image;
-        pictureBoxGraph.Image = bmp;
+        var old = box.Image;
+        box.Image = bmp;
         old?.Dispose();
     }
 
@@ -1086,7 +1128,7 @@ public partial class FormGroupRelations : FormBase
             using var pen = new Pen(Color.FromArgb(110, KindColor(kind)), 1.4f);
             using var fg = new SolidBrush(KindColor(kind));
             var (a, b) = toCurrent ? (nodeCenter, Center(curRect)) : (Center(curRect), nodeCenter);
-            DrawEdge(g, pen, a, b);
+            g.DrawLine(pen, a, b); // 260717Cl: 素通しヘルパー DrawEdge をインライン化
             // 非共役類を集約したノードは類数を添える (×n は ConjugateCount と紛れるため「n cls」表記、codex R8)。
             string label = $"{KindChar(kind)}{group[0].Index}" + (group.Count > 1 ? $" ·{group.Count}{Loc(en: "cls", ja: "類", de: "Kl.", fr: "cl.", es: "cl.", pt: "cl.", it: "cl.", ru: "кл.", zhHans: "类", zhHant: "類", ko: "류")}" : "");
             DrawEdgeLabel(g, edgeFont, fg, labelBg, Mid(a, b), label);
@@ -1138,7 +1180,7 @@ public partial class FormGroupRelations : FormBase
                 var parentRect = superRects[pi];
                 // 親→現在の辺 (既存の細い辺の上へ強調重ね描き)
                 var viaLast = branch[^1].Via;
-                DrawEdge(g, pathEdge, Center(parentRect), Center(curRect));
+                g.DrawLine(pathEdge, Center(parentRect), Center(curRect)); // 260717Cl: DrawEdge インライン化
                 DrawEdgeLabel(g, edgeFont, pathFg, labelBg, Mid(Center(parentRect), Center(curRect)), $"{KindChar(viaLast.Kind)}{viaLast.Index}");
                 using (var pp = Rounded(parentRect, 8))
                     g.DrawPath(pathPen, pp);
@@ -1148,7 +1190,7 @@ public partial class FormGroupRelations : FormBase
                 {
                     var (ancSeries, ancVia) = branch[branch.Count - 2 - a];
                     var rect = NodeRect(Center(parentRect).X, RowY(ancShown - 1 - a), nodeSize);
-                    DrawEdge(g, pathEdge, Center(rect), Center(below));
+                    g.DrawLine(pathEdge, Center(rect), Center(below)); // 260717Cl: DrawEdge インライン化
                     DrawEdgeLabel(g, edgeFont, pathFg, labelBg, Mid(Center(rect), Center(below)), $"{KindChar(ancVia.Kind)}{ancVia.Index}");
                     DrawNode(g, rect, SymmetryStatic.Symmetries[ancSeries], false, false, ancSeries);
                     using (var ap = Rounded(rect, 8))
@@ -1180,7 +1222,7 @@ public partial class FormGroupRelations : FormBase
         // k-超群がバックグラウンド構築中なら右上に注記 (完了時に ComputeThenApplyOnUi 経由で再描画される)
         if (_ksupersPending)
         {
-            string note = "k: " + Loc(en: "computing…", ja: "計算中…", de: "wird berechnet…", fr: "calcul en cours…", es: "calculando…", pt: "calculando…", it: "calcolo in corso…", ru: "вычисляется…", zhHans: "计算中…", zhHant: "計算中…", ko: "계산 중…");
+            string note = "k: " + ComputingText; // 260717Cl: ComputingNode と重複していた Loc を共有
             var sz = g.MeasureString(note, noteFont);
             g.DrawString(note, noteFont, noteFg, w - sz.Width - 6, 4);
         }
@@ -1198,7 +1240,7 @@ public partial class FormGroupRelations : FormBase
         g.DrawString($"+{count}", font, fg, (RectangleF)rect, sf);
     }
 
-    private List<Rectangle> SpreadRects(int count, int w, int y, Size size)
+    private static List<Rectangle> SpreadRects(int count, int w, int y, Size size) // 260717Cl: static 化 (インスタンス状態不使用)
     {
         var list = new List<Rectangle>();
         if (count == 0) return list;
@@ -1216,7 +1258,7 @@ public partial class FormGroupRelations : FormBase
     private static Point Center(Rectangle r) => new(r.X + r.Width / 2, r.Y + r.Height / 2);
     private static Point Mid(Point a, Point b) => new((a.X + b.X) / 2, (a.Y + b.Y) / 2);
 
-    private static void DrawEdge(Graphics g, Pen pen, Point a, Point b) => g.DrawLine(pen, a, b);
+    //private static void DrawEdge(Graphics g, Pen pen, Point a, Point b) => g.DrawLine(pen, a, b); // 260717Cl: BCL 呼び出しに何も足さない素通しヘルパーだったためインライン化
     private static void DrawEdgeLabel(Graphics g, Font f, Brush fg, Brush bg, Point at, string text)
     {
         var sz = g.MeasureString(text, f);
@@ -1387,44 +1429,51 @@ public partial class FormGroupRelations : FormBase
     /// <summary>focus 型の下位集合 (部分群型) と上位集合 (超群型) を被覆辺の推移閉包で求める (どちらも focus 自身を含む)。</summary>
     internal static (HashSet<string> Down, HashSet<string> Up) PointGroupClosure(string focus)
     {
-        var down = new HashSet<string> { focus };
-        var q = new Queue<string>(down);
-        while (q.Count > 0)
+        // 260717Cl (/simplify): down/up で辺の向きだけが違う同型 BFS 2 連を方向引数付きローカル関数へ集約。
+        //var down = new HashSet<string> { focus };
+        //var q = new Queue<string>(down);
+        //while (q.Count > 0)
+        //{
+        //    var x = q.Dequeue();
+        //    foreach (var e in PointGroupCatalog.CoverEdges)
+        //        if (e.Parent == x && down.Add(e.Child))
+        //            q.Enqueue(e.Child);
+        //}
+        //var up = new HashSet<string> { focus };
+        //q = new Queue<string>(up);
+        //while (q.Count > 0)
+        //{
+        //    var x = q.Dequeue();
+        //    foreach (var e in PointGroupCatalog.CoverEdges)
+        //        if (e.Child == x && up.Add(e.Parent))
+        //            q.Enqueue(e.Parent);
+        //}
+        //return (down, up);
+        HashSet<string> Reach(bool down)
         {
-            var x = q.Dequeue();
-            foreach (var e in PointGroupCatalog.CoverEdges)
-                if (e.Parent == x && down.Add(e.Child))
-                    q.Enqueue(e.Child);
+            var set = new HashSet<string> { focus };
+            var q = new Queue<string>(set);
+            while (q.Count > 0)
+            {
+                var x = q.Dequeue();
+                foreach (var e in PointGroupCatalog.CoverEdges)
+                {
+                    var (from, to) = down ? (e.Parent, e.Child) : (e.Child, e.Parent);
+                    if (from == x && set.Add(to))
+                        q.Enqueue(to);
+                }
+            }
+            return set;
         }
-        var up = new HashSet<string> { focus };
-        q = new Queue<string>(up);
-        while (q.Count > 0)
-        {
-            var x = q.Dequeue();
-            foreach (var e in PointGroupCatalog.CoverEdges)
-                if (e.Child == x && up.Add(e.Parent))
-                    q.Enqueue(e.Parent);
-        }
-        return (down, up);
+        return (Reach(down: true), Reach(down: false));
     }
 
     private void RenderPointGroups()
     {
         if (_currentSeries < 0) return;
-        int w = Math.Max(50, pictureBoxPointGroups.ClientSize.Width);
-        int h = Math.Max(50, pictureBoxPointGroups.ClientSize.Height);
-        var bmp = new Bitmap(w, h);
+        // 260717Cl (/simplify): 描画足場を RenderToPictureBox へ集約 (旧: RenderGraph と同型の Bitmap/Graphics 構築)。
         _pgNodes.Clear();
-        using (var g = Graphics.FromImage(bmp))
-        {
-            g.SmoothingMode = SmoothingMode.AntiAlias;
-            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
-            g.Clear(Color.White);
-            DrawPointGroups(g, w, h);
-        }
-        var old = pictureBoxPointGroups.Image;
-        pictureBoxPointGroups.Image = bmp;
-        old?.Dispose();
+        RenderToPictureBox(pictureBoxPointGroups, DrawPointGroups, clearTypeText: true);
     }
 
     private void DrawPointGroups(Graphics g, int w, int h)
@@ -1557,21 +1606,12 @@ public partial class FormGroupRelations : FormBase
     // ];
 
     private void RenderElements()
-    {
-        int w = Math.Max(50, pictureBoxElements.ClientSize.Width);
-        int h = Math.Max(50, pictureBoxElements.ClientSize.Height);
-        var bmp = new Bitmap(w, h);
-        using (var g = Graphics.FromImage(bmp))
+        // 260717Cl (/simplify): 描画足場を RenderToPictureBox へ集約 (旧: RenderGraph と同型の Bitmap/Graphics 構築)。
+        => RenderToPictureBox(pictureBoxElements, (g, w, h) =>
         {
-            g.SmoothingMode = SmoothingMode.AntiAlias;
-            g.Clear(Color.White);
             try { DrawElements(g, w, h); }
             catch (Exception ex) { DrawElementsCenteredNote(g, new RectangleF(0, 0, w, h), "render error: " + ex.Message, Color.FromArgb(160, 60, 60)); } // 260713Cl: 例外を空白でなく可視化
-        }
-        var old = pictureBoxElements.Image;
-        pictureBoxElements.Image = bmp;
-        old?.Dispose();
-    }
+        });
 
     private void DrawElements(Graphics g, int w, int h)
     {
@@ -1709,15 +1749,16 @@ public partial class FormGroupRelations : FormBase
         string projName = axis switch { ProjectionAxis.A => "a", ProjectionAxis.B => "b", _ => "c" };
         string parentName = SeitzNotation.PrettyHM(parentSym.SpaceGroupHMStr);
         string childName = s.ChildSeriesNumber >= 0 ? SeitzNotation.PrettyHM(s.ChildLabel) : s.PointGroupHM;
-        char kindChar = s.Kind switch { GroupRelationKind.K => 'k', GroupRelationKind.Isomorphic => 'i', _ => 't' }; // 260713Cl: 関係種別 (旧: t 固定)
+        char kindChar = KindChar(s.Kind); // 260713Cl: 関係種別 (旧: t 固定)。260717Cl: KindChar と重複した switch を統合
         g.DrawString($"{parentName}  →  {childName}    ·    {kindChar}{s.Index}    ·    ⟂ {projName}", titleFont, titleFg, 6, 5);
         // 凡例スウォッチ
         float lx = 6, ly = 23;
         using (var retPen = new Pen(ElemRetainedColor, 2.4f))
             g.DrawLine(retPen, lx, ly + 6, lx + 20, ly + 6);
+        string retainedLabel = Loc(en: "retained in", ja: "保持", de: "erhalten in", fr: "conservé dans", es: "conservado en", pt: "mantido em", it: "mantenuto in", ru: "сохранено в", zhHans: "保持于", zhHant: "保持於", ko: "유지") + $" {childName}"; // 260717Cl: DrawString/MeasureString で二重に評価していた同一 Loc を共有
         using (var retFg = new SolidBrush(ElemRetainedColor))
-            g.DrawString(Loc(en: "retained in", ja: "保持", de: "erhalten in", fr: "conservé dans", es: "conservado en", pt: "mantido em", it: "mantenuto in", ru: "сохранено в", zhHans: "保持于", zhHant: "保持於", ko: "유지") + $" {childName}", legendFont, retFg, lx + 24, ly);
-        float lx2 = lx + 24 + g.MeasureString(Loc(en: "retained in", ja: "保持", de: "erhalten in", fr: "conservé dans", es: "conservado en", pt: "mantido em", it: "mantenuto in", ru: "сохранено в", zhHans: "保持于", zhHant: "保持於", ko: "유지") + $" {childName}", legendFont).Width + 22;
+            g.DrawString(retainedLabel, legendFont, retFg, lx + 24, ly);
+        float lx2 = lx + 24 + g.MeasureString(retainedLabel, legendFont).Width + 22;
         using (var lostPen = new Pen(ElemLostColor, 2.4f))
             g.DrawLine(lostPen, lx2, ly + 6, lx2 + 20, ly + 6);
         using (var lostFg = new SolidBrush(ElemLostColor))
@@ -2011,8 +2052,8 @@ public partial class FormGroupRelations : FormBase
     {
         var parent = s.ParentSeriesNumber >= 0 ? SymmetryStatic.Symmetries[s.ParentSeriesNumber].SpaceGroupHMStr : "?";
         var child = s.ChildSeriesNumber >= 0 ? SymmetryStatic.Symmetries[s.ChildSeriesNumber].SpaceGroupHMStr : s.ChildLabel;
-        string kind = s.Kind switch { GroupRelationKind.K => "k", GroupRelationKind.Isomorphic => "i", _ => "t" };
-        return $@"{HmToLatex(parent)}\,\, \rightarrow\,\, {HmToLatex(child)}\,\,\,\, \mathrm{{kind}}={kind}\,\, \mathrm{{index}}={s.Index}";
+        //string kind = s.Kind switch { GroupRelationKind.K => "k", GroupRelationKind.Isomorphic => "i", _ => "t" }; // 260717Cl: KindChar と重複した switch を統合
+        return $@"{HmToLatex(parent)}\,\, \rightarrow\,\, {HmToLatex(child)}\,\,\,\, \mathrm{{kind}}={KindChar(s.Kind)}\,\, \mathrm{{index}}={s.Index}";
     }
 
     private static string BuildTransformationLatex(bool viewFromChild)
@@ -2022,17 +2063,18 @@ public partial class FormGroupRelations : FormBase
 
     private static string BuildMatrixLatex(double[] P, double[] p)
     {
+        // 260717Cl: LatexFrac は 260706Ch の横方向分数化以降 Frac への素通しだったためインライン化。
         string[] rows =
         [
-            $"{LatexFrac(P[0])} & {LatexFrac(P[1])} & {LatexFrac(P[2])}",
-            $"{LatexFrac(P[3])} & {LatexFrac(P[4])} & {LatexFrac(P[5])}",
-            $"{LatexFrac(P[6])} & {LatexFrac(P[7])} & {LatexFrac(P[8])}",
+            $"{Frac(P[0])} & {Frac(P[1])} & {Frac(P[2])}",
+            $"{Frac(P[3])} & {Frac(P[4])} & {Frac(P[5])}",
+            $"{Frac(P[6])} & {Frac(P[7])} & {Frac(P[8])}",
         ];
         string[] shift =
         [
-            p != null && p.Length > 0 ? LatexFrac(p[0]) : "?",
-            p != null && p.Length > 1 ? LatexFrac(p[1]) : "?",
-            p != null && p.Length > 2 ? LatexFrac(p[2]) : "?",
+            p?.Length > 0 ? Frac(p[0]) : "?",
+            p?.Length > 1 ? Frac(p[1]) : "?",
+            p?.Length > 2 ? Frac(p[2]) : "?",
         ];
         return $@"P=\left(\matrix{{{string.Join(@" \\ ", rows)}}}\right)\,\,\,\, p=\left(\matrix{{{string.Join(@" \\ ", shift)}}}\right)";
     }
@@ -2048,13 +2090,14 @@ public partial class FormGroupRelations : FormBase
         return string.IsNullOrWhiteSpace(siteSymmetry) ? label : $@"{label}\,\, {HmToLatex(siteSymmetry)}";
     }
 
-    private static string LatexFrac(double d)
-    {
-        var f = Frac(d);
-        //var slash = f.IndexOf('/'); // 260706Ch: \frac は行列全体が縦に伸びるため横方向分数へ変更
-        //return slash > 0 ? $@"\frac{{{f[..slash]}}}{{{f[(slash + 1)..]}}}" : f;
-        return f; // 260706Ch: 1/2 のような横方向分数として描画する
-    }
+    // 260717Cl: LatexFrac を削除 (260706Ch の横方向分数化で Frac への素通しになっていたため、呼び出し側をインライン化)。
+    //private static string LatexFrac(double d)
+    //{
+    //    var f = Frac(d);
+    //    //var slash = f.IndexOf('/'); // 260706Ch: \frac は行列全体が縦に伸びるため横方向分数へ変更
+    //    //return slash > 0 ? $@"\frac{{{f[..slash]}}}{{{f[(slash + 1)..]}}}" : f;
+    //    return f; // 260706Ch: 1/2 のような横方向分数として描画する
+    //}
 
     /// <summary>有理数を短い分数/整数文字列へ (行列・原点表示用)。</summary>
     private static string Frac(double d)
