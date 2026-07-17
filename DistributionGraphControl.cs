@@ -217,7 +217,8 @@ namespace Crystallography.Controls
 
         public void AddData(PointD center, double width, double height, Color fillColor, Color lineColor, double lineWidth, bool ReDraw)
         {
-            data.Add(new Ellipse(center, width, height, fillColor, lineColor, width));
+            //data.Add(new Ellipse(center, width, height, fillColor, lineColor, width)); // 260717Cl 変更前: lineWidth 引数を使わず width を二重に渡すコピペバグ
+            data.Add(new Ellipse(center, width, height, fillColor, lineColor, lineWidth)); // 260717Cl 修正
             if (ReDraw)
             {
                 Initialize();
@@ -447,7 +448,8 @@ namespace Crystallography.Controls
                         str = Math.Round(i * yGradiation, 5).ToString("#,#.###############");
                 }
                 else
-                    str = "1.E" + Math.Round(i * xGradiation, 5).ToString("g");
+                    //str = "1.E" + Math.Round(i * xGradiation, 5).ToString("g"); // 260717Cl 変更前: Y 軸対数目盛ラベルが X 側の刻みを参照するコピペバグ
+                    str = "1.E" + Math.Round(i * yGradiation, 5).ToString("g"); // 260717Cl 修正
 
                 G.DrawString(str, strFont, DivisionTextBrush, 0, ConvToPicBoxCoord(0, i * yGradiation).Y - 6);
 

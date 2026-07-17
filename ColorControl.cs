@@ -142,7 +142,8 @@ public partial class ColorControl : UserControlBase
     [Category("Color")]
     public float GreenF
     {
-        set { if (value >= 0 && value < 256) pictureBox.BackColor = Color.FromArgb(pictureBox.BackColor.R, (int)(value * 255), pictureBox.BackColor.B); }
+        //set { if (value >= 0 && value < 256) ... } // 260717Cl 変更前: RedF の <= 1 と不一致のガードで、1 超の値が (int)(value*255) > 255 となり Color.FromArgb が例外
+        set { if (value >= 0 && value <= 1) pictureBox.BackColor = Color.FromArgb(pictureBox.BackColor.R, (int)(value * 255), pictureBox.BackColor.B); } // 260717Cl 修正
         get => Inversion ? 1 - pictureBox.BackColor.G / 255f : pictureBox.BackColor.G / 255f;
     }
 
@@ -150,7 +151,8 @@ public partial class ColorControl : UserControlBase
     [Category("Color")]
     public float BlueF
     {
-        set { if (value >= 0 && value < 256) pictureBox.BackColor = Color.FromArgb(pictureBox.BackColor.R, pictureBox.BackColor.G, (int)(value * 255)); }
+        //set { if (value >= 0 && value < 256) ... } // 260717Cl 変更前: 同上 (GreenF 参照)
+        set { if (value >= 0 && value <= 1) pictureBox.BackColor = Color.FromArgb(pictureBox.BackColor.R, pictureBox.BackColor.G, (int)(value * 255)); } // 260717Cl 修正
         get => Inversion ? 1 - pictureBox.BackColor.B / 255f : pictureBox.BackColor.B / 255f;
     }
 
