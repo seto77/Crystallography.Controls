@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel; // 260717Cl 追加: 属性の冗長な完全修飾を除去するため
 using System.Windows.Forms;
 
 namespace Crystallography.Controls
@@ -10,8 +11,8 @@ namespace Crystallography.Controls
             InitializeComponent();
         }
 
-        [System.ComponentModel.Browsable(false)]
-        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int ResolutionWidth
         {
             set { numericUpDownWidth.Value = (decimal)value; }
@@ -19,8 +20,8 @@ namespace Crystallography.Controls
         }
 
         // (260322Ch) WFO1000: Microsoft ??????????????????? ???????????
-        [System.ComponentModel.Browsable(false)]
-        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int ResolutionHeight
         {
             set { numericUpDownHeight.Value = (decimal)value; }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Scripting.Hosting;
 using System;
+using System.ComponentModel; // 260717Cl 追加: 属性の冗長な完全修飾を除去するため
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -45,8 +46,8 @@ public partial class FormMacro : FormBase
 
     #endregion
 
-    [System.ComponentModel.Browsable(false)]
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public string[] HelpItems
     {
         set
@@ -735,8 +736,8 @@ public partial class FormMacro : FormBase
         _previousSelectedIndex = listBoxMacro.SelectedIndex;
     }
 
-    [System.ComponentModel.Browsable(false)]
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public byte[] ZippedMacros
     {
         get

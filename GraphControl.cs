@@ -48,56 +48,56 @@ public partial class GraphControl : UserControlBase
     private Graphics G;
 
     #region 描画囲プロパティ
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 3. 描画範囲・操作")]
     [Description("X軸の描画範囲")]
     [DefaultValue(1.0)] //260607Cl 追加: 既定値と一致する冗長なデザイナ初期化を抑制
     public double UpperX { get => upperX; set { if (double.IsFinite(value)) upperX = value; } }
     private double upperX = 1;
 
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 3. 描画範囲・操作")]
     [Description("X軸の描画範囲")]
     [DefaultValue(0.0)] //260607Cl 追加
     public double LowerX { get => lowerX; set { if (double.IsFinite(value)) lowerX = value; } }
     private double lowerX = 0;
 
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 3. 描画範囲・操作")]
     [Description("Y軸の描画範囲")]
     [DefaultValue(1.0)] //260607Cl 追加
     public double UpperY { get => upperY; set { if (double.IsFinite(value)) upperY = value; } }
     private double upperY = 1;
 
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 3. 描画範囲・操作")]
     [Description("Y軸の描画範囲")]
     [DefaultValue(0.0)] //260607Cl 追加
     public double LowerY { get => lowerY; set { if (double.IsFinite(value)) lowerY = value; } }
     private double lowerY = 0;
 
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 3. 描画範囲・操作")]
     [Description("X軸の上下限")]
     [DefaultValue(1.0)] //260607Cl 追加
     public double MaximalX { get => maximalX; set { if (double.IsFinite(value)) maximalX = value; } }
     private double maximalX = 1;
 
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 3. 描画範囲・操作")]
     [Description("X軸の上下限")]
     [DefaultValue(0.0)] //260607Cl 追加
     public double MinimalX { get => minimalX; set { if (double.IsFinite(value)) minimalX = value; } }
     private double minimalX = 0;
 
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 3. 描画範囲・操作")]
     [Description("Y軸の上下限")]
     [DefaultValue(1.0)] //260607Cl 追加
     public double MaximalY { get => maximalY; set { if (double.IsFinite(value)) maximalY = value; } }
     private double maximalY = 1;
 
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 3. 描画範囲・操作")]
     [Description("Y軸の上下限")]
     [DefaultValue(0.0)] //260607Cl 追加
@@ -106,7 +106,7 @@ public partial class GraphControl : UserControlBase
 
     /// <summary>描画範囲の矩形</summary>
    // [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     [Browsable(false)]
     public RectangleD DrawingRange
     {
@@ -142,7 +142,7 @@ public partial class GraphControl : UserControlBase
 
     [Category(" 4. 上部パネル")]
     [Description("上部パネルに表示する文字のフォント")]
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [DefaultValue(typeof(Font), "Segoe UI, 9.5pt")] //260607Cl 修正: リフレクション検証で構築直後の labelX1.Font は 9.5pt と判明 (9pt は誤り)。実値に一致させ冗長直列化を正しく抑止
     //public Font UpperPanelFont { set => labelGraphTitle.Font = labelX1.Font = labelXValue.Font = labelY1.Font = labelYValue.Font = value; get => labelX1.Font; }//260611Cl 旧: 凡例ラベルにも反映するため block body 化
     public Font UpperPanelFont
@@ -157,7 +157,7 @@ public partial class GraphControl : UserControlBase
     }
 
     /// <summary>グラフの名前</summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 4. 上部パネル")]
     [Description("グラフタイトル(上部パネルの最初に表示される)")]
     [DefaultValue("")] //260607Cl 修正: 実際の既定は labelGraphTitle.Text="" (Designer.cs から Text=" " を撤去済)
@@ -220,7 +220,7 @@ public partial class GraphControl : UserControlBase
     }
 
     /// <summary>マウス位置を表示するかどうか</summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 4. 上部パネル")]
     [Description("マウス位置を表示するかどうか")]
     [DefaultValue(false)] //260607Cl 修正: 実際の既定は flowLayoutPanelMousePosition.Visible=false (Designer.cs)
@@ -240,7 +240,7 @@ public partial class GraphControl : UserControlBase
     /// <summary>
     /// マウス位置の有効桁数 (-1で無指定)
     /// /// </summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 4. 上部パネル")]
     [Description("マウスX位置の有効桁数 (-1で無指定)")]
     [DefaultValue(-1)] //260607Cl 追加
@@ -269,7 +269,7 @@ public partial class GraphControl : UserControlBase
     /// <summary>
     /// マウス位置の有効桁数 (-1で無指定)
     /// /// </summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 4. 上部パネル")]
     [Description("マウスYY位置の有効桁数 (-1で無指定)")]
     [DefaultValue(-1)] //260607Cl 追加
@@ -306,28 +306,28 @@ public partial class GraphControl : UserControlBase
         : (log ? "E" : "g") + (MousePositionYDigit == -1 ? "" : MousePositionYDigit.ToString());
 
     /// <summary>X軸の単位</summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 4. 上部パネル")]
     [Description("X軸の単位")]
     [DefaultValue("")] //260607Cl 追加
     public string UnitX { get; set; } = "";
 
     /// <summary>Y軸の単位</summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 4. 上部パネル")]
     [Description("Y軸の単位")]
     [DefaultValue("")] //260607Cl 追加
     public string UnitY { get; set; } = "";
 
     /// <summary>X軸のラベル</summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 4. 上部パネル")]
     [Description("X軸のラベル")]
     [DefaultValue("X:")] //260607Cl 追加: 既定はlabelX1.Text="X:"(Designer.cs)
     public string LabelX { set => labelX1.Text = labelX2.Text = value; get => labelX1.Text; }
 
     /// <summary>Y軸のラベル</summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 4. 上部パネル")]
     [Description("Y軸のラベル")]
     [DefaultValue("Y:")] //260607Cl 追加: 既定はlabelY1.Text="Y:"(Designer.cs)
@@ -341,7 +341,7 @@ public partial class GraphControl : UserControlBase
     //旧コード: public bool LowerPanelVisible { set => panelRangeAndCopy.Visible = value; get => panelRangeAndCopy.Visible; }
 
     /// <summary>描画範囲を数値入力するパネル(flowLayoutPanelRange)を表示するかどうか。既定はfalse。</summary> //260606Cl 追加
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 5. 下部パネル")]
     [Description("描画範囲を数値入力するパネル(X/Yの最小・最大)を表示するかどうか")]
     [DefaultValue(false)]
@@ -353,7 +353,7 @@ public partial class GraphControl : UserControlBase
     private bool rangePanelVisible = false;
 
     /// <summary>Copyボタン(グラフをベクター画像EMFでクリップボードへコピー)を表示するかどうか。既定はfalse。260607Cl 追加。</summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 5. 下部パネル")]
     [Description("Copyボタン(グラフをベクター画像EMFでクリップボードへコピー)を表示するかどうか")]
     [DefaultValue(false)] //260607Cl 修正: 実際の既定は buttonCopy.Visible=false (Designer.cs)
@@ -365,7 +365,7 @@ public partial class GraphControl : UserControlBase
     #region 軸ラベル設定
 
     /// <summary>X軸(下)に表示する説明ラベル。空でなければ下側の余白を自動で広げる。</summary> //260607Cl 追加
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 2. 軸")]
     [Description("X軸(下)に表示する説明ラベル(空なら非表示)")]
     [DefaultValue("")]
@@ -373,7 +373,7 @@ public partial class GraphControl : UserControlBase
     private string axisLabelX = "";
 
     /// <summary>Y軸(左)に表示する説明ラベル(反時計回り90度)。空でなければ左側の余白を自動で広げる。</summary> //260607Cl 追加
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 2. 軸")]
     [Description("Y軸(左)に表示する説明ラベル(反時計回り90度。空なら非表示)")]
     [DefaultValue("")]
@@ -385,28 +385,28 @@ public partial class GraphControl : UserControlBase
     #region 動作プロパティ
     /// <summary>マウス操作を受け付けるかどうか</summary>
     // (260322Ch) WFO1000: Microsoft ??????????????????? ???????????
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 3. 描画範囲・操作")]
     [Description("マウス操作を受け付けるかどうか")]
     [DefaultValue(true)] //260607Cl 追加
     public bool AllowMouseOperation { get; set; } = true;
 
     /// <summary>Profileを更新時、横軸を固定するかどうか(ただし、上限下限内で)</summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 3. 描画範囲・操作")]
     [Description("Profileを更新時、横軸を固定するかどうか(ただし、上限下限内で)")]
     [DefaultValue(false)] //260607Cl 追加
     public bool FixRangeHorizontal { set; get; } = false;
 
     /// <summary>Profileを更新時、縦軸を固定するかどうか(ただし、上限下限内で)</summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 3. 描画範囲・操作")]
     [Description("Profileを更新時、縦軸を固定するかどうか(ただし、上限下限内で)")]
     [DefaultValue(false)] //260607Cl 追加
     public bool FixRangeVertical { set; get; } = false;
 
     /// <summary>横軸(X)の下限を常に0に固定する(非Log時かつデータが負を含まない時のみ有効)。EDX/回折パターン等の0始点表示用。既定false。260607Cl 追加。</summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 3. 描画範囲・操作")]
     [Description("横軸(X)の下限を常に0に固定する(非Log時のみ有効)")]
     [DefaultValue(false)] //260607Cl 追加
@@ -433,14 +433,14 @@ public partial class GraphControl : UserControlBase
     private readonly List<PointD> verticalLineList = [];
 
     /// <summary></summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 6. 垂直線")]
     [Description("垂直線の色")]
     [DefaultValue(typeof(Color), "Red")] //260607Cl 追加
     public Color VerticalLineColor { set; get; } = Color.Red;//260603Cl レビューメモ: setterで Draw() を呼ばないため実行時の色変更が次回再描画まで反映されない(AxisLineColor / AxisTextColor / BackgroundColor も同様の不統一)。
 
     /// <summary>垂直線と各プロファイルの交点にマーカー(丸)と値を表示するかどうか</summary> //260603Cl 追加
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 6. 垂直線")]
     [Description("垂直線と各プロファイルの交点にマーカー(丸)と値を表示するかどうか")]
     [DefaultValue(false)] //260607Cl 追加
@@ -448,7 +448,7 @@ public partial class GraphControl : UserControlBase
     private bool verticalLineMarkerVisible = false;
 
     /// <summary>交点マーカー(丸)の半径(ピクセル)</summary> //260603Cl 追加
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 6. 垂直線")]
     [Description("交点マーカー(丸)の半径(ピクセル)")]
     [DefaultValue(3.5f)] //260607Cl 追加
@@ -484,7 +484,7 @@ public partial class GraphControl : UserControlBase
     #endregion
 
     #region ピーク関数
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     [Browsable(false)]
     public PeakFunction[] Peaks { set { peaks.Clear(); peaks.AddRange(value); } get => peaks.ToArray(); }
     private List<PeakFunction> peaks = [];
@@ -492,7 +492,7 @@ public partial class GraphControl : UserControlBase
 
     #region プロファイル
     /// <summary>0番目のプロファイルを設定する。複数プロファイルが設定されている場合はひとつだけにする。</summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     [Category(" 1. プロファイル・表示")]
     [Browsable(false)]
     public Profile Profile
@@ -520,7 +520,7 @@ public partial class GraphControl : UserControlBase
     public Profile[] ProfileList => srcProfileList.ToArray();
 
     /// <summary>共通のプロファイル描画線の太さ (UseLineWidthがtrueの場合に有効)</summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 1. プロファイル・表示")]
     [Description("共通のプロファイル描画線の太さ (UseLineWidthがtrueの場合に有効)")]
     [DefaultValue(1f)] //260607Cl 追加
@@ -528,7 +528,7 @@ public partial class GraphControl : UserControlBase
     private float lineWidth = 1f;
 
     /// <summary>共通のプロファイル描画線太さを使うか (使わない場合は各ProfileのlineWidthを使う)</summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 1. プロファイル・表示")]
     [Description("共通のプロファイル描画線太さを使うか (使わない場合は各ProfileのlineWidthを使う))")]
     [DefaultValue(true)] //260607Cl 追加
@@ -539,14 +539,14 @@ public partial class GraphControl : UserControlBase
 
     #region 補助線プロパティ
     /// <summary>目盛補助線の色</summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 2. 軸")]
     [Description("目盛補助線の色")]
     [DefaultValue(typeof(Color), "LightGray")] //260607Cl 追加
     public Color DivisionLineColor { set; get; } = Color.LightGray;
 
     /// <summary>X軸の補助目盛線を表示するかどうか</summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 2. 軸")]
     [Description("X軸の補助目盛線を表示するかどうか")]
     [DefaultValue(true)] //260607Cl 追加
@@ -566,7 +566,7 @@ public partial class GraphControl : UserControlBase
     private bool divisionLineXVisible = true;
 
     /// <summary>Y軸の目盛りを表示するかどうか</summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 2. 軸")]
     [Description("Y軸の補助目盛線を表示するかどうか")]
     [DefaultValue(true)] //260607Cl 追加
@@ -590,35 +590,35 @@ public partial class GraphControl : UserControlBase
     #region 軸設定
 
     /// <summary>目盛線の色</summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 2. 軸")]
     [Description("軸線の色")]
     [DefaultValue(typeof(Color), "Gray")] //260607Cl 追加
     public Color AxisLineColor { set; get; } = Color.Gray;
 
     /// <summary>軸文字の色</summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 2. 軸")]
     [Description("軸文字の色")]
     [DefaultValue(typeof(Color), "Black")] //260607Cl 追加
     public Color AxisTextColor { set; get; } = Color.Black;
 
     /// <summary>軸文字の色</summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 2. 軸")]
     [Description("軸文字のフォント")]
     [DefaultValue(typeof(Font), "Segoe UI, 9pt")] //260607Cl 追加
     public Font AxisTextFont { set; get; } = new Font(WineCompat.Resolve("Segoe UI"), 9); //260610Cl Wine時フォント切替 (Windowsでは従来どおり Segoe UI)
 
 
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 2. 軸")]
     [Description("X軸上の数値を表示するかどうか")]
     [DefaultValue(true)] //260607Cl 追加
     public bool AxisXTextVisible { set { horizontalGradiationTextVisivle = value; Draw(); } get => horizontalGradiationTextVisivle; }
     private bool horizontalGradiationTextVisivle = true;
 
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 2. 軸")]
     [Description("Y軸上の数値を表示するかどうか")]
     [DefaultValue(true)] //260607Cl 追加
@@ -626,7 +626,7 @@ public partial class GraphControl : UserControlBase
     private bool verticalGradiationTextVisivle = true;
 
     /// <summary>X軸が対数スケールかどうか</summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 2. 軸")]
     [Description("X軸が対数スケールかどうか")]
     [DefaultValue(false)] //260607Cl 追加
@@ -649,7 +649,7 @@ public partial class GraphControl : UserControlBase
     private bool xLog = false;
 
     /// <summary>Y軸が対数スケールかどうか</summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 2. 軸")]
     [Description("Y軸が対数スケールかどうか")]
     [DefaultValue(false)] //260607Cl 追加
@@ -671,7 +671,7 @@ public partial class GraphControl : UserControlBase
     private bool yLog = false;
 
     /// <summary>Xの値が0以上の整数値かどうか</summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 2. 軸")]
     [Description("Xの値が0以上の整数値かどうか")]
     [DefaultValue(false)] //260607Cl 追加
@@ -679,7 +679,7 @@ public partial class GraphControl : UserControlBase
     private bool isIntegerX = false;
 
     /// <summary>Yの値が０以上の整数値かどうか</summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 2. 軸")]
     [Description("Yの値が0以上の整数値かどうか")]
     [DefaultValue(false)] //260607Cl 追加
@@ -689,7 +689,7 @@ public partial class GraphControl : UserControlBase
 
     #region グラフ位置
     /// <summary>原点の位置(左下からのピクセル単位)</summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 3. 描画範囲・操作")]
     [Description("原点の位置(左下からのピクセル単位)")]
     [DefaultValue(typeof(Point), "40, 20")] //260607Cl 追加
@@ -701,26 +701,26 @@ public partial class GraphControl : UserControlBase
 
     #region その他
     /// <summary>グラフの背景色</summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 1. プロファイル・表示")]
     [Description(" グラフの背景色")]
     [DefaultValue(typeof(Color), "White")] //260607Cl 追加
     public Color BackgroundColor { set; get; } = Color.White;
 
     /// <summary>グラフの描画モード</summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 1. プロファイル・表示")]
     [Description(" グラフの描画モード")]
     [DefaultValue(DrawingMode.Line)] //260607Cl 追加
     public DrawingMode Mode { set { mode = value; Draw(); } get { return mode; } }
     private DrawingMode mode = DrawingMode.Line;
 
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     [Browsable(false)]
     public bool Interpolation { set { interpolation = value; Draw(); } get => interpolation; }
     private bool interpolation = false;
 
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     [Browsable(false)]
     public bool Smoothing { get; set; } = false;
     private int smoothingN = 0, smoothingM = 0;

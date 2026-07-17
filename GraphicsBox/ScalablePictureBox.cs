@@ -158,7 +158,7 @@ public partial class ScalablePictureBox : UserControlBase
     //}
 
     /// <summary>上下方向の反転をするかどうか</summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [DefaultValue(false)] // 260607Cl
     public bool VerticalFlip
     {
@@ -174,7 +174,7 @@ public partial class ScalablePictureBox : UserControlBase
     // private bool horizontalFlip = false; // (260322Ch) 旧コード: HorizontalFlip をローカル field と PseudoBitmap で二重管理していた
 
     /// <summary>上下方向の反転をするかどうか</summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [DefaultValue(false)] // 260607Cl
     public bool HorizontalFlip
     {
@@ -193,7 +193,7 @@ public partial class ScalablePictureBox : UserControlBase
     private double _Zoom = 1;
 
     /// <summary>表示倍率</summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [DefaultValue(1.0)] // 260607Cl
     public double Zoom
     {
@@ -239,21 +239,21 @@ public partial class ScalablePictureBox : UserControlBase
     }
 
     /// <summary>ZoomやCenter位置を固定するかどうか</summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [DefaultValue(false)] // 260607Cl
     public bool FixZoomAndCenter { get; set; } = false;
 
     public Size CanvasSize { get { return pictureBox.ClientSize; } }
 
     /// <summary>フォーカスイベント(Enter)を有効にするかどうか</summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [DefaultValue(false)] // 260607Cl
     public bool FocusEventEnabled { get; set; } = false;
 
     private bool showFocusRectangle = false;
 
     /// <summary>外枠を表示する</summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [DefaultValue(false)] // 260607Cl
     public bool ShowRimRentangle
     {
@@ -271,7 +271,7 @@ public partial class ScalablePictureBox : UserControlBase
     private bool showAreaRectangle = false;
 
     /// <summary>AreaRectangleで指定した矩形を表示するかどうか</summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [DefaultValue(false)] // 260607Cl
     public bool ShowAreaRectangle
     {
@@ -331,12 +331,12 @@ public partial class ScalablePictureBox : UserControlBase
     }
 
     /// <summary>マウスによるスケーリングが可能かどうか</summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [DefaultValue(false)] // 260607Cl
     public bool MouseScaling { set; get; }//マウスによるスケーリングが可能かどうか
 
     /// <summary>マウスによる平行移動が可能かどうか </summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [DefaultValue(false)] // 260607Cl
     public bool MouseTranslation { set; get; }
 
@@ -344,11 +344,11 @@ public partial class ScalablePictureBox : UserControlBase
     private bool vScrollBarVisible = false;
 
     /// <summary>クライアント領域の左上にタイトルを表示するか</summary>
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [DefaultValue(false)] // 260607Cl
     public bool TitleVisible { get; set; } = false;
-    [System.ComponentModel.Browsable(false)]
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public (string Text, Font Font, Color Color1, Color Color2) Title { get; set; }
 
 
@@ -577,7 +577,7 @@ public partial class ScalablePictureBox : UserControlBase
 
     private bool manualSpotMode = false;
 
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [DefaultValue(false)] // 260607Cl
     public bool ManualSpotMode
     {

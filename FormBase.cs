@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel; // 260717Cl 追加: 属性の冗長な完全修飾を除去するため
 using System.Diagnostics;
 using System.Drawing;                  //260604Cl 追加: タイトルバー右寄せのテキスト計測用
 using System.Runtime.InteropServices;  //260604Cl 追加: WM_GETTITLEBARINFOEX 取得用
@@ -6,7 +7,7 @@ using System.Windows.Forms;
 
 namespace Crystallography.Controls;
 
-[System.ComponentModel.ToolboxItem(false)]
+[ToolboxItem(false)]
 public partial class FormBase : Form
 {
     //260529Cl 追加: F1 キーで該当オンラインマニュアルを開く仕組み。
@@ -25,8 +26,8 @@ public partial class FormBase : Form
     /// </summary>
     //260530Cl 追加: コードからのみ設定するプロパティなのでデザイナのシリアライズ対象外にする (WFO1000 回避)。
     //         Crystallography.Controls は WFO1000 をプロジェクト単位で抑止しない方針(260322Ch)のため、CommonDialog.cs と同じく個別属性で対応する。
-    [System.ComponentModel.Browsable(false)]
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public string HelpPage { get; set; } = ""; //260529Cl 追加
 
     //260604Cl 追加: F1 でヘルプを開けるフォームのタイトル右端に出す案内文字列 (UI 言語で切替)。

@@ -40,18 +40,18 @@ public partial class CrystalDatabaseControl : UserControlBase
 
     #region フィールド、メソッド、イベント
     // (260322Ch) WFO1000: Microsoft ??????????????????? ???????????
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [DefaultValue(false)] // 260607Cl
     public bool AMCSD_Checked {get=> checkBoxAMCSD.Checked; set => checkBoxAMCSD.Checked = value; }
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [DefaultValue(false)] // 260607Cl
     public bool COD_Checked {get=>checkBoxCOD.Checked;set => checkBoxCOD.Checked = value; }
 
-    [System.ComponentModel.Browsable(false)]
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public bool AMCSD_Has_Read { get; set; }=false;
-    [System.ComponentModel.Browsable(false)]
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public bool COD_Has_Read { get; set; }=false;
 
     public static string UserAppDataPath => new DirectoryInfo(Application.UserAppDataPath).Parent.FullName + @"\";
@@ -68,13 +68,13 @@ public partial class CrystalDatabaseControl : UserControlBase
         bindingSource.ResetBindings(false);
     }
 
-    [System.ComponentModel.Browsable(false)]
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public string SearchFilter { get => bindingSource.Filter; set => bindingSource.Filter = value; }
 
     public string DataTypeFilter;
 
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [DefaultValue(9.75f)] // 260607Cl
     public float FontSize
     {
@@ -97,7 +97,7 @@ public partial class CrystalDatabaseControl : UserControlBase
     public delegate void ProgressChangedEventHandler(object sender, double progress, string message);
     public event ProgressChangedEventHandler ProgressChanged;
 
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [DefaultValue(false)] // 260607Cl
     public bool DatabaseSelection { set => flowLayoutPanelDatabase.Visible = value; get => flowLayoutPanelDatabase.Visible; }
 

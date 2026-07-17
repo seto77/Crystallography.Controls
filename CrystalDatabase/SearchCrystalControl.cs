@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel; // 260717Cl 追加: 属性の冗長な完全修飾を除去するため
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
@@ -10,15 +11,15 @@ using System.Windows.Forms;
 
 namespace Crystallography.Controls;
 
-[System.ComponentModel.ToolboxItem(true)] // 260605Cl 追加: 基底 UserControlBase の [ToolboxItem(false)] 継承を打ち消しデザイナのツールボックスに表示
+[ToolboxItem(true)] // 260605Cl 追加: 基底 UserControlBase の [ToolboxItem(false)] 継承を打ち消しデザイナのツールボックスに表示
 public partial class SearchCrystalControl : UserControlBase
 {
     #region フィールド、プロパティ、イベント
 
     private CrystalDatabaseControl crystalDatabaseControl;
     // (260322Ch) WFO1000: Microsoft ??????????????????? ???????????
-    [System.ComponentModel.Browsable(false)]
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public CrystalDatabaseControl CrystalDatabaseControl
     {
         get => crystalDatabaseControl;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel; // 260717Cl 追加: 属性の冗長な完全修飾を除去するため
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -6,7 +7,7 @@ using System.Windows.Forms;
 
 namespace Crystallography.Controls
 {
-    [System.ComponentModel.ToolboxItem(true)] // 260605Cl 追加: 基底 UserControlBase の [ToolboxItem(false)] 継承を打ち消しデザイナのツールボックスに表示
+    [ToolboxItem(true)] // 260605Cl 追加: 基底 UserControlBase の [ToolboxItem(false)] 継承を打ち消しデザイナのツールボックスに表示
     public partial class DistributionGraphControl : UserControlBase
     {
         public DistributionGraphControl()
@@ -51,8 +52,8 @@ namespace Crystallography.Controls
 
         private int selectedIndex = -1;
 
-        [System.ComponentModel.Browsable(false)]
-        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int SelectedIndex
         {
             set { selectedIndex = value; }
@@ -61,7 +62,7 @@ namespace Crystallography.Controls
 
         private Color lineColor;
 
-        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color LineColor
         {
             set { lineColor = value; Draw(); }
@@ -70,8 +71,8 @@ namespace Crystallography.Controls
 
         private Color divisionLineColor = Color.Gray;
 
-        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
-        [System.ComponentModel.DefaultValue(typeof(Color), "Gray")] // 260607Cl
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        [DefaultValue(typeof(Color), "Gray")] // 260607Cl
         public Color DivisionLineColor
         {
             set { divisionLineColor = value; Draw(); }
@@ -80,8 +81,8 @@ namespace Crystallography.Controls
 
         private Color divisionSubLineColor = Color.LightGray;
 
-        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
-        [System.ComponentModel.DefaultValue(typeof(Color), "LightGray")] // 260607Cl
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        [DefaultValue(typeof(Color), "LightGray")] // 260607Cl
         public Color DivisionSubLineColor
         {
             set { divisionSubLineColor = value; Draw(); }
@@ -90,8 +91,8 @@ namespace Crystallography.Controls
 
         private SolidBrush divisionTextBrush = new SolidBrush(Color.Black);
 
-        [System.ComponentModel.Browsable(false)]
-        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public SolidBrush DivisionTextBrush
         {
             set { divisionTextBrush = value; Draw(); }
@@ -101,8 +102,8 @@ namespace Crystallography.Controls
         private Color backgroundColor = Color.White;
 
         // (260322Ch) WFO1000: Microsoft ??????????????????? ???????????
-        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
-        [System.ComponentModel.DefaultValue(typeof(Color), "White")] // 260607Cl
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        [DefaultValue(typeof(Color), "White")] // 260607Cl
         public Color BackgroundColor
         {
             set { backgroundColor = value; Draw(); }
@@ -112,8 +113,8 @@ namespace Crystallography.Controls
         private bool xLog = false;
 
         /// <summary>X軸が対数スケールかどうか</summary>
-        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
-        [System.ComponentModel.DefaultValue(false)] // 260607Cl
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        [DefaultValue(false)] // 260607Cl
         public bool XLog
         {
             set { xLog = value; }
@@ -123,8 +124,8 @@ namespace Crystallography.Controls
         private bool yLog = false;
 
         /// <summary>Y軸が対数スケールかどうか</summary>
-        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
-        [System.ComponentModel.DefaultValue(false)] // 260607Cl
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        [DefaultValue(false)] // 260607Cl
         public bool YLog
         {
             set { yLog = value; Initialize(); Draw(); }
@@ -134,8 +135,8 @@ namespace Crystallography.Controls
         private bool isIntegerX = false;
 
         /// <summary>Xの値が０以上の整数値かどうか</summary>
-        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
-        [System.ComponentModel.DefaultValue(false)] // 260607Cl
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        [DefaultValue(false)] // 260607Cl
         public bool IsIntegerX
         {
             set { isIntegerX = value; Initialize(); Draw(); }
@@ -145,22 +146,22 @@ namespace Crystallography.Controls
         private bool isIntegerY = false;
 
         /// <summary>Yの値が０以上の整数値かどうか</summary>
-        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
-        [System.ComponentModel.DefaultValue(false)] // 260607Cl
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        [DefaultValue(false)] // 260607Cl
         public bool IsIntegerY
         {
             set { isIntegerY = value; Initialize(); Draw(); }
             get { return isIntegerY; }
         }
 
-        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string LabelX
         {
             set { labelX.Text = value; }
             get { return labelX.Text; }
         }
 
-        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string LabelY
         {
             set { labelY.Text = value; }
@@ -169,8 +170,8 @@ namespace Crystallography.Controls
 
         private Point originPosition = new Point(40, 20);
 
-        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
-        [System.ComponentModel.DefaultValue(typeof(System.Drawing.Point), "40, 20")] // 260607Cl
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        [DefaultValue(typeof(System.Drawing.Point), "40, 20")] // 260607Cl
         public Point OriginPosition
         {
             set { originPosition = value; Draw(); }
@@ -179,8 +180,8 @@ namespace Crystallography.Controls
 
         private float bottomMargin = 0f;
 
-        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
-        [System.ComponentModel.DefaultValue(0f)] // 260607Cl
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        [DefaultValue(0f)] // 260607Cl
         public float BottomMargin
         {
             set { bottomMargin = value; Draw(); }
@@ -189,8 +190,8 @@ namespace Crystallography.Controls
 
         private float leftMargin = 0f;
 
-        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Visible)]
-        [System.ComponentModel.DefaultValue(0f)] // 260607Cl
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        [DefaultValue(0f)] // 260607Cl
         public float LeftMargin
         {
             set { leftMargin = value; Draw(); }

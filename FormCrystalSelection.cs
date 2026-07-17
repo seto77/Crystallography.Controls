@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel; // 260717Cl 追加: 属性の冗長な完全修飾を除去するため
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq; // 260717Cl 追加: CheckedCrystalList の Cast 用
@@ -16,8 +17,8 @@ public partial class FormCrystalSelection : FormBase
 
     private bool saveMode = true;
 
-    [System.ComponentModel.Browsable(false)]
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public bool SaveMode
     {
         set
@@ -31,8 +32,8 @@ public partial class FormCrystalSelection : FormBase
     private bool loadMode = false;
 
     // (260322Ch) WFO1000: Microsoft ??????????????????? ???????????
-    [System.ComponentModel.Browsable(false)]
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public bool LoadMode
     {
         set => SaveMode = !value; // 260717Cl: SaveMode setter と鏡像重複していた同期ロジックを委譲へ (結果の状態は同一)
@@ -41,8 +42,8 @@ public partial class FormCrystalSelection : FormBase
 
     private bool showCrystalInformation = false;
 
-    [System.ComponentModel.Browsable(false)]
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public bool ShowCrystalInformation
     {
         set

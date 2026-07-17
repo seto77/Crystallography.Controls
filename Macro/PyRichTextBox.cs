@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel; // 260717Cl 追加: 属性の冗長な完全修飾を除去するため
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq; // 260717Cl 追加: _pythonBuiltinNames/Tooltips の初期化式用
@@ -44,16 +45,16 @@ public partial class PyRichTextBox : RichTextBox
     // <system.componentmodel.description("入力候補を設定、または取得します。")> _
     // (260322Ch) WFO1000: Microsoft ??????????????????? ???????????
     // 260414Cl setter で Python 基本文法テンプレートを自動マージ (呼び出し側は無変更)
-    [System.ComponentModel.Browsable(false)]
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public string[] AutoCompleteItems
     {
         get => _AutoCompleteItems;
         set => _AutoCompleteItems = [.. value ?? [], .. _pythonBuiltinNames];
     }
 
-    [System.ComponentModel.Browsable(false)]
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public string[] ToolTipItems
     {
         get => _ToolTipItems;
@@ -62,8 +63,8 @@ public partial class PyRichTextBox : RichTextBox
 
     // 260414Cl 追加 true の間は TextChanged 時の AutoComplete ポップアップ処理を抑止する。
     // プログラマティックにテキストを差し替える (Tab インデント等) 場合に使用。
-    [System.ComponentModel.Browsable(false)]
-    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public bool SuppressAutoComplete { get; set; } = false;
 
     public string[] TextLines { get { return this.Text.Split(["\r\n", "\n"], StringSplitOptions.None); } } // 260717Cl: collection expression 化
