@@ -1379,7 +1379,9 @@ public partial class GraphControl : UserControlBase
             for (int i = startI; i < max / step; i++)
             {
                 if (min >= 0 && (max > 1000 || max < 0.001))//対数表示する場合
-                    str = ((i * step) / Math.Pow(10, (int)Math.Log10(i * step))).ToString("#,#.###############") + "E" + ((int)Math.Log10(i * step)).ToString();
+                    // 260718Cl 修正: i*step==0 のとき Math.Log10(0)=-∞ → (int) で int.MinValue、仮数部が 0/10^-∞=NaN となり
+                    // 目盛りラベルが "NaNE-2147483648" になっていた。実数表示分岐 (下) と同様に 0 は "0" と表示する。
+                    str = i * step == 0 ? "0" : ((i * step) / Math.Pow(10, (int)Math.Log10(i * step))).ToString("#,#.###############") + "E" + ((int)Math.Log10(i * step)).ToString();
                 else//実数表示する場合
                     str = i * step == 0 ? "0" : Math.Round(i * step, 5).ToString("#,#.###############");
                 results.Add(i * step, str);
