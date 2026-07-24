@@ -323,7 +323,12 @@ public partial class FormMacro : FormBase
         stepByStepMode = _stepByStepMode;
         RunMacro(pyRichTextBox.Text);
     }
-    public void RunMacro(string srcCode)
+    // public void RunMacro(string srcCode) // 260723Cl 旧シグネチャ (結果返却対応のため変更)
+    // 260723Cl 変更: 外部自動実行 (コマンドライン /o・将来のリスナー) 向けの結果返却基盤。
+    //   quiet=false (既定): 従来と同一挙動 (エラーは MessageBox 表示・print 出力は捨てる)。既存呼び出し元は戻り値無視でソース互換。
+    //   quiet=true: MessageBox・エディタのエラー行選択を行わず、マクロの stdout/stderr を Output に、
+    //               文法/実行時エラーの整形文字列を Error に返す (成功時は Error == "")。
+    public (string Output, string Error) RunMacro(string srcCode, bool quiet = false)
     {
         // 260414Cl 旧: Compile() を 2 回呼んでいたが ErrorListener 方式に差し替え。
         // IronPython は文法エラー時に例外を投げず黙って null を返すケースがあるため、
@@ -343,12 +348,29 @@ public partial class FormMacro : FormBase
             var msg = errorListener.Errors.Count > 0
                 ? string.Join(Environment.NewLine, errorListener.Errors)
                 : "Syntax error (no details available)";
-            MessageBox.Show(msg, "Syntax error");
-            return;
+            if (!quiet) // 260723Cl 追加: quiet 時はダイアログを出さず文字列で返す
+                MessageBox.Show(msg, "Syntax error");
+            return ("", msg);
         }
 
+        // 260723Cl 追加: quiet 時のみ stdout/stderr を捕捉する (通常時は従来どおり捨てる。Writer の lazy 生成も避ける)。
+        // IO は Runtime 全体の共有状態なので、RedirectToConsole ではなく旧 Stream/Writer を保存し finally で復元する (codex 指摘)。
+        var io = Engine.Runtime.IO;
+        Stream oldOutStream = null, oldErrStream = null;
+        TextWriter oldOutWriter = null, oldErrWriter = null;
+        using var captureStream = quiet ? new MemoryStream() : null;
+        string runtimeError = null;
         try
         {
+            if (quiet) // 260723Cl 追加: 差し替えも try 内で行い、部分成功でも finally で必ず復元されるようにする
+            {
+                (oldOutStream, oldOutWriter, oldErrStream, oldErrWriter) = (io.OutputStream, io.OutputWriter, io.ErrorStream, io.ErrorWriter);
+                // 260723Cl: IronPython (hosted) の sys.stdout は utf_16_le 固定の TextIOWrapper で、SetOutput の
+                // Encoding 引数を経由せず OutputStream へ直接バイトを書く (実測)。よって UTF-16LE (BOM無し) で統一する。
+                var enc = new UnicodeEncoding(false, false);
+                io.SetOutput(captureStream, enc);
+                io.SetErrorOutput(captureStream, enc); // stdout/stderr は同一ストリームへ統合 (Error はコンパイル/実行失敗専用)
+            }
             dataGridViewDebug.Rows.Clear();
 
             if (stepByStepMode)
@@ -372,10 +394,35 @@ public partial class FormMacro : FormBase
         {
             var ops = Engine.GetService<Microsoft.Scripting.Hosting.ExceptionOperations>();
             var msg = ops.FormatException(ex);
-            pyRichTextBox.HighlightErrorLineFromTraceback(msg); // 260414Cl 該当行を選択状態にしてから表示
-            MessageBox.Show(msg, "Runtime error");
+            runtimeError = msg; // 260723Cl 追加
+            if (!quiet) // 260723Cl 追加: quiet 時は UI 操作 (エラー行選択・ダイアログ) を行わない
+            {
+                pyRichTextBox.HighlightErrorLineFromTraceback(msg); // 260414Cl 該当行を選択状態にしてから表示
+                MessageBox.Show(msg, "Runtime error");
+            }
+        }
+        finally
+        {
+            if (quiet && oldOutWriter != null) // 260723Cl 追加: Flush してから旧 IO を復元 (Execute 等がどこで失敗しても必ず戻す)
+            {
+                try
+                {
+                    // sys.stdout/stderr は BufferedWriter を挟むため Python 側から Flush する (改行なし print の取りこぼし防止)。
+                    // 共有 Scope を汚さないよう一時 Scope で実行。
+                    try { Engine.Execute("import sys\nsys.stdout.flush()\nsys.stderr.flush()", Engine.CreateScope()); } catch { }
+                    try { io.OutputWriter.Flush(); } catch { }
+                    try { io.ErrorWriter.Flush(); } catch { } // stdout と別バッファなので両方 Flush
+                }
+                finally
+                {
+                    // Flush が失敗しても復元は必ず両方実行する (codex 指摘)
+                    try { io.SetOutput(oldOutStream, oldOutWriter); }
+                    finally { io.SetErrorOutput(oldErrStream, oldErrWriter); }
+                }
+            }
         }
         splitContainer2.SplitterDistance = splitContainer2.Width;
+        return (quiet ? Encoding.Unicode.GetString(captureStream.ToArray()) : "", runtimeError ?? ""); // 260723Cl 追加 (UTF-16LE でデコード)
     }
 
     // 260414Cl 追加 Compile 時の文法エラーを行番号付きで収集する ErrorListener
