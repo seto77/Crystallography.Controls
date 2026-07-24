@@ -507,7 +507,12 @@ public partial class CrystalControl : UserControlBase
     {
         GenerateFromInterface();
         if (crystal != null)
-            Clipboard.SetDataObject(Crystal2.FromCrystal(crystal), true, 3, 10);
+            // 260723Cl 変更: 生の Crystal2 オブジェクトを SetDataObject すると .NET 9+ の BinaryFormatter 廃止で
+            // クロスプロセス転送がサイレント失敗する。受信側 (ReciPro/PDIndexer の WndProc) は
+            // 「先頭1バイト=Crystal2.ID + Brotli圧縮MemoryPack」の byte[] を期待しているため、
+            // CSManager の送信側 (FormMain.cs) と同じ形式へ統一。
+            //Clipboard.SetDataObject(Crystal2.FromCrystal(crystal), true, 3, 10);
+            Clipboard.SetDataObject(MemoryPackEx.Serialize(Crystal2.ID, Crystal2.FromCrystal(crystal)), true, 3, 10);
     }
 
     private void resetToolStripMenuItem_Click(object sender, EventArgs e)
