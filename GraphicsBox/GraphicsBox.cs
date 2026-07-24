@@ -141,14 +141,17 @@ public class GraphicsBox : PictureBox
         DoubleBuffered = true;
     }
 
+    /// <summary>描画バッファ合成後、最前面へ一時図形 (ラバーバンド等) を描くためのイベント。260723Cl 追加</summary>
+    public event PaintEventHandler PaintOverlay;
+
     /// <summary>PictureBox の描画後に描画バッファを重ねる。</summary>
     protected override void OnPaint(PaintEventArgs pe)
     {
         base.OnPaint(pe);
-        if (graphicsLayerBitmap == null)
-            return;
-
-        pe.Graphics.DrawImageUnscaled(graphicsLayerBitmap, 0, 0); // (260322Ch) 継承元のPictureBoxのImageと描画バッファを合成して表示する
+        // 260723Cl 変更: graphicsLayerBitmap == null の早期 return をやめ、PaintOverlay を常に最後へ通知する
+        if (graphicsLayerBitmap != null)
+            pe.Graphics.DrawImageUnscaled(graphicsLayerBitmap, 0, 0); // (260322Ch) 継承元のPictureBoxのImageと描画バッファを合成して表示する
+        PaintOverlay?.Invoke(this, pe); // 260723Cl 追加: 永続描画バッファより手前に描画する
     }
 
     /// <summary>サイズ変更時に描画バッファを再作成する。</summary>
