@@ -30,6 +30,18 @@ public partial class ScalablePictureBoxAdvanced : UserControlBase
 
     #region プロパティ
 
+    //260726Cl 追加: 各パネルを「表示するつもりか」を保持する。
+    //⚠ Control.Visible は setter が自分のフラグを立てるのに対し、getter は「自分と全祖先が表示されているか」を返す。
+    //  そのため子の Visible を直接返すと、このコントロールが非選択のタブページに載っている状態でフォームが再シリアライズ
+    //  されたときに、全ての *Visible プロパティが false と読まれ、デザイナが `= false;` を書き込んでしまう
+    //  (FormEBSD の MasterPattern 2D で ColorVisible/PolarityVisible/TrackBarVisible などが勝手に消える不具合として発現。
+    //   [DefaultValue(true)] のため true 側は書かれず、一度書かれた false だけが残るので設定が戻せなくなっていた)。
+    //  意図した状態をここに持ち、getter はこのフィールドを返すことで、祖先の可視状態に依存せず往復できるようにする。
+    bool mousePositionLabelVisible = true, magInfoVisible = true, gradientVisible = true, scaleVisible = true,
+        colorVisible = true, polarityVisible = true, trackBarVisible = true, frequencyGraphVisible = true,
+        imageFilterVisible = true, imageFilterGaussianBlurVisible = true, imageFilterDustAndScratchesVisible = true,
+        statusVisible = true;
+
     // 260717Cl: 基底 UserControlBase.DesignMode と完全に同義の二重定義だったため削除 (ScalablePictureBox 側と同じ整理)。
     ///// <summary>VisualStudioデザイナーの編集の時はTrue</summary>
     //public new bool DesignMode
@@ -65,9 +77,10 @@ public partial class ScalablePictureBoxAdvanced : UserControlBase
     [DefaultValue(true)] // 260607Cl
     public bool MousePositionLabelVisible
     {
-        get => label.Visible;
+        get => mousePositionLabelVisible; //260726Cl: 旧 label.Visible (祖先が隠れていると false を返し、デザイナに false を書かせてしまう)
         set
         {
+            mousePositionLabelVisible = value; //260726Cl
             label.Visible = value;
             panelUpper.Visible = value; // 260717Cl: 呼び出し 1 箇所の UpdateUpperPanelVisibility をインライン化 (将来 CopyButtonVisible 復帰時は表示条件を再集約)
         }
@@ -75,7 +88,7 @@ public partial class ScalablePictureBoxAdvanced : UserControlBase
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [DefaultValue(true)] // 260607Cl
-    public bool MagInfoVisible { set => panelMagInfo.Visible = value; get => panelMagInfo.Visible; }
+    public bool MagInfoVisible { set { magInfoVisible = value; panelMagInfo.Visible = value; } get => magInfoVisible; } //260726Cl: getter は意図した状態を返す
 
     /// <summary>コピーボタンを表示するかどうか</summary>
     //public bool CopyButtonVisible
@@ -89,49 +102,52 @@ public partial class ScalablePictureBoxAdvanced : UserControlBase
     //}
 
     /// <summary> Polarity, Scale, Colorを表示するかどうか (互換性確保のために残している) </summary>
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-    [Category("Gradient")]
-    [DefaultValue(true)] // 260607Cl
-    public bool ShowGradiaent { get=> flowLayoutPanelGradient.Visible; set=> flowLayoutPanelGradient.Visible=value; }
+    //260726Cl 変更: GradiaentVisible / VisibleGradient と同じ flowLayoutPanelGradient.Visible を指す別名が 3 つあり、
+    //デザイナが 1 つの状態に対して 3 行を書き出していた (実際に FormEBSD.Designer.cs へ GradiaentVisible と VisibleGradient が
+    //揃って書かれていた)。シリアライズ対象は GradiaentVisible の 1 本に絞り、別名は互換のため残すだけにする。
+    //旧: [DesignerSerializationVisibility(Visible)][Category("Gradient")][DefaultValue(true)] + flowLayoutPanelGradient 直読み
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    public bool ShowGradiaent { get => GradiaentVisible; set => GradiaentVisible = value; }
 
     [Category("Gradient")]
     /// <summary>Polarity, Scale, Colorを表示するかどうか</summary>
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [DefaultValue(true)] // 260607Cl
-    public bool GradiaentVisible { get => flowLayoutPanelGradient.Visible; set => flowLayoutPanelGradient.Visible = value; }
+    public bool GradiaentVisible { get => gradientVisible; set { gradientVisible = value; flowLayoutPanelGradient.Visible = value; } } //260726Cl
 
     /// <summary>スケール(Log, Linear) 切り替えコンボボックスを表示するかどうか </summary>
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category("Gradient")]
     [DefaultValue(true)] // 260607Cl
-    public bool ScaleVisible { set => flowLayoutPanelScale.Visible = value; get => flowLayoutPanelScale.Visible; }
+    public bool ScaleVisible { set { scaleVisible = value; flowLayoutPanelScale.Visible = value; } get => scaleVisible; } //260726Cl
 
     /// <summary>カラー切り替えコンボボックスを表示するかどうか </summary>
     // (260322Ch) WFO1000: Microsoft ??????????????????? ???????????
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category("Gradient")]
     [DefaultValue(true)] // 260607Cl
-    public bool ColorVisible { set => flowLayoutPanelColor.Visible = value; get => flowLayoutPanelColor.Visible; }
+    public bool ColorVisible { set { colorVisible = value; flowLayoutPanelColor.Visible = value; } get => colorVisible; } //260726Cl
    
     /// <summary>ネガ/ポジ切り替えコンボボックスを表示するかどうか </summary>
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category("Gradient")]
     [DefaultValue(true)] // 260607Cl
-    public bool PolarityVisible { set => flowLayoutPanelPolarity.Visible = value; get => flowLayoutPanelPolarity.Visible; }
+    public bool PolarityVisible { set { polarityVisible = value; flowLayoutPanelPolarity.Visible = value; } get => polarityVisible; } //260726Cl
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [DefaultValue(true)] // 260607Cl
-    public bool TrackBarVisible { set => panelTrackBar.Visible = value; get => panelTrackBar.Visible; }
+    public bool TrackBarVisible { set { trackBarVisible = value; panelTrackBar.Visible = value; } get => trackBarVisible; } //260726Cl
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [DefaultValue(true)] // 260607Cl
-    public bool FrequencyGraphVisible { set => graphControl.Visible = value; get => graphControl.Visible; }
+    public bool FrequencyGraphVisible { set { frequencyGraphVisible = value; graphControl.Visible = value; } get => frequencyGraphVisible; } //260726Cl
 
     [Category("Image Filter")]
     /// <summary>ImageFilterを有効にするかどうか</summary>
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [DefaultValue(true)] // 260607Cl
-    public bool ImageFilterVisible { set => flowLayoutPanelImageFilter.Visible = value; get => flowLayoutPanelImageFilter.Visible; }
+    public bool ImageFilterVisible { set { imageFilterVisible = value; flowLayoutPanelImageFilter.Visible = value; } get => imageFilterVisible; } //260726Cl
 
     [Category("Image Filter")]
     /// <summary>GaussianFilterを有効にするかどうか</summary>
@@ -143,7 +159,7 @@ public partial class ScalablePictureBoxAdvanced : UserControlBase
     /// <summary>GaussianFilterを有効にするかどうか</summary>
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [DefaultValue(true)] // 260607Cl
-    public bool ImageFilter_GaussianBlurVisible { set => checkBoxGaussianBlur.Visible = value; get => checkBoxGaussianBlur.Visible; }
+    public bool ImageFilter_GaussianBlurVisible { set { imageFilterGaussianBlurVisible = value; checkBoxGaussianBlur.Visible = value; } get => imageFilterGaussianBlurVisible; } //260726Cl
 
     [Category("Image Filter")]
     /// <summary>GaussianFilterの</summary>
@@ -161,7 +177,7 @@ public partial class ScalablePictureBoxAdvanced : UserControlBase
     /// <summary>Dust＆Scratchesを有効にするかどうか</summary>
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [DefaultValue(true)] // 260607Cl
-    public bool ImageFilter_DustAndScratchesVisible { set => checkBoxDustScratches.Visible = value; get => checkBoxDustScratches.Visible; }
+    public bool ImageFilter_DustAndScratchesVisible { set { imageFilterDustAndScratchesVisible = value; checkBoxDustScratches.Visible = value; } get => imageFilterDustAndScratchesVisible; } //260726Cl
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category("Image Filter")]
@@ -173,9 +189,10 @@ public partial class ScalablePictureBoxAdvanced : UserControlBase
     [DefaultValue(3.0)] // 260607Cl
     public double ImageFilter_DustAndScratchesThreshold { set => numericBoxDustScratchesThreshold.Value = value; get => numericBoxDustScratchesThreshold.Value; }
 
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-    [DefaultValue(true)] // 260607Cl
-    public bool VisibleGradient { set => flowLayoutPanelGradient.Visible = value; get => flowLayoutPanelGradient.Visible; }
+    //260726Cl 変更: GradiaentVisible の別名。シリアライズは GradiaentVisible に一本化する (旧: Visible + DefaultValue(true))
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    public bool VisibleGradient { set => GradiaentVisible = value; get => GradiaentVisible; }
 
     //[DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] // 260329Cl 変更: Visible→Hidden+ReadOnly (Designer.csへのシリアライズを抑止。resources.ApplyResources()で設定したSizeを上書きしてしまうため)
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -363,7 +380,7 @@ public partial class ScalablePictureBoxAdvanced : UserControlBase
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [DefaultValue(true)] // 260607Cl
-    public bool StatusVisible { set => statusStrip1.Visible = value; get => statusStrip1.Visible; }
+    public bool StatusVisible { set { statusVisible = value; statusStrip1.Visible = value; } get => statusVisible; } //260726Cl
 
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
