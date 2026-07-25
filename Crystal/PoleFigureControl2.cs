@@ -52,7 +52,12 @@ public partial class PoleFigureControl2 : UserControlBase
     {
         InitializeComponent();
         comboBoxColor.SelectedIndex = 0;
+        // pictureBox.SizeChanged += (_, _) => Draw(); // 260725Ch // 260725Cl 変更前: 同一サイズの連発でも毎回フル再描画していた
+        pictureBox.SizeChanged += (_, _) => Draw(force: false); // 260725Ch: Dock後の実描画領域が変わったらキャッシュBitmapを現在サイズで再生成 // 260725Cl: 同一サイズならスキップ
     }
+
+    /// <summary>Draw() が最後に描いたキャンバスサイズ。同一サイズの SizeChanged 連発で全再描画を繰り返さないため。260725Cl 追加</summary>
+    private Size lastDrawnSize = Size.Empty;
 
     private void PoleFigureControl_Load(object sender, EventArgs e)
     {
@@ -60,10 +65,14 @@ public partial class PoleFigureControl2 : UserControlBase
         center = new PointD(0, 0);
     }
 
-    public void Draw()
+    // 260725Cl シグネチャ変更 (force 追加): SizeChanged からの呼び出しで、サイズが前回と同じなら再描画を省く。
+    // Vectors/Circles/Lines など内容が変わる経路は force:true 相当 (明示呼び出し) なので従来どおり必ず描き直す。旧: public void Draw()
+    public void Draw(bool force = true)
     {
         magnification = Math.Min(pictureBox.Width, pictureBox.Height) / 2.4;
         if (pictureBox.ClientSize.Width == 0 || pictureBox.ClientSize.Height == 0) return;
+        if (!force && pictureBox.ClientSize == lastDrawnSize && pictureBox.Image != null) return; // 260725Cl 追加
+        lastDrawnSize = pictureBox.ClientSize; // 260725Cl 追加
 
         var oldImage = pictureBox.Image;
         var bmp = new Bitmap(pictureBox.ClientSize.Width, pictureBox.ClientSize.Height);
@@ -212,16 +221,19 @@ public partial class PoleFigureControl2 : UserControlBase
         var scale = comboBoxColor.SelectedIndex == 0 ? PseudoBitmap.ColorScaleColdWarmLiner : PseudoBitmap.ColorScaleGrayLiner;
         var range = numericBoxMax.Value - numericBoxMin.Value;
 
+        using var brush = new SolidBrush(Color.White); // 260725Cl: セル毎の SolidBrush 生成破棄 (1°設定で約2.5万回) を 1 本の Color 差し替えへ
         for (int i = pixels.Length - 1; i >= 0; i--)
             for (int j = 0; j < pixels[i].Length; j++)
             {
                 var val = (pixels[i][j] - numericBoxMin.Value) / range;
                 int density = Math.Clamp((int)(val * 65535), 0, 65535);
-                using var brush = new SolidBrush(Color.FromArgb(scale[density].R, scale[density].G, scale[density].B));
+                // using var brush = new SolidBrush(...); // 260725Cl 変更前: セル毎に生成・破棄
+                brush.Color = Color.FromArgb(scale[density].R, scale[density].G, scale[density].B); // 260725Cl
                 g.FillPie(brush,
                     -(i + 1.0) / pixels.Length, -(i + 1.0) / pixels.Length,
                     (i + 1.0) / pixels.Length * 2, (i + 1.0) / pixels.Length * 2,
-                    -(double)(j + 1) / pixels[i].Length * 360.0,
+                    // -(double)(j + 1) / pixels[i].Length * 360.0, // 260725Ch 変更前: X・YともFormStereonetと逆向き
+                    180.0 - (double)(j + 1) / pixels[i].Length * 360.0, // 260725Ch: +Xを右、+Yを上にする
                     1.0 / pixels[i].Length * 360.0);
             }
     }
@@ -270,7 +282,8 @@ public partial class PoleFigureControl2 : UserControlBase
         if (Circles != null)
             foreach (var s in Circles.Where(s => s.Point.Length2 <= 1))
             {
-                var p = new PointD(s.Point.X, s.Point.Y);
+                // var p = new PointD(s.Point.X, s.Point.Y); // 260725Ch 変更前
+                var p = new PointD(s.Point.X, -s.Point.Y); // 260725Ch: FormStereonetと同じく投影座標の+Yを画面上方向へ
                 if (s.Fill)
                     g.FillCircle(s.Color, p, s.Radius, 255);
                 else
@@ -286,7 +299,8 @@ public partial class PoleFigureControl2 : UserControlBase
             foreach (var l in Lines)
             {
                 using var pen = new Pen(l.Color, (float)(l.LineWidth / magnification));
-                g.DrawLines(pen, l.Point.Select(e => new PointD(e.X, e.Y)).ToArray());
+                // g.DrawLines(pen, l.Point.Select(e => new PointD(e.X, e.Y)).ToArray()); // 260725Ch 変更前
+                g.DrawLines(pen, l.Point.Select(e => new PointD(e.X, -e.Y)).ToArray()); // 260725Ch: FormStereonetと同じ上下方向へ
             }
     }
 
