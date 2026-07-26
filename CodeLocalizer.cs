@@ -29,16 +29,28 @@ public static class CodeLocalizer
         var itemByName = new Dictionary<string, ToolStripItem>();
         var grids = new List<DataGridView>();
         Collect(root, ctrlByName, itemByName, grids);
+        CollectDetachedMenus(root, itemByName);
 
         foreach (var e in entries)
         {
             if (e.Prop == "HeaderText")
             {
+                // 260726Cl 変更: 旧実装は DataGridView 列しか見ておらず、NumericBox / SizeControl /
+                //   TrackBarAdvanced / ColorControl のような「HeaderText を持つ自作コントロール」宛の
+                //   エントリが 23 件すべて無言で捨てられていた (訳は書かれているのに UI は英語のまま)。
+                //   名前付きコントロール優先 → 見つからなければ従来どおり DataGridView 列を探す。
+                //   ※ DataGridViewColumn は Control ではないので ctrlByName には入らない = 両者は衝突しない。
+                if (ctrlByName.TryGetValue(e.Ctrl, out var hc) && TrySetHeaderText(hc, e.Resolve()))
+                    continue;
+
+                var applied = false;
                 foreach (var g in grids)
                 {
                     var col = FindColumn(g, e.Ctrl);
-                    if (col != null) { col.HeaderText = e.Resolve(); break; }
+                    if (col != null) { col.HeaderText = e.Resolve(); applied = true; break; }
                 }
+                if (!applied)
+                    NoteUnresolved(t, e);
             }
             else // "Text"
             {
@@ -48,6 +60,8 @@ public static class CodeLocalizer
                     c.Text = e.Resolve();
                 else if (itemByName.TryGetValue(e.Ctrl, out var it))
                     it.Text = e.Resolve();
+                else
+                    NoteUnresolved(t, e);
             }
         }
     }
@@ -75,9 +89,80 @@ public static class CodeLocalizer
         //   全 11 言語で同じ症状。UC 配下は UC 自身に任せ、host は自分のコントロールだけを対象にする。
         //   既知の穴: UserControlBase を継承しない入れ子 UserControl (IndexControl・GLControlAlpha) は素通りする。
         //   現状それらの内部コントロール名は訳テーブルに 1 件も無いので実害は無い。
+        // 260726Cl 修正: ただし **UC インスタンス自身の Name は登録する**。旧実装は UC を丸ごと飛ばしていたため、
+        //   NumericBox / SizeControl / TrackBarAdvanced (いずれも UserControlBase 派生) が辞書に載らず、
+        //   それらを指す HeaderText エントリ 23 件が到達不能だった。
+        //   ここで登録するのは「host の Designer が付けた host スコープの名前」であり、上記の衝突は
+        //   UC の *内部* コントロール名 (tabPage4 等) の話なので、この 1 行では再発しない。
         foreach (Control ch in c.Controls)
-            if (ch is not UserControlBase)
+        {
+            if (ch is UserControlBase)
+            {
+                if (!string.IsNullOrEmpty(ch.Name))
+                    ctrlByName[ch.Name] = ch;
+            }
+            else
                 Collect(ch, ctrlByName, itemByName, grids);
+        }
+    }
+
+    // 260726Cl 追加: 名前付きコントロールが公開する書き込み可能な string HeaderText へ訳を当てる。
+    //   NumericBox / SizeControl / TrackBarAdvanced / ColorControl などが該当する。型を列挙せず
+    //   リフレクションにしたのは、訳テーブル自体が「コントロール名」で引く緩い設計であり、
+    //   HeaderText を持つコントロールが将来増えても追随させる必要がないため。
+    //   Apply は OnLoad (UI スレッド) からのみ呼ばれるのでキャッシュは非同期化しない。
+    private static readonly Dictionary<System.Type, System.Reflection.PropertyInfo> _headerTextProps = new();
+
+    private static bool TrySetHeaderText(Control c, string value)
+    {
+        var t = c.GetType();
+        if (!_headerTextProps.TryGetValue(t, out var pi))
+        {
+            pi = t.GetProperty("HeaderText",
+                System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+            if (pi != null && (pi.PropertyType != typeof(string) || !pi.CanWrite))
+                pi = null;
+            _headerTextProps[t] = pi;
+        }
+        if (pi == null)
+            return false;
+        pi.SetValue(c, value);
+        return true;
+    }
+
+    // 260726Cl 追加: 当てられなかったエントリを記録する。HeaderText が 23 件も黙って捨てられていたのに
+    //   1 か月以上気づけなかったのは、失敗が完全に無言だったため。--diagnose 等から拾えるようにしておく。
+    private static readonly List<string> _unresolved = new();
+
+    /// <summary>訳を当てられなかったエントリ ("型名.コントロール名.プロパティ")。既定では空。</summary>
+    public static IReadOnlyList<string> UnresolvedEntries => _unresolved;
+
+    private static void NoteUnresolved(System.Type root, Localization.Entry e)
+    {
+        var key = $"{root.Name}.{e.Ctrl}.{e.Prop}";
+        if (_unresolved.Contains(key))
+            return;
+        _unresolved.Add(key);
+        System.Diagnostics.Debug.WriteLine($"[CodeLocalizer] 未解決エントリ: {key}");
+    }
+
+    // 260726Cl 追加: どのコントロールの ContextMenuStrip プロパティにも割り当てられていない
+    //   ContextMenuStrip を root のフィールドから拾う。Designer が作った菜単でも、コード側が
+    //   `menu.Show(pictureBox, x, y)` で自前表示する流儀だと Control.ContextMenuStrip が null のままで、
+    //   コントロールツリーからは到達できない。
+    //   実害: GraphControl の右クリックメニュー (Log scale X/Y・Scale line X/Y) が全 11 言語で英語のままだった
+    //   (--diagnose の未解決エントリ報告で発覚)。root だけを見るので走査コストは Apply あたり 1 回。
+    private static void CollectDetachedMenus(Control root, Dictionary<string, ToolStripItem> itemByName)
+    {
+        var flags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public
+                  | System.Reflection.BindingFlags.NonPublic;
+        foreach (var f in root.GetType().GetFields(flags))
+        {
+            if (!typeof(ContextMenuStrip).IsAssignableFrom(f.FieldType))
+                continue;
+            if (f.GetValue(root) is ContextMenuStrip cms)
+                CollectItems(cms.Items, itemByName);
+        }
     }
 
     private static void CollectItems(ToolStripItemCollection items, Dictionary<string, ToolStripItem> map)
