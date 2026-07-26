@@ -307,7 +307,9 @@
             // numericBoxCellVolumeNm
             // 
             numericBoxCellVolumeNm.BackColor = System.Drawing.SystemColors.Control;
-            numericBoxCellVolumeNm.DecimalPlaces = 7;
+            numericBoxCellVolumeNm.FormatSpecifier = "g9"; // 260726Cl 追加: 結晶依存の計算値で桁数が定まらず数値欄を溢れていた (有効数字 9 桁で頭打ち)
+            //numericBoxCellVolumeNm.DecimalPlaces = 7; // 260726Cl 旧: FormatSpecifier 優先のため無効。旧 7
+            numericBoxCellVolumeNm.DecimalPlaces = -1; // 260726Cl
             resources.ApplyResources(numericBoxCellVolumeNm, "numericBoxCellVolumeNm");
             numericBoxCellVolumeNm.Name = "numericBoxCellVolumeNm";
             numericBoxCellVolumeNm.ReadOnly = true;
@@ -317,13 +319,16 @@
             numericBoxCellVolumeNm.TabStop = false;
             toolTip.SetToolTip(numericBoxCellVolumeNm, resources.GetString("numericBoxCellVolumeNm.ToolTip"));
             numericBoxCellVolumeNm.ValueBackColor = System.Drawing.SystemColors.Control;
-            numericBoxCellVolumeNm.ValueBoxWidth = 60;
+            //numericBoxCellVolumeNm.ValueBoxWidth = 60; // 260726Cl 旧: 有効数字 9 桁 (g9) の最長表示が入らなかった
+            numericBoxCellVolumeNm.ValueBoxWidth = 86; // 260726Cl
             numericBoxCellVolumeNm.ValueFontSize = 9F;
             // 
             // numericBoxCellMass
             // 
             numericBoxCellMass.BackColor = System.Drawing.SystemColors.Control;
-            numericBoxCellMass.DecimalPlaces = 4;
+            numericBoxCellMass.FormatSpecifier = "g9"; // 260726Cl 追加: 結晶依存の計算値で桁数が定まらず数値欄を溢れていた (有効数字 9 桁で頭打ち)
+            //numericBoxCellMass.DecimalPlaces = 4; // 260726Cl 旧: FormatSpecifier 優先のため無効。旧 4
+            numericBoxCellMass.DecimalPlaces = -1; // 260726Cl
             resources.ApplyResources(numericBoxCellMass, "numericBoxCellMass");
             numericBoxCellMass.Name = "numericBoxCellMass";
             numericBoxCellMass.ReadOnly = true;
@@ -333,7 +338,8 @@
             numericBoxCellMass.TabStop = false;
             toolTip.SetToolTip(numericBoxCellMass, resources.GetString("numericBoxCellMass.ToolTip"));
             numericBoxCellMass.ValueBackColor = System.Drawing.SystemColors.Control;
-            numericBoxCellMass.ValueBoxWidth = 60;
+            //numericBoxCellMass.ValueBoxWidth = 60; // 260726Cl 旧: 有効数字 9 桁 (g9) の最長表示が入らなかった
+            numericBoxCellMass.ValueBoxWidth = 80; // 260726Cl
             numericBoxCellMass.ValueFontSize = 9F;
             // 
             // numericBoxMolarVolume
