@@ -2,7 +2,9 @@
 // Pattern A (ツリー+タブ詳細) を骨格に、Pattern C (Bärnighausen グラフ=Diagram タブ) と
 // Pattern B (軌道分裂・双晶インスペクタ) を統合。translationengleiche (t-) 部分群/超群は
 // TSubgroupFinder が既存の対称操作データから実行時に厳密計算する (型同定は操作集合の完全一致で検証済み)。
-// klassengleiche (k-) / isomorphic は将来の KSubgroupFinder (実行時エンジン、Phase 2c) 待ちのプレースホルダ表示に留める。
+// 260726Cl 現状: klassengleiche (k-) / isomorphic / t-超群 / k-超群 も KSubgroupFinder・NormalizerFinder で
+//   実データ化済み (プレースホルダは 260708Cl に全廃)。全 230 タイプで同定率 100%。
+//   〔旧: 「k-/isomorphic は将来の KSubgroupFinder 待ちのプレースホルダ表示に留める」 — 2026-07 時点で実装済み〕
 // (旧: 埋め込み CSV パイプライン。t- の実行時化成功を受け k- も同方式へ方針変更。詳細=.project-guidance/ReciPro/ReciPro_対称性機能.md)
 #region using, namespace
 using System;
