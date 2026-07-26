@@ -63,7 +63,7 @@
     <value>Röntgen</value>
   </data>
   <data name="radioButtonElectron.Text" xml:space="preserve">
-    <value>Elektronen</value>
+    <value>Elektron</value>
   </data>
   <data name="numericBoxEnergy.HeaderText" xml:space="preserve">
     <value>Energie</value>
@@ -72,7 +72,7 @@
     <value>Wellenlänge</value>
   </data>
   <data name="radioButtonNeutron.Text" xml:space="preserve">
-    <value>Neutronen</value>
+    <value>Neutron</value>
   </data>
   <data name="comboBoxXRayElement.ToolTip" xml:space="preserve">
     <value>Wählt ein Element (1:H bis 98:Cf), das charakteristische Röntgenstrahlung aussendet.

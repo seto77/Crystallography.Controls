@@ -69,7 +69,7 @@
     <value>Énergie</value>
   </data>
   <data name="numericBoxWaveLength.HeaderText" xml:space="preserve">
-    <value>Longueur d'onde</value>
+    <value>Long. d'onde</value>
   </data>
   <data name="radioButtonNeutron.Text" xml:space="preserve">
     <value>Neutrons</value>

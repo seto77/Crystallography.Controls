@@ -231,6 +231,9 @@ partial class FormGroupRelations
         tabDetail.Controls.Add(tabPointGroups); // 260712Cl 追加
         tabDetail.Controls.Add(tabElements); // 260713Cl 追加
         tabDetail.Dock = System.Windows.Forms.DockStyle.Fill;
+        // 260726Cl 追加: 7 タブの見出しが幅に収まらず、en でも 19px・ru では 162px あふれて左右の矢印スクロールになり
+        // 末尾タブ (「点群」「対称要素・一般位置」) の文字が読めなかった。Multiline で行を増やして全タブを見せる。
+        tabDetail.Multiline = true;
         tabDetail.Location = new System.Drawing.Point(0, 0);
         tabDetail.Name = "tabDetail";
         tabDetail.SelectedIndex = 0;

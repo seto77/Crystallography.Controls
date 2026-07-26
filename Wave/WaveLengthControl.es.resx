@@ -69,10 +69,10 @@
     <value>Energía</value>
   </data>
   <data name="numericBoxWaveLength.HeaderText" xml:space="preserve">
-    <value>Longitud de onda</value>
+    <value>Long. de onda</value>
   </data>
   <data name="radioButtonNeutron.Text" xml:space="preserve">
-    <value>Neutrones</value>
+    <value>Neutrón</value>
   </data>
   <data name="comboBoxXRayElement.ToolTip" xml:space="preserve">
     <value>Seleccione un elemento (1:H a 98:Cf) que emita rayos X característicos.

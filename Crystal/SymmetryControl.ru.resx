@@ -66,7 +66,7 @@
     <value>Параметры ячейки</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
-    <value>Единица</value>
+    <value>Ед.</value>
   </data>
   <data name="groupBoxSymmetry.Text" xml:space="preserve">
     <value>Симметрия</value>

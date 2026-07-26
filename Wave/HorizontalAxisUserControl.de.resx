@@ -63,10 +63,10 @@
     <value>Röntgen</value>
   </data>
   <data name="radioButtonElectron.Text" xml:space="preserve">
-    <value>Elektronen</value>
+    <value>Elektron</value>
   </data>
   <data name="radioButtonNeutron.Text" xml:space="preserve">
-    <value>Neutronen</value>
+    <value>Neutron</value>
   </data>
   <data name="groupBoxSource.Text" xml:space="preserve">
     <value>Strahlungsart</value>

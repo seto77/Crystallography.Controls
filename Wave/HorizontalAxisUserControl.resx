@@ -2072,9 +2072,6 @@ path; available for neutron white-beam mode.</value>
   <data name="&gt;&gt;flowLayoutPanelAxisValues.Name" xml:space="preserve">
     <value>flowLayoutPanelAxisValues</value>
   </data>
-  <metadata name="$this.Language" type="System.Globalization.CultureInfo, System.Private.CoreLib, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">
-    <value>ja</value>
-  </metadata>
   <metadata name="captureExtender.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>

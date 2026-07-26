@@ -66,8 +66,18 @@ public static class CodeLocalizer
             CollectItems(ts.Items, itemByName);
         if (c.ContextMenuStrip != null)
             CollectItems(c.ContextMenuStrip.Items, itemByName);
+        // 260726Cl: 入れ子の UserControlBase は自分の OnLoad で Apply(this) を呼び、自分の型の訳を自分で当てる。
+        //   host 側からも降りていくと「名前一致」で UC 内部の同名コントロールを上書きしてしまい、
+        //   どちらか一方が別のラベルの文字になる (Collect が後勝ちで辞書を上書きするため)。
+        //   実害例: FormPolycrystallineDiffractionSimulator の tabPage4「Refinement option」が
+        //   入れ子 DiffractionPatternControl の tabPage4 に当たり、「模擬パターン|マスク|背景」タブの
+        //   見出しの上に別の文字が重なって表示されていた (label28「Scale 1」が UC 側の「°」を潰す例も同様)。
+        //   全 11 言語で同じ症状。UC 配下は UC 自身に任せ、host は自分のコントロールだけを対象にする。
+        //   既知の穴: UserControlBase を継承しない入れ子 UserControl (IndexControl・GLControlAlpha) は素通りする。
+        //   現状それらの内部コントロール名は訳テーブルに 1 件も無いので実害は無い。
         foreach (Control ch in c.Controls)
-            Collect(ch, ctrlByName, itemByName, grids);
+            if (ch is not UserControlBase)
+                Collect(ch, ctrlByName, itemByName, grids);
     }
 
     private static void CollectItems(ToolStripItemCollection items, Dictionary<string, ToolStripItem> map)

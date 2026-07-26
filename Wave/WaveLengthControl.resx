@@ -1139,4 +1139,7 @@ instead of a single wavelength.</value>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>Crystallography.Controls.UserControlBase, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
   </data>
+  <data name="comboBoxXRayElement.DropDownWidth" type="System.Int32, mscorlib">
+    <value>100</value>
+  </data>
 </root>

@@ -353,7 +353,7 @@ raw pixel value under the cursor.</value>
     <value>0, 0, 0, 0</value>
   </data>
   <data name="comboBoxScale2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 25</value>
+    <value>94, 25</value>
   </data>
   <data name="comboBoxScale2.TabIndex" type="System.Int32, mscorlib">
     <value>36</value>
@@ -429,7 +429,7 @@ reveals faint features alongside strong ones).</value>
     <value>0, 0, 0, 0</value>
   </data>
   <data name="comboBoxGradient.Size" type="System.Drawing.Size, System.Drawing">
-    <value>68, 25</value>
+    <value>80, 25</value>
   </data>
   <data name="comboBoxGradient.TabIndex" type="System.Int32, mscorlib">
     <value>34</value>
