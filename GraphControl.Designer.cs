@@ -93,6 +93,7 @@
             numericBoxXMin.SmartIncrement = true;
             numericBoxXMin.TabIndex = 0;
             toolTip.SetToolTip(numericBoxXMin, "Minimum of the X-axis plot range (left edge).\r\nOn a log axis, enter the real (non-log) value.");
+            numericBoxXMin.FormatSpecifier = "g6"; // 260726Cl 追加: 軸範囲は計算値なので既定 (general) だと 17 桁表示になり数値欄を溢れる
             numericBoxXMin.ValueBoxWidth = 54;
             numericBoxXMin.ValueFontSize = 9.5F;
             numericBoxXMin.ValueChanged += numericBoxRange_ValueChanged;
@@ -114,6 +115,7 @@
             numericBoxXMax.SmartIncrement = true;
             numericBoxXMax.TabIndex = 0;
             toolTip.SetToolTip(numericBoxXMax, "Maximum of the X-axis plot range (right edge).\r\nOn a log axis, enter the real (non-log) value.");
+            numericBoxXMax.FormatSpecifier = "g6"; // 260726Cl 追加: 軸範囲は計算値なので既定 (general) だと 17 桁表示になり数値欄を溢れる
             numericBoxXMax.ValueBoxWidth = 54;
             numericBoxXMax.ValueFontSize = 9.5F;
             numericBoxXMax.ValueChanged += numericBoxRange_ValueChanged;
@@ -135,6 +137,7 @@
             numericBoxYMin.SmartIncrement = true;
             numericBoxYMin.TabIndex = 0;
             toolTip.SetToolTip(numericBoxYMin, "Minimum of the Y-axis plot range (bottom edge).\r\nOn a log axis, enter the real (non-log) value.");
+            numericBoxYMin.FormatSpecifier = "g6"; // 260726Cl 追加: 軸範囲は計算値なので既定 (general) だと 17 桁表示になり数値欄を溢れる
             numericBoxYMin.ValueBoxWidth = 54;
             numericBoxYMin.ValueFontSize = 9.5F;
             numericBoxYMin.ValueChanged += numericBoxRange_ValueChanged;
@@ -156,6 +159,7 @@
             numericBoxYMax.SmartIncrement = true;
             numericBoxYMax.TabIndex = 0;
             toolTip.SetToolTip(numericBoxYMax, "Maximum of the Y-axis plot range (top edge).\r\nOn a log axis, enter the real (non-log) value.");
+            numericBoxYMax.FormatSpecifier = "g6"; // 260726Cl 追加: 軸範囲は計算値なので既定 (general) だと 17 桁表示になり数値欄を溢れる
             numericBoxYMax.ValueBoxWidth = 54;
             numericBoxYMax.ValueFontSize = 9.5F;
             numericBoxYMax.ValueChanged += numericBoxRange_ValueChanged;

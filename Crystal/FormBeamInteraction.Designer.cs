@@ -648,7 +648,8 @@
             numericBoxCutoffD.SmartIncrement = true;
             toolTip.SetToolTip(numericBoxCutoffD, resources.GetString("numericBoxCutoffD.ToolTip"));
             numericBoxCutoffD.Value = 1D;
-            numericBoxCutoffD.ValueBoxWidth = 60;
+            //numericBoxCutoffD.ValueBoxWidth = 60; // 260726Cl 旧: 最長値「10.000」に対して広すぎ、隣のヘッダに回せる幅が死んでいた
+            numericBoxCutoffD.ValueBoxWidth = 51; // 260726Cl
             numericBoxCutoffD.ValueChanged += numericBoxCutoffD_ValueChanged;
             // 
             // labelModel
