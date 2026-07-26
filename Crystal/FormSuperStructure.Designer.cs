@@ -44,6 +44,7 @@ partial class FormSuperStructure
         numericBoxA.HeaderText = "a × ";
         numericBoxA.Location = new System.Drawing.Point(9, 9);
         numericBoxA.Margin = new System.Windows.Forms.Padding(0);
+        numericBoxA.DecimalPlaces = 0; // 260726Cl 追加: 超格子の a 方向の倍数 (ValueInteger で消費する整数)。既定 -1 は general 書式で小数が表示され得る
         numericBoxA.Maximum = 100D;
         numericBoxA.MaximumSize = new System.Drawing.Size(1000, 25);
         numericBoxA.Minimum = 1D;
@@ -62,6 +63,7 @@ partial class FormSuperStructure
         numericBoxB.HeaderText = "b × ";
         numericBoxB.Location = new System.Drawing.Point(96, 9);
         numericBoxB.Margin = new System.Windows.Forms.Padding(0);
+        numericBoxB.DecimalPlaces = 0; // 260726Cl 追加: 超格子の b 方向の倍数 (ValueInteger で消費する整数)。既定 -1 は general 書式で小数が表示され得る
         numericBoxB.Maximum = 100D;
         numericBoxB.MaximumSize = new System.Drawing.Size(1000, 25);
         numericBoxB.Minimum = 1D;
@@ -80,6 +82,7 @@ partial class FormSuperStructure
         numericBoxC.HeaderText = "c × ";
         numericBoxC.Location = new System.Drawing.Point(187, 9);
         numericBoxC.Margin = new System.Windows.Forms.Padding(0);
+        numericBoxC.DecimalPlaces = 0; // 260726Cl 追加: 超格子の c 方向の倍数 (ValueInteger で消費する整数)。既定 -1 は general 書式で小数が表示され得る
         numericBoxC.Maximum = 100D;
         numericBoxC.MaximumSize = new System.Drawing.Size(1000, 25);
         numericBoxC.Minimum = 1D;
