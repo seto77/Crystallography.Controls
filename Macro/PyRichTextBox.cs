@@ -43,7 +43,7 @@ public partial class PyRichTextBox : RichTextBox
     //<system.componentmodel.browsable(true)> _
     // <system.componentmodel.category("カスタム")> _
     // <system.componentmodel.description("入力候補を設定、または取得します。")> _
-    // (260322Ch) WFO1000: Microsoft ??????????????????? ???????????
+    // (260322Ch) WFO1000 対応: WinForms アナライザが、コントロールの public プロパティにデザイナ直列化の方針 (DesignerSerializationVisibility / Browsable / DefaultValue 等) を明示するよう要求するため。〔260726Cl: 元の日本語が文字化けで失われていたので書き直した〕
     // 260414Cl setter で Python 基本文法テンプレートを自動マージ (呼び出し側は無変更)
     [Browsable(false)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]

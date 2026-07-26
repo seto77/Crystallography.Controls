@@ -39,7 +39,7 @@ public partial class CrystalDatabaseControl : UserControlBase
     private static string CodDatabasePath => UserAppDataPath + "COD.cdb3";
 
     #region フィールド、メソッド、イベント
-    // (260322Ch) WFO1000: Microsoft ??????????????????? ???????????
+    // (260322Ch) WFO1000 対応: WinForms アナライザが、コントロールの public プロパティにデザイナ直列化の方針 (DesignerSerializationVisibility / Browsable / DefaultValue 等) を明示するよう要求するため。〔260726Cl: 元の日本語が文字化けで失われていたので書き直した〕
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [DefaultValue(false)] // 260607Cl
     public bool AMCSD_Checked {get=> checkBoxAMCSD.Checked; set => checkBoxAMCSD.Checked = value; }

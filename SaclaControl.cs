@@ -27,7 +27,7 @@ namespace Crystallography.Controls
         public double PhiDegree { set { numericBoxPhi.Value = value; } get { return numericBoxPhi.Value; } }
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public PointD Foot { set { numericBoxFootX.Value = value.X; numericBoxFootY.Value = value.Y; } get { return new PointD(numericBoxFootX.Value, numericBoxFootY.Value); } }
-        // (260322Ch) WFO1000: Microsoft ??????????????????? ???????????
+        // (260322Ch) WFO1000 対応: WinForms アナライザが、コントロールの public プロパティにデザイナ直列化の方針 (DesignerSerializationVisibility / Browsable / DefaultValue 等) を明示するよう要求するため。〔260726Cl: 元の日本語が文字化けで失われていたので書き直した〕
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public double CameraLength2 { set { numericBoxDistance.Value = value; } get { return numericBoxDistance.Value; } }
 

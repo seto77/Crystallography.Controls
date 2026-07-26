@@ -123,7 +123,7 @@ public partial class ScalablePictureBoxAdvanced : UserControlBase
     public bool ScaleVisible { set { scaleVisible = value; flowLayoutPanelScale.Visible = value; } get => scaleVisible; } //260726Cl
 
     /// <summary>カラー切り替えコンボボックスを表示するかどうか </summary>
-    // (260322Ch) WFO1000: Microsoft ??????????????????? ???????????
+    // (260322Ch) WFO1000 対応: WinForms アナライザが、コントロールの public プロパティにデザイナ直列化の方針 (DesignerSerializationVisibility / Browsable / DefaultValue 等) を明示するよう要求するため。〔260726Cl: 元の日本語が文字化けで失われていたので書き直した〕
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category("Gradient")]
     [DefaultValue(true)] // 260607Cl

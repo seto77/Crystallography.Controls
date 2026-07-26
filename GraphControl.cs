@@ -384,7 +384,7 @@ public partial class GraphControl : UserControlBase
 
     #region 動作プロパティ
     /// <summary>マウス操作を受け付けるかどうか</summary>
-    // (260322Ch) WFO1000: Microsoft ??????????????????? ???????????
+    // (260322Ch) WFO1000 対応: WinForms アナライザが、コントロールの public プロパティにデザイナ直列化の方針 (DesignerSerializationVisibility / Browsable / DefaultValue 等) を明示するよう要求するため。〔260726Cl: 元の日本語が文字化けで失われていたので書き直した〕
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 3. 描画範囲・操作")]
     [Description("マウス操作を受け付けるかどうか")]

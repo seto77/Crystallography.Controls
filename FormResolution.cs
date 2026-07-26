@@ -19,7 +19,7 @@ namespace Crystallography.Controls
             get { return (int)numericUpDownWidth.Value; }
         }
 
-        // (260322Ch) WFO1000: Microsoft ??????????????????? ???????????
+        // (260322Ch) WFO1000 対応: WinForms アナライザが、コントロールの public プロパティにデザイナ直列化の方針 (DesignerSerializationVisibility / Browsable / DefaultValue 等) を明示するよう要求するため。〔260726Cl: 元の日本語が文字化けで失われていたので書き直した〕
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int ResolutionHeight

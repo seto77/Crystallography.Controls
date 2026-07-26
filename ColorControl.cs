@@ -97,7 +97,7 @@ public partial class ColorControl : UserControlBase
         }
     }
 
-    // (260322Ch) WFO1000: Microsoft ??????????????????? ???????????
+    // (260322Ch) WFO1000 対応: WinForms アナライザが、コントロールの public プロパティにデザイナ直列化の方針 (DesignerSerializationVisibility / Browsable / DefaultValue 等) を明示するよう要求するため。〔260726Cl: 元の日本語が文字化けで失われていたので書き直した〕
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] // 260607Cl 変更: Visible→Hidden。Color の冗長な別表現(同一色を Argb/Red/Green/Blue/*F の8通りで二重直列化)を抑止し Color 1本へ集約。実行時挙動は不変(既存 Designer.cs 行はそのまま動作、再シリアライズ時に書き出さなくなるのみ)
     [Category("Color")]
     public int Argb
