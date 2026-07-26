@@ -795,7 +795,7 @@ public partial class FormBeamInteraction : FormBase
                 default:
                     //260613Cl Phase1 honest 化: 電子線 Peng のイオン (Valence≠0) は Mott-Bethe 単極子 (AtomStatic.MottBetheMonopoleCoefficient·ΔZ/s² [nm]) を弾性因子に加算して表示する。
                     //  これは「割当イオンの参照物理曲線」で、動力学計算の ElasticIonModel トグルや単位胞電荷中性には依存しない (BetheMethod.getU は別途トグル/Σq でゲートする)。
-                    //  s2==0 (g=0) はラムダ側の s2>0 ガードで単極子を評価しない (発散回避)。8-Gauss/Kirkland/X線/中性子には加算しない (Peng イオンパラメータ化に固有の項のため)。詳細: .project-guidance/ReciPro_イオン散乱因子設計.md
+                    //  s2==0 (g=0) はラムダ側の s2>0 ガードで単極子を評価しない (発散回避)。8-Gauss/Kirkland/X線/中性子には加算しない (Peng イオンパラメータ化に固有の項のため)。詳細: .project-guidance/ReciPro/ReciPro_イオン電子散乱因子.md
                     var p = AtomStatic.ElectronScatteringPeng;
                     if (z >= p.Length || p[z] == null || sub >= p[z].Length || p[z][sub] == null) return null;
                     var esPeng = p[z][sub];

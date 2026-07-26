@@ -8,7 +8,7 @@ namespace Crystallography.Controls;
 // フォーム/UC が Designer.cs に英語直書きした可視ラベルを実行時に現在の UI カルチャへ差し替える。
 // 対象プロパティ: Control.Text / DataGridView 列の HeaderText / ToolStripItem(メニュー)の Text。
 // FormBase.OnLoad と UserControlBase.OnLoad から Apply(this) を呼ぶ。デザイン時は何もしない。
-// 詳細は .project-guidance/ReciPro_多言語化方針.md §3-B(方式②)/§12.7。
+// 詳細は .project-guidance/ReciPro/ReciPro_多言語UI保守.md §3-B(方式②)/§12.7。
 /// <summary>コード側多言語化テーブル (<see cref="Localization"/>) をコントロールツリーへ適用するヘルパー。</summary>
 public static class CodeLocalizer
 {
