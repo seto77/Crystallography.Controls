@@ -221,4 +221,9 @@
 表記法，編碼出完整的
 生成對稱操作集合。</value>
   </data>
+  <data name="miniTableConditions.ToolTip" xml:space="preserve">
+    <value>該空間群的反射條件（系統消光）列表。每列給出
+受影響的 hkl 指數、該反射出現所需的條件，
+以及導致該條件的對稱元素（唯讀）。</value>
+  </data>
 </root>

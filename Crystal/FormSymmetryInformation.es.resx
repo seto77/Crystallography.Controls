@@ -225,4 +225,11 @@ que enumera explícitamente la simetría a lo largo de cada eje.</value>
 notación compacta que codifica el conjunto
 completo de operaciones de simetría generadoras.</value>
   </data>
+  <data name="miniTableConditions.ToolTip" xml:space="preserve">
+    <value>Condiciones de reflexión (extinciones sistemáticas)
+para este grupo espacial: cada fila indica los índices
+hkl afectados, la condición necesaria para que aparezca
+esa reflexión y el elemento de simetría que la causa
+(solo lectura).</value>
+  </data>
 </root>

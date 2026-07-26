@@ -225,4 +225,9 @@
 表记，编码了整套生成对称
 操作。</value>
   </data>
+  <data name="miniTableConditions.ToolTip" xml:space="preserve">
+    <value>该空间群的反射条件（系统消光）列表。每行给出
+受影响的 hkl 指数、该反射出现所需的条件，
+以及导致该条件的对称元素（只读）。</value>
+  </data>
 </root>

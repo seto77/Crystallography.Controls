@@ -225,4 +225,9 @@ Crystallography)의 공간군 번호 (1–230)와
 조작 전체를 간결하게 부호화한
 표기법입니다.</value>
   </data>
+  <data name="miniTableConditions.ToolTip" xml:space="preserve">
+    <value>이 공간군의 반사 조건(계통 소광) 목록입니다. 각 행은
+해당하는 hkl 지수, 그 반사가 나타나기 위한 조건,
+그리고 원인이 되는 대칭 요소를 나타냅니다(읽기 전용).</value>
+  </data>
 </root>

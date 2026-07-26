@@ -1340,7 +1340,7 @@ Range 0.001-1; a value below 1 produces fractional indices.</value>
     <value>10, 20</value>
   </data>
   <data name="numericBoxCutoffD.Size" type="System.Drawing.Size, System.Drawing">
-    <value>212, 25</value>
+    <value>203, 25</value>
   </data>
   <data name="numericBoxCutoffD.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -1654,7 +1654,7 @@ data; with this off, the atoms are treated as stationary.</value>
     <value>10, 20</value>
   </data>
   <data name="numericBoxAttenThickness.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 25</value>
+    <value>182, 25</value>
   </data>
   <data name="numericBoxAttenThickness.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1676,6 +1676,318 @@ energy curve. Unit: micrometres (um).</value>
   </data>
   <data name="&gt;&gt;numericBoxAttenThickness.ZOrder" xml:space="preserve">
     <value>3</value>
+  </data>
+  <data name="radioButtonAttenMassMu.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="radioButtonAttenMassMu.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="radioButtonAttenMassMu.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 0, 3</value>
+  </data>
+  <data name="radioButtonAttenMassMu.Size" type="System.Drawing.Size, System.Drawing">
+    <value>47, 21</value>
+  </data>
+  <data name="radioButtonAttenMassMu.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="radioButtonAttenMassMu.Text" xml:space="preserve">
+    <value>µ/ρ</value>
+  </data>
+  <data name="radioButtonAttenMassMu.ToolTip" xml:space="preserve">
+    <value>Plot the MASS attenuation coefficient µ/ρ (unit: cm²/g).
+This measures how strongly the material removes X-rays from the beam (by
+absorption and scattering) per gram of material, so it does not depend on how
+densely the material is packed. It is the value listed in reference tables.
+Multiply it by the density ρ to obtain the linear coefficient µ.</value>
+  </data>
+  <data name="&gt;&gt;radioButtonAttenMassMu.Name" xml:space="preserve">
+    <value>radioButtonAttenMassMu</value>
+  </data>
+  <data name="&gt;&gt;radioButtonAttenMassMu.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;radioButtonAttenMassMu.Parent" xml:space="preserve">
+    <value>flowLayoutPanelAttenCoeff</value>
+  </data>
+  <data name="&gt;&gt;radioButtonAttenMassMu.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="radioButtonAttenLinMu.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="radioButtonAttenLinMu.Location" type="System.Drawing.Point, System.Drawing">
+    <value>53, 3</value>
+  </data>
+  <data name="radioButtonAttenLinMu.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 0, 3</value>
+  </data>
+  <data name="radioButtonAttenLinMu.Size" type="System.Drawing.Size, System.Drawing">
+    <value>34, 21</value>
+  </data>
+  <data name="radioButtonAttenLinMu.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="radioButtonAttenLinMu.Text" xml:space="preserve">
+    <value>µ</value>
+  </data>
+  <data name="radioButtonAttenLinMu.ToolTip" xml:space="preserve">
+    <value>Plot the LINEAR attenuation coefficient µ = (µ/ρ)·ρ (unit: cm⁻¹).
+This is the attenuation per centimetre of the actual material at its real density.
+The transmitted intensity follows I = I₀·exp(−µ·t), where t is the path length,
+and 1/µ is the distance over which the beam intensity falls to about 37% (1/e).</value>
+  </data>
+  <data name="&gt;&gt;radioButtonAttenLinMu.Name" xml:space="preserve">
+    <value>radioButtonAttenLinMu</value>
+  </data>
+  <data name="&gt;&gt;radioButtonAttenLinMu.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;radioButtonAttenLinMu.Parent" xml:space="preserve">
+    <value>flowLayoutPanelAttenCoeff</value>
+  </data>
+  <data name="&gt;&gt;radioButtonAttenLinMu.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="radioButtonAttenTrans.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="radioButtonAttenTrans.Location" type="System.Drawing.Point, System.Drawing">
+    <value>90, 3</value>
+  </data>
+  <data name="radioButtonAttenTrans.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 0, 3</value>
+  </data>
+  <data name="radioButtonAttenTrans.Size" type="System.Drawing.Size, System.Drawing">
+    <value>48, 21</value>
+  </data>
+  <data name="radioButtonAttenTrans.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="radioButtonAttenTrans.Text" xml:space="preserve">
+    <value>T %</value>
+  </data>
+  <data name="radioButtonAttenTrans.ToolTip" xml:space="preserve">
+    <value>Plot the TRANSMISSION T = exp(−µ·t) in percent — the fraction of the X-ray
+beam that passes through the sample without being absorbed or scattered, for the
+sample thickness t set in the 'Thickness t' box below.
+100% = the sample is transparent to the beam; 0% = the beam is fully blocked.
+Use this to judge a sensible sample thickness at the current energy.</value>
+  </data>
+  <data name="&gt;&gt;radioButtonAttenTrans.Name" xml:space="preserve">
+    <value>radioButtonAttenTrans</value>
+  </data>
+  <data name="&gt;&gt;radioButtonAttenTrans.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;radioButtonAttenTrans.Parent" xml:space="preserve">
+    <value>flowLayoutPanelAttenCoeff</value>
+  </data>
+  <data name="&gt;&gt;radioButtonAttenTrans.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="radioButtonElecAll.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="radioButtonElecAll.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 0</value>
+  </data>
+  <data name="radioButtonElecAll.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 0, 0, 0</value>
+  </data>
+  <data name="radioButtonElecAll.Size" type="System.Drawing.Size, System.Drawing">
+    <value>117, 21</value>
+  </data>
+  <data name="radioButtonElecAll.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="radioButtonElecAll.Text" xml:space="preserve">
+    <value>All (normalized)</value>
+  </data>
+  <data name="radioButtonElecAll.ToolTip" xml:space="preserve">
+    <value>Overlay the three curves below, each rescaled to its own maximum so their shapes
+can be compared on one plot (read absolute values from the table).</value>
+  </data>
+  <data name="&gt;&gt;radioButtonElecAll.Name" xml:space="preserve">
+    <value>radioButtonElecAll</value>
+  </data>
+  <data name="&gt;&gt;radioButtonElecAll.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;radioButtonElecAll.Parent" xml:space="preserve">
+    <value>flowLayoutPanelElecQuantity</value>
+  </data>
+  <data name="&gt;&gt;radioButtonElecAll.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="radioButtonElecSigma.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="radioButtonElecSigma.Location" type="System.Drawing.Point, System.Drawing">
+    <value>123, 0</value>
+  </data>
+  <data name="radioButtonElecSigma.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 0, 0, 0</value>
+  </data>
+  <data name="radioButtonElecSigma.Size" type="System.Drawing.Size, System.Drawing">
+    <value>108, 21</value>
+  </data>
+  <data name="radioButtonElecSigma.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="radioButtonElecSigma.Text" xml:space="preserve">
+    <value>σ elastic (nm²)</value>
+  </data>
+  <data name="radioButtonElecSigma.ToolTip" xml:space="preserve">
+    <value>σ elastic — elastic scattering cross section: how likely a single atom is to
+deflect the electron (bigger = scatters more).</value>
+  </data>
+  <data name="&gt;&gt;radioButtonElecSigma.Name" xml:space="preserve">
+    <value>radioButtonElecSigma</value>
+  </data>
+  <data name="&gt;&gt;radioButtonElecSigma.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;radioButtonElecSigma.Parent" xml:space="preserve">
+    <value>flowLayoutPanelElecQuantity</value>
+  </data>
+  <data name="&gt;&gt;radioButtonElecSigma.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="radioButtonElecEMFP.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="radioButtonElecEMFP.Location" type="System.Drawing.Point, System.Drawing">
+    <value>234, 0</value>
+  </data>
+  <data name="radioButtonElecEMFP.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 0, 0, 0</value>
+  </data>
+  <data name="radioButtonElecEMFP.Size" type="System.Drawing.Size, System.Drawing">
+    <value>121, 21</value>
+  </data>
+  <data name="radioButtonElecEMFP.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="radioButtonElecEMFP.Text" xml:space="preserve">
+    <value>Elastic MFP (nm)</value>
+  </data>
+  <data name="radioButtonElecEMFP.ToolTip" xml:space="preserve">
+    <value>Elastic MFP — mean free path: the average distance the electron travels between
+elastic scattering events.</value>
+  </data>
+  <data name="&gt;&gt;radioButtonElecEMFP.Name" xml:space="preserve">
+    <value>radioButtonElecEMFP</value>
+  </data>
+  <data name="&gt;&gt;radioButtonElecEMFP.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;radioButtonElecEMFP.Parent" xml:space="preserve">
+    <value>flowLayoutPanelElecQuantity</value>
+  </data>
+  <data name="&gt;&gt;radioButtonElecEMFP.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="radioButtonElecDeds.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="radioButtonElecDeds.Location" type="System.Drawing.Point, System.Drawing">
+    <value>358, 0</value>
+  </data>
+  <data name="radioButtonElecDeds.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 0, 0, 0</value>
+  </data>
+  <data name="radioButtonElecDeds.Size" type="System.Drawing.Size, System.Drawing">
+    <value>122, 21</value>
+  </data>
+  <data name="radioButtonElecDeds.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="radioButtonElecDeds.Text" xml:space="preserve">
+    <value>|dE/ds| (keV/nm)</value>
+  </data>
+  <data name="radioButtonElecDeds.ToolTip" xml:space="preserve">
+    <value>|dE/ds| — stopping power magnitude: the energy the electron loses per nanometre of travel.</value>
+  </data>
+  <data name="&gt;&gt;radioButtonElecDeds.Name" xml:space="preserve">
+    <value>radioButtonElecDeds</value>
+  </data>
+  <data name="&gt;&gt;radioButtonElecDeds.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;radioButtonElecDeds.Parent" xml:space="preserve">
+    <value>flowLayoutPanelElecQuantity</value>
+  </data>
+  <data name="&gt;&gt;radioButtonElecDeds.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="radioButtonElecIMFP.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="radioButtonElecIMFP.Location" type="System.Drawing.Point, System.Drawing">
+    <value>483, 0</value>
+  </data>
+  <data name="radioButtonElecIMFP.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 0, 0, 0</value>
+  </data>
+  <data name="radioButtonElecIMFP.Size" type="System.Drawing.Size, System.Drawing">
+    <value>84, 21</value>
+  </data>
+  <data name="radioButtonElecIMFP.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="radioButtonElecIMFP.Text" xml:space="preserve">
+    <value>IMFP (nm)</value>
+  </data>
+  <data name="radioButtonElecIMFP.ToolTip" xml:space="preserve">
+    <value>IMFP — inelastic mean free path: average distance between energy-losing
+collisions.</value>
+  </data>
+  <data name="&gt;&gt;radioButtonElecIMFP.Name" xml:space="preserve">
+    <value>radioButtonElecIMFP</value>
+  </data>
+  <data name="&gt;&gt;radioButtonElecIMFP.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;radioButtonElecIMFP.Parent" xml:space="preserve">
+    <value>flowLayoutPanelElecQuantity</value>
+  </data>
+  <data name="&gt;&gt;radioButtonElecIMFP.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="radioButtonElecRange.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="radioButtonElecRange.Location" type="System.Drawing.Point, System.Drawing">
+    <value>570, 0</value>
+  </data>
+  <data name="radioButtonElecRange.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 0, 0, 0</value>
+  </data>
+  <data name="radioButtonElecRange.Size" type="System.Drawing.Size, System.Drawing">
+    <value>130, 21</value>
+  </data>
+  <data name="radioButtonElecRange.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="radioButtonElecRange.Text" xml:space="preserve">
+    <value>Range CSDA (µm)</value>
+  </data>
+  <data name="radioButtonElecRange.ToolTip" xml:space="preserve">
+    <value>Range (CSDA) — the total path length the electron travels before it stops.</value>
+  </data>
+  <data name="&gt;&gt;radioButtonElecRange.Name" xml:space="preserve">
+    <value>radioButtonElecRange</value>
+  </data>
+  <data name="&gt;&gt;radioButtonElecRange.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;radioButtonElecRange.Parent" xml:space="preserve">
+    <value>flowLayoutPanelElecQuantity</value>
+  </data>
+  <data name="&gt;&gt;radioButtonElecRange.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
   <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
     <value>57, 3</value>
@@ -2071,116 +2383,6 @@ above 36 keV).</value>
   <data name="flowLayoutPanelAttenCoeff.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
   </data>
-  <data name="radioButtonAttenMassMu.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="radioButtonAttenMassMu.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
-  </data>
-  <data name="radioButtonAttenMassMu.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 0, 3</value>
-  </data>
-  <data name="radioButtonAttenMassMu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 21</value>
-  </data>
-  <data name="radioButtonAttenMassMu.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="radioButtonAttenMassMu.Text" xml:space="preserve">
-    <value>µ/ρ</value>
-  </data>
-  <data name="radioButtonAttenMassMu.ToolTip" xml:space="preserve">
-    <value>Plot the MASS attenuation coefficient µ/ρ (unit: cm²/g).
-This measures how strongly the material removes X-rays from the beam (by
-absorption and scattering) per gram of material, so it does not depend on how
-densely the material is packed. It is the value listed in reference tables.
-Multiply it by the density ρ to obtain the linear coefficient µ.</value>
-  </data>
-  <data name="&gt;&gt;radioButtonAttenMassMu.Name" xml:space="preserve">
-    <value>radioButtonAttenMassMu</value>
-  </data>
-  <data name="&gt;&gt;radioButtonAttenMassMu.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;radioButtonAttenMassMu.Parent" xml:space="preserve">
-    <value>flowLayoutPanelAttenCoeff</value>
-  </data>
-  <data name="&gt;&gt;radioButtonAttenMassMu.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="radioButtonAttenLinMu.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="radioButtonAttenLinMu.Location" type="System.Drawing.Point, System.Drawing">
-    <value>53, 3</value>
-  </data>
-  <data name="radioButtonAttenLinMu.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 0, 3</value>
-  </data>
-  <data name="radioButtonAttenLinMu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>34, 21</value>
-  </data>
-  <data name="radioButtonAttenLinMu.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="radioButtonAttenLinMu.Text" xml:space="preserve">
-    <value>µ</value>
-  </data>
-  <data name="radioButtonAttenLinMu.ToolTip" xml:space="preserve">
-    <value>Plot the LINEAR attenuation coefficient µ = (µ/ρ)·ρ (unit: cm⁻¹).
-This is the attenuation per centimetre of the actual material at its real density.
-The transmitted intensity follows I = I₀·exp(−µ·t), where t is the path length,
-and 1/µ is the distance over which the beam intensity falls to about 37% (1/e).</value>
-  </data>
-  <data name="&gt;&gt;radioButtonAttenLinMu.Name" xml:space="preserve">
-    <value>radioButtonAttenLinMu</value>
-  </data>
-  <data name="&gt;&gt;radioButtonAttenLinMu.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;radioButtonAttenLinMu.Parent" xml:space="preserve">
-    <value>flowLayoutPanelAttenCoeff</value>
-  </data>
-  <data name="&gt;&gt;radioButtonAttenLinMu.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="radioButtonAttenTrans.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="radioButtonAttenTrans.Location" type="System.Drawing.Point, System.Drawing">
-    <value>90, 3</value>
-  </data>
-  <data name="radioButtonAttenTrans.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 0, 3</value>
-  </data>
-  <data name="radioButtonAttenTrans.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 21</value>
-  </data>
-  <data name="radioButtonAttenTrans.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="radioButtonAttenTrans.Text" xml:space="preserve">
-    <value>T %</value>
-  </data>
-  <data name="radioButtonAttenTrans.ToolTip" xml:space="preserve">
-    <value>Plot the TRANSMISSION T = exp(−µ·t) in percent — the fraction of the X-ray
-beam that passes through the sample without being absorbed or scattered, for the
-sample thickness t set in the 'Thickness t' box below.
-100% = the sample is transparent to the beam; 0% = the beam is fully blocked.
-Use this to judge a sensible sample thickness at the current energy.</value>
-  </data>
-  <data name="&gt;&gt;radioButtonAttenTrans.Name" xml:space="preserve">
-    <value>radioButtonAttenTrans</value>
-  </data>
-  <data name="&gt;&gt;radioButtonAttenTrans.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;radioButtonAttenTrans.Parent" xml:space="preserve">
-    <value>flowLayoutPanelAttenCoeff</value>
-  </data>
-  <data name="&gt;&gt;radioButtonAttenTrans.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="flowLayoutPanelAttenCoeff.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
@@ -2188,7 +2390,7 @@ Use this to judge a sensible sample thickness at the current energy.</value>
     <value>0, 0, 0, 0</value>
   </data>
   <data name="flowLayoutPanelAttenCoeff.Size" type="System.Drawing.Size, System.Drawing">
-    <value>296, 27</value>
+    <value>330, 27</value>
   </data>
   <data name="flowLayoutPanelAttenCoeff.TabIndex" type="System.Int32, mscorlib">
     <value>22</value>
@@ -2210,208 +2412,6 @@ Use this to judge a sensible sample thickness at the current energy.</value>
   </data>
   <data name="flowLayoutPanelElecQuantity.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
-  </data>
-  <data name="radioButtonElecAll.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="radioButtonElecAll.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 0</value>
-  </data>
-  <data name="radioButtonElecAll.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 0, 0, 0</value>
-  </data>
-  <data name="radioButtonElecAll.Size" type="System.Drawing.Size, System.Drawing">
-    <value>117, 21</value>
-  </data>
-  <data name="radioButtonElecAll.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="radioButtonElecAll.Text" xml:space="preserve">
-    <value>All (normalized)</value>
-  </data>
-  <data name="radioButtonElecAll.ToolTip" xml:space="preserve">
-    <value>Overlay the three curves below, each rescaled to its own maximum so their shapes
-can be compared on one plot (read absolute values from the table).</value>
-  </data>
-  <data name="&gt;&gt;radioButtonElecAll.Name" xml:space="preserve">
-    <value>radioButtonElecAll</value>
-  </data>
-  <data name="&gt;&gt;radioButtonElecAll.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;radioButtonElecAll.Parent" xml:space="preserve">
-    <value>flowLayoutPanelElecQuantity</value>
-  </data>
-  <data name="&gt;&gt;radioButtonElecAll.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="radioButtonElecSigma.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="radioButtonElecSigma.Location" type="System.Drawing.Point, System.Drawing">
-    <value>123, 0</value>
-  </data>
-  <data name="radioButtonElecSigma.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 0, 0, 0</value>
-  </data>
-  <data name="radioButtonElecSigma.Size" type="System.Drawing.Size, System.Drawing">
-    <value>108, 21</value>
-  </data>
-  <data name="radioButtonElecSigma.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="radioButtonElecSigma.Text" xml:space="preserve">
-    <value>σ elastic (nm²)</value>
-  </data>
-  <data name="radioButtonElecSigma.ToolTip" xml:space="preserve">
-    <value>σ elastic — elastic scattering cross section: how likely a single atom is to
-deflect the electron (bigger = scatters more).</value>
-  </data>
-  <data name="&gt;&gt;radioButtonElecSigma.Name" xml:space="preserve">
-    <value>radioButtonElecSigma</value>
-  </data>
-  <data name="&gt;&gt;radioButtonElecSigma.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;radioButtonElecSigma.Parent" xml:space="preserve">
-    <value>flowLayoutPanelElecQuantity</value>
-  </data>
-  <data name="&gt;&gt;radioButtonElecSigma.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="radioButtonElecEMFP.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="radioButtonElecEMFP.Location" type="System.Drawing.Point, System.Drawing">
-    <value>234, 0</value>
-  </data>
-  <data name="radioButtonElecEMFP.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 0, 0, 0</value>
-  </data>
-  <data name="radioButtonElecEMFP.Size" type="System.Drawing.Size, System.Drawing">
-    <value>121, 21</value>
-  </data>
-  <data name="radioButtonElecEMFP.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="radioButtonElecEMFP.Text" xml:space="preserve">
-    <value>Elastic MFP (nm)</value>
-  </data>
-  <data name="radioButtonElecEMFP.ToolTip" xml:space="preserve">
-    <value>Elastic MFP — mean free path: the average distance the electron travels between
-elastic scattering events.</value>
-  </data>
-  <data name="&gt;&gt;radioButtonElecEMFP.Name" xml:space="preserve">
-    <value>radioButtonElecEMFP</value>
-  </data>
-  <data name="&gt;&gt;radioButtonElecEMFP.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;radioButtonElecEMFP.Parent" xml:space="preserve">
-    <value>flowLayoutPanelElecQuantity</value>
-  </data>
-  <data name="&gt;&gt;radioButtonElecEMFP.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="radioButtonElecDeds.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="radioButtonElecDeds.Location" type="System.Drawing.Point, System.Drawing">
-    <value>358, 0</value>
-  </data>
-  <data name="radioButtonElecDeds.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 0, 0, 0</value>
-  </data>
-  <data name="radioButtonElecDeds.Size" type="System.Drawing.Size, System.Drawing">
-    <value>122, 21</value>
-  </data>
-  <data name="radioButtonElecDeds.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="radioButtonElecDeds.Text" xml:space="preserve">
-    <value>|dE/ds| (keV/nm)</value>
-  </data>
-  <data name="radioButtonElecDeds.ToolTip" xml:space="preserve">
-    <value>|dE/ds| — stopping power magnitude: the energy the electron loses per nanometre of travel.</value>
-  </data>
-  <data name="&gt;&gt;radioButtonElecDeds.Name" xml:space="preserve">
-    <value>radioButtonElecDeds</value>
-  </data>
-  <data name="&gt;&gt;radioButtonElecDeds.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;radioButtonElecDeds.Parent" xml:space="preserve">
-    <value>flowLayoutPanelElecQuantity</value>
-  </data>
-  <data name="&gt;&gt;radioButtonElecDeds.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="radioButtonElecIMFP.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="radioButtonElecIMFP.Location" type="System.Drawing.Point, System.Drawing">
-    <value>483, 0</value>
-  </data>
-  <data name="radioButtonElecIMFP.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 0, 0, 0</value>
-  </data>
-  <data name="radioButtonElecIMFP.Size" type="System.Drawing.Size, System.Drawing">
-    <value>84, 21</value>
-  </data>
-  <data name="radioButtonElecIMFP.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="radioButtonElecIMFP.Text" xml:space="preserve">
-    <value>IMFP (nm)</value>
-  </data>
-  <data name="radioButtonElecIMFP.ToolTip" xml:space="preserve">
-    <value>IMFP — inelastic mean free path: average distance between energy-losing
-collisions.</value>
-  </data>
-  <data name="&gt;&gt;radioButtonElecIMFP.Name" xml:space="preserve">
-    <value>radioButtonElecIMFP</value>
-  </data>
-  <data name="&gt;&gt;radioButtonElecIMFP.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;radioButtonElecIMFP.Parent" xml:space="preserve">
-    <value>flowLayoutPanelElecQuantity</value>
-  </data>
-  <data name="&gt;&gt;radioButtonElecIMFP.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="radioButtonElecRange.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="radioButtonElecRange.Location" type="System.Drawing.Point, System.Drawing">
-    <value>570, 0</value>
-  </data>
-  <data name="radioButtonElecRange.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 0, 0, 0</value>
-  </data>
-  <data name="radioButtonElecRange.Size" type="System.Drawing.Size, System.Drawing">
-    <value>130, 21</value>
-  </data>
-  <data name="radioButtonElecRange.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="radioButtonElecRange.Text" xml:space="preserve">
-    <value>Range CSDA (µm)</value>
-  </data>
-  <data name="radioButtonElecRange.ToolTip" xml:space="preserve">
-    <value>Range (CSDA) — the total path length the electron travels before it stops.</value>
-  </data>
-  <data name="&gt;&gt;radioButtonElecRange.Name" xml:space="preserve">
-    <value>radioButtonElecRange</value>
-  </data>
-  <data name="&gt;&gt;radioButtonElecRange.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;radioButtonElecRange.Parent" xml:space="preserve">
-    <value>flowLayoutPanelElecQuantity</value>
-  </data>
-  <data name="&gt;&gt;radioButtonElecRange.ZOrder" xml:space="preserve">
-    <value>5</value>
   </data>
   <data name="flowLayoutPanelElecQuantity.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 27</value>

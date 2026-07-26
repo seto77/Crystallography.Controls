@@ -252,4 +252,9 @@ hkl 反射が許容/消滅するかを示します。</value>
     <value>空間群の Hall 記号 (生成対称操作
 一式を簡潔に符号化した表記) です。</value>
   </data>
+  <data name="miniTableConditions.ToolTip" xml:space="preserve">
+    <value>この空間群の反射条件 (系統消滅) の一覧です。各行は
+対象となる hkl 指数、その反射が現れるための条件、
+および原因となる対称要素を示します (読み取り専用)。</value>
+  </data>
 </root>

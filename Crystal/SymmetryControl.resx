@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <metadata name="captureExtender.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="flowLayoutPanel1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -561,13 +564,13 @@ deviation) fields for the cell constants.</value>
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="numericBoxGammaErr.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
+    <value>0, 5, 0, 0</value>
   </data>
   <data name="numericBoxGammaErr.HeaderFont" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="numericBoxGammaErr.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
+    <value>0, 5, 0, 0</value>
   </data>
   <data name="numericBoxGammaErr.HeaderText" xml:space="preserve">
     <value>±</value>
@@ -616,13 +619,13 @@ error) of angle γ, in degree.</value>
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="numericBoxAlphaErr.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
+    <value>0, 5, 0, 0</value>
   </data>
   <data name="numericBoxAlphaErr.HeaderFont" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="numericBoxAlphaErr.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
+    <value>0, 5, 0, 0</value>
   </data>
   <data name="numericBoxAlphaErr.HeaderText" xml:space="preserve">
     <value>±</value>
@@ -671,13 +674,13 @@ error) of angle α, in degree.</value>
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="numericBoxBetaErr.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
+    <value>0, 5, 0, 0</value>
   </data>
   <data name="numericBoxBetaErr.HeaderFont" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="numericBoxBetaErr.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
+    <value>0, 5, 0, 0</value>
   </data>
   <data name="numericBoxBetaErr.HeaderText" xml:space="preserve">
     <value>±</value>
@@ -904,13 +907,13 @@ nm; switch with the unit selector).</value>
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="numericBoxBErr.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
+    <value>0, 5, 0, 0</value>
   </data>
   <data name="numericBoxBErr.HeaderFont" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="numericBoxBErr.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
+    <value>0, 5, 0, 0</value>
   </data>
   <data name="numericBoxBErr.HeaderText" xml:space="preserve">
     <value>±</value>
@@ -1063,13 +1066,13 @@ unit selector). May be locked to a by symmetry.</value>
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="numericBoxCErr.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
+    <value>0, 5, 0, 0</value>
   </data>
   <data name="numericBoxCErr.HeaderFont" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="numericBoxCErr.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
+    <value>0, 5, 0, 0</value>
   </data>
   <data name="numericBoxCErr.HeaderText" xml:space="preserve">
     <value>±</value>
@@ -1118,13 +1121,13 @@ cell constant c, in the same length unit as c.</value>
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="numericBoxAErr.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
+    <value>0, 5, 0, 0</value>
   </data>
   <data name="numericBoxAErr.HeaderFont" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="numericBoxAErr.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
+    <value>0, 5, 0, 0</value>
   </data>
   <data name="numericBoxAErr.HeaderText" xml:space="preserve">
     <value>±</value>
@@ -1616,7 +1619,7 @@ this sets which cell constants are independent.</value>
     <value>30</value>
   </data>
   <data name="comboBoxSpaceGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>137, 23</value>
+    <value>136, 23</value>
   </data>
   <data name="comboBoxSpaceGroup.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1677,7 +1680,7 @@ symbol); it constrains the editable cell constants.</value>
     <value>0, 0, 0, 0</value>
   </data>
   <data name="comboBoxCrystalSystem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>137, 23</value>
+    <value>136, 23</value>
   </data>
   <data name="comboBoxCrystalSystem.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1751,7 +1754,7 @@ symbol); it constrains the editable cell constants.</value>
     <value>0, 0, 0, 0</value>
   </data>
   <data name="comboBoxPointGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>137, 23</value>
+    <value>136, 23</value>
   </data>
   <data name="comboBoxPointGroup.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1903,6 +1906,12 @@ filters the available space groups.</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>576, 129</value>
+  </data>
+  <data name="&gt;&gt;captureExtender.Name" xml:space="preserve">
+    <value>captureExtender</value>
+  </data>
+  <data name="&gt;&gt;captureExtender.Type" xml:space="preserve">
+    <value>Crystallography.Controls.CaptureExtender, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;toolTip.Name" xml:space="preserve">
     <value>toolTip</value>

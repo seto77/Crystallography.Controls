@@ -29,9 +29,10 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SymmetryControl));
             groupBoxCellConstants = new System.Windows.Forms.GroupBox();
-            radioButtonNanoMeter = new System.Windows.Forms.RadioButton();
-            radioButtonAngstrom = new System.Windows.Forms.RadioButton();
+            flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             label1 = new System.Windows.Forms.Label();
+            radioButtonAngstrom = new System.Windows.Forms.RadioButton();
+            radioButtonNanoMeter = new System.Windows.Forms.RadioButton();
             checkBoxShowError = new System.Windows.Forms.CheckBox();
             tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             labelLaTex1 = new LabelLaTeX();
@@ -59,26 +60,25 @@
             labelLaTex5 = new LabelLaTeX();
             labelLaTex6 = new LabelLaTeX();
             groupBoxSymmetry = new System.Windows.Forms.GroupBox();
+            flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            label17 = new System.Windows.Forms.Label();
+            textBoxSearch = new System.Windows.Forms.TextBox();
+            comboBoxSearchResult = new System.Windows.Forms.ComboBox();
+            tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            label19 = new System.Windows.Forms.Label();
             comboBoxSpaceGroup = new System.Windows.Forms.ComboBox();
-            comboBoxPointGroup = new System.Windows.Forms.ComboBox();
             comboBoxCrystalSystem = new System.Windows.Forms.ComboBox();
             label20 = new System.Windows.Forms.Label();
-            label17 = new System.Windows.Forms.Label();
-            label19 = new System.Windows.Forms.Label();
-            textBoxSearch = new System.Windows.Forms.TextBox();
+            comboBoxPointGroup = new System.Windows.Forms.ComboBox();
             label21 = new System.Windows.Forms.Label();
-            comboBoxSearchResult = new System.Windows.Forms.ComboBox();
             panel1 = new System.Windows.Forms.Panel();
             toolTip = new System.Windows.Forms.ToolTip(components);
-            flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             groupBoxCellConstants.SuspendLayout();
+            flowLayoutPanel1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             groupBoxSymmetry.SuspendLayout();
-            flowLayoutPanel1.SuspendLayout();
-            tableLayoutPanel2.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
+            tableLayoutPanel2.SuspendLayout();
             SuspendLayout();
             // 
             // groupBoxCellConstants
@@ -90,13 +90,19 @@
             groupBoxCellConstants.Name = "groupBoxCellConstants";
             groupBoxCellConstants.TabStop = false;
             // 
-            // radioButtonNanoMeter
+            // flowLayoutPanel1
             // 
-            resources.ApplyResources(radioButtonNanoMeter, "radioButtonNanoMeter");
-            radioButtonNanoMeter.Name = "radioButtonNanoMeter";
-            toolTip.SetToolTip(radioButtonNanoMeter, resources.GetString("radioButtonNanoMeter.ToolTip"));
-            radioButtonNanoMeter.UseVisualStyleBackColor = true;
-            radioButtonNanoMeter.CheckedChanged += radioButtonNanoMeter_CheckedChanged;
+            resources.ApplyResources(flowLayoutPanel1, "flowLayoutPanel1");
+            flowLayoutPanel1.Controls.Add(label1);
+            flowLayoutPanel1.Controls.Add(radioButtonAngstrom);
+            flowLayoutPanel1.Controls.Add(radioButtonNanoMeter);
+            flowLayoutPanel1.Name = "flowLayoutPanel1";
+            // 
+            // label1
+            // 
+            resources.ApplyResources(label1, "label1");
+            label1.Name = "label1";
+            toolTip.SetToolTip(label1, resources.GetString("label1.ToolTip"));
             // 
             // radioButtonAngstrom
             // 
@@ -107,11 +113,13 @@
             toolTip.SetToolTip(radioButtonAngstrom, resources.GetString("radioButtonAngstrom.ToolTip"));
             radioButtonAngstrom.UseVisualStyleBackColor = true;
             // 
-            // label1
+            // radioButtonNanoMeter
             // 
-            resources.ApplyResources(label1, "label1");
-            label1.Name = "label1";
-            toolTip.SetToolTip(label1, resources.GetString("label1.ToolTip"));
+            resources.ApplyResources(radioButtonNanoMeter, "radioButtonNanoMeter");
+            radioButtonNanoMeter.Name = "radioButtonNanoMeter";
+            toolTip.SetToolTip(radioButtonNanoMeter, resources.GetString("radioButtonNanoMeter.ToolTip"));
+            radioButtonNanoMeter.UseVisualStyleBackColor = true;
+            radioButtonNanoMeter.CheckedChanged += radioButtonNanoMeter_CheckedChanged;
             // 
             // checkBoxShowError
             // 
@@ -389,6 +397,55 @@
             groupBoxSymmetry.Name = "groupBoxSymmetry";
             groupBoxSymmetry.TabStop = false;
             // 
+            // flowLayoutPanel2
+            // 
+            resources.ApplyResources(flowLayoutPanel2, "flowLayoutPanel2");
+            flowLayoutPanel2.Controls.Add(label17);
+            flowLayoutPanel2.Controls.Add(textBoxSearch);
+            flowLayoutPanel2.Controls.Add(comboBoxSearchResult);
+            flowLayoutPanel2.Name = "flowLayoutPanel2";
+            // 
+            // label17
+            // 
+            resources.ApplyResources(label17, "label17");
+            label17.Name = "label17";
+            toolTip.SetToolTip(label17, resources.GetString("label17.ToolTip"));
+            // 
+            // textBoxSearch
+            // 
+            resources.ApplyResources(textBoxSearch, "textBoxSearch");
+            textBoxSearch.Name = "textBoxSearch";
+            toolTip.SetToolTip(textBoxSearch, resources.GetString("textBoxSearch.ToolTip"));
+            textBoxSearch.TextChanged += textBoxSearch_TextChanged;
+            // 
+            // comboBoxSearchResult
+            // 
+            resources.ApplyResources(comboBoxSearchResult, "comboBoxSearchResult");
+            comboBoxSearchResult.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            comboBoxSearchResult.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            comboBoxSearchResult.DropDownWidth = 200;
+            comboBoxSearchResult.Name = "comboBoxSearchResult";
+            toolTip.SetToolTip(comboBoxSearchResult, resources.GetString("comboBoxSearchResult.ToolTip"));
+            comboBoxSearchResult.DrawItem += comboBoxSpaceGroup_DrawItem;
+            comboBoxSearchResult.SelectedIndexChanged += comboBoxSearchResult_SelectedIndexChanged;
+            // 
+            // tableLayoutPanel2
+            // 
+            resources.ApplyResources(tableLayoutPanel2, "tableLayoutPanel2");
+            tableLayoutPanel2.Controls.Add(label19, 0, 0);
+            tableLayoutPanel2.Controls.Add(comboBoxSpaceGroup, 1, 2);
+            tableLayoutPanel2.Controls.Add(comboBoxCrystalSystem, 1, 0);
+            tableLayoutPanel2.Controls.Add(label20, 0, 2);
+            tableLayoutPanel2.Controls.Add(comboBoxPointGroup, 1, 1);
+            tableLayoutPanel2.Controls.Add(label21, 0, 1);
+            tableLayoutPanel2.Name = "tableLayoutPanel2";
+            // 
+            // label19
+            // 
+            resources.ApplyResources(label19, "label19");
+            label19.Name = "label19";
+            toolTip.SetToolTip(label19, resources.GetString("label19.ToolTip"));
+            // 
             // comboBoxSpaceGroup
             // 
             resources.ApplyResources(comboBoxSpaceGroup, "comboBoxSpaceGroup");
@@ -399,16 +456,6 @@
             toolTip.SetToolTip(comboBoxSpaceGroup, resources.GetString("comboBoxSpaceGroup.ToolTip"));
             comboBoxSpaceGroup.DrawItem += comboBoxSpaceGroup_DrawItem;
             comboBoxSpaceGroup.SelectedIndexChanged += comboBoxSpaceGroup_SelectedIndexChanged;
-            // 
-            // comboBoxPointGroup
-            // 
-            resources.ApplyResources(comboBoxPointGroup, "comboBoxPointGroup");
-            comboBoxPointGroup.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            comboBoxPointGroup.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            comboBoxPointGroup.Name = "comboBoxPointGroup";
-            toolTip.SetToolTip(comboBoxPointGroup, resources.GetString("comboBoxPointGroup.ToolTip"));
-            comboBoxPointGroup.DrawItem += comboBoxSpaceGroup_DrawItem;
-            comboBoxPointGroup.SelectedIndexChanged += comboBoxPointGroup_SelectedIndexChanged;
             // 
             // comboBoxCrystalSystem
             // 
@@ -425,41 +472,21 @@
             label20.Name = "label20";
             toolTip.SetToolTip(label20, resources.GetString("label20.ToolTip"));
             // 
-            // label17
+            // comboBoxPointGroup
             // 
-            resources.ApplyResources(label17, "label17");
-            label17.Name = "label17";
-            toolTip.SetToolTip(label17, resources.GetString("label17.ToolTip"));
-            // 
-            // label19
-            // 
-            resources.ApplyResources(label19, "label19");
-            label19.Name = "label19";
-            toolTip.SetToolTip(label19, resources.GetString("label19.ToolTip"));
-            // 
-            // textBoxSearch
-            // 
-            resources.ApplyResources(textBoxSearch, "textBoxSearch");
-            textBoxSearch.Name = "textBoxSearch";
-            toolTip.SetToolTip(textBoxSearch, resources.GetString("textBoxSearch.ToolTip"));
-            textBoxSearch.TextChanged += textBoxSearch_TextChanged;
+            resources.ApplyResources(comboBoxPointGroup, "comboBoxPointGroup");
+            comboBoxPointGroup.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            comboBoxPointGroup.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            comboBoxPointGroup.Name = "comboBoxPointGroup";
+            toolTip.SetToolTip(comboBoxPointGroup, resources.GetString("comboBoxPointGroup.ToolTip"));
+            comboBoxPointGroup.DrawItem += comboBoxSpaceGroup_DrawItem;
+            comboBoxPointGroup.SelectedIndexChanged += comboBoxPointGroup_SelectedIndexChanged;
             // 
             // label21
             // 
             resources.ApplyResources(label21, "label21");
             label21.Name = "label21";
             toolTip.SetToolTip(label21, resources.GetString("label21.ToolTip"));
-            // 
-            // comboBoxSearchResult
-            // 
-            resources.ApplyResources(comboBoxSearchResult, "comboBoxSearchResult");
-            comboBoxSearchResult.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            comboBoxSearchResult.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            comboBoxSearchResult.DropDownWidth = 200;
-            comboBoxSearchResult.Name = "comboBoxSearchResult";
-            toolTip.SetToolTip(comboBoxSearchResult, resources.GetString("comboBoxSearchResult.ToolTip"));
-            comboBoxSearchResult.DrawItem += comboBoxSpaceGroup_DrawItem;
-            comboBoxSearchResult.SelectedIndexChanged += comboBoxSearchResult_SelectedIndexChanged;
             // 
             // panel1
             // 
@@ -473,33 +500,6 @@
             toolTip.IsBalloon = true;
             toolTip.ReshowDelay = 100;
             // 
-            // flowLayoutPanel1
-            // 
-            resources.ApplyResources(flowLayoutPanel1, "flowLayoutPanel1");
-            flowLayoutPanel1.Controls.Add(label1);
-            flowLayoutPanel1.Controls.Add(radioButtonAngstrom);
-            flowLayoutPanel1.Controls.Add(radioButtonNanoMeter);
-            flowLayoutPanel1.Name = "flowLayoutPanel1";
-            // 
-            // tableLayoutPanel2
-            // 
-            resources.ApplyResources(tableLayoutPanel2, "tableLayoutPanel2");
-            tableLayoutPanel2.Controls.Add(label19, 0, 0);
-            tableLayoutPanel2.Controls.Add(comboBoxSpaceGroup, 1, 2);
-            tableLayoutPanel2.Controls.Add(comboBoxCrystalSystem, 1, 0);
-            tableLayoutPanel2.Controls.Add(label20, 0, 2);
-            tableLayoutPanel2.Controls.Add(comboBoxPointGroup, 1, 1);
-            tableLayoutPanel2.Controls.Add(label21, 0, 1);
-            tableLayoutPanel2.Name = "tableLayoutPanel2";
-            // 
-            // flowLayoutPanel2
-            // 
-            resources.ApplyResources(flowLayoutPanel2, "flowLayoutPanel2");
-            flowLayoutPanel2.Controls.Add(label17);
-            flowLayoutPanel2.Controls.Add(textBoxSearch);
-            flowLayoutPanel2.Controls.Add(comboBoxSearchResult);
-            flowLayoutPanel2.Name = "flowLayoutPanel2";
-            // 
             // SymmetryControl
             // 
             resources.ApplyResources(this, "$this");
@@ -510,16 +510,16 @@
             Name = "SymmetryControl";
             groupBoxCellConstants.ResumeLayout(false);
             groupBoxCellConstants.PerformLayout();
+            flowLayoutPanel1.ResumeLayout(false);
+            flowLayoutPanel1.PerformLayout();
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
             groupBoxSymmetry.ResumeLayout(false);
             groupBoxSymmetry.PerformLayout();
-            flowLayoutPanel1.ResumeLayout(false);
-            flowLayoutPanel1.PerformLayout();
-            tableLayoutPanel2.ResumeLayout(false);
-            tableLayoutPanel2.PerformLayout();
             flowLayoutPanel2.ResumeLayout(false);
             flowLayoutPanel2.PerformLayout();
+            tableLayoutPanel2.ResumeLayout(false);
+            tableLayoutPanel2.PerformLayout();
             ResumeLayout(false);
         }
 

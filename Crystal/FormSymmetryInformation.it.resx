@@ -225,4 +225,11 @@ che elenca esplicitamente la simmetria lungo ciascun asse.</value>
 notazione compatta che codifica l'intero
 insieme delle operazioni di simmetria generatrici.</value>
   </data>
+  <data name="miniTableConditions.ToolTip" xml:space="preserve">
+    <value>Condizioni di riflessione (estinzioni sistematiche)
+per questo gruppo spaziale: ogni riga indica gli indici
+hkl interessati, la condizione necessaria affinché tale
+riflessione compaia e l'elemento di simmetria che la
+causa (sola lettura).</value>
+  </data>
 </root>

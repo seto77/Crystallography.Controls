@@ -580,18 +580,24 @@ public partial class NumericBox : UserControlBase
     }
 
     // (260428Ch) Visible切替でDock順が変わることがあるため、spinButtonPanelをlabelFooterの左に戻す。
+    // 260726Cl 追加: ②b フッタ伸縮モード(ValueBoxWidth>=0 かつ本体 Dock)では Fill 役が textBox から labelFooter へ移るため z-order を入れ替える。
+    // WinForms の dock は z-order の後ろ(index 大)から順に処理され、最後に残った領域を index 0 の控えが受け取るので、
+    // Fill にしたい控えを index 0 に置く必要がある。並び順はどちらのモードでも
+    // labelHeader | textBox | spinButtonPanel | labelFooter で同じ。
+    // 260727Cl (/simplify): 「4 つ GetChildIndex で確認 → 4 つ SetChildIndex」の 8 行ブロックがモード別に 2 本並び、
+    //   コントロール名が 16 回書き下されていたので、望む z-order を 1 本の配列で表すだけにした。
+    //   index 昇順に確定させるので最終的な並びは旧実装と同一。要素ごとにスキップするぶん Layout 発火はむしろ減る。
+    //   旧: if (footerStretches) { 4 つ比較して return / labelFooter,spinButtonPanel,textBox,labelHeader を 0..3 へ; return; }
+    //       その後 textBox,spinButtonPanel,labelHeader,labelFooter を 0..3 へ (同じ形の 8 行)
     private void applyDockOrder()
     {
+        System.Windows.Forms.Control[] order = footerStretches //260727Cl: 型名は完全修飾 (MathNet.Numerics.Control と曖昧になるため)
+            ? [labelFooter, spinButtonPanel, textBox, labelHeader]   // ②b: Fill 役はフッタ
+            : [textBox, spinButtonPanel, labelHeader, labelFooter];  // 従来: Fill 役は数値欄
         // 260428Cl: 既に正しい順序なら SetChildIndex を呼ばない (各呼び出しが Layout を発火するため)。
-        if (Controls.GetChildIndex(textBox) == 0
-            && Controls.GetChildIndex(spinButtonPanel) == 1
-            && Controls.GetChildIndex(labelHeader) == 2
-            && Controls.GetChildIndex(labelFooter) == 3)
-            return;
-        Controls.SetChildIndex(textBox, 0);
-        Controls.SetChildIndex(spinButtonPanel, 1);
-        Controls.SetChildIndex(labelHeader, 2);
-        Controls.SetChildIndex(labelFooter, 3);
+        for (int i = 0; i < order.Length; i++)
+            if (Controls.GetChildIndex(order[i]) != i)
+                Controls.SetChildIndex(order[i], i);
     }
 
     // 260413Cl 追加 SpinButtonをtextBoxと同じY座標・同じ高さに揃える
@@ -645,25 +651,33 @@ public partial class NumericBox : UserControlBase
     // 設計 (Horizontal 配置のみ。Vertical はラベルが独立行のため横幅ルール非適用):
     //   ①  HeaderWidth   : -1=labelHeader AutoSize / >=0=固定幅 (AutoEllipsis でクリップ + hover tooltip)
     //   ①' FooterWidth   : -1=labelFooter AutoSize / >=0=固定幅 (HeaderWidth と対称)
-    //   ②  ValueBoxWidth : -1=textBox Dock=Fill (残り幅を占有・全体幅は外形/親が決める)
-    //                      >=0=textBox を固定幅 (Dock=Left) にし本体を AutoSize にして全体サイズを
-    //                          「ヘッダ + 数値欄 + フッタ + spin」へ自動決定する (デザイナ上でもサイズ変更不可)。
-    //                      ただし本体が Dock=Fill/Top/Bottom で横に引き伸ばされる場合は外形幅を親が決めるため、
-    //                      ValueBoxWidth>=0 でも固定を解除し数値欄を Fill (横伸縮) に戻す。
-    //   基底の AutoSize/AutoSizeMode はデザイナ非表示 (②で内部管理。consumer 直接操作は不可)。
+    //   ②  ValueBoxWidth : -1=textBox Dock=Fill (残り幅を占有・全体幅は外形/親が決める)。本体を Dock=Fill/Top/Bottom
+    //                          にした場合は数値欄が横に伸び縮みする。
+    //                      >=0=textBox を固定幅 (Dock=Left) にする。外形幅の決まり方で 2 モードに分かれる:
+    //                        ②a 本体が横に引き伸ばされない場合: 本体を AutoSize にして全体サイズを
+    //                            「ヘッダ + 数値欄 + フッタ + spin」へ自動決定する (デザイナ上でもサイズ変更不可)。
+    //                        ②b 本体が Dock=Fill/Top/Bottom で横に引き伸ばされる場合 (260726Cl 変更): 外形幅は親が
+    //                            決めるので本体 AutoSize は false のまま、数値欄は ValueBoxWidth 固定を維持し、
+    //                            余り幅は labelFooter を Dock=Fill にして吸収させる (FooterText 側が伸び縮みする)。
+    //                            260726Cl 変更前は「>=0 でも固定を解除し数値欄を Fill に戻す」だった。
+    //   基底の AutoSize/AutoSizeMode はデザイナ非表示 (②aで内部管理。consumer 直接操作は不可)。
     // 旧実装(260617〜)の DefaultValueBoxWidth(静的 54px 全体レバー)・M2(ヘッダ自動クリップ)・親 Flow/Table 自動 M3・
     // 独立した AutoSizeWidth プロパティは撤去した (ValueBoxWidth>=0 が AutoSize を兼ねる)。最低可読幅が要る箇所は
     // 各フォームで HeaderWidth/ValueBoxWidth を明示設定する方針。旧コードは git 履歴の本リビジョン以前を参照。
 
-    private int valueBoxWidth = -1;   // -1=Fill, >=0=固定幅(論理px) + 本体 AutoSize
+    private int valueBoxWidth = -1;   // -1=Fill(本体 Dock 時は数値欄が伸縮), >=0=固定幅(論理px)。本体 Dock 時はフッタが伸縮
 
     /// <summary>数値欄(textBox)の幅(論理px)。-1 (既定) で残り幅を Fill (全体幅は外形/親が決める)。
-    /// >=0 で textBox をこの幅(論理px→DPIスケール)に固定し、本体を AutoSize にして全体サイズを
-    /// 「ヘッダ + 数値欄 + フッタ + spin」へ自動決定する (デザイナ上でもサイズ変更不可)。Horizontal 配置のときのみ有効。
-    /// ただし本体が Dock=Fill/Top/Bottom で横に引き伸ばされる場合は、>=0 でも数値欄は Fill (横伸縮) に戻る。</summary>
+    /// このとき本体を Dock=Fill/Top/Bottom にすると数値欄が横に伸び縮みする。
+    /// >=0 で textBox をこの幅(論理px→DPIスケール)に固定する。Horizontal 配置のときのみ有効。
+    /// 本体が横に引き伸ばされない場合は本体を AutoSize にして全体サイズを「ヘッダ + 数値欄 + フッタ + spin」へ
+    /// 自動決定する (デザイナ上でもサイズ変更不可)。本体が Dock=Fill/Top/Bottom で横に引き伸ばされる場合は
+    /// 外形幅を親に任せたまま数値欄の固定幅を維持し、余り幅は labelFooter (FooterText) が Dock=Fill で吸収して
+    /// 伸び縮みする (260726Cl 変更。フッタ文字は数値欄の直後に置かれ <see cref="FooterWidth"/> は無視される)。</summary>
     [DefaultValue(-1)]
     [Category("Value box")]
-    [Description("数値欄の幅(論理px)。-1 で残り幅を Fill。>=0 で固定幅+本体 AutoSize。本体が Dock で横伸縮する場合は Fill に戻る。")]
+    //[Description("数値欄の幅(論理px)。-1 で残り幅を Fill。>=0 で固定幅+本体 AutoSize。本体が Dock で横伸縮する場合は Fill に戻る。")] // 260726Cl 変更前
+    [Description("数値欄の幅(論理px)。-1 で残り幅を Fill (本体 Dock 時は数値欄が伸縮)。>=0 で固定幅 (本体 Dock 時は代わりにフッタが伸縮、非 Dock 時は本体 AutoSize)。")]
     public int ValueBoxWidth
     {
         get => valueBoxWidth;
@@ -676,15 +690,41 @@ public partial class NumericBox : UserControlBase
     private bool headerWidthFixed => headerWidth >= 0 && horizontalLayout;
     // ①' フッタ固定幅モードが有効か (Horizontal かつ FooterWidth>=0)。HeaderWidth と対称。
     private bool footerWidthFixed => footerWidth >= 0 && horizontalLayout;
-    // 本体が Dock で横に引き伸ばされるか (Fill/Top/Bottom)。このとき外形幅は親が決めるため数値欄は固定せず Fill (横伸縮) にする。
+    // 本体が Dock で横に引き伸ばされるか (Fill/Top/Bottom)。このとき外形幅は親が決まるため本体 AutoSize は使えない。
     private bool dockStretchesHorizontally => Dock is DockStyle.Fill or DockStyle.Top or DockStyle.Bottom;
-    // ② 数値欄固定幅 + 本体 AutoSize モードが有効か (Horizontal・ValueBoxWidth>=0・かつ本体が横に引き伸ばされない)。
-    private bool valueBoxFixed => valueBoxWidth >= 0 && horizontalLayout && !dockStretchesHorizontally;
+    // ② 数値欄を固定幅にするか (Horizontal かつ ValueBoxWidth>=0)。260726Cl: 本体が Dock で横伸縮する場合も固定を維持する
+    // (変更前は !dockStretchesHorizontally を含み、Dock 時は固定を解除して数値欄を Fill に戻していた)。
+    private bool valueBoxWidthFixed => valueBoxWidth >= 0 && horizontalLayout;                                                                        // 260726Cl 追加
+    // ②a 数値欄固定幅 + 本体 AutoSize モードが有効か (②かつ本体が横に引き伸ばされない)。
+    private bool valueBoxFixed => valueBoxWidthFixed && !dockStretchesHorizontally;
+    // ②b 260726Cl 追加 フッタ伸縮モードが有効か (②かつ本体が Dock で横に引き伸ばされる)。
+    // このとき数値欄は固定幅のまま、余り幅は labelFooter(Dock=Fill) が吸収する。本体 AutoSize は false のまま (外形幅は親が決める)。
+    private bool footerStretches => valueBoxWidthFixed && dockStretchesHorizontally;
 
     // HeaderWidth/FooterWidth/ValueBoxWidth を現在値からレイアウトへ一括反映する。
     private void applyWidthMode()
     {
         if (labelHeader == null || textBox == null) return;
+
+        // ②b 260726Cl 追加: フッタ伸縮モードの付け外し。Fill 役が textBox ↔ labelFooter で入れ替わるため、
+        // フッタと spin の Dock、および z-order をここで切り替える (Vertical では footerStretches=false なので従来どおり)。
+        var stretch = footerStretches;
+        if (labelFooter != null && horizontalLayout)
+        {
+            if (stretch)
+            {   // Label は AutoSize=true だと Dock=Fill でも文字幅までしか伸びないため、Fill にする前に AutoSize を落とす
+                if (labelFooter.AutoSize) labelFooter.AutoSize = false;
+                if (!labelFooter.AutoEllipsis) labelFooter.AutoEllipsis = true;                  // 親が狭くて余り幅が負のときは省略記号でクリップ
+            }
+            var footerDock = stretch ? DockStyle.Fill : DockStyle.Right;
+            var footerAlign = stretch ? ContentAlignment.TopLeft : ContentAlignment.TopRight;   // 伸びた領域の左端 (=数値欄/spin の直後) にフッタ文字を置く
+            if (labelFooter.Dock != footerDock) labelFooter.Dock = footerDock;
+            if (labelFooter.TextAlign != footerAlign) labelFooter.TextAlign = footerAlign;
+        }
+        // spin ボタンは常に数値欄の直後に置く (伸縮モードで Dock=Right のままだと伸びたフッタの更に右端へ飛ぶ)。
+        var spinDock = stretch ? DockStyle.Left : DockStyle.Right;
+        if (spinButtonPanel != null && spinButtonPanel.Dock != spinDock) spinButtonPanel.Dock = spinDock;
+        applyDockOrder();
 
         // Vertical: ヘッダ/フッタは独立行(Dock=Top/Bottom)で横幅競合が無い。
         // 横幅ルールは適用せず従来どおり (ヘッダ/フッタ AutoSize / 数値欄 Fill / 本体は外形幅) に保つ。
@@ -699,11 +739,15 @@ public partial class NumericBox : UserControlBase
 
         // ① HeaderWidth / ①' FooterWidth: -1=AutoSize / >=0=固定幅(ellipsis でクリップ + hover tooltip)
         applyLabelWidth(labelHeader, headerWidthFixed, headerWidth);
-        applyLabelWidth(labelFooter, footerWidthFixed, footerWidth);
+        // ②b 260726Cl: フッタ伸縮モードのときフッタ幅は Dock=Fill が決める (AutoSize/AutoEllipsis は上のブロックで設定済み) ので、
+        // FooterWidth 指定は無視する。
+        if (!stretch)
+            applyLabelWidth(labelFooter, footerWidthFixed, footerWidth);
 
         // ② ValueBoxWidth: 固定幅 (Dock=Left + Width) か、Fill (横伸縮) か。
-        // valueBoxFixed=false は「ValueBoxWidth=-1」または「本体が Dock=Fill/Top/Bottom で横引き伸ばし」のいずれか。
-        if (valueBoxFixed)
+        // 260726Cl 変更: 固定するのは ValueBoxWidth>=0 のときすべて。本体が Dock で横引き伸ばしの場合 (=②b) も固定を維持し、
+        // 余り幅はフッタ(Dock=Fill)が吸収する (変更前は Dock 引き伸ばし時に固定を解除して数値欄を Fill に戻していた)。
+        if (valueBoxWidthFixed)
         {
             int bw = LogicalToDeviceUnits(valueBoxWidth);   // 高DPI対応
             if (textBox.Dock != DockStyle.Left) textBox.Dock = DockStyle.Left;
@@ -745,13 +789,16 @@ public partial class NumericBox : UserControlBase
     }
 
     // valueBoxFixed (本体 AutoSize) のとき親(または自身)が問い合わせる優先サイズ = ヘッダ + 数値欄 + フッタ + spin。
+    // 260726Cl: ②b フッタ伸縮モード(footerStretches)でも同じ式を返す。本体 AutoSize は false だが、AutoSize な親
+    // (TableLayoutPanel の AutoSize 列など) に問い合わせられたとき「何もクリップしない最小幅」を返せるようにするため。
     public override Size GetPreferredSize(Size proposedSize)
     {
-        if (valueBoxFixed && labelHeader != null && textBox != null)
+        if (valueBoxWidthFixed && labelHeader != null && textBox != null)
         {
             int hw = labelHeader.Visible ? (headerWidthFixed ? LogicalToDeviceUnits(headerWidth) : labelHeader.PreferredWidth) : 0;
             int bw = LogicalToDeviceUnits(valueBoxWidth);
-            int fw = labelFooter is { Visible: true } ? (footerWidthFixed ? LogicalToDeviceUnits(footerWidth) : labelFooter.PreferredWidth) : 0;
+            // ②b では FooterWidth を無視して Dock=Fill にしているので、優先幅も文字幅 (PreferredWidth) の方を使う
+            int fw = labelFooter is { Visible: true } ? (footerWidthFixed && !footerStretches ? LogicalToDeviceUnits(footerWidth) : labelFooter.PreferredWidth) : 0;
             int sw = spinButtonPanel is { Visible: true } ? spinButtonPanel.Width : 0;
             return new Size(hw + bw + fw + sw, Height);
         }

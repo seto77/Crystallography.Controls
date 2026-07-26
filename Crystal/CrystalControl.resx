@@ -128,35 +128,6 @@
   <data name="splitContainer1.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 115</value>
   </data>
-  <data name="textBoxAuthor.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="textBoxAuthor.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9.75pt</value>
-  </data>
-  <data name="textBoxAuthor.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 21</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="textBoxAuthor.Multiline" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="textBoxAuthor.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
-    <value>Vertical</value>
-  </data>
-  <data name="textBoxAuthor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>145, 156</value>
-  </data>
-  <data name="textBoxAuthor.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <metadata name="toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>157, 17</value>
-  </metadata>
-  <data name="textBoxAuthor.ToolTip" xml:space="preserve">
-    <value>Author name(s) of the publication
-this crystal structure is taken from.</value>
-  </data>
   <data name="&gt;&gt;textBoxAuthor.Name" xml:space="preserve">
     <value>textBoxAuthor</value>
   </data>
@@ -178,6 +149,7 @@ this crystal structure is taken from.</value>
   <data name="groupBoxAuthors.Size" type="System.Drawing.Size, System.Drawing">
     <value>151, 180</value>
   </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="groupBoxAuthors.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
@@ -207,31 +179,6 @@ this crystal structure is taken from.</value>
   </data>
   <data name="&gt;&gt;splitContainer1.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="textBoxTitle.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="textBoxTitle.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9.75pt</value>
-  </data>
-  <data name="textBoxTitle.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 21</value>
-  </data>
-  <data name="textBoxTitle.Multiline" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="textBoxTitle.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
-    <value>Vertical</value>
-  </data>
-  <data name="textBoxTitle.Size" type="System.Drawing.Size, System.Drawing">
-    <value>292, 156</value>
-  </data>
-  <data name="textBoxTitle.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="textBoxTitle.ToolTip" xml:space="preserve">
-    <value>Title of the publication this
-crystal structure is taken from.</value>
   </data>
   <data name="&gt;&gt;textBoxTitle.Name" xml:space="preserve">
     <value>textBoxTitle</value>
@@ -305,6 +252,59 @@ crystal structure is taken from.</value>
   <data name="&gt;&gt;splitContainer1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <metadata name="toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>157, 17</value>
+  </metadata>
+  <data name="textBoxAuthor.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="textBoxAuthor.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9.75pt</value>
+  </data>
+  <data name="textBoxAuthor.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 21</value>
+  </data>
+  <data name="textBoxAuthor.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="textBoxAuthor.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
+    <value>Vertical</value>
+  </data>
+  <data name="textBoxAuthor.Size" type="System.Drawing.Size, System.Drawing">
+    <value>145, 156</value>
+  </data>
+  <data name="textBoxAuthor.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="textBoxAuthor.ToolTip" xml:space="preserve">
+    <value>Author name(s) of the publication
+this crystal structure is taken from.</value>
+  </data>
+  <data name="textBoxTitle.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="textBoxTitle.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9.75pt</value>
+  </data>
+  <data name="textBoxTitle.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 21</value>
+  </data>
+  <data name="textBoxTitle.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="textBoxTitle.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
+    <value>Vertical</value>
+  </data>
+  <data name="textBoxTitle.Size" type="System.Drawing.Size, System.Drawing">
+    <value>292, 156</value>
+  </data>
+  <data name="textBoxTitle.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="textBoxTitle.ToolTip" xml:space="preserve">
+    <value>Title of the publication this
+crystal structure is taken from.</value>
+  </data>
   <data name="flowLayoutPanelCellProperties.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -343,7 +343,7 @@ crystal structure is taken from.</value>
     <value>0, 0, 1, 0</value>
   </data>
   <data name="numericBoxVolumeAng.Size" type="System.Drawing.Size, System.Drawing">
-    <value>149, 25</value>
+    <value>153, 25</value>
   </data>
   <data name="numericBoxVolumeAng.TabIndex" type="System.Int32, mscorlib">
     <value>90</value>
@@ -379,7 +379,7 @@ crystal structure is taken from.</value>
     <value>0, 4, 0, 0</value>
   </data>
   <data name="numericBoxCellVolumeNm.Location" type="System.Drawing.Point, System.Drawing">
-    <value>165, 4</value>
+    <value>169, 4</value>
   </data>
   <data name="numericBoxCellVolumeNm.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>8, 0, 0, 0</value>
@@ -394,7 +394,7 @@ crystal structure is taken from.</value>
     <value>0, 0, 1, 0</value>
   </data>
   <data name="numericBoxCellVolumeNm.Size" type="System.Drawing.Size, System.Drawing">
-    <value>89, 25</value>
+    <value>115, 25</value>
   </data>
   <data name="numericBoxCellVolumeNm.TabIndex" type="System.Int32, mscorlib">
     <value>90</value>
@@ -433,7 +433,7 @@ crystal structure is taken from.</value>
     <value>Cell Mass</value>
   </data>
   <data name="numericBoxCellMass.Location" type="System.Drawing.Point, System.Drawing">
-    <value>262, 4</value>
+    <value>8, 29</value>
   </data>
   <data name="numericBoxCellMass.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>8, 0, 0, 0</value>
@@ -448,7 +448,7 @@ crystal structure is taken from.</value>
     <value>0, 0, 1, 0</value>
   </data>
   <data name="numericBoxCellMass.Size" type="System.Drawing.Size, System.Drawing">
-    <value>169, 25</value>
+    <value>191, 25</value>
   </data>
   <data name="numericBoxCellMass.TabIndex" type="System.Int32, mscorlib">
     <value>90</value>
@@ -487,7 +487,7 @@ crystal structure is taken from.</value>
     <value>Molar Volume</value>
   </data>
   <data name="numericBoxMolarVolume.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 29</value>
+    <value>207, 29</value>
   </data>
   <data name="numericBoxMolarVolume.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>8, 0, 0, 0</value>
@@ -541,7 +541,7 @@ crystal structure is taken from.</value>
     <value>Molar Mass</value>
   </data>
   <data name="numericBoxMolarMass.Location" type="System.Drawing.Point, System.Drawing">
-    <value>211, 29</value>
+    <value>8, 54</value>
   </data>
   <data name="numericBoxMolarMass.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>8, 0, 0, 0</value>
@@ -595,7 +595,7 @@ crystal structure is taken from.</value>
     <value>Density</value>
   </data>
   <data name="numericBoxDensity.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 54</value>
+    <value>184, 54</value>
   </data>
   <data name="numericBoxDensity.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>8, 0, 0, 0</value>
@@ -610,7 +610,7 @@ crystal structure is taken from.</value>
     <value>0, 0, 1, 0</value>
   </data>
   <data name="numericBoxDensity.Size" type="System.Drawing.Size, System.Drawing">
-    <value>146, 25</value>
+    <value>140, 25</value>
   </data>
   <data name="numericBoxDensity.TabIndex" type="System.Int32, mscorlib">
     <value>95</value>
@@ -646,7 +646,7 @@ crystal structure is taken from.</value>
     <value>Mean Z (number)</value>
   </data>
   <data name="numericBoxMeanZnumber.Location" type="System.Drawing.Point, System.Drawing">
-    <value>162, 54</value>
+    <value>8, 79</value>
   </data>
   <data name="numericBoxMeanZnumber.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>8, 0, 0, 0</value>
@@ -661,7 +661,7 @@ crystal structure is taken from.</value>
     <value>0, 0, 1, 0</value>
   </data>
   <data name="numericBoxMeanZnumber.Size" type="System.Drawing.Size, System.Drawing">
-    <value>160, 25</value>
+    <value>150, 25</value>
   </data>
   <data name="numericBoxMeanZnumber.TabIndex" type="System.Int32, mscorlib">
     <value>90</value>
@@ -697,7 +697,7 @@ crystal structure is taken from.</value>
     <value>Mean Z (mass)</value>
   </data>
   <data name="numericBoxMeanZmass.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 79</value>
+    <value>166, 79</value>
   </data>
   <data name="numericBoxMeanZmass.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>8, 0, 0, 0</value>
@@ -712,7 +712,7 @@ crystal structure is taken from.</value>
     <value>0, 0, 1, 0</value>
   </data>
   <data name="numericBoxMeanZmass.Size" type="System.Drawing.Size, System.Drawing">
-    <value>145, 25</value>
+    <value>139, 25</value>
   </data>
   <data name="numericBoxMeanZmass.TabIndex" type="System.Int32, mscorlib">
     <value>90</value>
@@ -751,7 +751,7 @@ crystal structure is taken from.</value>
     <value>Mean A</value>
   </data>
   <data name="numericBoxMeanAtomicWeight.Location" type="System.Drawing.Point, System.Drawing">
-    <value>161, 79</value>
+    <value>8, 104</value>
   </data>
   <data name="numericBoxMeanAtomicWeight.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>8, 0, 0, 0</value>
@@ -766,7 +766,7 @@ crystal structure is taken from.</value>
     <value>0, 0, 1, 0</value>
   </data>
   <data name="numericBoxMeanAtomicWeight.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 25</value>
+    <value>142, 25</value>
   </data>
   <data name="numericBoxMeanAtomicWeight.TabIndex" type="System.Int32, mscorlib">
     <value>90</value>
@@ -805,7 +805,7 @@ crystal structure is taken from.</value>
     <value>Atom density</value>
   </data>
   <data name="numericBoxAtomicNumberDensity.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 104</value>
+    <value>158, 104</value>
   </data>
   <data name="numericBoxAtomicNumberDensity.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>8, 0, 0, 0</value>
@@ -859,7 +859,7 @@ crystal structure is taken from.</value>
     <value>Electron density</value>
   </data>
   <data name="numericBoxElectronDensity.Location" type="System.Drawing.Point, System.Drawing">
-    <value>187, 104</value>
+    <value>8, 129</value>
   </data>
   <data name="numericBoxElectronDensity.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>8, 0, 0, 0</value>
@@ -930,44 +930,6 @@ crystal structure is taken from.</value>
   <data name="flowLayoutPanelSymmetryActions.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
   </data>
-  <data name="buttonConvertToSubgroup.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="buttonConvertToSubgroup.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
-  </data>
-  <data name="buttonConvertToSubgroup.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="buttonConvertToSubgroup.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 8.25pt</value>
-  </data>
-  <data name="buttonConvertToSubgroup.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="buttonConvertToSubgroup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>220, 0</value>
-  </data>
-  <data name="buttonConvertToSubgroup.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="buttonConvertToSubgroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>233, 23</value>
-  </data>
-  <data name="buttonConvertToSubgroup.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="buttonConvertToSubgroup.Text" xml:space="preserve">
-    <value>Convert to subgroup (under construction)</value>
-  </data>
-  <data name="buttonConvertToSubgroup.ToolTip" xml:space="preserve">
-    <value>Convert the crystal to a subgroup (a
-space group of lower symmetry) — not
-yet implemented (under construction).</value>
-  </data>
-  <data name="buttonConvertToSubgroup.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
   <data name="&gt;&gt;buttonConvertToSubgroup.Name" xml:space="preserve">
     <value>buttonConvertToSubgroup</value>
   </data>
@@ -979,39 +941,6 @@ yet implemented (under construction).</value>
   </data>
   <data name="&gt;&gt;buttonConvertToSubgroup.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="buttonChangeAxesOriginSetting.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="buttonChangeAxesOriginSetting.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
-  </data>
-  <data name="buttonChangeAxesOriginSetting.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="buttonChangeAxesOriginSetting.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="buttonChangeAxesOriginSetting.Location" type="System.Drawing.Point, System.Drawing">
-    <value>62, 0</value>
-  </data>
-  <data name="buttonChangeAxesOriginSetting.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="buttonChangeAxesOriginSetting.Size" type="System.Drawing.Size, System.Drawing">
-    <value>158, 25</value>
-  </data>
-  <data name="buttonChangeAxesOriginSetting.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="buttonChangeAxesOriginSetting.Text" xml:space="preserve">
-    <value>Change axes/origin setting</value>
-  </data>
-  <data name="buttonChangeAxesOriginSetting.ToolTip" xml:space="preserve">
-    <value>Convert the cell to a different axis/origin
-setting of the same space group (e.g. an
-alternative origin choice or cell choice
-for the same Hermann–Mauguin number).</value>
   </data>
   <data name="&gt;&gt;buttonChangeAxesOriginSetting.Name" xml:space="preserve">
     <value>buttonChangeAxesOriginSetting</value>
@@ -1142,30 +1071,6 @@ for the same Hermann–Mauguin number).</value>
   <data name="&gt;&gt;tabPageBasicInfo.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="atomControl.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="atomControl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="atomControl.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="atomControl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="atomControl.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="atomControl.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>446, 108</value>
-  </data>
-  <data name="atomControl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>459, 298</value>
-  </data>
-  <data name="atomControl.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <data name="&gt;&gt;atomControl.Name" xml:space="preserve">
     <value>atomControl</value>
   </data>
@@ -1177,79 +1082,6 @@ for the same Hermann–Mauguin number).</value>
   </data>
   <data name="&gt;&gt;atomControl.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="panelAtom.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="panelAtom.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
-  </data>
-  <data name="panel3.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <metadata name="contextMenuStrip2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>397, 17</value>
-  </metadata>
-  <data name="contextMenuStrip2.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="resetToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>246, 22</value>
-  </data>
-  <data name="resetToolStripMenuItem.Text" xml:space="preserve">
-    <value>Set Debye-Waller Factors to Zero</value>
-  </data>
-  <data name="resetToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>Set every atom's Debye–Waller factor
-(thermal-vibration intensity damping) to zero.</value>
-  </data>
-  <data name="contextMenuStrip2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>247, 26</value>
-  </data>
-  <data name="&gt;&gt;contextMenuStrip2.Name" xml:space="preserve">
-    <value>contextMenuStrip2</value>
-  </data>
-  <data name="&gt;&gt;contextMenuStrip2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="panel3.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Bottom</value>
-  </data>
-  <data name="panel3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="panel3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="panel3.TabIndex" type="System.Int32, mscorlib">
-    <value>65</value>
-  </data>
-  <data name="&gt;&gt;panel3.Name" xml:space="preserve">
-    <value>panel3</value>
-  </data>
-  <data name="&gt;&gt;panel3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;panel3.Parent" xml:space="preserve">
-    <value>panelAtom</value>
-  </data>
-  <data name="&gt;&gt;panel3.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="panelAtom.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="panelAtom.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="panelAtom.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="panelAtom.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="panelAtom.TabIndex" type="System.Int32, mscorlib">
-    <value>65</value>
   </data>
   <data name="&gt;&gt;panelAtom.Name" xml:space="preserve">
     <value>panelAtom</value>
@@ -1299,30 +1131,6 @@ for the same Hermann–Mauguin number).</value>
   <data name="&gt;&gt;tabPageAtom.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="bondControl.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="bondControl.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
-  </data>
-  <data name="bondControl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="bondControl.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="bondControl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="bondControl.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="bondControl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>459, 298</value>
-  </data>
-  <data name="bondControl.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <data name="&gt;&gt;bondControl.Name" xml:space="preserve">
     <value>bondControl</value>
   </data>
@@ -1359,58 +1167,6 @@ for the same Hermann–Mauguin number).</value>
   <data name="&gt;&gt;tabPageBondsPolyhedra.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="textBoxJournal.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="textBoxJournal.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9.75pt</value>
-  </data>
-  <data name="textBoxJournal.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 21</value>
-  </data>
-  <data name="textBoxJournal.Multiline" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="textBoxJournal.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
-    <value>Vertical</value>
-  </data>
-  <data name="textBoxJournal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>447, 31</value>
-  </data>
-  <data name="textBoxJournal.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="textBoxJournal.ToolTip" xml:space="preserve">
-    <value>Journal in which the publication
-of this crystal structure appeared.</value>
-  </data>
-  <data name="&gt;&gt;textBoxJournal.Name" xml:space="preserve">
-    <value>textBoxJournal</value>
-  </data>
-  <data name="&gt;&gt;textBoxJournal.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;textBoxJournal.Parent" xml:space="preserve">
-    <value>groupBoxJournal</value>
-  </data>
-  <data name="&gt;&gt;textBoxJournal.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="groupBoxJournal.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
-  </data>
-  <data name="groupBoxJournal.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 60</value>
-  </data>
-  <data name="groupBoxJournal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>453, 55</value>
-  </data>
-  <data name="groupBoxJournal.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="groupBoxJournal.Text" xml:space="preserve">
-    <value>Journal</value>
-  </data>
   <data name="&gt;&gt;groupBoxJournal.Name" xml:space="preserve">
     <value>groupBoxJournal</value>
   </data>
@@ -1422,54 +1178,6 @@ of this crystal structure appeared.</value>
   </data>
   <data name="&gt;&gt;groupBoxJournal.ZOrder" xml:space="preserve">
     <value>1</value>
-  </data>
-  <data name="textBoxMemo.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="textBoxMemo.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9.75pt</value>
-  </data>
-  <data name="textBoxMemo.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 21</value>
-  </data>
-  <data name="textBoxMemo.Multiline" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="textBoxMemo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>447, 33</value>
-  </data>
-  <data name="textBoxMemo.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="textBoxMemo.ToolTip" xml:space="preserve">
-    <value>Free-form note or memo about this crystal.</value>
-  </data>
-  <data name="&gt;&gt;textBoxMemo.Name" xml:space="preserve">
-    <value>textBoxMemo</value>
-  </data>
-  <data name="&gt;&gt;textBoxMemo.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;textBoxMemo.Parent" xml:space="preserve">
-    <value>groupBoxNote</value>
-  </data>
-  <data name="&gt;&gt;textBoxMemo.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="groupBoxNote.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
-  </data>
-  <data name="groupBoxNote.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
-  </data>
-  <data name="groupBoxNote.Size" type="System.Drawing.Size, System.Drawing">
-    <value>453, 57</value>
-  </data>
-  <data name="groupBoxNote.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="groupBoxNote.Text" xml:space="preserve">
-    <value>Note</value>
   </data>
   <data name="&gt;&gt;groupBoxNote.Name" xml:space="preserve">
     <value>groupBoxNote</value>
@@ -1510,24 +1218,6 @@ of this crystal structure appeared.</value>
   <data name="&gt;&gt;tabPageReference.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="eosControl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="eosControl.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="eosControl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
-  </data>
-  <data name="eosControl.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 3, 2, 3</value>
-  </data>
-  <data name="eosControl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>453, 292</value>
-  </data>
-  <data name="eosControl.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <data name="&gt;&gt;eosControl.Name" xml:space="preserve">
     <value>eosControl</value>
   </data>
@@ -1566,21 +1256,6 @@ of this crystal structure appeared.</value>
   </data>
   <data name="&gt;&gt;tabPageEOS.ZOrder" xml:space="preserve">
     <value>4</value>
-  </data>
-  <data name="elasticityControl1.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="elasticityControl1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 6</value>
-  </data>
-  <data name="elasticityControl1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="elasticityControl1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>574, 177</value>
-  </data>
-  <data name="elasticityControl1.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
   </data>
   <data name="&gt;&gt;elasticityControl1.Name" xml:space="preserve">
     <value>elasticityControl1</value>
@@ -1621,38 +1296,6 @@ of this crystal structure appeared.</value>
   <data name="&gt;&gt;tabPageElasticity.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="numericBoxStress33.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxStress33.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxStress33.Location" type="System.Drawing.Point, System.Drawing">
-    <value>305, 125</value>
-  </data>
-  <data name="numericBoxStress33.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>1, 1, 1, 1</value>
-  </data>
-  <data name="numericBoxStress33.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 27</value>
-  </data>
-  <data name="numericBoxStress33.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 17</value>
-  </data>
-  <data name="numericBoxStress33.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 1, 0</value>
-  </data>
-  <data name="numericBoxStress33.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 24</value>
-  </data>
-  <data name="numericBoxStress33.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
-  </data>
-  <data name="numericBoxStress33.ToolTip" xml:space="preserve">
-    <value>Normal stress component σ33 (along c) of the
-applied stress tensor used in the Reuss model,
-in the same unit as the elastic constants (GPa).</value>
-  </data>
   <data name="&gt;&gt;numericBoxStress33.Name" xml:space="preserve">
     <value>numericBoxStress33</value>
   </data>
@@ -1664,38 +1307,6 @@ in the same unit as the elastic constants (GPa).</value>
   </data>
   <data name="&gt;&gt;numericBoxStress33.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="numericBoxStress22.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxStress22.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxStress22.Location" type="System.Drawing.Point, System.Drawing">
-    <value>257, 84</value>
-  </data>
-  <data name="numericBoxStress22.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>1, 1, 1, 1</value>
-  </data>
-  <data name="numericBoxStress22.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 27</value>
-  </data>
-  <data name="numericBoxStress22.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 17</value>
-  </data>
-  <data name="numericBoxStress22.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 1, 0</value>
-  </data>
-  <data name="numericBoxStress22.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 24</value>
-  </data>
-  <data name="numericBoxStress22.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="numericBoxStress22.ToolTip" xml:space="preserve">
-    <value>Normal stress component σ22 (along b) of the
-applied stress tensor used in the Reuss model,
-in the same unit as the elastic constants (GPa).</value>
   </data>
   <data name="&gt;&gt;numericBoxStress22.Name" xml:space="preserve">
     <value>numericBoxStress22</value>
@@ -1709,38 +1320,6 @@ in the same unit as the elastic constants (GPa).</value>
   <data name="&gt;&gt;numericBoxStress22.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="numericBoxStress11.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxStress11.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxStress11.Location" type="System.Drawing.Point, System.Drawing">
-    <value>209, 46</value>
-  </data>
-  <data name="numericBoxStress11.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>1, 1, 1, 1</value>
-  </data>
-  <data name="numericBoxStress11.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 27</value>
-  </data>
-  <data name="numericBoxStress11.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 17</value>
-  </data>
-  <data name="numericBoxStress11.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 1, 0</value>
-  </data>
-  <data name="numericBoxStress11.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 24</value>
-  </data>
-  <data name="numericBoxStress11.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="numericBoxStress11.ToolTip" xml:space="preserve">
-    <value>Normal stress component σ11 (along a) of the
-applied stress tensor used in the Reuss model,
-in the same unit as the elastic constants (GPa).</value>
-  </data>
   <data name="&gt;&gt;numericBoxStress11.Name" xml:space="preserve">
     <value>numericBoxStress11</value>
   </data>
@@ -1752,38 +1331,6 @@ in the same unit as the elastic constants (GPa).</value>
   </data>
   <data name="&gt;&gt;numericBoxStress11.ZOrder" xml:space="preserve">
     <value>2</value>
-  </data>
-  <data name="numericBoxStress23.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxStress23.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxStress23.Location" type="System.Drawing.Point, System.Drawing">
-    <value>307, 84</value>
-  </data>
-  <data name="numericBoxStress23.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>1, 1, 1, 1</value>
-  </data>
-  <data name="numericBoxStress23.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 27</value>
-  </data>
-  <data name="numericBoxStress23.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 17</value>
-  </data>
-  <data name="numericBoxStress23.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 1, 0</value>
-  </data>
-  <data name="numericBoxStress23.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 24</value>
-  </data>
-  <data name="numericBoxStress23.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="numericBoxStress23.ToolTip" xml:space="preserve">
-    <value>Shear stress component σ23 of the applied
-stress tensor used in the Reuss model, in
-the same unit as the elastic constants (GPa).</value>
   </data>
   <data name="&gt;&gt;numericBoxStress23.Name" xml:space="preserve">
     <value>numericBoxStress23</value>
@@ -1797,38 +1344,6 @@ the same unit as the elastic constants (GPa).</value>
   <data name="&gt;&gt;numericBoxStress23.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="numericBoxStress13.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxStress13.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxStress13.Location" type="System.Drawing.Point, System.Drawing">
-    <value>307, 46</value>
-  </data>
-  <data name="numericBoxStress13.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>1, 1, 1, 1</value>
-  </data>
-  <data name="numericBoxStress13.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 27</value>
-  </data>
-  <data name="numericBoxStress13.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 17</value>
-  </data>
-  <data name="numericBoxStress13.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 1, 0</value>
-  </data>
-  <data name="numericBoxStress13.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 24</value>
-  </data>
-  <data name="numericBoxStress13.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="numericBoxStress13.ToolTip" xml:space="preserve">
-    <value>Shear stress component σ13 of the applied
-stress tensor used in the Reuss model, in
-the same unit as the elastic constants (GPa).</value>
-  </data>
   <data name="&gt;&gt;numericBoxStress13.Name" xml:space="preserve">
     <value>numericBoxStress13</value>
   </data>
@@ -1840,38 +1355,6 @@ the same unit as the elastic constants (GPa).</value>
   </data>
   <data name="&gt;&gt;numericBoxStress13.ZOrder" xml:space="preserve">
     <value>4</value>
-  </data>
-  <data name="numericBoxStress12.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxStress12.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxStress12.Location" type="System.Drawing.Point, System.Drawing">
-    <value>258, 46</value>
-  </data>
-  <data name="numericBoxStress12.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>1, 1, 1, 1</value>
-  </data>
-  <data name="numericBoxStress12.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 27</value>
-  </data>
-  <data name="numericBoxStress12.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 17</value>
-  </data>
-  <data name="numericBoxStress12.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 1, 0</value>
-  </data>
-  <data name="numericBoxStress12.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 24</value>
-  </data>
-  <data name="numericBoxStress12.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="numericBoxStress12.ToolTip" xml:space="preserve">
-    <value>Shear stress component σ12 of the applied
-stress tensor used in the Reuss model, in
-the same unit as the elastic constants (GPa).</value>
   </data>
   <data name="&gt;&gt;numericBoxStress12.Name" xml:space="preserve">
     <value>numericBoxStress12</value>
@@ -1885,38 +1368,6 @@ the same unit as the elastic constants (GPa).</value>
   <data name="&gt;&gt;numericBoxStress12.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="numericBoxStrain33.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxStrain33.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxStrain33.Location" type="System.Drawing.Point, System.Drawing">
-    <value>120, 121</value>
-  </data>
-  <data name="numericBoxStrain33.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>1, 1, 1, 1</value>
-  </data>
-  <data name="numericBoxStrain33.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 27</value>
-  </data>
-  <data name="numericBoxStrain33.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 17</value>
-  </data>
-  <data name="numericBoxStrain33.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 1, 0</value>
-  </data>
-  <data name="numericBoxStrain33.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 24</value>
-  </data>
-  <data name="numericBoxStrain33.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="numericBoxStrain33.ToolTip" xml:space="preserve">
-    <value>Normal strain component ε33 (along c)
-of the imposed lattice-strain tensor
-used in the Voigt model (dimensionless).</value>
-  </data>
   <data name="&gt;&gt;numericBoxStrain33.Name" xml:space="preserve">
     <value>numericBoxStrain33</value>
   </data>
@@ -1928,38 +1379,6 @@ used in the Voigt model (dimensionless).</value>
   </data>
   <data name="&gt;&gt;numericBoxStrain33.ZOrder" xml:space="preserve">
     <value>6</value>
-  </data>
-  <data name="numericBoxStrain11.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxStrain11.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxStrain11.Location" type="System.Drawing.Point, System.Drawing">
-    <value>22, 46</value>
-  </data>
-  <data name="numericBoxStrain11.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>1, 1, 1, 1</value>
-  </data>
-  <data name="numericBoxStrain11.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 27</value>
-  </data>
-  <data name="numericBoxStrain11.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 17</value>
-  </data>
-  <data name="numericBoxStrain11.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 1, 0</value>
-  </data>
-  <data name="numericBoxStrain11.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 24</value>
-  </data>
-  <data name="numericBoxStrain11.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="numericBoxStrain11.ToolTip" xml:space="preserve">
-    <value>Normal strain component ε11 (along a)
-of the imposed lattice-strain tensor
-used in the Voigt model (dimensionless).</value>
   </data>
   <data name="&gt;&gt;numericBoxStrain11.Name" xml:space="preserve">
     <value>numericBoxStrain11</value>
@@ -1973,38 +1392,6 @@ used in the Voigt model (dimensionless).</value>
   <data name="&gt;&gt;numericBoxStrain11.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="numericBoxStrain22.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxStrain22.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxStrain22.Location" type="System.Drawing.Point, System.Drawing">
-    <value>71, 84</value>
-  </data>
-  <data name="numericBoxStrain22.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>1, 1, 1, 1</value>
-  </data>
-  <data name="numericBoxStrain22.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 27</value>
-  </data>
-  <data name="numericBoxStrain22.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 17</value>
-  </data>
-  <data name="numericBoxStrain22.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 1, 0</value>
-  </data>
-  <data name="numericBoxStrain22.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 24</value>
-  </data>
-  <data name="numericBoxStrain22.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="numericBoxStrain22.ToolTip" xml:space="preserve">
-    <value>Normal strain component ε22 (along b)
-of the imposed lattice-strain tensor
-used in the Voigt model (dimensionless).</value>
-  </data>
   <data name="&gt;&gt;numericBoxStrain22.Name" xml:space="preserve">
     <value>numericBoxStrain22</value>
   </data>
@@ -2016,38 +1403,6 @@ used in the Voigt model (dimensionless).</value>
   </data>
   <data name="&gt;&gt;numericBoxStrain22.ZOrder" xml:space="preserve">
     <value>8</value>
-  </data>
-  <data name="numericBoxStrain12.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxStrain12.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxStrain12.Location" type="System.Drawing.Point, System.Drawing">
-    <value>71, 46</value>
-  </data>
-  <data name="numericBoxStrain12.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>1, 1, 1, 1</value>
-  </data>
-  <data name="numericBoxStrain12.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 27</value>
-  </data>
-  <data name="numericBoxStrain12.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 17</value>
-  </data>
-  <data name="numericBoxStrain12.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 1, 0</value>
-  </data>
-  <data name="numericBoxStrain12.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 24</value>
-  </data>
-  <data name="numericBoxStrain12.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="numericBoxStrain12.ToolTip" xml:space="preserve">
-    <value>Shear strain component ε12 of the
-imposed lattice-strain tensor used
-in the Voigt model (dimensionless).</value>
   </data>
   <data name="&gt;&gt;numericBoxStrain12.Name" xml:space="preserve">
     <value>numericBoxStrain12</value>
@@ -2061,38 +1416,6 @@ in the Voigt model (dimensionless).</value>
   <data name="&gt;&gt;numericBoxStrain12.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
-  <data name="numericBoxStrain23.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxStrain23.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxStrain23.Location" type="System.Drawing.Point, System.Drawing">
-    <value>120, 84</value>
-  </data>
-  <data name="numericBoxStrain23.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>1, 1, 1, 1</value>
-  </data>
-  <data name="numericBoxStrain23.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 27</value>
-  </data>
-  <data name="numericBoxStrain23.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 17</value>
-  </data>
-  <data name="numericBoxStrain23.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 1, 0</value>
-  </data>
-  <data name="numericBoxStrain23.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 24</value>
-  </data>
-  <data name="numericBoxStrain23.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="numericBoxStrain23.ToolTip" xml:space="preserve">
-    <value>Shear strain component ε23 of the
-imposed lattice-strain tensor used
-in the Voigt model (dimensionless).</value>
-  </data>
   <data name="&gt;&gt;numericBoxStrain23.Name" xml:space="preserve">
     <value>numericBoxStrain23</value>
   </data>
@@ -2104,38 +1427,6 @@ in the Voigt model (dimensionless).</value>
   </data>
   <data name="&gt;&gt;numericBoxStrain23.ZOrder" xml:space="preserve">
     <value>10</value>
-  </data>
-  <data name="numericBoxStrain13.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxStrain13.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxStrain13.Location" type="System.Drawing.Point, System.Drawing">
-    <value>120, 46</value>
-  </data>
-  <data name="numericBoxStrain13.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>1, 1, 1, 1</value>
-  </data>
-  <data name="numericBoxStrain13.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 27</value>
-  </data>
-  <data name="numericBoxStrain13.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 17</value>
-  </data>
-  <data name="numericBoxStrain13.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 1, 0</value>
-  </data>
-  <data name="numericBoxStrain13.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 24</value>
-  </data>
-  <data name="numericBoxStrain13.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="numericBoxStrain13.ToolTip" xml:space="preserve">
-    <value>Shear strain component ε13 of the
-imposed lattice-strain tensor used
-in the Voigt model (dimensionless).</value>
   </data>
   <data name="&gt;&gt;numericBoxStrain13.Name" xml:space="preserve">
     <value>numericBoxStrain13</value>
@@ -2149,21 +1440,6 @@ in the Voigt model (dimensionless).</value>
   <data name="&gt;&gt;numericBoxStrain13.ZOrder" xml:space="preserve">
     <value>11</value>
   </data>
-  <data name="labelLaTex6.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9.75pt</value>
-  </data>
-  <data name="labelLaTex6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>120, 106</value>
-  </data>
-  <data name="labelLaTex6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>20, 20</value>
-  </data>
-  <data name="labelLaTex6.TabIndex" type="System.Int32, mscorlib">
-    <value>264</value>
-  </data>
-  <data name="labelLaTex6.Text" xml:space="preserve">
-    <value>\epsilon_{33}</value>
-  </data>
   <data name="&gt;&gt;labelLaTex6.Name" xml:space="preserve">
     <value>labelLaTex6</value>
   </data>
@@ -2175,21 +1451,6 @@ in the Voigt model (dimensionless).</value>
   </data>
   <data name="&gt;&gt;labelLaTex6.ZOrder" xml:space="preserve">
     <value>12</value>
-  </data>
-  <data name="labelLaTex5.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9.75pt</value>
-  </data>
-  <data name="labelLaTex5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>120, 69</value>
-  </data>
-  <data name="labelLaTex5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>20, 20</value>
-  </data>
-  <data name="labelLaTex5.TabIndex" type="System.Int32, mscorlib">
-    <value>264</value>
-  </data>
-  <data name="labelLaTex5.Text" xml:space="preserve">
-    <value>\epsilon_{23}</value>
   </data>
   <data name="&gt;&gt;labelLaTex5.Name" xml:space="preserve">
     <value>labelLaTex5</value>
@@ -2203,21 +1464,6 @@ in the Voigt model (dimensionless).</value>
   <data name="&gt;&gt;labelLaTex5.ZOrder" xml:space="preserve">
     <value>13</value>
   </data>
-  <data name="labelLaTex3.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9.75pt</value>
-  </data>
-  <data name="labelLaTex3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>120, 29</value>
-  </data>
-  <data name="labelLaTex3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>20, 20</value>
-  </data>
-  <data name="labelLaTex3.TabIndex" type="System.Int32, mscorlib">
-    <value>264</value>
-  </data>
-  <data name="labelLaTex3.Text" xml:space="preserve">
-    <value>\epsilon_{13}</value>
-  </data>
   <data name="&gt;&gt;labelLaTex3.Name" xml:space="preserve">
     <value>labelLaTex3</value>
   </data>
@@ -2229,21 +1475,6 @@ in the Voigt model (dimensionless).</value>
   </data>
   <data name="&gt;&gt;labelLaTex3.ZOrder" xml:space="preserve">
     <value>14</value>
-  </data>
-  <data name="labelLaTex4.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9.75pt</value>
-  </data>
-  <data name="labelLaTex4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>71, 69</value>
-  </data>
-  <data name="labelLaTex4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>20, 20</value>
-  </data>
-  <data name="labelLaTex4.TabIndex" type="System.Int32, mscorlib">
-    <value>264</value>
-  </data>
-  <data name="labelLaTex4.Text" xml:space="preserve">
-    <value>\epsilon_{22}</value>
   </data>
   <data name="&gt;&gt;labelLaTex4.Name" xml:space="preserve">
     <value>labelLaTex4</value>
@@ -2257,21 +1488,6 @@ in the Voigt model (dimensionless).</value>
   <data name="&gt;&gt;labelLaTex4.ZOrder" xml:space="preserve">
     <value>15</value>
   </data>
-  <data name="labelLaTex2.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9.75pt</value>
-  </data>
-  <data name="labelLaTex2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>71, 29</value>
-  </data>
-  <data name="labelLaTex2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>20, 20</value>
-  </data>
-  <data name="labelLaTex2.TabIndex" type="System.Int32, mscorlib">
-    <value>264</value>
-  </data>
-  <data name="labelLaTex2.Text" xml:space="preserve">
-    <value>\epsilon_{12}</value>
-  </data>
   <data name="&gt;&gt;labelLaTex2.Name" xml:space="preserve">
     <value>labelLaTex2</value>
   </data>
@@ -2283,21 +1499,6 @@ in the Voigt model (dimensionless).</value>
   </data>
   <data name="&gt;&gt;labelLaTex2.ZOrder" xml:space="preserve">
     <value>16</value>
-  </data>
-  <data name="labelLaTex13.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9.75pt</value>
-  </data>
-  <data name="labelLaTex13.Location" type="System.Drawing.Point, System.Drawing">
-    <value>285, 162</value>
-  </data>
-  <data name="labelLaTex13.Size" type="System.Drawing.Size, System.Drawing">
-    <value>16, 20</value>
-  </data>
-  <data name="labelLaTex13.TabIndex" type="System.Int32, mscorlib">
-    <value>264</value>
-  </data>
-  <data name="labelLaTex13.Text" xml:space="preserve">
-    <value>\alpha</value>
   </data>
   <data name="&gt;&gt;labelLaTex13.Name" xml:space="preserve">
     <value>labelLaTex13</value>
@@ -2311,21 +1512,6 @@ in the Voigt model (dimensionless).</value>
   <data name="&gt;&gt;labelLaTex13.ZOrder" xml:space="preserve">
     <value>17</value>
   </data>
-  <data name="labelLaTex12.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9.75pt</value>
-  </data>
-  <data name="labelLaTex12.Location" type="System.Drawing.Point, System.Drawing">
-    <value>305, 106</value>
-  </data>
-  <data name="labelLaTex12.Size" type="System.Drawing.Size, System.Drawing">
-    <value>20, 20</value>
-  </data>
-  <data name="labelLaTex12.TabIndex" type="System.Int32, mscorlib">
-    <value>264</value>
-  </data>
-  <data name="labelLaTex12.Text" xml:space="preserve">
-    <value>\sigma_{33}</value>
-  </data>
   <data name="&gt;&gt;labelLaTex12.Name" xml:space="preserve">
     <value>labelLaTex12</value>
   </data>
@@ -2337,21 +1523,6 @@ in the Voigt model (dimensionless).</value>
   </data>
   <data name="&gt;&gt;labelLaTex12.ZOrder" xml:space="preserve">
     <value>18</value>
-  </data>
-  <data name="labelLaTex11.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9.75pt</value>
-  </data>
-  <data name="labelLaTex11.Location" type="System.Drawing.Point, System.Drawing">
-    <value>305, 69</value>
-  </data>
-  <data name="labelLaTex11.Size" type="System.Drawing.Size, System.Drawing">
-    <value>20, 20</value>
-  </data>
-  <data name="labelLaTex11.TabIndex" type="System.Int32, mscorlib">
-    <value>264</value>
-  </data>
-  <data name="labelLaTex11.Text" xml:space="preserve">
-    <value>\sigma_{23}</value>
   </data>
   <data name="&gt;&gt;labelLaTex11.Name" xml:space="preserve">
     <value>labelLaTex11</value>
@@ -2365,21 +1536,6 @@ in the Voigt model (dimensionless).</value>
   <data name="&gt;&gt;labelLaTex11.ZOrder" xml:space="preserve">
     <value>19</value>
   </data>
-  <data name="labelLaTex10.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9.75pt</value>
-  </data>
-  <data name="labelLaTex10.Location" type="System.Drawing.Point, System.Drawing">
-    <value>256, 69</value>
-  </data>
-  <data name="labelLaTex10.Size" type="System.Drawing.Size, System.Drawing">
-    <value>20, 20</value>
-  </data>
-  <data name="labelLaTex10.TabIndex" type="System.Int32, mscorlib">
-    <value>264</value>
-  </data>
-  <data name="labelLaTex10.Text" xml:space="preserve">
-    <value>\sigma_{22}</value>
-  </data>
   <data name="&gt;&gt;labelLaTex10.Name" xml:space="preserve">
     <value>labelLaTex10</value>
   </data>
@@ -2391,21 +1547,6 @@ in the Voigt model (dimensionless).</value>
   </data>
   <data name="&gt;&gt;labelLaTex10.ZOrder" xml:space="preserve">
     <value>20</value>
-  </data>
-  <data name="labelLaTex9.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9.75pt</value>
-  </data>
-  <data name="labelLaTex9.Location" type="System.Drawing.Point, System.Drawing">
-    <value>306, 28</value>
-  </data>
-  <data name="labelLaTex9.Size" type="System.Drawing.Size, System.Drawing">
-    <value>20, 20</value>
-  </data>
-  <data name="labelLaTex9.TabIndex" type="System.Int32, mscorlib">
-    <value>264</value>
-  </data>
-  <data name="labelLaTex9.Text" xml:space="preserve">
-    <value>\sigma_{13}</value>
   </data>
   <data name="&gt;&gt;labelLaTex9.Name" xml:space="preserve">
     <value>labelLaTex9</value>
@@ -2419,21 +1560,6 @@ in the Voigt model (dimensionless).</value>
   <data name="&gt;&gt;labelLaTex9.ZOrder" xml:space="preserve">
     <value>21</value>
   </data>
-  <data name="labelLaTex8.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9.75pt</value>
-  </data>
-  <data name="labelLaTex8.Location" type="System.Drawing.Point, System.Drawing">
-    <value>257, 28</value>
-  </data>
-  <data name="labelLaTex8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>20, 20</value>
-  </data>
-  <data name="labelLaTex8.TabIndex" type="System.Int32, mscorlib">
-    <value>264</value>
-  </data>
-  <data name="labelLaTex8.Text" xml:space="preserve">
-    <value>\sigma_{12}</value>
-  </data>
   <data name="&gt;&gt;labelLaTex8.Name" xml:space="preserve">
     <value>labelLaTex8</value>
   </data>
@@ -2445,21 +1571,6 @@ in the Voigt model (dimensionless).</value>
   </data>
   <data name="&gt;&gt;labelLaTex8.ZOrder" xml:space="preserve">
     <value>22</value>
-  </data>
-  <data name="labelLaTex7.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9.75pt</value>
-  </data>
-  <data name="labelLaTex7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>209, 29</value>
-  </data>
-  <data name="labelLaTex7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>20, 20</value>
-  </data>
-  <data name="labelLaTex7.TabIndex" type="System.Int32, mscorlib">
-    <value>264</value>
-  </data>
-  <data name="labelLaTex7.Text" xml:space="preserve">
-    <value>\sigma_{11}</value>
   </data>
   <data name="&gt;&gt;labelLaTex7.Name" xml:space="preserve">
     <value>labelLaTex7</value>
@@ -2473,21 +1584,6 @@ in the Voigt model (dimensionless).</value>
   <data name="&gt;&gt;labelLaTex7.ZOrder" xml:space="preserve">
     <value>23</value>
   </data>
-  <data name="labelLaTex1.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9.75pt</value>
-  </data>
-  <data name="labelLaTex1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>22, 28</value>
-  </data>
-  <data name="labelLaTex1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>20, 20</value>
-  </data>
-  <data name="labelLaTex1.TabIndex" type="System.Int32, mscorlib">
-    <value>264</value>
-  </data>
-  <data name="labelLaTex1.Text" xml:space="preserve">
-    <value>\epsilon_{11}</value>
-  </data>
   <data name="&gt;&gt;labelLaTex1.Name" xml:space="preserve">
     <value>labelLaTex1</value>
   </data>
@@ -2499,22 +1595,6 @@ in the Voigt model (dimensionless).</value>
   </data>
   <data name="&gt;&gt;labelLaTex1.ZOrder" xml:space="preserve">
     <value>24</value>
-  </data>
-  <data name="buttonStressSet.Location" type="System.Drawing.Point, System.Drawing">
-    <value>282, 196</value>
-  </data>
-  <data name="buttonStressSet.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
-  </data>
-  <data name="buttonStressSet.TabIndex" type="System.Int32, mscorlib">
-    <value>263</value>
-  </data>
-  <data name="buttonStressSet.Text" xml:space="preserve">
-    <value>set</value>
-  </data>
-  <data name="buttonStressSet.ToolTip" xml:space="preserve">
-    <value>Apply the entered strain, stress
-and Hill coefficient to the crystal.</value>
   </data>
   <data name="&gt;&gt;buttonStressSet.Name" xml:space="preserve">
     <value>buttonStressSet</value>
@@ -2528,39 +1608,6 @@ and Hill coefficient to the crystal.</value>
   <data name="&gt;&gt;buttonStressSet.ZOrder" xml:space="preserve">
     <value>25</value>
   </data>
-  <data name="numericBoxHill.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxHill.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 0, 0</value>
-  </data>
-  <data name="numericBoxHill.Location" type="System.Drawing.Point, System.Drawing">
-    <value>306, 159</value>
-  </data>
-  <data name="numericBoxHill.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>1, 1, 1, 1</value>
-  </data>
-  <data name="numericBoxHill.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 27</value>
-  </data>
-  <data name="numericBoxHill.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 17</value>
-  </data>
-  <data name="numericBoxHill.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 1, 0</value>
-  </data>
-  <data name="numericBoxHill.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 24</value>
-  </data>
-  <data name="numericBoxHill.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
-  </data>
-  <data name="numericBoxHill.ToolTip" xml:space="preserve">
-    <value>Hill averaging coefficient that blends the Voigt
-(uniform-strain) and Reuss (uniform-stress) models:
-0 uses the imposed strain only, 1 uses the strain
-derived from the applied stress (dimensionless).</value>
-  </data>
   <data name="&gt;&gt;numericBoxHill.Name" xml:space="preserve">
     <value>numericBoxHill</value>
   </data>
@@ -2572,36 +1619,6 @@ derived from the applied stress (dimensionless).</value>
   </data>
   <data name="&gt;&gt;numericBoxHill.ZOrder" xml:space="preserve">
     <value>26</value>
-  </data>
-  <data name="label117.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label117.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Tahoma, 9pt</value>
-  </data>
-  <data name="label117.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label117.Location" type="System.Drawing.Point, System.Drawing">
-    <value>192, 162</value>
-  </data>
-  <data name="label117.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
-  </data>
-  <data name="label117.Size" type="System.Drawing.Size, System.Drawing">
-    <value>82, 14</value>
-  </data>
-  <data name="label117.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
-  </data>
-  <data name="label117.Text" xml:space="preserve">
-    <value>Hill coefficient</value>
-  </data>
-  <data name="label117.ToolTip" xml:space="preserve">
-    <value>Hill averaging coefficient that blends the Voigt
-(uniform-strain) and Reuss (uniform-stress) models:
-0 uses the imposed strain only, 1 uses the strain
-derived from the applied stress (dimensionless).</value>
   </data>
   <data name="&gt;&gt;label117.Name" xml:space="preserve">
     <value>label117</value>
@@ -2615,35 +1632,6 @@ derived from the applied stress (dimensionless).</value>
   <data name="&gt;&gt;label117.ZOrder" xml:space="preserve">
     <value>27</value>
   </data>
-  <data name="label109.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label109.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Tahoma, 9pt</value>
-  </data>
-  <data name="label109.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label109.Location" type="System.Drawing.Point, System.Drawing">
-    <value>194, 12</value>
-  </data>
-  <data name="label109.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
-  </data>
-  <data name="label109.Size" type="System.Drawing.Size, System.Drawing">
-    <value>122, 14</value>
-  </data>
-  <data name="label109.TabIndex" type="System.Int32, mscorlib">
-    <value>253</value>
-  </data>
-  <data name="label109.Text" xml:space="preserve">
-    <value>Stress (Reuss model)
-</value>
-  </data>
-  <data name="label109.ToolTip" xml:space="preserve">
-    <value>Applied stress tensor for the Reuss (uniform-stress)
-model; enter the six independent components (GPa).</value>
-  </data>
   <data name="&gt;&gt;label109.Name" xml:space="preserve">
     <value>label109</value>
   </data>
@@ -2655,35 +1643,6 @@ model; enter the six independent components (GPa).</value>
   </data>
   <data name="&gt;&gt;label109.ZOrder" xml:space="preserve">
     <value>28</value>
-  </data>
-  <data name="label102.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label102.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Tahoma, 9pt</value>
-  </data>
-  <data name="label102.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label102.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 12</value>
-  </data>
-  <data name="label102.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
-  </data>
-  <data name="label102.Size" type="System.Drawing.Size, System.Drawing">
-    <value>118, 14</value>
-  </data>
-  <data name="label102.TabIndex" type="System.Int32, mscorlib">
-    <value>240</value>
-  </data>
-  <data name="label102.Text" xml:space="preserve">
-    <value>Strain (Voigt model)</value>
-  </data>
-  <data name="label102.ToolTip" xml:space="preserve">
-    <value>Imposed lattice-strain tensor for the
-Voigt (uniform-strain) model; enter the
-six independent components (dimensionless).</value>
   </data>
   <data name="&gt;&gt;label102.Name" xml:space="preserve">
     <value>label102</value>
@@ -2727,42 +1686,6 @@ six independent components (dimensionless).</value>
   <metadata name="contextMenuStripPoleFigure.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>552, 17</value>
   </metadata>
-  <data name="loadToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>108, 22</value>
-  </data>
-  <data name="loadToolStripMenuItem.Text" xml:space="preserve">
-    <value>Load</value>
-  </data>
-  <data name="saveToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>108, 22</value>
-  </data>
-  <data name="saveToolStripMenuItem.Text" xml:space="preserve">
-    <value>Save</value>
-  </data>
-  <data name="asCTFFilecomatibleToCHANNEL5FileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>309, 22</value>
-  </data>
-  <data name="asCTFFilecomatibleToCHANNEL5FileToolStripMenuItem.Text" xml:space="preserve">
-    <value>as CTF file (compatible with CHANNEL 5 file)</value>
-  </data>
-  <data name="asTXTFileAllEulerAngleAndDensityToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>309, 22</value>
-  </data>
-  <data name="asTXTFileAllEulerAngleAndDensityToolStripMenuItem.Text" xml:space="preserve">
-    <value>as TXT file (all Euler angle and density)</value>
-  </data>
-  <data name="asTXTFileallEulerAngleAndDensitySortedToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>309, 22</value>
-  </data>
-  <data name="asTXTFileallEulerAngleAndDensitySortedToolStripMenuItem.Text" xml:space="preserve">
-    <value>as TXT file (all Euler angle and density) sorted</value>
-  </data>
-  <data name="exportToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>108, 22</value>
-  </data>
-  <data name="exportToolStripMenuItem.Text" xml:space="preserve">
-    <value>Export</value>
-  </data>
   <data name="contextMenuStripPoleFigure.Size" type="System.Drawing.Size, System.Drawing">
     <value>109, 70</value>
   </data>
@@ -2805,37 +1728,6 @@ six independent components (dimensionless).</value>
   <data name="flowLayoutPanelRandomOrientationActions.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="buttonGenerateRandomOrientations.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="buttonGenerateRandomOrientations.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
-  </data>
-  <data name="buttonGenerateRandomOrientations.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9.75pt</value>
-  </data>
-  <data name="buttonGenerateRandomOrientations.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="buttonGenerateRandomOrientations.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="buttonGenerateRandomOrientations.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="buttonGenerateRandomOrientations.Size" type="System.Drawing.Size, System.Drawing">
-    <value>126, 27</value>
-  </data>
-  <data name="buttonGenerateRandomOrientations.TabIndex" type="System.Int32, mscorlib">
-    <value>146</value>
-  </data>
-  <data name="buttonGenerateRandomOrientations.Text" xml:space="preserve">
-    <value>Random Rotations</value>
-  </data>
-  <data name="buttonGenerateRandomOrientations.ToolTip" xml:space="preserve">
-    <value>Generate a set of randomly oriented crystallites
-and display them in the pole figure.</value>
-  </data>
   <data name="&gt;&gt;buttonGenerateRandomOrientations.Name" xml:space="preserve">
     <value>buttonGenerateRandomOrientations</value>
   </data>
@@ -2875,36 +1767,6 @@ and display them in the pole figure.</value>
   <data name="flowLayoutPanelRandomOrientationSettings.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="label5.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label5.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9.75pt</value>
-  </data>
-  <data name="label5.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 4</value>
-  </data>
-  <data name="label5.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 2, 0, 0</value>
-  </data>
-  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>106, 17</value>
-  </data>
-  <data name="label5.TabIndex" type="System.Int32, mscorlib">
-    <value>137</value>
-  </data>
-  <data name="label5.Text" xml:space="preserve">
-    <value>Angle Resolution</value>
-  </data>
-  <data name="label5.ToolTip" xml:space="preserve">
-    <value>Angular grid resolution (0.5-45 deg) for the
-polycrystalline orientation distribution and
-pole figure; a smaller value gives finer
-sampling but slower computation.</value>
-  </data>
   <data name="&gt;&gt;label5.Name" xml:space="preserve">
     <value>label5</value>
   </data>
@@ -2916,30 +1778,6 @@ sampling but slower computation.</value>
   </data>
   <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="numericUpDownAngleResolution.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9.75pt</value>
-  </data>
-  <data name="numericUpDownAngleResolution.Location" type="System.Drawing.Point, System.Drawing">
-    <value>110, 2</value>
-  </data>
-  <data name="numericUpDownAngleResolution.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 4, 0</value>
-  </data>
-  <data name="numericUpDownAngleResolution.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 25</value>
-  </data>
-  <data name="numericUpDownAngleResolution.TabIndex" type="System.Int32, mscorlib">
-    <value>136</value>
-  </data>
-  <data name="numericUpDownAngleResolution.ThousandsSeparator" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="numericUpDownAngleResolution.ToolTip" xml:space="preserve">
-    <value>Angular grid resolution (0.5-45 deg) for the
-polycrystalline orientation distribution and
-pole figure; a smaller value gives finer
-sampling but slower computation.</value>
   </data>
   <data name="&gt;&gt;numericUpDownAngleResolution.Name" xml:space="preserve">
     <value>numericUpDownAngleResolution</value>
@@ -2953,36 +1791,6 @@ sampling but slower computation.</value>
   <data name="&gt;&gt;numericUpDownAngleResolution.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="label29.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label29.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9.75pt</value>
-  </data>
-  <data name="label29.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label29.Location" type="System.Drawing.Point, System.Drawing">
-    <value>166, 4</value>
-  </data>
-  <data name="label29.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 2, 0, 0</value>
-  </data>
-  <data name="label29.Size" type="System.Drawing.Size, System.Drawing">
-    <value>53, 17</value>
-  </data>
-  <data name="label29.TabIndex" type="System.Int32, mscorlib">
-    <value>138</value>
-  </data>
-  <data name="label29.Text" xml:space="preserve">
-    <value>Division</value>
-  </data>
-  <data name="label29.ToolTip" xml:space="preserve">
-    <value>Number of sub-divisions per angular cell
-(1-45) used to sub-sample each orientation
-cell more finely; larger values smooth the
-distribution at higher computational cost.</value>
-  </data>
   <data name="&gt;&gt;label29.Name" xml:space="preserve">
     <value>label29</value>
   </data>
@@ -2994,30 +1802,6 @@ distribution at higher computational cost.</value>
   </data>
   <data name="&gt;&gt;label29.ZOrder" xml:space="preserve">
     <value>2</value>
-  </data>
-  <data name="numericUpDownAngleSubDivision.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9.75pt</value>
-  </data>
-  <data name="numericUpDownAngleSubDivision.Location" type="System.Drawing.Point, System.Drawing">
-    <value>219, 2</value>
-  </data>
-  <data name="numericUpDownAngleSubDivision.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 4, 0</value>
-  </data>
-  <data name="numericUpDownAngleSubDivision.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 25</value>
-  </data>
-  <data name="numericUpDownAngleSubDivision.TabIndex" type="System.Int32, mscorlib">
-    <value>136</value>
-  </data>
-  <data name="numericUpDownAngleSubDivision.ThousandsSeparator" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="numericUpDownAngleSubDivision.ToolTip" xml:space="preserve">
-    <value>Number of sub-divisions per angular cell
-(1-45) used to sub-sample each orientation
-cell more finely; larger values smooth the
-distribution at higher computational cost.</value>
   </data>
   <data name="&gt;&gt;numericUpDownAngleSubDivision.Name" xml:space="preserve">
     <value>numericUpDownAngleSubDivision</value>
@@ -3031,35 +1815,6 @@ distribution at higher computational cost.</value>
   <data name="&gt;&gt;numericUpDownAngleSubDivision.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="label101.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label101.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9.75pt</value>
-  </data>
-  <data name="label101.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label101.Location" type="System.Drawing.Point, System.Drawing">
-    <value>275, 4</value>
-  </data>
-  <data name="label101.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 2, 4, 0</value>
-  </data>
-  <data name="label101.Size" type="System.Drawing.Size, System.Drawing">
-    <value>31, 17</value>
-  </data>
-  <data name="label101.TabIndex" type="System.Int32, mscorlib">
-    <value>138</value>
-  </data>
-  <data name="label101.Text" xml:space="preserve">
-    <value>Size</value>
-  </data>
-  <data name="label101.ToolTip" xml:space="preserve">
-    <value>Crystallite (grain) size in nm (1-1000); it sets
-the reciprocal-lattice point size (peak
-broadening) and the diffraction volume weighting.</value>
-  </data>
   <data name="&gt;&gt;label101.Name" xml:space="preserve">
     <value>label101</value>
   </data>
@@ -3072,26 +1827,6 @@ broadening) and the diffraction volume weighting.</value>
   <data name="&gt;&gt;label101.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="numericUpDownCrystallineSize.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9.75pt</value>
-  </data>
-  <data name="numericUpDownCrystallineSize.Location" type="System.Drawing.Point, System.Drawing">
-    <value>310, 2</value>
-  </data>
-  <data name="numericUpDownCrystallineSize.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="numericUpDownCrystallineSize.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 25</value>
-  </data>
-  <data name="numericUpDownCrystallineSize.TabIndex" type="System.Int32, mscorlib">
-    <value>135</value>
-  </data>
-  <data name="numericUpDownCrystallineSize.ToolTip" xml:space="preserve">
-    <value>Crystallite (grain) size in nm (1-1000); it sets
-the reciprocal-lattice point size (peak
-broadening) and the diffraction volume weighting.</value>
-  </data>
   <data name="&gt;&gt;numericUpDownCrystallineSize.Name" xml:space="preserve">
     <value>numericUpDownCrystallineSize</value>
   </data>
@@ -3103,35 +1838,6 @@ broadening) and the diffraction volume weighting.</value>
   </data>
   <data name="&gt;&gt;numericUpDownCrystallineSize.ZOrder" xml:space="preserve">
     <value>5</value>
-  </data>
-  <data name="label99.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label99.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9.75pt</value>
-  </data>
-  <data name="label99.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label99.Location" type="System.Drawing.Point, System.Drawing">
-    <value>358, 4</value>
-  </data>
-  <data name="label99.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 2, 4, 0</value>
-  </data>
-  <data name="label99.Size" type="System.Drawing.Size, System.Drawing">
-    <value>26, 17</value>
-  </data>
-  <data name="label99.TabIndex" type="System.Int32, mscorlib">
-    <value>139</value>
-  </data>
-  <data name="label99.Text" xml:space="preserve">
-    <value>nm</value>
-  </data>
-  <data name="label99.ToolTip" xml:space="preserve">
-    <value>Crystallite (grain) size in nm (1-1000); it sets
-the reciprocal-lattice point size (peak
-broadening) and the diffraction volume weighting.</value>
   </data>
   <data name="&gt;&gt;label99.Name" xml:space="preserve">
     <value>label99</value>
@@ -3199,24 +1905,6 @@ broadening) and the diffraction volume weighting.</value>
   <data name="&gt;&gt;tabPagePolycrystalline.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="boundControl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="boundControl.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="boundControl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
-  </data>
-  <data name="boundControl.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 4, 3, 4</value>
-  </data>
-  <data name="boundControl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>453, 292</value>
-  </data>
-  <data name="boundControl.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <data name="&gt;&gt;boundControl.Name" xml:space="preserve">
     <value>boundControl</value>
   </data>
@@ -3255,24 +1943,6 @@ broadening) and the diffraction volume weighting.</value>
   </data>
   <data name="&gt;&gt;tabPageBounds.ZOrder" xml:space="preserve">
     <value>8</value>
-  </data>
-  <data name="latticePlaneControl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="latticePlaneControl.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="latticePlaneControl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
-  </data>
-  <data name="latticePlaneControl.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 4, 3, 4</value>
-  </data>
-  <data name="latticePlaneControl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>453, 292</value>
-  </data>
-  <data name="latticePlaneControl.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
   </data>
   <data name="&gt;&gt;latticePlaneControl.Name" xml:space="preserve">
     <value>latticePlaneControl</value>
@@ -3346,6 +2016,1336 @@ broadening) and the diffraction volume weighting.</value>
   <data name="&gt;&gt;tabControl.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <data name="buttonConvertToSubgroup.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="buttonConvertToSubgroup.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="buttonConvertToSubgroup.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="buttonConvertToSubgroup.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 8.25pt</value>
+  </data>
+  <data name="buttonConvertToSubgroup.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="buttonConvertToSubgroup.Location" type="System.Drawing.Point, System.Drawing">
+    <value>220, 0</value>
+  </data>
+  <data name="buttonConvertToSubgroup.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="buttonConvertToSubgroup.Size" type="System.Drawing.Size, System.Drawing">
+    <value>233, 23</value>
+  </data>
+  <data name="buttonConvertToSubgroup.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="buttonConvertToSubgroup.Text" xml:space="preserve">
+    <value>Convert to subgroup (under construction)</value>
+  </data>
+  <data name="buttonConvertToSubgroup.ToolTip" xml:space="preserve">
+    <value>Convert the crystal to a subgroup (a
+space group of lower symmetry) — not
+yet implemented (under construction).</value>
+  </data>
+  <data name="buttonConvertToSubgroup.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="buttonChangeAxesOriginSetting.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="buttonChangeAxesOriginSetting.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="buttonChangeAxesOriginSetting.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="buttonChangeAxesOriginSetting.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="buttonChangeAxesOriginSetting.Location" type="System.Drawing.Point, System.Drawing">
+    <value>62, 0</value>
+  </data>
+  <data name="buttonChangeAxesOriginSetting.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="buttonChangeAxesOriginSetting.Size" type="System.Drawing.Size, System.Drawing">
+    <value>158, 25</value>
+  </data>
+  <data name="buttonChangeAxesOriginSetting.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="buttonChangeAxesOriginSetting.Text" xml:space="preserve">
+    <value>Change axes/origin setting</value>
+  </data>
+  <data name="buttonChangeAxesOriginSetting.ToolTip" xml:space="preserve">
+    <value>Convert the cell to a different axis/origin
+setting of the same space group (e.g. an
+alternative origin choice or cell choice
+for the same Hermann–Mauguin number).</value>
+  </data>
+  <data name="atomControl.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="atomControl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="atomControl.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="atomControl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="atomControl.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="atomControl.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>446, 108</value>
+  </data>
+  <data name="atomControl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>459, 298</value>
+  </data>
+  <data name="atomControl.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="panelAtom.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="panelAtom.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="&gt;&gt;panel3.Name" xml:space="preserve">
+    <value>panel3</value>
+  </data>
+  <data name="&gt;&gt;panel3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panel3.Parent" xml:space="preserve">
+    <value>panelAtom</value>
+  </data>
+  <data name="&gt;&gt;panel3.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="panelAtom.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="panelAtom.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="panelAtom.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="panelAtom.Size" type="System.Drawing.Size, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="panelAtom.TabIndex" type="System.Int32, mscorlib">
+    <value>65</value>
+  </data>
+  <data name="panel3.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <metadata name="contextMenuStrip2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>397, 17</value>
+  </metadata>
+  <data name="contextMenuStrip2.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="contextMenuStrip2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>247, 26</value>
+  </data>
+  <data name="&gt;&gt;contextMenuStrip2.Name" xml:space="preserve">
+    <value>contextMenuStrip2</value>
+  </data>
+  <data name="&gt;&gt;contextMenuStrip2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="panel3.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Bottom</value>
+  </data>
+  <data name="panel3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="panel3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="panel3.TabIndex" type="System.Int32, mscorlib">
+    <value>65</value>
+  </data>
+  <data name="resetToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>246, 22</value>
+  </data>
+  <data name="resetToolStripMenuItem.Text" xml:space="preserve">
+    <value>Set Debye-Waller Factors to Zero</value>
+  </data>
+  <data name="resetToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>Set every atom's Debye–Waller factor
+(thermal-vibration intensity damping) to zero.</value>
+  </data>
+  <data name="bondControl.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="bondControl.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="bondControl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="bondControl.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="bondControl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="bondControl.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="bondControl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>459, 298</value>
+  </data>
+  <data name="bondControl.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;textBoxJournal.Name" xml:space="preserve">
+    <value>textBoxJournal</value>
+  </data>
+  <data name="&gt;&gt;textBoxJournal.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;textBoxJournal.Parent" xml:space="preserve">
+    <value>groupBoxJournal</value>
+  </data>
+  <data name="&gt;&gt;textBoxJournal.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="groupBoxJournal.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="groupBoxJournal.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 60</value>
+  </data>
+  <data name="groupBoxJournal.Size" type="System.Drawing.Size, System.Drawing">
+    <value>453, 55</value>
+  </data>
+  <data name="groupBoxJournal.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="groupBoxJournal.Text" xml:space="preserve">
+    <value>Journal</value>
+  </data>
+  <data name="textBoxJournal.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="textBoxJournal.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9.75pt</value>
+  </data>
+  <data name="textBoxJournal.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 21</value>
+  </data>
+  <data name="textBoxJournal.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="textBoxJournal.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
+    <value>Vertical</value>
+  </data>
+  <data name="textBoxJournal.Size" type="System.Drawing.Size, System.Drawing">
+    <value>447, 31</value>
+  </data>
+  <data name="textBoxJournal.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="textBoxJournal.ToolTip" xml:space="preserve">
+    <value>Journal in which the publication
+of this crystal structure appeared.</value>
+  </data>
+  <data name="&gt;&gt;textBoxMemo.Name" xml:space="preserve">
+    <value>textBoxMemo</value>
+  </data>
+  <data name="&gt;&gt;textBoxMemo.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;textBoxMemo.Parent" xml:space="preserve">
+    <value>groupBoxNote</value>
+  </data>
+  <data name="&gt;&gt;textBoxMemo.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="groupBoxNote.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="groupBoxNote.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="groupBoxNote.Size" type="System.Drawing.Size, System.Drawing">
+    <value>453, 57</value>
+  </data>
+  <data name="groupBoxNote.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="groupBoxNote.Text" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="textBoxMemo.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="textBoxMemo.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9.75pt</value>
+  </data>
+  <data name="textBoxMemo.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 21</value>
+  </data>
+  <data name="textBoxMemo.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="textBoxMemo.Size" type="System.Drawing.Size, System.Drawing">
+    <value>447, 33</value>
+  </data>
+  <data name="textBoxMemo.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="textBoxMemo.ToolTip" xml:space="preserve">
+    <value>Free-form note or memo about this crystal.</value>
+  </data>
+  <data name="eosControl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="eosControl.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="eosControl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="eosControl.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 3, 2, 3</value>
+  </data>
+  <data name="eosControl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>453, 292</value>
+  </data>
+  <data name="eosControl.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="elasticityControl1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="elasticityControl1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 6</value>
+  </data>
+  <data name="elasticityControl1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="elasticityControl1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>574, 177</value>
+  </data>
+  <data name="elasticityControl1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="numericBoxStress33.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxStress33.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxStress33.Location" type="System.Drawing.Point, System.Drawing">
+    <value>305, 125</value>
+  </data>
+  <data name="numericBoxStress33.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>1, 1, 1, 1</value>
+  </data>
+  <data name="numericBoxStress33.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1000, 27</value>
+  </data>
+  <data name="numericBoxStress33.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 17</value>
+  </data>
+  <data name="numericBoxStress33.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 1, 0</value>
+  </data>
+  <data name="numericBoxStress33.Size" type="System.Drawing.Size, System.Drawing">
+    <value>47, 24</value>
+  </data>
+  <data name="numericBoxStress33.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="numericBoxStress33.ToolTip" xml:space="preserve">
+    <value>Normal stress component σ33 (along c) of the
+applied stress tensor used in the Reuss model,
+in the same unit as the elastic constants (GPa).</value>
+  </data>
+  <data name="numericBoxStress22.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxStress22.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxStress22.Location" type="System.Drawing.Point, System.Drawing">
+    <value>257, 84</value>
+  </data>
+  <data name="numericBoxStress22.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>1, 1, 1, 1</value>
+  </data>
+  <data name="numericBoxStress22.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1000, 27</value>
+  </data>
+  <data name="numericBoxStress22.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 17</value>
+  </data>
+  <data name="numericBoxStress22.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 1, 0</value>
+  </data>
+  <data name="numericBoxStress22.Size" type="System.Drawing.Size, System.Drawing">
+    <value>47, 24</value>
+  </data>
+  <data name="numericBoxStress22.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="numericBoxStress22.ToolTip" xml:space="preserve">
+    <value>Normal stress component σ22 (along b) of the
+applied stress tensor used in the Reuss model,
+in the same unit as the elastic constants (GPa).</value>
+  </data>
+  <data name="numericBoxStress11.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxStress11.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxStress11.Location" type="System.Drawing.Point, System.Drawing">
+    <value>209, 46</value>
+  </data>
+  <data name="numericBoxStress11.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>1, 1, 1, 1</value>
+  </data>
+  <data name="numericBoxStress11.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1000, 27</value>
+  </data>
+  <data name="numericBoxStress11.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 17</value>
+  </data>
+  <data name="numericBoxStress11.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 1, 0</value>
+  </data>
+  <data name="numericBoxStress11.Size" type="System.Drawing.Size, System.Drawing">
+    <value>47, 24</value>
+  </data>
+  <data name="numericBoxStress11.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="numericBoxStress11.ToolTip" xml:space="preserve">
+    <value>Normal stress component σ11 (along a) of the
+applied stress tensor used in the Reuss model,
+in the same unit as the elastic constants (GPa).</value>
+  </data>
+  <data name="numericBoxStress23.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxStress23.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxStress23.Location" type="System.Drawing.Point, System.Drawing">
+    <value>307, 84</value>
+  </data>
+  <data name="numericBoxStress23.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>1, 1, 1, 1</value>
+  </data>
+  <data name="numericBoxStress23.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1000, 27</value>
+  </data>
+  <data name="numericBoxStress23.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 17</value>
+  </data>
+  <data name="numericBoxStress23.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 1, 0</value>
+  </data>
+  <data name="numericBoxStress23.Size" type="System.Drawing.Size, System.Drawing">
+    <value>47, 24</value>
+  </data>
+  <data name="numericBoxStress23.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="numericBoxStress23.ToolTip" xml:space="preserve">
+    <value>Shear stress component σ23 of the applied
+stress tensor used in the Reuss model, in
+the same unit as the elastic constants (GPa).</value>
+  </data>
+  <data name="numericBoxStress13.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxStress13.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxStress13.Location" type="System.Drawing.Point, System.Drawing">
+    <value>307, 46</value>
+  </data>
+  <data name="numericBoxStress13.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>1, 1, 1, 1</value>
+  </data>
+  <data name="numericBoxStress13.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1000, 27</value>
+  </data>
+  <data name="numericBoxStress13.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 17</value>
+  </data>
+  <data name="numericBoxStress13.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 1, 0</value>
+  </data>
+  <data name="numericBoxStress13.Size" type="System.Drawing.Size, System.Drawing">
+    <value>47, 24</value>
+  </data>
+  <data name="numericBoxStress13.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="numericBoxStress13.ToolTip" xml:space="preserve">
+    <value>Shear stress component σ13 of the applied
+stress tensor used in the Reuss model, in
+the same unit as the elastic constants (GPa).</value>
+  </data>
+  <data name="numericBoxStress12.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxStress12.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxStress12.Location" type="System.Drawing.Point, System.Drawing">
+    <value>258, 46</value>
+  </data>
+  <data name="numericBoxStress12.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>1, 1, 1, 1</value>
+  </data>
+  <data name="numericBoxStress12.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1000, 27</value>
+  </data>
+  <data name="numericBoxStress12.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 17</value>
+  </data>
+  <data name="numericBoxStress12.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 1, 0</value>
+  </data>
+  <data name="numericBoxStress12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>47, 24</value>
+  </data>
+  <data name="numericBoxStress12.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="numericBoxStress12.ToolTip" xml:space="preserve">
+    <value>Shear stress component σ12 of the applied
+stress tensor used in the Reuss model, in
+the same unit as the elastic constants (GPa).</value>
+  </data>
+  <data name="numericBoxStrain33.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxStrain33.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxStrain33.Location" type="System.Drawing.Point, System.Drawing">
+    <value>120, 121</value>
+  </data>
+  <data name="numericBoxStrain33.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>1, 1, 1, 1</value>
+  </data>
+  <data name="numericBoxStrain33.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1000, 27</value>
+  </data>
+  <data name="numericBoxStrain33.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 17</value>
+  </data>
+  <data name="numericBoxStrain33.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 1, 0</value>
+  </data>
+  <data name="numericBoxStrain33.Size" type="System.Drawing.Size, System.Drawing">
+    <value>47, 24</value>
+  </data>
+  <data name="numericBoxStrain33.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="numericBoxStrain33.ToolTip" xml:space="preserve">
+    <value>Normal strain component ε33 (along c)
+of the imposed lattice-strain tensor
+used in the Voigt model (dimensionless).</value>
+  </data>
+  <data name="numericBoxStrain11.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxStrain11.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxStrain11.Location" type="System.Drawing.Point, System.Drawing">
+    <value>22, 46</value>
+  </data>
+  <data name="numericBoxStrain11.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>1, 1, 1, 1</value>
+  </data>
+  <data name="numericBoxStrain11.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1000, 27</value>
+  </data>
+  <data name="numericBoxStrain11.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 17</value>
+  </data>
+  <data name="numericBoxStrain11.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 1, 0</value>
+  </data>
+  <data name="numericBoxStrain11.Size" type="System.Drawing.Size, System.Drawing">
+    <value>47, 24</value>
+  </data>
+  <data name="numericBoxStrain11.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="numericBoxStrain11.ToolTip" xml:space="preserve">
+    <value>Normal strain component ε11 (along a)
+of the imposed lattice-strain tensor
+used in the Voigt model (dimensionless).</value>
+  </data>
+  <data name="numericBoxStrain22.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxStrain22.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxStrain22.Location" type="System.Drawing.Point, System.Drawing">
+    <value>71, 84</value>
+  </data>
+  <data name="numericBoxStrain22.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>1, 1, 1, 1</value>
+  </data>
+  <data name="numericBoxStrain22.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1000, 27</value>
+  </data>
+  <data name="numericBoxStrain22.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 17</value>
+  </data>
+  <data name="numericBoxStrain22.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 1, 0</value>
+  </data>
+  <data name="numericBoxStrain22.Size" type="System.Drawing.Size, System.Drawing">
+    <value>47, 24</value>
+  </data>
+  <data name="numericBoxStrain22.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="numericBoxStrain22.ToolTip" xml:space="preserve">
+    <value>Normal strain component ε22 (along b)
+of the imposed lattice-strain tensor
+used in the Voigt model (dimensionless).</value>
+  </data>
+  <data name="numericBoxStrain12.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxStrain12.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxStrain12.Location" type="System.Drawing.Point, System.Drawing">
+    <value>71, 46</value>
+  </data>
+  <data name="numericBoxStrain12.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>1, 1, 1, 1</value>
+  </data>
+  <data name="numericBoxStrain12.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1000, 27</value>
+  </data>
+  <data name="numericBoxStrain12.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 17</value>
+  </data>
+  <data name="numericBoxStrain12.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 1, 0</value>
+  </data>
+  <data name="numericBoxStrain12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>47, 24</value>
+  </data>
+  <data name="numericBoxStrain12.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="numericBoxStrain12.ToolTip" xml:space="preserve">
+    <value>Shear strain component ε12 of the
+imposed lattice-strain tensor used
+in the Voigt model (dimensionless).</value>
+  </data>
+  <data name="numericBoxStrain23.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxStrain23.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxStrain23.Location" type="System.Drawing.Point, System.Drawing">
+    <value>120, 84</value>
+  </data>
+  <data name="numericBoxStrain23.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>1, 1, 1, 1</value>
+  </data>
+  <data name="numericBoxStrain23.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1000, 27</value>
+  </data>
+  <data name="numericBoxStrain23.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 17</value>
+  </data>
+  <data name="numericBoxStrain23.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 1, 0</value>
+  </data>
+  <data name="numericBoxStrain23.Size" type="System.Drawing.Size, System.Drawing">
+    <value>47, 24</value>
+  </data>
+  <data name="numericBoxStrain23.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="numericBoxStrain23.ToolTip" xml:space="preserve">
+    <value>Shear strain component ε23 of the
+imposed lattice-strain tensor used
+in the Voigt model (dimensionless).</value>
+  </data>
+  <data name="numericBoxStrain13.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxStrain13.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxStrain13.Location" type="System.Drawing.Point, System.Drawing">
+    <value>120, 46</value>
+  </data>
+  <data name="numericBoxStrain13.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>1, 1, 1, 1</value>
+  </data>
+  <data name="numericBoxStrain13.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1000, 27</value>
+  </data>
+  <data name="numericBoxStrain13.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 17</value>
+  </data>
+  <data name="numericBoxStrain13.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 1, 0</value>
+  </data>
+  <data name="numericBoxStrain13.Size" type="System.Drawing.Size, System.Drawing">
+    <value>47, 24</value>
+  </data>
+  <data name="numericBoxStrain13.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="numericBoxStrain13.ToolTip" xml:space="preserve">
+    <value>Shear strain component ε13 of the
+imposed lattice-strain tensor used
+in the Voigt model (dimensionless).</value>
+  </data>
+  <data name="labelLaTex6.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9.75pt</value>
+  </data>
+  <data name="labelLaTex6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>120, 106</value>
+  </data>
+  <data name="labelLaTex6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>20, 20</value>
+  </data>
+  <data name="labelLaTex6.TabIndex" type="System.Int32, mscorlib">
+    <value>264</value>
+  </data>
+  <data name="labelLaTex6.Text" xml:space="preserve">
+    <value>\epsilon_{33}</value>
+  </data>
+  <data name="labelLaTex5.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9.75pt</value>
+  </data>
+  <data name="labelLaTex5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>120, 69</value>
+  </data>
+  <data name="labelLaTex5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>20, 20</value>
+  </data>
+  <data name="labelLaTex5.TabIndex" type="System.Int32, mscorlib">
+    <value>264</value>
+  </data>
+  <data name="labelLaTex5.Text" xml:space="preserve">
+    <value>\epsilon_{23}</value>
+  </data>
+  <data name="labelLaTex3.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9.75pt</value>
+  </data>
+  <data name="labelLaTex3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>120, 29</value>
+  </data>
+  <data name="labelLaTex3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>20, 20</value>
+  </data>
+  <data name="labelLaTex3.TabIndex" type="System.Int32, mscorlib">
+    <value>264</value>
+  </data>
+  <data name="labelLaTex3.Text" xml:space="preserve">
+    <value>\epsilon_{13}</value>
+  </data>
+  <data name="labelLaTex4.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9.75pt</value>
+  </data>
+  <data name="labelLaTex4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>71, 69</value>
+  </data>
+  <data name="labelLaTex4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>20, 20</value>
+  </data>
+  <data name="labelLaTex4.TabIndex" type="System.Int32, mscorlib">
+    <value>264</value>
+  </data>
+  <data name="labelLaTex4.Text" xml:space="preserve">
+    <value>\epsilon_{22}</value>
+  </data>
+  <data name="labelLaTex2.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9.75pt</value>
+  </data>
+  <data name="labelLaTex2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>71, 29</value>
+  </data>
+  <data name="labelLaTex2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>20, 20</value>
+  </data>
+  <data name="labelLaTex2.TabIndex" type="System.Int32, mscorlib">
+    <value>264</value>
+  </data>
+  <data name="labelLaTex2.Text" xml:space="preserve">
+    <value>\epsilon_{12}</value>
+  </data>
+  <data name="labelLaTex13.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9.75pt</value>
+  </data>
+  <data name="labelLaTex13.Location" type="System.Drawing.Point, System.Drawing">
+    <value>285, 162</value>
+  </data>
+  <data name="labelLaTex13.Size" type="System.Drawing.Size, System.Drawing">
+    <value>16, 20</value>
+  </data>
+  <data name="labelLaTex13.TabIndex" type="System.Int32, mscorlib">
+    <value>264</value>
+  </data>
+  <data name="labelLaTex13.Text" xml:space="preserve">
+    <value>\alpha</value>
+  </data>
+  <data name="labelLaTex12.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9.75pt</value>
+  </data>
+  <data name="labelLaTex12.Location" type="System.Drawing.Point, System.Drawing">
+    <value>305, 106</value>
+  </data>
+  <data name="labelLaTex12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>20, 20</value>
+  </data>
+  <data name="labelLaTex12.TabIndex" type="System.Int32, mscorlib">
+    <value>264</value>
+  </data>
+  <data name="labelLaTex12.Text" xml:space="preserve">
+    <value>\sigma_{33}</value>
+  </data>
+  <data name="labelLaTex11.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9.75pt</value>
+  </data>
+  <data name="labelLaTex11.Location" type="System.Drawing.Point, System.Drawing">
+    <value>305, 69</value>
+  </data>
+  <data name="labelLaTex11.Size" type="System.Drawing.Size, System.Drawing">
+    <value>20, 20</value>
+  </data>
+  <data name="labelLaTex11.TabIndex" type="System.Int32, mscorlib">
+    <value>264</value>
+  </data>
+  <data name="labelLaTex11.Text" xml:space="preserve">
+    <value>\sigma_{23}</value>
+  </data>
+  <data name="labelLaTex10.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9.75pt</value>
+  </data>
+  <data name="labelLaTex10.Location" type="System.Drawing.Point, System.Drawing">
+    <value>256, 69</value>
+  </data>
+  <data name="labelLaTex10.Size" type="System.Drawing.Size, System.Drawing">
+    <value>20, 20</value>
+  </data>
+  <data name="labelLaTex10.TabIndex" type="System.Int32, mscorlib">
+    <value>264</value>
+  </data>
+  <data name="labelLaTex10.Text" xml:space="preserve">
+    <value>\sigma_{22}</value>
+  </data>
+  <data name="labelLaTex9.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9.75pt</value>
+  </data>
+  <data name="labelLaTex9.Location" type="System.Drawing.Point, System.Drawing">
+    <value>306, 28</value>
+  </data>
+  <data name="labelLaTex9.Size" type="System.Drawing.Size, System.Drawing">
+    <value>20, 20</value>
+  </data>
+  <data name="labelLaTex9.TabIndex" type="System.Int32, mscorlib">
+    <value>264</value>
+  </data>
+  <data name="labelLaTex9.Text" xml:space="preserve">
+    <value>\sigma_{13}</value>
+  </data>
+  <data name="labelLaTex8.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9.75pt</value>
+  </data>
+  <data name="labelLaTex8.Location" type="System.Drawing.Point, System.Drawing">
+    <value>257, 28</value>
+  </data>
+  <data name="labelLaTex8.Size" type="System.Drawing.Size, System.Drawing">
+    <value>20, 20</value>
+  </data>
+  <data name="labelLaTex8.TabIndex" type="System.Int32, mscorlib">
+    <value>264</value>
+  </data>
+  <data name="labelLaTex8.Text" xml:space="preserve">
+    <value>\sigma_{12}</value>
+  </data>
+  <data name="labelLaTex7.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9.75pt</value>
+  </data>
+  <data name="labelLaTex7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>209, 29</value>
+  </data>
+  <data name="labelLaTex7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>20, 20</value>
+  </data>
+  <data name="labelLaTex7.TabIndex" type="System.Int32, mscorlib">
+    <value>264</value>
+  </data>
+  <data name="labelLaTex7.Text" xml:space="preserve">
+    <value>\sigma_{11}</value>
+  </data>
+  <data name="labelLaTex1.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9.75pt</value>
+  </data>
+  <data name="labelLaTex1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>22, 28</value>
+  </data>
+  <data name="labelLaTex1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>20, 20</value>
+  </data>
+  <data name="labelLaTex1.TabIndex" type="System.Int32, mscorlib">
+    <value>264</value>
+  </data>
+  <data name="labelLaTex1.Text" xml:space="preserve">
+    <value>\epsilon_{11}</value>
+  </data>
+  <data name="buttonStressSet.Location" type="System.Drawing.Point, System.Drawing">
+    <value>282, 196</value>
+  </data>
+  <data name="buttonStressSet.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="buttonStressSet.TabIndex" type="System.Int32, mscorlib">
+    <value>263</value>
+  </data>
+  <data name="buttonStressSet.Text" xml:space="preserve">
+    <value>set</value>
+  </data>
+  <data name="buttonStressSet.ToolTip" xml:space="preserve">
+    <value>Apply the entered strain, stress
+and Hill coefficient to the crystal.</value>
+  </data>
+  <data name="numericBoxHill.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxHill.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 4, 0, 0</value>
+  </data>
+  <data name="numericBoxHill.Location" type="System.Drawing.Point, System.Drawing">
+    <value>306, 159</value>
+  </data>
+  <data name="numericBoxHill.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>1, 1, 1, 1</value>
+  </data>
+  <data name="numericBoxHill.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1000, 27</value>
+  </data>
+  <data name="numericBoxHill.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 17</value>
+  </data>
+  <data name="numericBoxHill.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 1, 0</value>
+  </data>
+  <data name="numericBoxHill.Size" type="System.Drawing.Size, System.Drawing">
+    <value>47, 24</value>
+  </data>
+  <data name="numericBoxHill.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="numericBoxHill.ToolTip" xml:space="preserve">
+    <value>Hill averaging coefficient that blends the Voigt
+(uniform-strain) and Reuss (uniform-stress) models:
+0 uses the imposed strain only, 1 uses the strain
+derived from the applied stress (dimensionless).</value>
+  </data>
+  <data name="label117.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label117.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Tahoma, 9pt</value>
+  </data>
+  <data name="label117.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label117.Location" type="System.Drawing.Point, System.Drawing">
+    <value>192, 162</value>
+  </data>
+  <data name="label117.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
+  </data>
+  <data name="label117.Size" type="System.Drawing.Size, System.Drawing">
+    <value>82, 14</value>
+  </data>
+  <data name="label117.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="label117.Text" xml:space="preserve">
+    <value>Hill coefficient</value>
+  </data>
+  <data name="label117.ToolTip" xml:space="preserve">
+    <value>Hill averaging coefficient that blends the Voigt
+(uniform-strain) and Reuss (uniform-stress) models:
+0 uses the imposed strain only, 1 uses the strain
+derived from the applied stress (dimensionless).</value>
+  </data>
+  <data name="label109.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label109.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Tahoma, 9pt</value>
+  </data>
+  <data name="label109.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label109.Location" type="System.Drawing.Point, System.Drawing">
+    <value>194, 12</value>
+  </data>
+  <data name="label109.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
+  </data>
+  <data name="label109.Size" type="System.Drawing.Size, System.Drawing">
+    <value>122, 14</value>
+  </data>
+  <data name="label109.TabIndex" type="System.Int32, mscorlib">
+    <value>253</value>
+  </data>
+  <data name="label109.Text" xml:space="preserve">
+    <value>Stress (Reuss model)
+</value>
+  </data>
+  <data name="label109.ToolTip" xml:space="preserve">
+    <value>Applied stress tensor for the Reuss (uniform-stress)
+model; enter the six independent components (GPa).</value>
+  </data>
+  <data name="label102.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label102.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Tahoma, 9pt</value>
+  </data>
+  <data name="label102.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label102.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 12</value>
+  </data>
+  <data name="label102.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
+  </data>
+  <data name="label102.Size" type="System.Drawing.Size, System.Drawing">
+    <value>118, 14</value>
+  </data>
+  <data name="label102.TabIndex" type="System.Int32, mscorlib">
+    <value>240</value>
+  </data>
+  <data name="label102.Text" xml:space="preserve">
+    <value>Strain (Voigt model)</value>
+  </data>
+  <data name="label102.ToolTip" xml:space="preserve">
+    <value>Imposed lattice-strain tensor for the
+Voigt (uniform-strain) model; enter the
+six independent components (dimensionless).</value>
+  </data>
+  <data name="loadToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>108, 22</value>
+  </data>
+  <data name="loadToolStripMenuItem.Text" xml:space="preserve">
+    <value>Load</value>
+  </data>
+  <data name="saveToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>108, 22</value>
+  </data>
+  <data name="saveToolStripMenuItem.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="exportToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>108, 22</value>
+  </data>
+  <data name="exportToolStripMenuItem.Text" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="asCTFFilecomatibleToCHANNEL5FileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>309, 22</value>
+  </data>
+  <data name="asCTFFilecomatibleToCHANNEL5FileToolStripMenuItem.Text" xml:space="preserve">
+    <value>as CTF file (compatible with CHANNEL 5 file)</value>
+  </data>
+  <data name="asTXTFileAllEulerAngleAndDensityToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>309, 22</value>
+  </data>
+  <data name="asTXTFileAllEulerAngleAndDensityToolStripMenuItem.Text" xml:space="preserve">
+    <value>as TXT file (all Euler angle and density)</value>
+  </data>
+  <data name="asTXTFileallEulerAngleAndDensitySortedToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>309, 22</value>
+  </data>
+  <data name="asTXTFileallEulerAngleAndDensitySortedToolStripMenuItem.Text" xml:space="preserve">
+    <value>as TXT file (all Euler angle and density) sorted</value>
+  </data>
+  <data name="buttonGenerateRandomOrientations.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="buttonGenerateRandomOrientations.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="buttonGenerateRandomOrientations.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9.75pt</value>
+  </data>
+  <data name="buttonGenerateRandomOrientations.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="buttonGenerateRandomOrientations.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="buttonGenerateRandomOrientations.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="buttonGenerateRandomOrientations.Size" type="System.Drawing.Size, System.Drawing">
+    <value>126, 27</value>
+  </data>
+  <data name="buttonGenerateRandomOrientations.TabIndex" type="System.Int32, mscorlib">
+    <value>146</value>
+  </data>
+  <data name="buttonGenerateRandomOrientations.Text" xml:space="preserve">
+    <value>Random Rotations</value>
+  </data>
+  <data name="buttonGenerateRandomOrientations.ToolTip" xml:space="preserve">
+    <value>Generate a set of randomly oriented crystallites
+and display them in the pole figure.</value>
+  </data>
+  <data name="label5.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label5.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9.75pt</value>
+  </data>
+  <data name="label5.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 4</value>
+  </data>
+  <data name="label5.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 2, 0, 0</value>
+  </data>
+  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>106, 17</value>
+  </data>
+  <data name="label5.TabIndex" type="System.Int32, mscorlib">
+    <value>137</value>
+  </data>
+  <data name="label5.Text" xml:space="preserve">
+    <value>Angle Resolution</value>
+  </data>
+  <data name="label5.ToolTip" xml:space="preserve">
+    <value>Angular grid resolution (0.5-45 deg) for the
+polycrystalline orientation distribution and
+pole figure; a smaller value gives finer
+sampling but slower computation.</value>
+  </data>
+  <data name="numericUpDownAngleResolution.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9.75pt</value>
+  </data>
+  <data name="numericUpDownAngleResolution.Location" type="System.Drawing.Point, System.Drawing">
+    <value>110, 2</value>
+  </data>
+  <data name="numericUpDownAngleResolution.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 4, 0</value>
+  </data>
+  <data name="numericUpDownAngleResolution.Size" type="System.Drawing.Size, System.Drawing">
+    <value>48, 25</value>
+  </data>
+  <data name="numericUpDownAngleResolution.TabIndex" type="System.Int32, mscorlib">
+    <value>136</value>
+  </data>
+  <data name="numericUpDownAngleResolution.ThousandsSeparator" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="numericUpDownAngleResolution.ToolTip" xml:space="preserve">
+    <value>Angular grid resolution (0.5-45 deg) for the
+polycrystalline orientation distribution and
+pole figure; a smaller value gives finer
+sampling but slower computation.</value>
+  </data>
+  <data name="label29.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label29.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9.75pt</value>
+  </data>
+  <data name="label29.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label29.Location" type="System.Drawing.Point, System.Drawing">
+    <value>166, 4</value>
+  </data>
+  <data name="label29.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 2, 0, 0</value>
+  </data>
+  <data name="label29.Size" type="System.Drawing.Size, System.Drawing">
+    <value>53, 17</value>
+  </data>
+  <data name="label29.TabIndex" type="System.Int32, mscorlib">
+    <value>138</value>
+  </data>
+  <data name="label29.Text" xml:space="preserve">
+    <value>Division</value>
+  </data>
+  <data name="label29.ToolTip" xml:space="preserve">
+    <value>Number of sub-divisions per angular cell
+(1-45) used to sub-sample each orientation
+cell more finely; larger values smooth the
+distribution at higher computational cost.</value>
+  </data>
+  <data name="numericUpDownAngleSubDivision.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9.75pt</value>
+  </data>
+  <data name="numericUpDownAngleSubDivision.Location" type="System.Drawing.Point, System.Drawing">
+    <value>219, 2</value>
+  </data>
+  <data name="numericUpDownAngleSubDivision.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 4, 0</value>
+  </data>
+  <data name="numericUpDownAngleSubDivision.Size" type="System.Drawing.Size, System.Drawing">
+    <value>48, 25</value>
+  </data>
+  <data name="numericUpDownAngleSubDivision.TabIndex" type="System.Int32, mscorlib">
+    <value>136</value>
+  </data>
+  <data name="numericUpDownAngleSubDivision.ThousandsSeparator" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="numericUpDownAngleSubDivision.ToolTip" xml:space="preserve">
+    <value>Number of sub-divisions per angular cell
+(1-45) used to sub-sample each orientation
+cell more finely; larger values smooth the
+distribution at higher computational cost.</value>
+  </data>
+  <data name="label101.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label101.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9.75pt</value>
+  </data>
+  <data name="label101.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label101.Location" type="System.Drawing.Point, System.Drawing">
+    <value>275, 4</value>
+  </data>
+  <data name="label101.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 2, 4, 0</value>
+  </data>
+  <data name="label101.Size" type="System.Drawing.Size, System.Drawing">
+    <value>31, 17</value>
+  </data>
+  <data name="label101.TabIndex" type="System.Int32, mscorlib">
+    <value>138</value>
+  </data>
+  <data name="label101.Text" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="label101.ToolTip" xml:space="preserve">
+    <value>Crystallite (grain) size in nm (1-1000); it sets
+the reciprocal-lattice point size (peak
+broadening) and the diffraction volume weighting.</value>
+  </data>
+  <data name="numericUpDownCrystallineSize.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9.75pt</value>
+  </data>
+  <data name="numericUpDownCrystallineSize.Location" type="System.Drawing.Point, System.Drawing">
+    <value>310, 2</value>
+  </data>
+  <data name="numericUpDownCrystallineSize.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="numericUpDownCrystallineSize.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 25</value>
+  </data>
+  <data name="numericUpDownCrystallineSize.TabIndex" type="System.Int32, mscorlib">
+    <value>135</value>
+  </data>
+  <data name="numericUpDownCrystallineSize.ToolTip" xml:space="preserve">
+    <value>Crystallite (grain) size in nm (1-1000); it sets
+the reciprocal-lattice point size (peak
+broadening) and the diffraction volume weighting.</value>
+  </data>
+  <data name="label99.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label99.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9.75pt</value>
+  </data>
+  <data name="label99.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label99.Location" type="System.Drawing.Point, System.Drawing">
+    <value>358, 4</value>
+  </data>
+  <data name="label99.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 2, 4, 0</value>
+  </data>
+  <data name="label99.Size" type="System.Drawing.Size, System.Drawing">
+    <value>26, 17</value>
+  </data>
+  <data name="label99.TabIndex" type="System.Int32, mscorlib">
+    <value>139</value>
+  </data>
+  <data name="label99.Text" xml:space="preserve">
+    <value>nm</value>
+  </data>
+  <data name="label99.ToolTip" xml:space="preserve">
+    <value>Crystallite (grain) size in nm (1-1000); it sets
+the reciprocal-lattice point size (peak
+broadening) and the diffraction volume weighting.</value>
+  </data>
+  <data name="boundControl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="boundControl.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="boundControl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="boundControl.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 4, 3, 4</value>
+  </data>
+  <data name="boundControl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>453, 292</value>
+  </data>
+  <data name="boundControl.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="latticePlaneControl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="latticePlaneControl.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="latticePlaneControl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="latticePlaneControl.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 4, 3, 4</value>
+  </data>
+  <data name="latticePlaneControl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>453, 292</value>
+  </data>
+  <data name="latticePlaneControl.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
   <data name="colorControl.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -3386,10 +3386,6 @@ broadening) and the diffraction volume weighting.</value>
     <value>Display color of this crystal, used both in the 3D
 structure view and in the diffraction-profile curves.</value>
   </data>
-  <data name="colorControl.ToolTip1" xml:space="preserve">
-    <value>Display color of this crystal, used both in the 3D
-structure view and in the diffraction-profile curves.</value>
-  </data>
   <data name="&gt;&gt;colorControl.Name" xml:space="preserve">
     <value>colorControl</value>
   </data>
@@ -3401,33 +3397,6 @@ structure view and in the diffraction-profile curves.</value>
   </data>
   <data name="&gt;&gt;colorControl.ZOrder" xml:space="preserve">
     <value>3</value>
-  </data>
-  <data name="textBoxFormula.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="textBoxFormula.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9.75pt</value>
-  </data>
-  <data name="textBoxFormula.Location" type="System.Drawing.Point, System.Drawing">
-    <value>55, 0</value>
-  </data>
-  <data name="textBoxFormula.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 3, 0</value>
-  </data>
-  <data name="textBoxFormula.Multiline" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="textBoxFormula.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
-    <value>Vertical</value>
-  </data>
-  <data name="textBoxFormula.Size" type="System.Drawing.Size, System.Drawing">
-    <value>305, 25</value>
-  </data>
-  <data name="textBoxFormula.TabIndex" type="System.Int32, mscorlib">
-    <value>76</value>
-  </data>
-  <data name="textBoxFormula.ToolTip" xml:space="preserve">
-    <value>Chemical formula</value>
   </data>
   <data name="&gt;&gt;textBoxFormula.Name" xml:space="preserve">
     <value>textBoxFormula</value>
@@ -3441,39 +3410,6 @@ structure view and in the diffraction-profile curves.</value>
   <data name="&gt;&gt;textBoxFormula.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="label90.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label90.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Left</value>
-  </data>
-  <data name="label90.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9.75pt</value>
-  </data>
-  <data name="label90.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label90.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="label90.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="label90.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 2, 0, 0</value>
-  </data>
-  <data name="label90.Size" type="System.Drawing.Size, System.Drawing">
-    <value>55, 19</value>
-  </data>
-  <data name="label90.TabIndex" type="System.Int32, mscorlib">
-    <value>85</value>
-  </data>
-  <data name="label90.Text" xml:space="preserve">
-    <value>Formula</value>
-  </data>
-  <data name="label90.ToolTip" xml:space="preserve">
-    <value>Chemical formula</value>
-  </data>
   <data name="&gt;&gt;label90.Name" xml:space="preserve">
     <value>label90</value>
   </data>
@@ -3485,42 +3421,6 @@ structure view and in the diffraction-profile curves.</value>
   </data>
   <data name="&gt;&gt;label90.ZOrder" xml:space="preserve">
     <value>1</value>
-  </data>
-  <data name="numericBoxZnumber.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Right</value>
-  </data>
-  <data name="numericBoxZnumber.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 0</value>
-  </data>
-  <data name="numericBoxZnumber.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 0</value>
-  </data>
-  <data name="numericBoxZnumber.HeaderText" xml:space="preserve">
-    <value>Z</value>
-  </data>
-  <data name="numericBoxZnumber.Location" type="System.Drawing.Point, System.Drawing">
-    <value>360, 0</value>
-  </data>
-  <data name="numericBoxZnumber.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 0, 0</value>
-  </data>
-  <data name="numericBoxZnumber.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 30</value>
-  </data>
-  <data name="numericBoxZnumber.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 20</value>
-  </data>
-  <data name="numericBoxZnumber.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 1, 0</value>
-  </data>
-  <data name="numericBoxZnumber.Size" type="System.Drawing.Size, System.Drawing">
-    <value>41, 25</value>
-  </data>
-  <data name="numericBoxZnumber.TabIndex" type="System.Int32, mscorlib">
-    <value>95</value>
-  </data>
-  <data name="numericBoxZnumber.ToolTip" xml:space="preserve">
-    <value>Z (Number of formula units in the unit cell)</value>
   </data>
   <data name="&gt;&gt;numericBoxZnumber.Name" xml:space="preserve">
     <value>numericBoxZnumber</value>
@@ -3558,9 +3458,114 @@ structure view and in the diffraction-profile curves.</value>
   <data name="&gt;&gt;panelFormula.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
+  <data name="textBoxFormula.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="textBoxFormula.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9.75pt</value>
+  </data>
+  <data name="textBoxFormula.Location" type="System.Drawing.Point, System.Drawing">
+    <value>55, 0</value>
+  </data>
+  <data name="textBoxFormula.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 3, 3, 0</value>
+  </data>
+  <data name="textBoxFormula.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="textBoxFormula.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
+    <value>Vertical</value>
+  </data>
+  <data name="textBoxFormula.Size" type="System.Drawing.Size, System.Drawing">
+    <value>305, 25</value>
+  </data>
+  <data name="textBoxFormula.TabIndex" type="System.Int32, mscorlib">
+    <value>76</value>
+  </data>
+  <data name="textBoxFormula.ToolTip" xml:space="preserve">
+    <value>Chemical formula</value>
+  </data>
+  <data name="label90.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label90.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="label90.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9.75pt</value>
+  </data>
+  <data name="label90.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label90.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="label90.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="label90.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 2, 0, 0</value>
+  </data>
+  <data name="label90.Size" type="System.Drawing.Size, System.Drawing">
+    <value>55, 19</value>
+  </data>
+  <data name="label90.TabIndex" type="System.Int32, mscorlib">
+    <value>85</value>
+  </data>
+  <data name="label90.Text" xml:space="preserve">
+    <value>Formula</value>
+  </data>
+  <data name="label90.ToolTip" xml:space="preserve">
+    <value>Chemical formula</value>
+  </data>
+  <data name="numericBoxZnumber.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="numericBoxZnumber.FooterPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 3, 0, 0</value>
+  </data>
+  <data name="numericBoxZnumber.HeaderPadding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 3, 0, 0</value>
+  </data>
+  <data name="numericBoxZnumber.HeaderText" xml:space="preserve">
+    <value>Z</value>
+  </data>
+  <data name="numericBoxZnumber.Location" type="System.Drawing.Point, System.Drawing">
+    <value>360, 0</value>
+  </data>
+  <data name="numericBoxZnumber.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 0, 0</value>
+  </data>
+  <data name="numericBoxZnumber.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1000, 30</value>
+  </data>
+  <data name="numericBoxZnumber.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 20</value>
+  </data>
+  <data name="numericBoxZnumber.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 1, 0</value>
+  </data>
+  <data name="numericBoxZnumber.Size" type="System.Drawing.Size, System.Drawing">
+    <value>41, 25</value>
+  </data>
+  <data name="numericBoxZnumber.TabIndex" type="System.Int32, mscorlib">
+    <value>95</value>
+  </data>
+  <data name="numericBoxZnumber.ToolTip" xml:space="preserve">
+    <value>Z (Number of formula units in the unit cell)</value>
+  </data>
   <metadata name="contextMenuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>248, 17</value>
   </metadata>
+  <data name="contextMenuStrip.Size" type="System.Drawing.Size, System.Drawing">
+    <value>253, 242</value>
+  </data>
+  <data name="&gt;&gt;contextMenuStrip.Name" xml:space="preserve">
+    <value>contextMenuStrip</value>
+  </data>
+  <data name="&gt;&gt;contextMenuStrip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="beamInteractionToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>252, 22</value>
   </data>
@@ -3635,15 +3640,6 @@ structure view and in the diffraction-profile curves.</value>
   </data>
   <data name="convertToAnotherSpacegroupToolStripMenuItem.Text" xml:space="preserve">
     <value>Change the axes/origin setting</value>
-  </data>
-  <data name="contextMenuStrip.Size" type="System.Drawing.Size, System.Drawing">
-    <value>253, 242</value>
-  </data>
-  <data name="&gt;&gt;contextMenuStrip.Name" xml:space="preserve">
-    <value>contextMenuStrip</value>
-  </data>
-  <data name="&gt;&gt;contextMenuStrip.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="textBoxName.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -4028,5 +4024,9 @@ structure view and in the diffraction-profile curves.</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>Crystallography.Controls.UserControlBase, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="colorControl.ToolTip1" xml:space="preserve">
+    <value>Display color of this crystal, used both in the 3D
+structure view and in the diffraction-profile curves.</value>
   </data>
 </root>

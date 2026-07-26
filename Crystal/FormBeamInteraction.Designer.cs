@@ -90,6 +90,15 @@
             radioButtonElectronEightGaussian = new System.Windows.Forms.RadioButton();
             checkBoxDebyeWaller = new System.Windows.Forms.CheckBox();
             numericBoxAttenThickness = new NumericBox();
+            radioButtonAttenMassMu = new System.Windows.Forms.RadioButton();
+            radioButtonAttenLinMu = new System.Windows.Forms.RadioButton();
+            radioButtonAttenTrans = new System.Windows.Forms.RadioButton();
+            radioButtonElecAll = new System.Windows.Forms.RadioButton();
+            radioButtonElecSigma = new System.Windows.Forms.RadioButton();
+            radioButtonElecEMFP = new System.Windows.Forms.RadioButton();
+            radioButtonElecDeds = new System.Windows.Forms.RadioButton();
+            radioButtonElecIMFP = new System.Windows.Forms.RadioButton();
+            radioButtonElecRange = new System.Windows.Forms.RadioButton();
             panel1 = new System.Windows.Forms.Panel();
             tabControl = new System.Windows.Forms.TabControl();
             tabPageReflections = new System.Windows.Forms.TabPage();
@@ -119,16 +128,7 @@
             colNeutAt = new System.Windows.Forms.DataGridViewTextBoxColumn();
             flowLayoutPanelAttenuationModel = new System.Windows.Forms.FlowLayoutPanel();
             flowLayoutPanelAttenCoeff = new System.Windows.Forms.FlowLayoutPanel();
-            radioButtonAttenMassMu = new System.Windows.Forms.RadioButton();
-            radioButtonAttenLinMu = new System.Windows.Forms.RadioButton();
-            radioButtonAttenTrans = new System.Windows.Forms.RadioButton();
             flowLayoutPanelElecQuantity = new System.Windows.Forms.FlowLayoutPanel();
-            radioButtonElecAll = new System.Windows.Forms.RadioButton();
-            radioButtonElecSigma = new System.Windows.Forms.RadioButton();
-            radioButtonElecEMFP = new System.Windows.Forms.RadioButton();
-            radioButtonElecDeds = new System.Windows.Forms.RadioButton();
-            radioButtonElecIMFP = new System.Windows.Forms.RadioButton();
-            radioButtonElecRange = new System.Windows.Forms.RadioButton();
             tabPageScatteringFactors = new System.Windows.Forms.TabPage();
             graphControlScatteringFactor = new GraphControl();
             flowLayoutPanel8 = new System.Windows.Forms.FlowLayoutPanel();
@@ -515,7 +515,6 @@
             numericBoxL_step.Maximum = 1D;
             numericBoxL_step.Minimum = 0.001D;
             numericBoxL_step.Name = "numericBoxL_step";
-            numericBoxL_step.RadianValue = 0.00017453292519943296D;
             numericBoxL_step.ShowUpDown = true;
             numericBoxL_step.SmartIncrement = true;
             toolTip.SetToolTip(numericBoxL_step, resources.GetString("numericBoxL_step.ToolTip"));
@@ -533,7 +532,6 @@
             numericBoxK_step.Maximum = 1D;
             numericBoxK_step.Minimum = 0.001D;
             numericBoxK_step.Name = "numericBoxK_step";
-            numericBoxK_step.RadianValue = 0.00017453292519943296D;
             numericBoxK_step.ShowUpDown = true;
             numericBoxK_step.SmartIncrement = true;
             toolTip.SetToolTip(numericBoxK_step, resources.GetString("numericBoxK_step.ToolTip"));
@@ -551,7 +549,6 @@
             numericBoxH_step.Maximum = 1D;
             numericBoxH_step.Minimum = 0.001D;
             numericBoxH_step.Name = "numericBoxH_step";
-            numericBoxH_step.RadianValue = 0.00017453292519943296D;
             numericBoxH_step.ShowUpDown = true;
             numericBoxH_step.SmartIncrement = true;
             toolTip.SetToolTip(numericBoxH_step, resources.GetString("numericBoxH_step.ToolTip"));
@@ -566,7 +563,6 @@
             resources.ApplyResources(numericBoxL_max, "numericBoxL_max");
             numericBoxL_max.HeaderBackColor = System.Drawing.Color.Transparent;
             numericBoxL_max.Name = "numericBoxL_max";
-            numericBoxL_max.RadianValue = 0.017453292519943295D;
             numericBoxL_max.ShowUpDown = true;
             toolTip.SetToolTip(numericBoxL_max, resources.GetString("numericBoxL_max.ToolTip"));
             numericBoxL_max.Value = 1D;
@@ -643,13 +639,11 @@
             numericBoxCutoffD.Maximum = 10D;
             numericBoxCutoffD.Minimum = 0.001D;
             numericBoxCutoffD.Name = "numericBoxCutoffD";
-            numericBoxCutoffD.RadianValue = 0.017453292519943295D;
             numericBoxCutoffD.ShowUpDown = true;
             numericBoxCutoffD.SmartIncrement = true;
             toolTip.SetToolTip(numericBoxCutoffD, resources.GetString("numericBoxCutoffD.ToolTip"));
             numericBoxCutoffD.Value = 1D;
-            //numericBoxCutoffD.ValueBoxWidth = 60; // 260726Cl 旧: 最長値「10.000」に対して広すぎ、隣のヘッダに回せる幅が死んでいた
-            numericBoxCutoffD.ValueBoxWidth = 51; // 260726Cl
+            numericBoxCutoffD.ValueBoxWidth = 51;
             numericBoxCutoffD.ValueChanged += numericBoxCutoffD_ValueChanged;
             // 
             // labelModel
@@ -714,16 +708,93 @@
             // numericBoxAttenThickness
             // 
             numericBoxAttenThickness.BackColor = System.Drawing.Color.Transparent;
+            numericBoxAttenThickness.DecimalPlaces = 2;
             numericBoxAttenThickness.FooterBackColor = System.Drawing.Color.Transparent;
             resources.ApplyResources(numericBoxAttenThickness, "numericBoxAttenThickness");
             numericBoxAttenThickness.HeaderBackColor = System.Drawing.Color.Transparent;
             numericBoxAttenThickness.Maximum = 10000000D;
             numericBoxAttenThickness.Minimum = 0D;
             numericBoxAttenThickness.Name = "numericBoxAttenThickness";
-            numericBoxAttenThickness.RadianValue = 1.7453292519943295D;
             toolTip.SetToolTip(numericBoxAttenThickness, resources.GetString("numericBoxAttenThickness.ToolTip"));
             numericBoxAttenThickness.Value = 100D;
+            numericBoxAttenThickness.ValueBoxWidth = 80;
             numericBoxAttenThickness.ValueChanged += numericBoxAttenThickness_ValueChanged;
+            // 
+            // radioButtonAttenMassMu
+            // 
+            resources.ApplyResources(radioButtonAttenMassMu, "radioButtonAttenMassMu");
+            radioButtonAttenMassMu.Checked = true;
+            radioButtonAttenMassMu.Name = "radioButtonAttenMassMu";
+            radioButtonAttenMassMu.TabStop = true;
+            toolTip.SetToolTip(radioButtonAttenMassMu, resources.GetString("radioButtonAttenMassMu.ToolTip"));
+            radioButtonAttenMassMu.UseVisualStyleBackColor = true;
+            radioButtonAttenMassMu.CheckedChanged += attenuationOption_CheckedChanged;
+            // 
+            // radioButtonAttenLinMu
+            // 
+            resources.ApplyResources(radioButtonAttenLinMu, "radioButtonAttenLinMu");
+            radioButtonAttenLinMu.Name = "radioButtonAttenLinMu";
+            toolTip.SetToolTip(radioButtonAttenLinMu, resources.GetString("radioButtonAttenLinMu.ToolTip"));
+            radioButtonAttenLinMu.UseVisualStyleBackColor = true;
+            radioButtonAttenLinMu.CheckedChanged += attenuationOption_CheckedChanged;
+            // 
+            // radioButtonAttenTrans
+            // 
+            resources.ApplyResources(radioButtonAttenTrans, "radioButtonAttenTrans");
+            radioButtonAttenTrans.Name = "radioButtonAttenTrans";
+            toolTip.SetToolTip(radioButtonAttenTrans, resources.GetString("radioButtonAttenTrans.ToolTip"));
+            radioButtonAttenTrans.UseVisualStyleBackColor = true;
+            radioButtonAttenTrans.CheckedChanged += attenuationOption_CheckedChanged;
+            // 
+            // radioButtonElecAll
+            // 
+            resources.ApplyResources(radioButtonElecAll, "radioButtonElecAll");
+            radioButtonElecAll.Checked = true;
+            radioButtonElecAll.Name = "radioButtonElecAll";
+            radioButtonElecAll.TabStop = true;
+            toolTip.SetToolTip(radioButtonElecAll, resources.GetString("radioButtonElecAll.ToolTip"));
+            radioButtonElecAll.UseVisualStyleBackColor = true;
+            radioButtonElecAll.CheckedChanged += attenuationOption_CheckedChanged;
+            // 
+            // radioButtonElecSigma
+            // 
+            resources.ApplyResources(radioButtonElecSigma, "radioButtonElecSigma");
+            radioButtonElecSigma.Name = "radioButtonElecSigma";
+            toolTip.SetToolTip(radioButtonElecSigma, resources.GetString("radioButtonElecSigma.ToolTip"));
+            radioButtonElecSigma.UseVisualStyleBackColor = true;
+            radioButtonElecSigma.CheckedChanged += attenuationOption_CheckedChanged;
+            // 
+            // radioButtonElecEMFP
+            // 
+            resources.ApplyResources(radioButtonElecEMFP, "radioButtonElecEMFP");
+            radioButtonElecEMFP.Name = "radioButtonElecEMFP";
+            toolTip.SetToolTip(radioButtonElecEMFP, resources.GetString("radioButtonElecEMFP.ToolTip"));
+            radioButtonElecEMFP.UseVisualStyleBackColor = true;
+            radioButtonElecEMFP.CheckedChanged += attenuationOption_CheckedChanged;
+            // 
+            // radioButtonElecDeds
+            // 
+            resources.ApplyResources(radioButtonElecDeds, "radioButtonElecDeds");
+            radioButtonElecDeds.Name = "radioButtonElecDeds";
+            toolTip.SetToolTip(radioButtonElecDeds, resources.GetString("radioButtonElecDeds.ToolTip"));
+            radioButtonElecDeds.UseVisualStyleBackColor = true;
+            radioButtonElecDeds.CheckedChanged += attenuationOption_CheckedChanged;
+            // 
+            // radioButtonElecIMFP
+            // 
+            resources.ApplyResources(radioButtonElecIMFP, "radioButtonElecIMFP");
+            radioButtonElecIMFP.Name = "radioButtonElecIMFP";
+            toolTip.SetToolTip(radioButtonElecIMFP, resources.GetString("radioButtonElecIMFP.ToolTip"));
+            radioButtonElecIMFP.UseVisualStyleBackColor = true;
+            radioButtonElecIMFP.CheckedChanged += attenuationOption_CheckedChanged;
+            // 
+            // radioButtonElecRange
+            // 
+            resources.ApplyResources(radioButtonElecRange, "radioButtonElecRange");
+            radioButtonElecRange.Name = "radioButtonElecRange";
+            toolTip.SetToolTip(radioButtonElecRange, resources.GetString("radioButtonElecRange.ToolTip"));
+            radioButtonElecRange.UseVisualStyleBackColor = true;
+            radioButtonElecRange.CheckedChanged += attenuationOption_CheckedChanged;
             // 
             // panel1
             // 
@@ -968,32 +1039,6 @@
             flowLayoutPanelAttenCoeff.Controls.Add(numericBoxAttenThickness);
             flowLayoutPanelAttenCoeff.Name = "flowLayoutPanelAttenCoeff";
             // 
-            // radioButtonAttenMassMu
-            // 
-            resources.ApplyResources(radioButtonAttenMassMu, "radioButtonAttenMassMu");
-            radioButtonAttenMassMu.Checked = true;
-            radioButtonAttenMassMu.Name = "radioButtonAttenMassMu";
-            radioButtonAttenMassMu.TabStop = true;
-            toolTip.SetToolTip(radioButtonAttenMassMu, resources.GetString("radioButtonAttenMassMu.ToolTip"));
-            radioButtonAttenMassMu.UseVisualStyleBackColor = true;
-            radioButtonAttenMassMu.CheckedChanged += attenuationOption_CheckedChanged;
-            // 
-            // radioButtonAttenLinMu
-            // 
-            resources.ApplyResources(radioButtonAttenLinMu, "radioButtonAttenLinMu");
-            radioButtonAttenLinMu.Name = "radioButtonAttenLinMu";
-            toolTip.SetToolTip(radioButtonAttenLinMu, resources.GetString("radioButtonAttenLinMu.ToolTip"));
-            radioButtonAttenLinMu.UseVisualStyleBackColor = true;
-            radioButtonAttenLinMu.CheckedChanged += attenuationOption_CheckedChanged;
-            // 
-            // radioButtonAttenTrans
-            // 
-            resources.ApplyResources(radioButtonAttenTrans, "radioButtonAttenTrans");
-            radioButtonAttenTrans.Name = "radioButtonAttenTrans";
-            toolTip.SetToolTip(radioButtonAttenTrans, resources.GetString("radioButtonAttenTrans.ToolTip"));
-            radioButtonAttenTrans.UseVisualStyleBackColor = true;
-            radioButtonAttenTrans.CheckedChanged += attenuationOption_CheckedChanged;
-            // 
             // flowLayoutPanelElecQuantity
             // 
             resources.ApplyResources(flowLayoutPanelElecQuantity, "flowLayoutPanelElecQuantity");
@@ -1004,56 +1049,6 @@
             flowLayoutPanelElecQuantity.Controls.Add(radioButtonElecIMFP);
             flowLayoutPanelElecQuantity.Controls.Add(radioButtonElecRange);
             flowLayoutPanelElecQuantity.Name = "flowLayoutPanelElecQuantity";
-            // 
-            // radioButtonElecAll
-            // 
-            resources.ApplyResources(radioButtonElecAll, "radioButtonElecAll");
-            radioButtonElecAll.Checked = true;
-            radioButtonElecAll.Name = "radioButtonElecAll";
-            radioButtonElecAll.TabStop = true;
-            toolTip.SetToolTip(radioButtonElecAll, resources.GetString("radioButtonElecAll.ToolTip"));
-            radioButtonElecAll.UseVisualStyleBackColor = true;
-            radioButtonElecAll.CheckedChanged += attenuationOption_CheckedChanged;
-            // 
-            // radioButtonElecSigma
-            // 
-            resources.ApplyResources(radioButtonElecSigma, "radioButtonElecSigma");
-            radioButtonElecSigma.Name = "radioButtonElecSigma";
-            toolTip.SetToolTip(radioButtonElecSigma, resources.GetString("radioButtonElecSigma.ToolTip"));
-            radioButtonElecSigma.UseVisualStyleBackColor = true;
-            radioButtonElecSigma.CheckedChanged += attenuationOption_CheckedChanged;
-            // 
-            // radioButtonElecEMFP
-            // 
-            resources.ApplyResources(radioButtonElecEMFP, "radioButtonElecEMFP");
-            radioButtonElecEMFP.Name = "radioButtonElecEMFP";
-            toolTip.SetToolTip(radioButtonElecEMFP, resources.GetString("radioButtonElecEMFP.ToolTip"));
-            radioButtonElecEMFP.UseVisualStyleBackColor = true;
-            radioButtonElecEMFP.CheckedChanged += attenuationOption_CheckedChanged;
-            // 
-            // radioButtonElecDeds
-            // 
-            resources.ApplyResources(radioButtonElecDeds, "radioButtonElecDeds");
-            radioButtonElecDeds.Name = "radioButtonElecDeds";
-            toolTip.SetToolTip(radioButtonElecDeds, resources.GetString("radioButtonElecDeds.ToolTip"));
-            radioButtonElecDeds.UseVisualStyleBackColor = true;
-            radioButtonElecDeds.CheckedChanged += attenuationOption_CheckedChanged;
-            // 
-            // radioButtonElecIMFP
-            // 
-            resources.ApplyResources(radioButtonElecIMFP, "radioButtonElecIMFP");
-            radioButtonElecIMFP.Name = "radioButtonElecIMFP";
-            toolTip.SetToolTip(radioButtonElecIMFP, resources.GetString("radioButtonElecIMFP.ToolTip"));
-            radioButtonElecIMFP.UseVisualStyleBackColor = true;
-            radioButtonElecIMFP.CheckedChanged += attenuationOption_CheckedChanged;
-            // 
-            // radioButtonElecRange
-            // 
-            resources.ApplyResources(radioButtonElecRange, "radioButtonElecRange");
-            radioButtonElecRange.Name = "radioButtonElecRange";
-            toolTip.SetToolTip(radioButtonElecRange, resources.GetString("radioButtonElecRange.ToolTip"));
-            radioButtonElecRange.UseVisualStyleBackColor = true;
-            radioButtonElecRange.CheckedChanged += attenuationOption_CheckedChanged;
             // 
             // tabPageScatteringFactors
             // 

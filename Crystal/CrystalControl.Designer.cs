@@ -301,16 +301,14 @@
             numericBoxVolumeAng.TabStop = false;
             toolTip.SetToolTip(numericBoxVolumeAng, resources.GetString("numericBoxVolumeAng.ToolTip"));
             numericBoxVolumeAng.ValueBackColor = System.Drawing.SystemColors.Control;
-            numericBoxVolumeAng.ValueBoxWidth = 60;
+            numericBoxVolumeAng.ValueBoxWidth = 64;
             numericBoxVolumeAng.ValueFontSize = 9F;
             // 
             // numericBoxCellVolumeNm
             // 
             numericBoxCellVolumeNm.BackColor = System.Drawing.SystemColors.Control;
-            numericBoxCellVolumeNm.FormatSpecifier = "g9"; // 260726Cl 追加: 結晶依存の計算値で桁数が定まらず数値欄を溢れていた (有効数字 9 桁で頭打ち)
-            //numericBoxCellVolumeNm.DecimalPlaces = 7; // 260726Cl 旧: FormatSpecifier 優先のため無効。旧 7
-            numericBoxCellVolumeNm.DecimalPlaces = -1; // 260726Cl
             resources.ApplyResources(numericBoxCellVolumeNm, "numericBoxCellVolumeNm");
+            numericBoxCellVolumeNm.FormatSpecifier = "g9";
             numericBoxCellVolumeNm.Name = "numericBoxCellVolumeNm";
             numericBoxCellVolumeNm.ReadOnly = true;
             numericBoxCellVolumeNm.RestrictLimitValue = false;
@@ -319,17 +317,14 @@
             numericBoxCellVolumeNm.TabStop = false;
             toolTip.SetToolTip(numericBoxCellVolumeNm, resources.GetString("numericBoxCellVolumeNm.ToolTip"));
             numericBoxCellVolumeNm.ValueBackColor = System.Drawing.SystemColors.Control;
-            //numericBoxCellVolumeNm.ValueBoxWidth = 60; // 260726Cl 旧: 有効数字 9 桁 (g9) の最長表示が入らなかった
-            numericBoxCellVolumeNm.ValueBoxWidth = 86; // 260726Cl
+            numericBoxCellVolumeNm.ValueBoxWidth = 86;
             numericBoxCellVolumeNm.ValueFontSize = 9F;
             // 
             // numericBoxCellMass
             // 
             numericBoxCellMass.BackColor = System.Drawing.SystemColors.Control;
-            numericBoxCellMass.FormatSpecifier = "g9"; // 260726Cl 追加: 結晶依存の計算値で桁数が定まらず数値欄を溢れていた (有効数字 9 桁で頭打ち)
-            //numericBoxCellMass.DecimalPlaces = 4; // 260726Cl 旧: FormatSpecifier 優先のため無効。旧 4
-            numericBoxCellMass.DecimalPlaces = -1; // 260726Cl
             resources.ApplyResources(numericBoxCellMass, "numericBoxCellMass");
+            numericBoxCellMass.FormatSpecifier = "g9";
             numericBoxCellMass.Name = "numericBoxCellMass";
             numericBoxCellMass.ReadOnly = true;
             numericBoxCellMass.RestrictLimitValue = false;
@@ -338,8 +333,7 @@
             numericBoxCellMass.TabStop = false;
             toolTip.SetToolTip(numericBoxCellMass, resources.GetString("numericBoxCellMass.ToolTip"));
             numericBoxCellMass.ValueBackColor = System.Drawing.SystemColors.Control;
-            //numericBoxCellMass.ValueBoxWidth = 60; // 260726Cl 旧: 有効数字 9 桁 (g9) の最長表示が入らなかった
-            numericBoxCellMass.ValueBoxWidth = 80; // 260726Cl
+            numericBoxCellMass.ValueBoxWidth = 82;
             numericBoxCellMass.ValueFontSize = 9F;
             // 
             // numericBoxMolarVolume
@@ -379,6 +373,7 @@
             numericBoxDensity.BackColor = System.Drawing.Color.Transparent;
             numericBoxDensity.DecimalPlaces = 4;
             resources.ApplyResources(numericBoxDensity, "numericBoxDensity");
+            numericBoxDensity.Minimum = 0D;
             numericBoxDensity.Name = "numericBoxDensity";
             numericBoxDensity.ReadOnly = true;
             numericBoxDensity.SkipEventDuringInput = false;
@@ -387,7 +382,7 @@
             numericBoxDensity.ThousandsSeparator = true;
             toolTip.SetToolTip(numericBoxDensity, resources.GetString("numericBoxDensity.ToolTip"));
             numericBoxDensity.ValueBackColor = System.Drawing.SystemColors.Control;
-            numericBoxDensity.ValueBoxWidth = 60;
+            numericBoxDensity.ValueBoxWidth = 54;
             numericBoxDensity.ValueFontSize = 9F;
             // 
             // numericBoxMeanZnumber
@@ -403,13 +398,13 @@
             numericBoxMeanZnumber.TabStop = false;
             toolTip.SetToolTip(numericBoxMeanZnumber, resources.GetString("numericBoxMeanZnumber.ToolTip"));
             numericBoxMeanZnumber.ValueBackColor = System.Drawing.SystemColors.Control;
-            numericBoxMeanZnumber.ValueBoxWidth = 60;
+            numericBoxMeanZnumber.ValueBoxWidth = 50;
             numericBoxMeanZnumber.ValueFontSize = 9F;
             // 
             // numericBoxMeanZmass
             // 
             numericBoxMeanZmass.BackColor = System.Drawing.SystemColors.Control;
-            numericBoxMeanZmass.DecimalPlaces = 3;
+            numericBoxMeanZmass.DecimalPlaces = 4;
             resources.ApplyResources(numericBoxMeanZmass, "numericBoxMeanZmass");
             numericBoxMeanZmass.Name = "numericBoxMeanZmass";
             numericBoxMeanZmass.ReadOnly = true;
@@ -419,7 +414,7 @@
             numericBoxMeanZmass.TabStop = false;
             toolTip.SetToolTip(numericBoxMeanZmass, resources.GetString("numericBoxMeanZmass.ToolTip"));
             numericBoxMeanZmass.ValueBackColor = System.Drawing.SystemColors.Control;
-            numericBoxMeanZmass.ValueBoxWidth = 60;
+            numericBoxMeanZmass.ValueBoxWidth = 54;
             numericBoxMeanZmass.ValueFontSize = 9F;
             // 
             // numericBoxMeanAtomicWeight
@@ -435,7 +430,7 @@
             numericBoxMeanAtomicWeight.TabStop = false;
             toolTip.SetToolTip(numericBoxMeanAtomicWeight, resources.GetString("numericBoxMeanAtomicWeight.ToolTip"));
             numericBoxMeanAtomicWeight.ValueBackColor = System.Drawing.SystemColors.Control;
-            numericBoxMeanAtomicWeight.ValueBoxWidth = 60;
+            numericBoxMeanAtomicWeight.ValueBoxWidth = 54;
             numericBoxMeanAtomicWeight.ValueFontSize = 9F;
             // 
             // numericBoxAtomicNumberDensity
@@ -513,6 +508,7 @@
             // atomControl
             // 
             atomControl.AppearanceTabVisible = false;
+            atomControl.AtomColor = System.Drawing.Color.FromArgb(240, 240, 240);
             atomControl.AtomNo = 0;
             resources.ApplyResources(atomControl, "atomControl");
             atomControl.Name = "atomControl";
@@ -869,7 +865,6 @@
             numericBoxHill.BackColor = System.Drawing.SystemColors.Control;
             resources.ApplyResources(numericBoxHill, "numericBoxHill");
             numericBoxHill.Name = "numericBoxHill";
-            numericBoxHill.RadianValue = 0.017453292519943295D;
             numericBoxHill.RestrictLimitValue = false;
             numericBoxHill.SkipEventDuringInput = false;
             numericBoxHill.SmartIncrement = true;
@@ -1066,7 +1061,7 @@
             colorControl.BackColor = System.Drawing.SystemColors.Control;
             colorControl.BoxSize = new System.Drawing.Size(20, 20);
             colorControl.Name = "colorControl";
-            toolTip.SetToolTip(colorControl, resources.GetString("colorControl.ToolTip1"));
+            toolTip.SetToolTip(colorControl, resources.GetString("colorControl.ToolTip"));
             // 
             // panelFormula
             // 
@@ -1116,13 +1111,13 @@
             // 
             beamInteractionToolStripMenuItem.Name = "beamInteractionToolStripMenuItem";
             resources.ApplyResources(beamInteractionToolStripMenuItem, "beamInteractionToolStripMenuItem");
-            beamInteractionToolStripMenuItem.Click += buttonBeamInteraction_Click; // 260717Cl: 同一トグルのハンドラ二重定義を統合
+            beamInteractionToolStripMenuItem.Click += buttonBeamInteraction_Click;
             // 
             // symmetryInformationToolStripMenuItem
             // 
             symmetryInformationToolStripMenuItem.Name = "symmetryInformationToolStripMenuItem";
             resources.ApplyResources(symmetryInformationToolStripMenuItem, "symmetryInformationToolStripMenuItem");
-            symmetryInformationToolStripMenuItem.Click += buttonSymmetryInfo_Click; // 260717Cl: 同上
+            symmetryInformationToolStripMenuItem.Click += buttonSymmetryInfo_Click;
             // 
             // toolStripSeparator2
             // 

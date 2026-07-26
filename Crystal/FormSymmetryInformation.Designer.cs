@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSymmetryInformation));
             toolTip = new System.Windows.Forms.ToolTip(components);
             buttonCopyElements = new System.Windows.Forms.Button();
             buttonCopyPositions = new System.Windows.Forms.Button();
@@ -68,6 +69,7 @@
             radioButtonDirectionB = new System.Windows.Forms.RadioButton();
             radioButtonDirectionC = new System.Windows.Forms.RadioButton();
             label12 = new System.Windows.Forms.Label();
+            miniTableConditions = new MiniTable();
             dataSet = new System.Data.DataSet();
             dataTablePlanes = new System.Data.DataTable();
             dataColumnH = new System.Data.DataColumn();
@@ -103,7 +105,6 @@
             panel1 = new System.Windows.Forms.Panel();
             tabPageWyckoff = new System.Windows.Forms.TabPage();
             tabPageConditions = new System.Windows.Forms.TabPage();
-            miniTableConditions = new MiniTable();
             tabPageOperations = new System.Windows.Forms.TabPage();
             miniTableOperations = new MiniTable();
             panelOperationsBottom = new System.Windows.Forms.Panel();
@@ -131,6 +132,7 @@
             buttonGroupRelations = new System.Windows.Forms.Button();
             splitContainer1 = new System.Windows.Forms.SplitContainer();
             ((System.ComponentModel.ISupportInitialize)miniTableWyckoff).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)miniTableConditions).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataSet).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataTablePlanes).BeginInit();
             tableLayoutPanel1.SuspendLayout();
@@ -150,7 +152,6 @@
             flowLayoutPanel1.SuspendLayout();
             tabPageWyckoff.SuspendLayout();
             tabPageConditions.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)miniTableConditions).BeginInit();
             tabPageOperations.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)miniTableOperations).BeginInit();
             panelOperationsBottom.SuspendLayout();
@@ -225,10 +226,11 @@
             numericBoxPositionA.Name = "numericBoxPositionA";
             numericBoxPositionA.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
             numericBoxPositionA.ShowUpDown = true;
-            numericBoxPositionA.Size = new System.Drawing.Size(50, 25);
+            numericBoxPositionA.Size = new System.Drawing.Size(57, 25);
             numericBoxPositionA.TabIndex = 6;
             toolTip.SetToolTip(numericBoxPositionA, "Fractional coordinate x of the test point\r\nplotted in the general-position diagram\r\n(range -1 to 1; redraws the diagram).");
             numericBoxPositionA.UpDown_Increment = 0.01D;
+            numericBoxPositionA.ValueBoxWidth = 40;
             numericBoxPositionA.ValueFontSize = 9F;
             numericBoxPositionA.ValueChanged += numericBoxPosition_ValueChanged;
             // 
@@ -240,7 +242,7 @@
             numericBoxPositionB.FooterPadding = new System.Windows.Forms.Padding(0, 6, 0, 0);
             numericBoxPositionB.HeaderFont = new System.Drawing.Font("Segoe UI", 9F);
             numericBoxPositionB.HeaderPadding = new System.Windows.Forms.Padding(0, 6, 0, 0);
-            numericBoxPositionB.Location = new System.Drawing.Point(129, 0);
+            numericBoxPositionB.Location = new System.Drawing.Point(136, 0);
             numericBoxPositionB.Margin = new System.Windows.Forms.Padding(0, 0, 4, 0);
             numericBoxPositionB.Maximum = 1D;
             numericBoxPositionB.MaximumSize = new System.Drawing.Size(1000, 100);
@@ -249,10 +251,11 @@
             numericBoxPositionB.Name = "numericBoxPositionB";
             numericBoxPositionB.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
             numericBoxPositionB.ShowUpDown = true;
-            numericBoxPositionB.Size = new System.Drawing.Size(50, 25);
+            numericBoxPositionB.Size = new System.Drawing.Size(57, 25);
             numericBoxPositionB.TabIndex = 6;
             toolTip.SetToolTip(numericBoxPositionB, "Fractional coordinate y of the test point\r\nplotted in the general-position diagram\r\n(range -1 to 1; redraws the diagram).");
             numericBoxPositionB.UpDown_Increment = 0.01D;
+            numericBoxPositionB.ValueBoxWidth = 40;
             numericBoxPositionB.ValueFontSize = 9F;
             numericBoxPositionB.ValueChanged += numericBoxPosition_ValueChanged;
             // 
@@ -264,7 +267,7 @@
             numericBoxPositionC.FooterPadding = new System.Windows.Forms.Padding(0, 6, 0, 0);
             numericBoxPositionC.HeaderFont = new System.Drawing.Font("Segoe UI", 9F);
             numericBoxPositionC.HeaderPadding = new System.Windows.Forms.Padding(0, 6, 0, 0);
-            numericBoxPositionC.Location = new System.Drawing.Point(193, 0);
+            numericBoxPositionC.Location = new System.Drawing.Point(207, 0);
             numericBoxPositionC.Margin = new System.Windows.Forms.Padding(0);
             numericBoxPositionC.Maximum = 1D;
             numericBoxPositionC.MaximumSize = new System.Drawing.Size(1000, 100);
@@ -273,10 +276,11 @@
             numericBoxPositionC.Name = "numericBoxPositionC";
             numericBoxPositionC.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
             numericBoxPositionC.ShowUpDown = true;
-            numericBoxPositionC.Size = new System.Drawing.Size(50, 25);
+            numericBoxPositionC.Size = new System.Drawing.Size(57, 25);
             numericBoxPositionC.TabIndex = 6;
             toolTip.SetToolTip(numericBoxPositionC, "Fractional coordinate z of the test point\r\nplotted in the general-position diagram\r\n(range -1 to 1; redraws the diagram).");
             numericBoxPositionC.UpDown_Increment = 0.01D;
+            numericBoxPositionC.ValueBoxWidth = 40;
             numericBoxPositionC.ValueFontSize = 9F;
             numericBoxPositionC.ValueChanged += numericBoxPosition_ValueChanged;
             // 
@@ -760,6 +764,24 @@
             label12.Text = "Copy format";
             toolTip.SetToolTip(label12, "Choose the image format used when copying a diagram\r\nto the clipboard: vector (emf) or bitmap (bmp).");
             // 
+            // miniTableConditions
+            // 
+            miniTableConditions.AllowVerticalScroll = true;
+            miniTableConditions.CellPadding = new System.Windows.Forms.Padding(6, 2, 6, 2);
+            miniTableConditions.ColumnHeadersHeight = 26;
+            miniTableConditions.Dock = System.Windows.Forms.DockStyle.Fill;
+            miniTableConditions.LatexFontSizeInPoints = 10F;
+            miniTableConditions.LatexFractionStyle = LatexFractionStyle.Slanted;
+            miniTableConditions.LatexThickness = 0.2D;
+            miniTableConditions.Location = new System.Drawing.Point(0, 21);
+            miniTableConditions.ManualRowHeight = 26;
+            miniTableConditions.Name = "miniTableConditions";
+            miniTableConditions.RowTemplate.Height = 26;
+            miniTableConditions.Size = new System.Drawing.Size(677, 139);
+            miniTableConditions.TabIndex = 6;
+            miniTableConditions.TabStop = false;
+            toolTip.SetToolTip(miniTableConditions, resources.GetString("miniTableConditions.ToolTip"));
+            // 
             // dataSet
             // 
             dataSet.DataSetName = "NewDataSet";
@@ -920,7 +942,7 @@
             // labelLaTex2
             // 
             labelLaTex2.Font = new System.Drawing.Font("Segoe UI", 11F);
-            labelLaTex2.Location = new System.Drawing.Point(119, 0);
+            labelLaTex2.Location = new System.Drawing.Point(126, 0);
             labelLaTex2.Margin = new System.Windows.Forms.Padding(0);
             labelLaTex2.Name = "labelLaTex2";
             labelLaTex2.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
@@ -932,7 +954,7 @@
             // labelLaTex3
             // 
             labelLaTex3.Font = new System.Drawing.Font("Segoe UI", 11F);
-            labelLaTex3.Location = new System.Drawing.Point(183, 0);
+            labelLaTex3.Location = new System.Drawing.Point(197, 0);
             labelLaTex3.Margin = new System.Windows.Forms.Padding(0);
             labelLaTex3.Name = "labelLaTex3";
             labelLaTex3.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
@@ -1084,24 +1106,6 @@
             tabPageConditions.TabIndex = 1;
             tabPageConditions.Text = "Conditions";
             // 
-            // miniTableConditions
-            // 
-            miniTableConditions.AllowVerticalScroll = true;
-            miniTableConditions.CellPadding = new System.Windows.Forms.Padding(6, 2, 6, 2);
-            miniTableConditions.ColumnHeadersHeight = 26;
-            miniTableConditions.Dock = System.Windows.Forms.DockStyle.Fill;
-            miniTableConditions.LatexFontSizeInPoints = 10F;
-            miniTableConditions.LatexFractionStyle = LatexFractionStyle.Slanted;
-            miniTableConditions.LatexThickness = 0.2D;
-            miniTableConditions.Location = new System.Drawing.Point(0, 21);
-            miniTableConditions.ManualRowHeight = 26;
-            miniTableConditions.Name = "miniTableConditions";
-            miniTableConditions.RowTemplate.Height = 26;
-            miniTableConditions.Size = new System.Drawing.Size(677, 139);
-            miniTableConditions.TabIndex = 6;
-            miniTableConditions.TabStop = false;
-            toolTip.SetToolTip(miniTableConditions, "Reflection conditions (systematic absences) for\r\nthis space group: each row gives the affected hkl\r\nindices, the condition needed for that reflection\r\nto appear, and the symmetry element causing it\r\n(read-only)."); // 260708Cl 追加
-            //
             // tabPageOperations
             // 
             tabPageOperations.BackColor = System.Drawing.SystemColors.Control;
@@ -1447,6 +1451,7 @@
             FormClosing += FormCrystallographicInformation_FormClosing;
             Load += FormCrystallographicInformation_Load;
             ((System.ComponentModel.ISupportInitialize)miniTableWyckoff).EndInit();
+            ((System.ComponentModel.ISupportInitialize)miniTableConditions).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataSet).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataTablePlanes).EndInit();
             tableLayoutPanel1.ResumeLayout(false);
@@ -1478,7 +1483,6 @@
             tabPageWyckoff.ResumeLayout(false);
             tabPageConditions.ResumeLayout(false);
             tabPageConditions.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)miniTableConditions).EndInit();
             tabPageOperations.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)miniTableOperations).EndInit();
             panelOperationsBottom.ResumeLayout(false);

@@ -225,4 +225,11 @@ indiquant explicitement la symétrie selon chaque axe.</value>
 notation compacte qui encode l'ensemble complet
 des opérations de symétrie génératrices.</value>
   </data>
+  <data name="miniTableConditions.ToolTip" xml:space="preserve">
+    <value>Conditions de réflexion (extinctions systématiques)
+pour ce groupe d'espace : chaque ligne donne les indices
+hkl concernés, la condition nécessaire à l'apparition
+de cette réflexion et l'élément de symétrie responsable
+(lecture seule).</value>
+  </data>
 </root>

@@ -225,4 +225,11 @@ das die Symmetrie entlang jeder Achse explizit angibt.</value>
 kompakte Notation, die den vollständigen
 Satz erzeugender Symmetrieoperationen kodiert.</value>
   </data>
+  <data name="miniTableConditions.ToolTip" xml:space="preserve">
+    <value>Reflexionsbedingungen (systematische Auslöschungen)
+für diese Raumgruppe: Jede Zeile nennt die betroffenen
+hkl-Indizes, die Bedingung für das Auftreten dieser
+Reflexion und das verursachende Symmetrieelement
+(schreibgeschützt).</value>
+  </data>
 </root>
