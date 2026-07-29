@@ -232,16 +232,20 @@ namespace Crystallography.Controls
         // Handle 作成時 / DPI 変化時に再適用することで、setter 呼び出し時点では DeviceDpi が 96 でも、
         // 後で正しい DPI が確定したタイミングで物理値が反映される。
         // 260519Cl: 既定値は IndexControl.Designer.cs の numericBox.Size (38, 25) / NumericBox.upDownWidth=17 に合わせる。
-        // BoxWidth / UpDownWidth が consumer から設定されない場合は ApplyXxx を呼ばないようにし、
-        // Designer の auto-scale 済みの値をそのまま維持する (consumer 未設定時のサイズ変更を防止)。
-        private int logicalUpDownWidth = 17;
-        private bool upDownWidthExplicitlySet = false;
+        // BoxWidth が consumer から設定されない場合は ApplyBoxWidth を呼ばないようにし、
+        // Designer の auto-scale 済みの値をそのまま維持する (consumer 未設定時のサイズ変更を防止)。260730Cl: UpDownWidth を対象から外した (下記)
+        // 260730Cl 変更: NumericBox.UpDownWidth 自体が 96dpi 論理値を保持し Handle 作成/DPI 変化時に自前で再スケールするようになったため、
+        // ラッパ側の論理値フィールド・明示設定フラグ・Apply メソッド・Handle/DPI フックは形骸化した。単純パススルーへ畳む。
+        //private int logicalUpDownWidth = 17;
+        //private bool upDownWidthExplicitlySet = false;
         [Category("Appearance"), DefaultValue(17)]
         [Description("UpDown ボタンの幅 (96dpi 論理値)。実行時に DeviceDpi に応じて物理ピクセルへスケールされる。")]
         public int UpDownWidth
         {
-            get => logicalUpDownWidth;
-            set { logicalUpDownWidth = value; upDownWidthExplicitlySet = true; ApplyUpDownWidth(); }
+            get => numericBoxH.UpDownWidth;
+            set => numericBoxH.UpDownWidth = numericBoxK.UpDownWidth = numericBoxL.UpDownWidth = value;
+            //get => logicalUpDownWidth;                                                          // 260730Cl 変更前
+            //set { logicalUpDownWidth = value; upDownWidthExplicitlySet = true; ApplyUpDownWidth(); }
         }
 
         private int logicalBoxWidth = 38;
@@ -254,12 +258,12 @@ namespace Crystallography.Controls
             set { logicalBoxWidth = value; boxWidthExplicitlySet = true; ApplyBoxWidth(); }
         }
 
-        private void ApplyUpDownWidth()
-        {
-            if (!upDownWidthExplicitlySet) return;
-            var w = LogicalToDeviceUnits(logicalUpDownWidth);
-            numericBoxH.UpDownWidth = numericBoxK.UpDownWidth = numericBoxL.UpDownWidth = w;
-        }
+        // 260730Cl 削除: ApplyUpDownWidth() は UpDownWidth のパススルー化で不要になった (NumericBox 側が DPI 再スケールを担う)
+        //private void ApplyUpDownWidth()
+        //{
+        //    if (!upDownWidthExplicitlySet) return;
+        //    numericBoxH.UpDownWidth = numericBoxK.UpDownWidth = numericBoxL.UpDownWidth = logicalUpDownWidth;
+        //}
 
         private void ApplyBoxWidth()
         {
@@ -282,7 +286,7 @@ namespace Crystallography.Controls
         {
             base.OnHandleCreated(e);
             ApplyBoxWidth();
-            ApplyUpDownWidth();
+            //ApplyUpDownWidth();                                                                 // 260730Cl 削除: NumericBox 自身が同タイミングで再スケールするため不要
         }
 
         // 260519Cl 追加: Per-Monitor DPI でモニタ移動時に DPI が変わった場合、論理値から物理値を再計算する。
@@ -290,7 +294,7 @@ namespace Crystallography.Controls
         {
             base.OnDpiChangedAfterParent(e);
             ApplyBoxWidth();
-            ApplyUpDownWidth();
+            //ApplyUpDownWidth();                                                                 // 260730Cl 削除: 同上
         }
 
         // 260519Cl 追加: BoxWidthEnabled

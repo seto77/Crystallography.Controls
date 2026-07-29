@@ -224,29 +224,72 @@ namespace Crystallography.Controls
 
         #endregion
 
-        #region UpDown ボタン幅 (DPI 対応)
+        #region UpDown ボタン幅
 
-        // 260521Cl: IndexControl と同様、setter は 96dpi 論理値として保持し、Handle 作成/DPI 変化時に物理ピクセル化する。
-        private int logicalUpDownWidth = 17;
-        private bool upDownWidthSet = false;
+        //// 260521Cl: IndexControl と同様、setter は 96dpi 論理値として保持し、Handle 作成/DPI 変化時に物理ピクセル化する。(260730Cl: 下記のとおり廃止)
+        // 260730Cl 変更: NumericBox.UpDownWidth 自体が 96dpi 論理値を保持し Handle 作成/DPI 変化時に自前で再スケールするようになったため、
+        // ラッパ側の論理値フィールド・設定フラグ・apply メソッド・Handle/DPI フックは形骸化した。単純パススルーへ畳む (IndexControl と同様)。
+        //private int logicalUpDownWidth = 17;
+        //private bool upDownWidthSet = false;
         [Category("Appearance"), DefaultValue(17)]
         [Description("UpDown ボタン幅 (96dpi 論理値)。実行時に DeviceDpi に応じてスケールされる。")]
         public int UpDownWidth
         {
-            get => logicalUpDownWidth;
-            set { logicalUpDownWidth = value; upDownWidthSet = true; applyUpDownWidth(); }
+            get => numericBoxWidth.UpDownWidth;
+            set => numericBoxWidth.UpDownWidth = numericBoxHeight.UpDownWidth = value;
+            //get => logicalUpDownWidth;                                                          // 260730Cl 変更前
+            //set { logicalUpDownWidth = value; upDownWidthSet = true; applyUpDownWidth(); }
         }
 
-        private void applyUpDownWidth()
+        // 260730Cl 削除: applyUpDownWidth() はパススルー化で不要になった (NumericBox 側が DPI 再スケールを担う)
+        //private void applyUpDownWidth()
+        //{
+        //    if (!upDownWidthSet) return;
+        //    numericBoxWidth.UpDownWidth = numericBoxHeight.UpDownWidth = logicalUpDownWidth;
+        //}
+
+        #endregion
+
+        #region 数値ボックス幅 (DPI 対応)
+
+        // 260728Cl 追加: 「数値ボックスの幅」を W/H 両方に同じ値で与える。名前は NumericBox.ValueBoxWidth に揃えたが対象は異なる:
+        // こちらは TableLayout 列幅 = 内側 NumericBox 全体 (spin ボタン込み)、あちらは textBox 単体幅 (-1=Fill, 既定 -1)。260730Cl 注記
+        // 従来 SizeControl の数値欄幅は tableLayoutPanel1 の Percent 50/50 列 (列 1=Width, 列 3=Height) 任せで、
+        // 列幅は AutoSize=false の NumericBox の Bounds (resx の 56px) に引きずられるため、高DPI ではラベル
+        // (AutoSize=true なのでフォント pt に追従して広がる) だけが伸びてボックスが広がらなかった。
+        // ここで列を Absolute + LogicalToDeviceUnits に切り替え、論理px 指定を DeviceDpi へスケールする。
+        // 260728Cl: 既定 56 は 96dpi での実測値。従来 (Percent 50/50) の AutoSize 配置での列幅がちょうど 56px で、
+        // resx の numericBoxWidth.Size (56, 25) とも一致する。Maximum 既定 9999 の "9,999" は描画幅 31px / textBox 内側
+        // 35px で収まり (クリップ限界は 52px)、96dpi の見た目は従来と同一のまま高DPI でのみ広がる。
+        // -1 を指定すると従来どおり Percent 50/50 (親幅の余りを二等分) に戻る。
+        private int logicalValueBoxWidth = 56;
+        /// <summary>数値ボックス (Width/Height 共通) の列幅 (96dpi 論理値、spin ボタン込み)。-1 で従来どおり左右等分 (Percent 50/50)。260730Cl 追加</summary>
+        [Category("Appearance"), DefaultValue(56)]
+        [Description("数値ボックス (Width/Height 共通) の幅 (96dpi 論理値)。実行時に DeviceDpi に応じてスケールされる。-1 で従来どおり左右等分 (Percent 50/50)。")]
+        public int ValueBoxWidth
         {
-            if (!upDownWidthSet) return;
-            int w = LogicalToDeviceUnits(logicalUpDownWidth);
-            numericBoxWidth.UpDownWidth = numericBoxHeight.UpDownWidth = w;
+            get => logicalValueBoxWidth;
+            set { logicalValueBoxWidth = value; applyValueBoxWidth(); }
+        }
+
+        private void applyValueBoxWidth()
+        {
+            var styles = tableLayoutPanel1.ColumnStyles;
+            if (styles.Count < 4) return;
+            // ColumnStyle は参照型なので W 列と H 列で別インスタンスを与える (共有すると片方の変更が両方に及ぶ)。
+            for (int col = 1; col <= 3; col += 2)
+                styles[col] = logicalValueBoxWidth >= 0
+                    ? new ColumnStyle(SizeType.Absolute, LogicalToDeviceUnits(logicalValueBoxWidth))
+                    : new ColumnStyle(SizeType.Percent, 50F);
         }
 
         // 260531Cl: ToolTip 反映は基底 UserControlBase.OnHandleCreated が GetToolTipTargets()/InternalToolTip を使って実施する
-        protected override void OnHandleCreated(EventArgs e) { base.OnHandleCreated(e); applyUpDownWidth(); }
-        protected override void OnDpiChangedAfterParent(EventArgs e) { base.OnDpiChangedAfterParent(e); applyUpDownWidth(); }
+        // 260728Cl 変更: applyValueBoxWidth() も同経路 (Handle 作成時 / DPI 変化時) で再スケールする
+        // 260730Cl 変更: applyUpDownWidth() 呼び出しを削除 (NumericBox 自身が同タイミングで再スケールするため不要)
+        //protected override void OnHandleCreated(EventArgs e) { base.OnHandleCreated(e); applyUpDownWidth(); applyValueBoxWidth(); }
+        //protected override void OnDpiChangedAfterParent(EventArgs e) { base.OnDpiChangedAfterParent(e); applyUpDownWidth(); applyValueBoxWidth(); }
+        protected override void OnHandleCreated(EventArgs e) { base.OnHandleCreated(e); applyValueBoxWidth(); }
+        protected override void OnDpiChangedAfterParent(EventArgs e) { base.OnDpiChangedAfterParent(e); applyValueBoxWidth(); }
 
         #endregion
 

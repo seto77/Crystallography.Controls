@@ -79,22 +79,39 @@ public partial class NumericBox : UserControlBase
     }
     private bool showUpDown = false;
 
-    /// <summary>UpDownボタンの横幅(ピクセル)。Dock=Rightのspinボタン用Panelの幅を設定する。</summary>
+    /// <summary>UpDownボタンの横幅(96dpi 論理値)。Dock=Rightのspinボタン用Panelの幅を設定する。
+    /// 260728Cl 変更: 受け取った値を物理ピクセルとして直接 spinButtonPanel.Width に入れていたため、
+    /// 高DPI でも spin ボタンが 17px のままで数値欄だけが広がる (=相対的に細い) 状態だった。
+    /// HeaderWidth/ValueBoxWidth と同じく 96dpi 論理値として保持し、applyUpDownWidth() で DeviceDpi へスケールする。</summary>
     [DefaultValue(17)]                                                                                                                                // 260423Cl 追加
     [Category("Spin button")]
+    [Description("UpDown ボタンの幅 (96dpi 論理値)。実行時に DeviceDpi に応じてスケールされる。")]                                                    // 260728Cl 追加
     public int UpDownWidth
     {
         get => upDownWidth;
         set
         {
             if (value < 1) value = 1;
+            if (upDownWidth == value) return;                                                                                                         // 260730Cl 追加: 同値ガード (ValueBoxWidth/HeaderWidth と同じ定石)
             upDownWidth = value;
-            if (spinButtonPanel == null) return;
-            spinButtonPanel.Width = value;
-            alignSpinButton();
+            //if (spinButtonPanel == null) return;                                                                                                    // 260728Cl 変更前: 論理値をそのまま物理pxとして適用していた
+            //spinButtonPanel.Width = value;
+            //alignSpinButton();
+            applyUpDownWidth();
         }
     }
     private int upDownWidth = 17;                                                                                                                     // 260423Cl 追加 既定値はresxと同値
+
+    // 260728Cl 追加: UpDownWidth (96dpi 論理値) を DeviceDpi へスケールして spinButtonPanel に反映する。
+    // プロパティ設定/コンストラクタは Handle 生成前 (DeviceDpi=96) に走るため等倍で stamp される。実際の DPI が
+    // 確定する OnHandleCreated と、モニタ移動時の OnDpiChangedAfterParent で再計算する (ValueBoxWidth と同じ定石)。
+    private void applyUpDownWidth()
+    {
+        if (spinButtonPanel == null) return;                                                                                                          // 260413Cl デザイン時でもPanelはあるが念のためガード
+        var w = LogicalToDeviceUnits(upDownWidth);
+        if (spinButtonPanel.Width != w) spinButtonPanel.Width = w;
+        alignSpinButton();
+    }
 
     /// <summary>UpDownボタンが有効な場合、Incrementを取得/設定</summary>
     [DefaultValue(1.0)]
@@ -388,9 +405,7 @@ public partial class NumericBox : UserControlBase
                         value = Minimum;
                 }
                 this.numericalValue = value;
-                skipTextChangeEvent = true;
-                textBox.Text = GetString();
-                skipTextChangeEvent = false;
+                refreshText(); // 260729Cl 変更 (旧: skipTextChangeEvent = true; textBox.Text = GetString(); skipTextChangeEvent = false;)
                 ValueChanged?.Invoke(this, EventArgs.Empty);
             }
         }
@@ -410,11 +425,29 @@ public partial class NumericBox : UserControlBase
     [Category("Value")]
     public double RadianValue { set => Value = value * 180.0 / Math.PI; get => Value / 180.0 * Math.PI; }
 
-    /// <summary>3桁区切りでカンマを表示させる</summary>
-    [DefaultValue(false)]
+    /// <summary>3桁区切りでカンマを表示させる。
+    /// 260729Cl 修正: このフラグは GetString() から参照されておらず、区切りが常に入る = プロパティが死んでいた。
+    /// 参照を繋ぐにあたり、既定を true (=これまでの実機挙動) にして現状の表示を変えないようにする。
+    /// これにより既存 Designer の `ThousandsSeparator = true;` は既定値と同じになり、次回再シリアライズで消える (無害)。</summary>
+    //[DefaultValue(false)]                                                                                                                           // 260729Cl 変更前
+    [DefaultValue(true)]
     [Category("Value format")]
-    public bool ThousandsSeparator { set { thousandsSeparator = value; textBox.Text = GetString(); } get => thousandsSeparator; } // 260520Cl: typo fix (ThonsandsSeparator → ThousandsSeparator)
-    private bool thousandsSeparator = false;
+    public bool ThousandsSeparator { set { if (thousandsSeparator == value) return; thousandsSeparator = value; refreshText(); } get => thousandsSeparator; } // 260520Cl: typo fix (ThonsandsSeparator → ThousandsSeparator) / 260729Cl: refreshText 経由へ / 260730Cl: 同値ガード追加 (DecimalPlaces/FormatSpecifier と同様)
+    //public bool ThousandsSeparator { set { thousandsSeparator = value; textBox.Text = GetString(); } get => thousandsSeparator; }
+    //private bool thousandsSeparator = false;                                                                                                        // 260729Cl 変更前
+    private bool thousandsSeparator = true;
+
+    /// <summary>260729Cl 追加: 値/書式(桁数・区切り・書式指定子)の変更に伴う表示の再生成。
+    /// skipTextChangeEvent で囲まないと textBox_TextChanged が丸め後の表示文字列を読み戻して
+    /// numericalValue を破壊し (例: 160.1826 → 160.2000)、ValueChanged まで誤発火する。
+    /// 元の値を復元するのは、既に抑止中 (Calculate 等) から呼ばれても抑止を解除しないため。</summary>
+    private void refreshText()
+    {
+        var skip = skipTextChangeEvent;
+        skipTextChangeEvent = true;
+        textBox.Text = GetString();
+        skipTextChangeEvent = skip;
+    }
 
     /// <summary>小数点以下の桁数</summary>
     [DefaultValue(-1)]
@@ -423,10 +456,10 @@ public partial class NumericBox : UserControlBase
     {
         set
         {
-            if (value >= -1 && value < 11)
+            if (value >= -1 && value < 11 && decimalPlaces != value) // 260729Cl: 同値ガード追加 (HeaderWidth/FooterText 等と同様)
             {
                 decimalPlaces = value;
-                textBox.Text = GetString();
+                refreshText(); // 260729Cl 変更 (旧: textBox.Text = GetString();)
             }
         }
         get => decimalPlaces;
@@ -444,9 +477,10 @@ public partial class NumericBox : UserControlBase
     {
         set
         {
+            if (formatSpecifier == (value ?? "")) return; // 260729Cl: 同値ガード追加 (IsValidFormatSpecifier の try/catch 判定を毎回走らせない)
             formatSpecifier = value ?? "";
             formatSpecifierValid = IsValidFormatSpecifier(formatSpecifier); // 有効性を判定してキャッシュ (判定は UserControlBase に集約)
-            textBox.Text = GetString();
+            refreshText(); // 260729Cl 変更 (旧: textBox.Text = GetString();)
         }
         get => formatSpecifier;
     }
@@ -567,7 +601,8 @@ public partial class NumericBox : UserControlBase
         spinButton.UpClick += spinButton_UpClick;
         spinButton.DownClick += spinButton_DownClick;
         spinButtonPanel.Controls.Add(spinButton);
-        spinButtonPanel.Width = upDownWidth;                                                                                                          // 260423Cl 追加 UpDownWidthプロパティ値をPanelへ反映
+        //spinButtonPanel.Width = upDownWidth;                                                                                                        // 260423Cl 追加 UpDownWidthプロパティ値をPanelへ反映 / 260728Cl 変更: DPI スケールを通す
+        applyUpDownWidth();                                                                                                                           // 260728Cl UpDownWidth(論理値)を DeviceDpi へスケールして反映
         spinButtonPanel.Visible = showUpDown;
 
         // 260413Cl textBoxの高さに追従させるためsizeChangedを購読
@@ -826,12 +861,14 @@ public partial class NumericBox : UserControlBase
     protected override void OnHandleCreated(EventArgs e)
     {
         base.OnHandleCreated(e);   // UserControlBase の ToolTip relay を維持
+        applyUpDownWidth();        // 260728Cl 追加: spin ボタン幅も確定した DeviceDpi へ再スケールする (幅モードより先に確定させる)
         applyWidthMode();
     }
 
     protected override void OnDpiChangedAfterParent(EventArgs e)
     {
         base.OnDpiChangedAfterParent(e);
+        applyUpDownWidth();        // 260728Cl 追加
         applyWidthMode();
     }
     #endregion
@@ -855,8 +892,8 @@ public partial class NumericBox : UserControlBase
             {
                 if (RestrictLimitValue)
                 {
-                    if (d > Maximum) { d = Maximum; this.numericalValue = Maximum; textBox.Text = GetString(); }
-                    if (d < minimum) { d = minimum; this.numericalValue = Minimum; textBox.Text = GetString(); }
+                    if (d > Maximum) { d = Maximum; this.numericalValue = Maximum; refreshText(); } // 260730Cl 変更: refreshText 経由へ統一 (旧: textBox.Text = GetString();)
+                    if (d < minimum) { d = minimum; this.numericalValue = Minimum; refreshText(); } // 260730Cl 変更: 同上
                 }
 
                 this.numericalValue = d;
@@ -982,7 +1019,8 @@ public partial class NumericBox : UserControlBase
             if (TrimEndZero && text.Contains('.'))
                 text = text.TrimEnd('0').TrimEnd('.'); // 260717Cl: 配列生成不要の char オーバーロードへ
 
-            text = separateThousands(text);
+            if (thousandsSeparator)                                                                                                                    // 260729Cl 追加: これまでフラグ未参照で常時区切っていた (既定 true なので表示は不変)
+                text = separateThousands(text);
         }
         if (!text.StartsWith('-') && ShowPositiveSign && text != "0")
             text = "+" + text;
