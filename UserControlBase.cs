@@ -78,6 +78,15 @@ public partial class UserControlBase : UserControl
         try { BeginInvoke((Action)(() => RelayHostToolTip(this, GetToolTipTargets(), InternalToolTip))); } catch { }
     }
 
+    /// <summary>260729Cl 追加: 実行時にチップ文字列を差し替える。配置先はこれを呼ぶだけでよい。
+    /// host.SetToolTip だけでは、ハンドル生成時に一度きり配布された内部子 (textBox/ラベル) が
+    /// 古いテキストのままになるので、設定と再配布をここで対にしておく。</summary>
+    public void SetHostToolTip(ToolTip host, string text)
+    {
+        host.SetToolTip(this, text);
+        RelayHostToolTip(this, GetToolTipTargets(), InternalToolTip);
+    }
+
     /// <summary>
     /// 260531Cl 追加: self に対し親 (配置先 Form / 親 UserControl) の標準 ToolTip で設定されたチップ文字列を探し、
     /// 見つかれば「内部 ToolTip(独自プロパティ由来の矩形チップ) を抑止し、親の ToolTip(バルーン) へ一本化」する。

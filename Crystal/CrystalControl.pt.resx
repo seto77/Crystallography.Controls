@@ -68,7 +68,7 @@
   <data name="tabPageBasicInfo.Text" xml:space="preserve">
     <value>Info. básica</value>
   </data>
-  <data name="numericBoxVolumeAng.HeaderText" xml:space="preserve">
+  <data name="numericBoxVolume.HeaderText" xml:space="preserve">
     <value>Volume da célula</value>
   </data>
   <data name="numericBoxCellMass.HeaderText" xml:space="preserve">
@@ -163,17 +163,11 @@ da qual esta estrutura cristalina foi obtida.</value>
     <value>Título da publicação da qual esta
 estrutura cristalina foi obtida.</value>
   </data>
-  <data name="numericBoxVolumeAng.ToolTip" xml:space="preserve">
+  <data name="numericBoxVolume.ToolTip" xml:space="preserve">
     <value>Volume da célula em Å³</value>
   </data>
-  <data name="numericBoxVolumeAng.ToolTip1" xml:space="preserve">
+  <data name="numericBoxVolume.ToolTip1" xml:space="preserve">
     <value>Volume da célula em Å³</value>
-  </data>
-  <data name="numericBoxCellVolumeNm.ToolTip" xml:space="preserve">
-    <value>Volume da célula em nm³</value>
-  </data>
-  <data name="numericBoxCellVolumeNm.ToolTip1" xml:space="preserve">
-    <value>Volume da célula em nm³</value>
   </data>
   <data name="numericBoxCellMass.ToolTip" xml:space="preserve">
     <value>Massa da célula em 10⁻²⁴ g</value>

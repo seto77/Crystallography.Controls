@@ -47,8 +47,7 @@
             tabPageBasicInfo = new System.Windows.Forms.TabPage();
             panelSymmetryInfo = new System.Windows.Forms.Panel();
             flowLayoutPanelCellProperties = new System.Windows.Forms.FlowLayoutPanel();
-            numericBoxVolumeAng = new NumericBox();
-            numericBoxCellVolumeNm = new NumericBox();
+            numericBoxVolume = new NumericBox();
             numericBoxCellMass = new NumericBox();
             numericBoxMolarVolume = new NumericBox();
             numericBoxMolarMass = new NumericBox();
@@ -275,8 +274,7 @@
             // flowLayoutPanelCellProperties
             // 
             resources.ApplyResources(flowLayoutPanelCellProperties, "flowLayoutPanelCellProperties");
-            flowLayoutPanelCellProperties.Controls.Add(numericBoxVolumeAng);
-            flowLayoutPanelCellProperties.Controls.Add(numericBoxCellVolumeNm);
+            flowLayoutPanelCellProperties.Controls.Add(numericBoxVolume);
             flowLayoutPanelCellProperties.Controls.Add(numericBoxCellMass);
             flowLayoutPanelCellProperties.Controls.Add(numericBoxMolarVolume);
             flowLayoutPanelCellProperties.Controls.Add(numericBoxMolarMass);
@@ -288,37 +286,21 @@
             flowLayoutPanelCellProperties.Controls.Add(numericBoxElectronDensity);
             flowLayoutPanelCellProperties.Name = "flowLayoutPanelCellProperties";
             // 
-            // numericBoxVolumeAng
+            // numericBoxVolume
             // 
-            numericBoxVolumeAng.BackColor = System.Drawing.SystemColors.Control;
-            numericBoxVolumeAng.DecimalPlaces = 4;
-            resources.ApplyResources(numericBoxVolumeAng, "numericBoxVolumeAng");
-            numericBoxVolumeAng.Name = "numericBoxVolumeAng";
-            numericBoxVolumeAng.ReadOnly = true;
-            numericBoxVolumeAng.RestrictLimitValue = false;
-            numericBoxVolumeAng.SkipEventDuringInput = false;
-            numericBoxVolumeAng.SmartIncrement = true;
-            numericBoxVolumeAng.TabStop = false;
-            toolTip.SetToolTip(numericBoxVolumeAng, resources.GetString("numericBoxVolumeAng.ToolTip"));
-            numericBoxVolumeAng.ValueBackColor = System.Drawing.SystemColors.Control;
-            numericBoxVolumeAng.ValueBoxWidth = 64;
-            numericBoxVolumeAng.ValueFontSize = 9F;
-            // 
-            // numericBoxCellVolumeNm
-            // 
-            numericBoxCellVolumeNm.BackColor = System.Drawing.SystemColors.Control;
-            resources.ApplyResources(numericBoxCellVolumeNm, "numericBoxCellVolumeNm");
-            numericBoxCellVolumeNm.FormatSpecifier = "g9";
-            numericBoxCellVolumeNm.Name = "numericBoxCellVolumeNm";
-            numericBoxCellVolumeNm.ReadOnly = true;
-            numericBoxCellVolumeNm.RestrictLimitValue = false;
-            numericBoxCellVolumeNm.SkipEventDuringInput = false;
-            numericBoxCellVolumeNm.SmartIncrement = true;
-            numericBoxCellVolumeNm.TabStop = false;
-            toolTip.SetToolTip(numericBoxCellVolumeNm, resources.GetString("numericBoxCellVolumeNm.ToolTip"));
-            numericBoxCellVolumeNm.ValueBackColor = System.Drawing.SystemColors.Control;
-            numericBoxCellVolumeNm.ValueBoxWidth = 86;
-            numericBoxCellVolumeNm.ValueFontSize = 9F;
+            numericBoxVolume.BackColor = System.Drawing.SystemColors.Control;
+            numericBoxVolume.DecimalPlaces = 4;
+            resources.ApplyResources(numericBoxVolume, "numericBoxVolume");
+            numericBoxVolume.Name = "numericBoxVolume";
+            numericBoxVolume.ReadOnly = true;
+            numericBoxVolume.RestrictLimitValue = false;
+            numericBoxVolume.SkipEventDuringInput = false;
+            numericBoxVolume.SmartIncrement = true;
+            numericBoxVolume.TabStop = false;
+            toolTip.SetToolTip(numericBoxVolume, resources.GetString("numericBoxVolume.ToolTip"));
+            numericBoxVolume.ValueBackColor = System.Drawing.SystemColors.Control;
+            numericBoxVolume.ValueBoxWidth = 64;
+            numericBoxVolume.ValueFontSize = 9F;
             // 
             // numericBoxCellMass
             // 
@@ -436,7 +418,7 @@
             // numericBoxAtomicNumberDensity
             // 
             numericBoxAtomicNumberDensity.BackColor = System.Drawing.SystemColors.Control;
-            numericBoxAtomicNumberDensity.DecimalPlaces = 4;
+            numericBoxAtomicNumberDensity.DecimalPlaces = 7; // 260729Cl 変更: デザイナ表示用の既定 (Å⁻³)。実行時の桁数は symmetryControl_LengthUnitChanged が FormatSpecifier で決める
             resources.ApplyResources(numericBoxAtomicNumberDensity, "numericBoxAtomicNumberDensity");
             numericBoxAtomicNumberDensity.Name = "numericBoxAtomicNumberDensity";
             numericBoxAtomicNumberDensity.ReadOnly = true;
@@ -447,13 +429,13 @@
             numericBoxAtomicNumberDensity.ThousandsSeparator = true;
             toolTip.SetToolTip(numericBoxAtomicNumberDensity, resources.GetString("numericBoxAtomicNumberDensity.ToolTip"));
             numericBoxAtomicNumberDensity.ValueBackColor = System.Drawing.SystemColors.Control;
-            numericBoxAtomicNumberDensity.ValueBoxWidth = 60;
+            numericBoxAtomicNumberDensity.ValueBoxWidth = 68; // 260729Cl 変更: デザイナ表示用の既定 (Å⁻³ の 7/6 桁が幅 60 でクリップするため)
             numericBoxAtomicNumberDensity.ValueFontSize = 9F;
             // 
             // numericBoxElectronDensity
             // 
             numericBoxElectronDensity.BackColor = System.Drawing.SystemColors.Control;
-            numericBoxElectronDensity.DecimalPlaces = 3;
+            numericBoxElectronDensity.DecimalPlaces = 6; // 260729Cl 変更: デザイナ表示用の既定 (Å⁻³)。実行時の桁数は symmetryControl_LengthUnitChanged が FormatSpecifier で決める
             resources.ApplyResources(numericBoxElectronDensity, "numericBoxElectronDensity");
             numericBoxElectronDensity.Name = "numericBoxElectronDensity";
             numericBoxElectronDensity.ReadOnly = true;
@@ -464,7 +446,7 @@
             numericBoxElectronDensity.ThousandsSeparator = true;
             toolTip.SetToolTip(numericBoxElectronDensity, resources.GetString("numericBoxElectronDensity.ToolTip"));
             numericBoxElectronDensity.ValueBackColor = System.Drawing.SystemColors.Control;
-            numericBoxElectronDensity.ValueBoxWidth = 60;
+            numericBoxElectronDensity.ValueBoxWidth = 68; // 260729Cl 変更: デザイナ表示用の既定 (Å⁻³ の 7/6 桁が幅 60 でクリップするため)
             numericBoxElectronDensity.ValueFontSize = 9F;
             // 
             // flowLayoutPanelSymmetryActions
@@ -494,6 +476,7 @@
             resources.ApplyResources(symmetryControl, "symmetryControl");
             symmetryControl.Name = "symmetryControl";
             symmetryControl.ItemChanged += symmetryControl_ItemChanged;
+            symmetryControl.LengthUnitChanged += symmetryControl_LengthUnitChanged; // 260729Cl 追加: Å/nm 切り替えに体積・数密度の表示を追従させる
             // 
             // tabPageAtom
             // 
@@ -1332,7 +1315,7 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
         private System.Windows.Forms.ToolStripMenuItem resetToolStripMenuItem;
         private System.Windows.Forms.TabPage tabPageEOS;
-        private NumericBox numericBoxVolumeAng;
+        private NumericBox numericBoxVolume; // 260729Cl 改名: numericBoxVolumeAng → numericBoxVolume (Å³/nm³ 兼用に統合。旧 numericBoxCellVolumeNm は廃止)
         private System.Windows.Forms.ToolStripMenuItem symmetryInformationToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.TabPage tabPageElasticity;
@@ -1415,7 +1398,6 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelSymmetryActions;
         private System.Windows.Forms.Button buttonConvertToSubgroup;
         private System.Windows.Forms.Button buttonChangeAxesOriginSetting;
-        private NumericBox numericBoxCellVolumeNm;
         private LabelLaTeX labelLaTex6;
         private LabelLaTeX labelLaTex5;
         private LabelLaTeX labelLaTex3;

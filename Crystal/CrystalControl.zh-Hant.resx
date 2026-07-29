@@ -68,7 +68,7 @@
   <data name="tabPageBasicInfo.Text" xml:space="preserve">
     <value>基本資訊</value>
   </data>
-  <data name="numericBoxVolumeAng.HeaderText" xml:space="preserve">
+  <data name="numericBoxVolume.HeaderText" xml:space="preserve">
     <value>晶胞體積</value>
   </data>
   <data name="numericBoxCellMass.HeaderText" xml:space="preserve">
@@ -164,17 +164,11 @@
   <data name="textBoxTitle.ToolTip" xml:space="preserve">
     <value>此晶體結構出處文獻的標題。</value>
   </data>
-  <data name="numericBoxVolumeAng.ToolTip" xml:space="preserve">
+  <data name="numericBoxVolume.ToolTip" xml:space="preserve">
     <value>晶胞體積（Å³）</value>
   </data>
-  <data name="numericBoxVolumeAng.ToolTip1" xml:space="preserve">
+  <data name="numericBoxVolume.ToolTip1" xml:space="preserve">
     <value>晶胞體積（Å³）</value>
-  </data>
-  <data name="numericBoxCellVolumeNm.ToolTip" xml:space="preserve">
-    <value>晶胞體積（nm³）</value>
-  </data>
-  <data name="numericBoxCellVolumeNm.ToolTip1" xml:space="preserve">
-    <value>晶胞體積（nm³）</value>
   </data>
   <data name="numericBoxCellMass.ToolTip" xml:space="preserve">
     <value>晶胞質量（10⁻²⁴ g）</value>

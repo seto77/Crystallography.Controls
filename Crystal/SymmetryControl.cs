@@ -59,6 +59,10 @@ public partial class SymmetryControl : UserControlBase
         }
     }
 
+    /// <summary>nm/Å の表示単位が切り替わったときに発生する。260729Cl 追加
+    /// (WaveLengthControl.WavelengthUnitChanged と同じ役割。配置先が単位付き表示を追従させるために使う)</summary>
+    public event EventHandler LengthUnitChanged;
+
     private double LengthScale => LengthUnit == LengthUnitEnum.NanoMeter ? 1.0 : 0.1; // 表示値 → nm
 
     /// <summary>Cell constants の get/set. 単位は nm, radian.</summary>
@@ -435,6 +439,8 @@ public partial class SymmetryControl : UserControlBase
         numericBoxCErr.Value = cErr * factor;
         labelLengthUnitA.Text = labelLengthUnitB.Text = labelLengthUnitC.Text = unitText;
         SkipEvent = false;
+
+        LengthUnitChanged?.Invoke(this, EventArgs.Empty); // 260729Cl 追加: 配置先 (CrystalControl 等) の単位付き表示を追従させる
     }
     #endregion
 }

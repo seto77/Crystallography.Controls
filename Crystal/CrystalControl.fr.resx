@@ -68,7 +68,7 @@
   <data name="tabPageBasicInfo.Text" xml:space="preserve">
     <value>Infos de base</value>
   </data>
-  <data name="numericBoxVolumeAng.HeaderText" xml:space="preserve">
+  <data name="numericBoxVolume.HeaderText" xml:space="preserve">
     <value>Volume de maille</value>
   </data>
   <data name="numericBoxCellMass.HeaderText" xml:space="preserve">
@@ -163,17 +163,11 @@ dont est tirée cette structure cristalline.</value>
     <value>Titre de la publication dont est
 tirée cette structure cristalline.</value>
   </data>
-  <data name="numericBoxVolumeAng.ToolTip" xml:space="preserve">
+  <data name="numericBoxVolume.ToolTip" xml:space="preserve">
     <value>Volume de maille en Å³</value>
   </data>
-  <data name="numericBoxVolumeAng.ToolTip1" xml:space="preserve">
+  <data name="numericBoxVolume.ToolTip1" xml:space="preserve">
     <value>Volume de maille en Å³</value>
-  </data>
-  <data name="numericBoxCellVolumeNm.ToolTip" xml:space="preserve">
-    <value>Volume de maille en nm³</value>
-  </data>
-  <data name="numericBoxCellVolumeNm.ToolTip1" xml:space="preserve">
-    <value>Volume de maille en nm³</value>
   </data>
   <data name="numericBoxCellMass.ToolTip" xml:space="preserve">
     <value>Masse de la maille en 10⁻²⁴ g</value>

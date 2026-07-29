@@ -68,7 +68,7 @@
   <data name="tabPageBasicInfo.Text" xml:space="preserve">
     <value>Basisinfo</value>
   </data>
-  <data name="numericBoxVolumeAng.HeaderText" xml:space="preserve">
+  <data name="numericBoxVolume.HeaderText" xml:space="preserve">
     <value>Zellvolumen</value>
   </data>
   <data name="numericBoxCellMass.HeaderText" xml:space="preserve">
@@ -166,17 +166,11 @@ der diese Kristallstruktur entnommen ist.</value>
     <value>Titel der Veröffentlichung,
 der diese Kristallstruktur entnommen ist.</value>
   </data>
-  <data name="numericBoxVolumeAng.ToolTip" xml:space="preserve">
+  <data name="numericBoxVolume.ToolTip" xml:space="preserve">
     <value>Zellvolumen in Å³</value>
   </data>
-  <data name="numericBoxVolumeAng.ToolTip1" xml:space="preserve">
+  <data name="numericBoxVolume.ToolTip1" xml:space="preserve">
     <value>Zellvolumen in Å³</value>
-  </data>
-  <data name="numericBoxCellVolumeNm.ToolTip" xml:space="preserve">
-    <value>Zellvolumen in nm³</value>
-  </data>
-  <data name="numericBoxCellVolumeNm.ToolTip1" xml:space="preserve">
-    <value>Zellvolumen in nm³</value>
   </data>
   <data name="numericBoxCellMass.ToolTip" xml:space="preserve">
     <value>Zellmasse in 10⁻²⁴ g</value>

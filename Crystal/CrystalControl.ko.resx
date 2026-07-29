@@ -68,7 +68,7 @@
   <data name="tabPageBasicInfo.Text" xml:space="preserve">
     <value>기본 정보</value>
   </data>
-  <data name="numericBoxVolumeAng.HeaderText" xml:space="preserve">
+  <data name="numericBoxVolume.HeaderText" xml:space="preserve">
     <value>단위 격자 부피</value>
   </data>
   <data name="numericBoxCellMass.HeaderText" xml:space="preserve">
@@ -166,17 +166,11 @@
     <value>이 결정 구조의 출처 문헌의
 제목입니다.</value>
   </data>
-  <data name="numericBoxVolumeAng.ToolTip" xml:space="preserve">
+  <data name="numericBoxVolume.ToolTip" xml:space="preserve">
     <value>단위 격자 부피(Å³)</value>
   </data>
-  <data name="numericBoxVolumeAng.ToolTip1" xml:space="preserve">
+  <data name="numericBoxVolume.ToolTip1" xml:space="preserve">
     <value>단위 격자 부피(Å³)</value>
-  </data>
-  <data name="numericBoxCellVolumeNm.ToolTip" xml:space="preserve">
-    <value>단위 격자 부피(nm³)</value>
-  </data>
-  <data name="numericBoxCellVolumeNm.ToolTip1" xml:space="preserve">
-    <value>단위 격자 부피(nm³)</value>
   </data>
   <data name="numericBoxCellMass.ToolTip" xml:space="preserve">
     <value>단위 격자 질량(10⁻²⁴ g)</value>

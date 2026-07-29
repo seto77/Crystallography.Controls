@@ -154,6 +154,8 @@ public partial class CrystalControl : UserControlBase
 
         FormBeamInteraction.VisibleChanged += formBeamInteraction_VisibleChanged;
         FormSymmetryInformation.VisibleChanged += formSymmetryInformation_VisibleChanged;
+
+        symmetryControl_LengthUnitChanged(this, EventArgs.Empty); // 260729Cl 追加: 体積・数密度の単位表示を初期化 (Designer/resx の Å 前提とコード側を一致させる)
     }
 
     private void CrystalForm_Load(object sender, EventArgs e)
@@ -229,12 +231,14 @@ public partial class CrystalControl : UserControlBase
         textBoxTitle.Text = Crystal.PublSectionTitle;
 
         numericBoxDensity.Value = Crystal.Density;
-        numericBoxVolumeAng.Value = Crystal.Volume * 1000;
-        numericBoxCellVolumeNm.Value = Crystal.Volume;
+        numericBoxVolume.Value = Crystal.Volume * volumeScale; // 260729Cl 変更: symmetryControl の Å/nm ラジオに追従する
+        //numericBoxVolumeAng.Value = Crystal.Volume * 1000;
+        //numericBoxCellVolumeNm.Value = Crystal.Volume;
         numericBoxMolarVolume.Value = Crystal.Volume * UniversalConstants.A / Crystal.ChemicalFormulaZ * 1E-21;
         numericBoxZnumber.Value = Crystal.ChemicalFormulaZ;
         numericBoxMolarMass.Value = numericBoxDensity.Value * numericBoxMolarVolume.Value;
-        numericBoxCellMass.Value = numericBoxDensity.Value * numericBoxVolumeAng.Value;
+        numericBoxCellMass.Value = numericBoxDensity.Value * Crystal.Volume * Ang3PerNm3; // 260729Cl 変更: 表示単位に依らず Å³ 基準で計算する (旧: numericBoxVolumeAng.Value)
+        //numericBoxCellMass.Value = numericBoxDensity.Value * numericBoxVolumeAng.Value;
 
         // 260606Cl 追加: 平均原子番号(個数/質量加重)・平均原子量・原子数密度・電子数密度。
         // ElementNum は Multiplicity*Occ (占有率込み) なので、これらの量も占有率を反映する。
@@ -249,8 +253,10 @@ public partial class CrystalControl : UserControlBase
         numericBoxMeanZnumber.Value = sumN > 0 ? sumNZ / sumN : 0;        // 平均原子番号 (個数平均)
         numericBoxMeanZmass.Value = sumNA > 0 ? sumNAZ / sumNA : 0;       // 平均原子番号 (質量平均)
         numericBoxMeanAtomicWeight.Value = sumN > 0 ? sumNA / sumN : 0;   // 平均原子量 (原子あたり, g/mol。Molar Mass=式単位あたり とは別物)
-        numericBoxAtomicNumberDensity.Value = Crystal.Volume > 0 ? sumN / Crystal.Volume : 0;   // atoms/nm³
-        numericBoxElectronDensity.Value = Crystal.Volume > 0 ? sumNZ / Crystal.Volume : 0;      // electrons/nm³
+        numericBoxAtomicNumberDensity.Value = Crystal.Volume > 0 ? sumN / (Crystal.Volume * volumeScale) : 0;   // 260729Cl 変更: atoms/Å³ または atoms/nm³
+        numericBoxElectronDensity.Value = Crystal.Volume > 0 ? sumNZ / (Crystal.Volume * volumeScale) : 0;     // 260729Cl 変更: electrons/Å³ または electrons/nm³
+        //numericBoxAtomicNumberDensity.Value = Crystal.Volume > 0 ? sumN / Crystal.Volume : 0;   // atoms/nm³
+        //numericBoxElectronDensity.Value = Crystal.Volume > 0 ? sumNZ / Crystal.Volume : 0;      // electrons/nm³
 
         SymmetrySeriesNumber = Crystal.SymmetrySeriesNumber; // setter 内でコンボボックスをセットする (20170526)
 
@@ -274,6 +280,60 @@ public partial class CrystalControl : UserControlBase
 
         SkipEvent = false;
         ResumeLayout();
+    }
+    #endregion
+
+    #region 長さ単位 (Å / nm) の切り替え  260729Cl 追加
+    // 旧実装では Å³ 用 (numericBoxVolumeAng) と nm³ 用 (numericBoxCellVolumeNm) の 2 つを並べていたが、
+    // symmetryControl の Å/nm ラジオに追従する 1 つ (numericBoxVolume) に統合した。原子数密度・電子数密度も同様。
+
+    /// <summary>1 nm³ = 1000 Å³。Crystal.Volume の単位は nm³ なので、体積表示・数密度・単位胞質量の換算はすべてこれ 1 つで決まる</summary>
+    private const double Ang3PerNm3 = 1000.0;
+
+    /// <summary>Crystal.Volume (nm³) を現在の表示単位へ換算する係数 (symmetryControl の Å/nm ラジオに従う)</summary>
+    private double volumeScale => symmetryControl.LengthUnit == LengthUnitEnum.Angstrom ? Ang3PerNm3 : 1.0;
+    //private bool angstromUnit => symmetryControl.LengthUnit == LengthUnitEnum.Angstrom;         // 260730Cl 削除: 参照 2 箇所のみだったので volumeScale へ畳んだ
+    //private string volumeToolTipAng;                                                            // 260730Cl 削除: 表示中チップからの双方向トークン置換に変えてキャッシュ不要に
+
+    /// <summary>symmetryControl の Å/nm ラジオに追従して、体積・数密度の表示単位を切り替える。
+    /// 物理量は不変なので、表示値は Ang3PerNm3 倍 / その逆数倍に読み替えるだけでよい。
+    /// コンストラクタからも一度呼び、Designer/resx の Å 前提と実行時の表示を必ず一致させる。
+    /// 260730Cl: FooterText から「切替前の表示単位」を導出して冪等化 (同じ単位で二度呼ばれても値が千倍に壊れない)。
+    /// ツールチップは表示中の文字列の単位トークンを双方向置換する (全 11 言語とも訳文が "Å³" を 1 回だけ含み "nm³" を含まないことを確認済。訳を変えるときは注意)。</summary>
+    private void symmetryControl_LengthUnitChanged(object sender, EventArgs e)
+    {
+        var ang = symmetryControl.LengthUnit == LengthUnitEnum.Angstrom;
+        var wasAng = numericBoxVolume.FooterText == "Å³"; // resx 既定も下の設定値も "Å³"/"nm³" の二択なので、これが切替前の単位を表す
+
+        flowLayoutPanelCellProperties.SuspendLayout(); // 幅・フッタ・書式を続けて変えるので、フローの再配置は最後に 1 回だけ
+        try
+        {
+            numericBoxVolume.FooterText = ang ? "Å³" : "nm³";
+            numericBoxAtomicNumberDensity.FooterText = numericBoxElectronDensity.FooterText = ang ? "Å⁻³" : "nm⁻³";
+
+            // Å 側は nm 側より 3 桁細かくして有効数字を保つ。体積の nm³ だけは旧 numericBoxCellVolumeNm の有効数字 9 桁を踏襲。
+            numericBoxVolume.FormatSpecifier = ang ? "f4" : "g9";
+            numericBoxAtomicNumberDensity.FormatSpecifier = ang ? "f7" : "f4";
+            numericBoxElectronDensity.FormatSpecifier = ang ? "f6" : "f3";
+            // 数値欄幅も単位ごとに変える。体積は旧 2 ボックスの幅をそれぞれ踏襲。数密度の Å⁻³ は
+            // "0.0998860" が幅 60 (実測 58px > 内寸 56px) でクリップしたので Å 側だけ広げる。
+            numericBoxVolume.ValueBoxWidth = ang ? 64 : 86;
+            numericBoxAtomicNumberDensity.ValueBoxWidth = numericBoxElectronDensity.ValueBoxWidth = ang ? 68 : 60;
+
+            var tip = toolTip.GetToolTip(numericBoxVolume); // 未設定時は "" が返るので null ガード不要
+            numericBoxVolume.SetHostToolTip(toolTip, ang ? tip.Replace("nm³", "Å³") : tip.Replace("Å³", "nm³"));
+            //numericBoxVolume.SetHostToolTip(toolTip, ang ? volumeToolTipAng : volumeToolTipAng?.Replace("Å³", "nm³"));                              // 260730Cl 変更前
+
+            if (wasAng != ang) // 260730Cl 追加: 実際に単位が切り替わったときだけ表示値をリスケール
+            {
+                // 体積は Å 表示で ×Ang3PerNm3、数密度は体積の逆数なので割る
+                var factor = ang ? Ang3PerNm3 : 1 / Ang3PerNm3;
+                numericBoxVolume.Value *= factor;
+                numericBoxAtomicNumberDensity.Value /= factor;
+                numericBoxElectronDensity.Value /= factor;
+            }
+        }
+        finally { flowLayoutPanelCellProperties.ResumeLayout(true); }
     }
     #endregion
 
