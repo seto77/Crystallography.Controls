@@ -44,7 +44,8 @@ public partial class FormAnotherSpaceGroup : FormBase
         string txt = ((ListBox)sender).Items[e.Index].ToString();
 
         float xPos = e.Bounds.Left;
-        var brush = (e.State & DrawItemState.Selected) == DrawItemState.Selected ? Brushes.White : Brushes.Black;
+        //var brush = (e.State & DrawItemState.Selected) == DrawItemState.Selected ? Brushes.White : Brushes.Black; //260731Cl 変更前
+        var brush = (e.State & DrawItemState.Selected) == DrawItemState.Selected || Application.IsDarkModeEnabled ? Brushes.White : Brushes.Black; //260731Cl 変更: ダーク時の非選択項目も白文字
         e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
 
         // 「:」を含む場合は空間群番号 + コロンまでを通常フォントで先に描く

@@ -19,6 +19,17 @@ public partial class GraphControl : UserControlBase
     {
         InitializeComponent();
         //260607Ch 仕様変更: 上部/下部パネルは公開プロパティではなく、タイトル/マウス位置/範囲/Copy の表示状態から自動判定する。
+
+        //260731Cl 追加: ダークモード時の既定配色。SystemColors はダーク値へ再マップ済み (Control=#202020, ControlText=#FFFFFF)。
+        //ホストが Designer やコードで明示指定した色は InitializeComponent 後の代入なのでそちらが優先される。
+        //(例外: DefaultValue=White のプロパティを Designer で明示的に White に選んでも serialize されず、ダーク時は #202020 になる。現状該当ホストなし)
+        if (Application.IsDarkModeEnabled)
+        {
+            BackgroundColor = SystemColors.Control;
+            AxisTextColor = SystemColors.ControlText;
+            DivisionLineColor = Color.FromArgb(80, 80, 80); //LightGray 相当の暗色版
+            pictureBox.BackColor = SystemColors.Control; //260731Cl 追加: 描画前 (Image 未設定) に見える Designer 既定の白もダーク化
+        }
     }
     #endregion
 
@@ -1178,6 +1189,9 @@ public partial class GraphControl : UserControlBase
     /// <param name="transformedX">対数変換済みのX座標 (描画座標系。プロファイル点・ConvToPicBoxCoordと同じ系)</param>
     private void DrawVerticalLineMarkers(double transformedX)
     {
+        //260604Cl 再描画ごとの GDI ハンドル蓄積を避ける: 縁取り Pen はループ外で 1 本だけ確保、塗りは using で確実に解放
+        //260731Cl 変更: マーカー縁取りは「背景色の halo」が意図なので共有 Pens.White でなく背景色に追随 (ダークモード対応)
+        using var edgePen = new Pen(BackgroundColor);
         for (int j = 0; j < destProfileList.Count && j < srcProfileList.Count; j++)
         {
             var dp = destProfileList[j];
@@ -1190,10 +1204,10 @@ public partial class GraphControl : UserControlBase
             var color = srcProfileList[j] != null ? srcProfileList[j].Color : VerticalLineColor;
             var p = ConvToPicBoxCoord(transformedX, transformedY);
             float r = VerticalLineMarkerRadius;
-            //260604Cl 再描画ごとの GDI ハンドル蓄積を避ける: 白縁は共有 Pens.White、塗りは using で確実に解放
             using (var brush = new SolidBrush(color))
                 G.FillEllipse(brush, p.X - r, p.Y - r, r * 2, r * 2);
-            G.DrawEllipse(Pens.White, p.X - r, p.Y - r, r * 2, r * 2);
+            //G.DrawEllipse(Pens.White, p.X - r, p.Y - r, r * 2, r * 2); //260731Cl 変更前
+            G.DrawEllipse(edgePen, p.X - r, p.Y - r, r * 2, r * 2);
         }
     }
 

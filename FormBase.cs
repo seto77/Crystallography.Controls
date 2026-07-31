@@ -76,7 +76,34 @@ public partial class FormBase : Form
             try { UiFont.Apply(this); } catch { /* フォント適用失敗で Load を止めない */ }
             // 260621Cl 追加 (§2.5): Localizable=false ラベルをコード側テーブルで多言語化 (動的追加分も base.OnLoad 後に確実)。
             try { CodeLocalizer.Apply(this); } catch { /* 多言語化失敗で Load を止めない */ }
+            // 260731Cl 追加: ダークモード時、FlatStyle.Standard の Button は明示 BackColor を無視してテーマ描画される
+            // (net10 実測: Standard/System は無視、Flat/Popup は反映)。SteelBlue 等のアクション色を維持するため Popup へ切替。
+            //try { if (Application.IsDarkModeEnabled) ApplyDarkModeButtonFix(this); } catch { /* 失敗しても Load を止めない */ } //260731Cl 変更前 (DataGridView 対応で改名)
+            try { if (Application.IsDarkModeEnabled) ApplyDarkModeControlFix(this); } catch { /* 失敗しても Load を止めない */ }
         }
+    }
+
+    /// <summary>260731Cl 追加: ダークモード対応キャンバスの既定背景色 (ライト=白 / ダーク=フォーム背景 #202020)。
+    /// 「白地に描く描画面をダーク時はフォーム背景色に落とす」ポリシーの一元定義 (各所のインライン三項式を集約)。</summary>
+    public static Color CanvasBackColor => Application.IsDarkModeEnabled ? SystemColors.Control : Color.White;
+
+    //260731Cl 変更: ApplyDarkModeButtonFix → ApplyDarkModeControlFix に改名し DataGridView 対応を追加
+    // ・Button: 明示背景色 (非システム色) を持つものを FlatStyle.Popup へ (Standard は BackColor 無視のため)
+    // ・DataGridView: EnableHeadersVisualStyles=false へ (net10 実測: true だとヘッダがライトテーマ描画のまま残る。
+    //   false なら SystemColors 再マップで #202020 になる。各グリッドのヘッダ色指定は全て SystemColors ベースなので追従する)
+    // ・ComboBox (DropDownList): FlatStyle.Flat へ。実アプリでダークテーマ適用が漏れて面が白地黒字のまま残る個体が
+    //   ある (FormEBSD で実害報告。分離テストでは再現せず原因未特定) ため、テーマ描画に依存しない Flat の自前描画
+    //   (BackColor=Window #323232 / ForeColor=WindowText 白、SystemColors 再マップ) に切り替えて確実にダーク化する。
+    private static void ApplyDarkModeControlFix(Control root)
+    {
+        if (root is Button b && b.FlatStyle == FlatStyle.Standard && !b.UseVisualStyleBackColor && !b.BackColor.IsSystemColor)
+            b.FlatStyle = FlatStyle.Popup;
+        if (root is DataGridView dgv)
+            dgv.EnableHeadersVisualStyles = false;
+        if (root is ComboBox cmb && cmb.DropDownStyle == ComboBoxStyle.DropDownList && cmb.FlatStyle == FlatStyle.Standard) //260731Cl 追加
+            cmb.FlatStyle = FlatStyle.Flat;
+        foreach (Control c in root.Controls)
+            ApplyDarkModeControlFix(c);
     }
 
     protected override void OnFormClosing(FormClosingEventArgs e)

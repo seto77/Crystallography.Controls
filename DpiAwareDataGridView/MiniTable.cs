@@ -289,11 +289,20 @@ public class MiniTable : DpiAwareDataGridView
         base.BackgroundColor = ResolveBackground();
         base.TabStop = Selectable;
 
+        // 260731Cl 追加: ダークモード時、ビジュアルスタイルのヘッダ描画は明色のまま残る (net10 実測: true→ライト固定、
+        // false→SystemColors 再マップで #202020)。ダーク時のみ false にしてヘッダを暗色化する。
+        // (RecreateHandle 毎に本メソッドが走るため、FormBase 側の一括フックでなくここで設定するのが確実)
+        if (Application.IsDarkModeEnabled)
+            base.EnableHeadersVisualStyles = false;
+
         base.DefaultCellStyle.BackColor = SystemColors.Window;
         base.DefaultCellStyle.ForeColor = SystemColors.ControlText;
 
         // 控えめな交互行色 (ハイコントラストでは無効化)
-        var alt = SystemInformation.HighContrast ? SystemColors.Window : Color.FromArgb(248, 248, 248);
+        //var alt = SystemInformation.HighContrast ? SystemColors.Window : Color.FromArgb(248, 248, 248); //260731Cl 変更前
+        var alt = SystemInformation.HighContrast ? SystemColors.Window
+                : Application.IsDarkModeEnabled ? Color.FromArgb(58, 58, 58)      //260731Cl 変更: ダーク時は Window(#323232) よりわずかに明るい暗色 (旧 #F8F8F8 は白文字と衝突)
+                : Color.FromArgb(248, 248, 248);
         base.AlternatingRowsDefaultCellStyle.BackColor = alt;
 
         if (Selectable)

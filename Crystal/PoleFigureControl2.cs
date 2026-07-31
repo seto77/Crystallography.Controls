@@ -85,7 +85,8 @@ public partial class PoleFigureControl2 : UserControlBase
                 (float)(pictureBox.ClientSize.Height / 2.0 - center.Y * magnification));
             g.Transform = transform; // (260611Ch)
 
-            g.Clear(Color.White);
+            //g.Clear(Color.White); //260731Cl 変更前
+            g.Clear(FormBase.CanvasBackColor); //260731Cl 変更: ダークモード追随 (ダーク時 #202020 の一元定義)
             DrawDensity(g, Pixels);
             DrawOutline(g);
             DrawSymbols(g);
@@ -106,7 +107,8 @@ public partial class PoleFigureControl2 : UserControlBase
             //g.Transform = new Matrix(mag, 0, 0, mag, 512, 512); // (260611Ch) 旧: Matrix が未解放
             using var transform = new Matrix(mag, 0, 0, mag, 512, 512); // (260611Ch)
             g.Transform = transform; // (260611Ch)
-            g.Clear(Color.White);
+            //g.Clear(Color.White); //260731Cl 変更前
+            g.Clear(FormBase.CanvasBackColor); //260731Cl 変更: ダークモード追随 (画面表示と同じ見た目でコピー。ダーク時 #202020 の一元定義)
             DrawDensity(g, Pixels);
             DrawOutline(g);
             DrawSymbols(g);
@@ -323,12 +325,17 @@ public partial class PoleFigureControl2 : UserControlBase
             }
 
             using var tickFont = new Font(WineCompat.Resolve("Tahoma"), 8f); //260610Cl Wine時フォント切替
+            //260731Cl 追加: 目盛り色はライト=黒/ダーク=白 (ControlText はライトで黒に解決されるので三項不要)。Pen はループ外で 1 回だけ生成
+            var tickColor = SystemColors.ControlText;
+            using var tickPen = new Pen(tickColor);
             for (int i = 0; i < 5; i++)
             {
                 var x = i / 4f * scaleWidth;
                 var val = (numericBoxMax.Value - numericBoxMin.Value) * i / 4.0 + numericBoxMin.Value;
-                gScale.DrawLine(Pens.Black, new PointF(leftMargin + x, scaleHeight), new PointF(leftMargin + x, scaleHeight + barLength));
-                gScale.DrawStringWithAlignment($"{val:g6}", tickFont, Color.Black,
+                //gScale.DrawLine(Pens.Black, new PointF(leftMargin + x, scaleHeight), new PointF(leftMargin + x, scaleHeight + barLength)); //260731Cl 変更前
+                //gScale.DrawStringWithAlignment($"{val:g6}", tickFont, Color.Black, //260731Cl 変更前
+                gScale.DrawLine(tickPen, new PointF(leftMargin + x, scaleHeight), new PointF(leftMargin + x, scaleHeight + barLength));
+                gScale.DrawStringWithAlignment($"{val:g6}", tickFont, tickColor,
                     new PointD(leftMargin + x, scaleHeight + barLength), new Size(100, 20),
                     HorizontalAlignment.Center, System.Windows.Forms.VisualStyles.VerticalAlignment.Top);
             }

@@ -780,13 +780,14 @@ public partial class FormSymmetryInformation : FormBase
             Clipboard.SetDataObject(SymmetryDiagramPositions.RenderGeneralPositions(sn, size, axis, testPoint), true);
     }
 
-    /// <summary>EMF+ クリップボードコピーの共通設定 (背景白・AntiAlias) を済ませてから <paramref name="drawDiagram"/> を呼ぶ。</summary>
+    /// <summary>EMF+ クリップボードコピーの共通設定 (背景・AntiAlias) を済ませてから <paramref name="drawDiagram"/> を呼ぶ。</summary> //260731Cl 変更: 「背景白」→「背景」(ダーク対応)
     private void CopyAsMetafile(Action<Graphics> drawDiagram)
         => ClipboardMetafileHelper.PutDrawingOnClipboardAsEnhMetafile(Handle, g =>
         {
             g.SmoothingMode = SmoothingMode.AntiAlias;
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
-            g.Clear(Color.White);
+            //g.Clear(Color.White); //260731Cl 変更前
+            g.Clear(SymmetryDiagramCommon.DiagramBackColor); //260731Cl 変更: 画面表示と同じ配色でコピー (ダーク時 #202020)
             drawDiagram(g);
         });
     #endregion

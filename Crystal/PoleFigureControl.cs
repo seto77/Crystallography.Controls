@@ -68,7 +68,8 @@ public partial class PoleFigureControl : UserControlBase
                 (float)(pictureBox.ClientSize.Width / 2.0 - center.X * magnification),
                 (float)(pictureBox.ClientSize.Height / 2.0 - center.Y * magnification));
             g.Transform = transform; // (260611Ch)
-            g.Clear(Color.White);
+            //g.Clear(Color.White); //260731Cl 変更前
+            g.Clear(FormBase.CanvasBackColor); //260731Cl 変更: ダークモード追随 (ダーク時 #202020 の一元定義)
 
             if (renewDensityPixels)
                 pixels = generateDensityArrayNormal(Math.PI / 180.0 * (double)numericUpDownResolution.Value);
@@ -90,7 +91,8 @@ public partial class PoleFigureControl : UserControlBase
             //g.Transform = new Matrix(mag, 0, 0, -mag, 512, 512); // (260611Ch) 旧: Matrix が未解放
             using var transform = new Matrix(mag, 0, 0, -mag, 512, 512); // (260611Ch)
             g.Transform = transform; // (260611Ch)
-            g.Clear(Color.White);
+            //g.Clear(Color.White); //260731Cl 変更前
+            g.Clear(FormBase.CanvasBackColor); //260731Cl 変更: ダークモード追随 (ダーク時 #202020 の一元定義)
             pixels = generateDensityArrayNormal(Math.PI / 180.0 * (double)numericUpDownResolution.Value);
             DrawDensity(g, pixels);
             DrawOutline(g);

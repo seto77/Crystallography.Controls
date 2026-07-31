@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Windows.Forms; //260731Cl 追加: ダークモード判定 (Application.IsDarkModeEnabled) 用
 
 namespace Crystallography.Controls;
 
@@ -45,6 +46,18 @@ public abstract class SymmetryDiagramCommon
     public static Color CellGuideLineColor = Color.LightBlue;
     /// <summary>(260502Cl) セル内部の補助線の線幅 (pixel)。破線スタイルで描画。</summary>
     public static float CellGuideLinePenWidth = 0.7f;
+
+    //----------------------------------------------------------------------
+    // 260731Cl 追加: ダークモード対応 (前景 黒⇔白 / 背景 白⇔#202020)
+    //----------------------------------------------------------------------
+    /// <summary>260731Cl 追加: FormGroupRelations の透明レイヤ+ColorMatrix ティント合成は「黒前景・白ハロー」前提のため、
+    /// そのレイヤ描画中はライト配色を強制する (true の間はダークモードでも従来どおり黒/白で描く)。</summary>
+    public static bool ForceLightTheme;
+    /// <summary>260731Cl 追加: 図の前景色 (対称要素記号・文字)。ライト=黒、ダーク=白。</summary>
+    public static Color DiagramForeColor => !ForceLightTheme && Application.IsDarkModeEnabled ? Color.White : Color.Black;
+    /// <summary>260731Cl 追加: 図の背景色 (キャンバス・記号ハロー・白抜き)。ライト=白、ダーク=フォーム背景 (#202020)。
+    /// 白ハロー/白塗りは「背景色での抜き」の意味なので背景と常に一致させる。</summary>
+    public static Color DiagramBackColor => !ForceLightTheme && Application.IsDarkModeEnabled ? SystemColors.Control : Color.White;
 
     //----------------------------------------------------------------------
     // 図中フォント (260502Cl) — 全ての描画箇所で共有して使う長寿命インスタンス。
@@ -290,7 +303,8 @@ public abstract class SymmetryDiagramCommon
         // (260502Cl) フォントは Common 冒頭の AxisLabelFont / OriginLabelFont を共有使用。
         // (260505Cl) showAxisLabels=false で軸ラベルをスキップ。対称要素図ではラベルを出さず、一般位置図側だけで表示する。
         if (!showAxisLabels) return;
-        using var brush = new SolidBrush(Color.Black);
+        //using var brush = new SolidBrush(Color.Black); //260731Cl 変更前
+        using var brush = new SolidBrush(DiagramForeColor); //260731Cl 変更: ダーク時は白
         // 260510Cl: 高さラベルと同じ tight glyph bounds を使い、AxisLabelGap が GDI+ の余白で食われないようにする。
         var oSz = MeasureTightString("o", AxisLabelFont);
         var hSz = MeasureTightString(proj.HorzLabel, AxisLabelFont);
@@ -374,7 +388,8 @@ public abstract class SymmetryDiagramCommon
         g = Graphics.FromImage(bmp);
         g.SmoothingMode = SmoothingMode.AntiAlias;
         g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-        g.Clear(Color.White);
+        //g.Clear(Color.White); //260731Cl 変更前
+        g.Clear(DiagramBackColor); //260731Cl 変更: ダーク時は #202020
         return bmp;
     }
 

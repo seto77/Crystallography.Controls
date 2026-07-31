@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Windows.Forms; //260731Cl 追加: ダークモード判定 (Application.IsDarkModeEnabled) 用
 using static Crystallography.SymmetryElementsTable;
 
 namespace Crystallography.Controls;
@@ -37,6 +38,14 @@ public class SymmetryDiagramPositions : SymmetryDiagramCommon
     private static readonly Color[]  AxisColors  = [Color.FromArgb(180, 0, 0), Color.FromArgb(0, 130, 0), Color.FromArgb(0, 0, 180)];
     private static readonly Brush[]  AxisBrushes = [.. AxisColors.Select(c => (Brush)new SolidBrush(c))];
     private static readonly Pen[]    AxisPens    = [.. AxisColors.Select(c => new Pen(c, CirclePenWidth))];
+
+    //260731Cl 追加: ダーク背景 (#202020) 用の明色版 (暗赤/暗緑/暗青はダーク背景でほぼ沈むため明度を上げた a=赤/b=緑/c=青)。
+    //ForceLightTheme 中 (FormGroupRelations のレイヤ描画) と ライトモードでは従来のライト版を使う。
+    private static readonly Color[]  AxisColorsDark  = [Color.FromArgb(255, 110, 110), Color.FromArgb(110, 220, 110), Color.FromArgb(130, 160, 255)];
+    private static readonly Brush[]  AxisBrushesDark = [.. AxisColorsDark.Select(c => (Brush)new SolidBrush(c))];
+    private static readonly Pen[]    AxisPensDark    = [.. AxisColorsDark.Select(c => new Pen(c, CirclePenWidth))];
+    private static Brush[] CurrentAxisBrushes => !ForceLightTheme && Application.IsDarkModeEnabled ? AxisBrushesDark : AxisBrushes;
+    private static Pen[]   CurrentAxisPens    => !ForceLightTheme && Application.IsDarkModeEnabled ? AxisPensDark : AxisPens;
 
     /// <summary>(260503Cl) 立方晶 [111] 3 回回転 orbit 三角形の薄灰色 Pen。</summary>
     private static readonly Pen CubicTrianglePen = new(Color.FromArgb(190, 190, 190), 0.6f);
@@ -211,7 +220,7 @@ public class SymmetryDiagramPositions : SymmetryDiagramCommon
             clusters.Add((members.Average(m => m.Px), members.Average(m => m.Py), LabelsBy(members, false), LabelsBy(members, true)));
         }
 
-        using var whiteFill = new SolidBrush(Color.White);
+        using var whiteFill = new SolidBrush(DiagramBackColor); //260731Cl: Color.White→背景色 (○の白抜きはダーク時 #202020)
         // 260714Cl: Pen/SolidBrush を色 (retained/lost 2 色 + 黒 fallback) でキャッシュする
         // (旧: ループ内で using var pen/brush を毎点確保 → 最大 ~192 点 × 2 の GDI ハンドル生成/破棄が発生)。
         var penCache = new Dictionary<Color, Pen>();
@@ -401,7 +410,7 @@ public class SymmetryDiagramPositions : SymmetryDiagramCommon
     private static void DrawClusters(Graphics g, List<Placement> placements, Font labelFont, float scale, int projAxisIdx,
                                      float circleRadius)
     {
-        using var fill = new SolidBrush(Color.White);
+        using var fill = new SolidBrush(DiagramBackColor); //260731Cl: Color.White→背景色 (○の白抜きはダーク時 #202020)
         var sizes = new Dictionary<string, SizeF>();
         foreach (var p in placements)
             // 旧: if (!sizes.ContainsKey(p.Label)) sizes[p.Label] = g.MeasureString(p.Label, labelFont);
@@ -412,9 +421,9 @@ public class SymmetryDiagramPositions : SymmetryDiagramCommon
         for (int i = 0; i < infos.Count; i++)
             axes[i] = ClusterAxisIndex(infos[i], projAxisIdx);
         for (int i = 0; i < infos.Count; i++)
-            DrawClusterCircle(g, infos[i], AxisPens[axes[i]], fill, AxisBrushes[axes[i]], dotR, circleRadius);
+            DrawClusterCircle(g, infos[i], CurrentAxisPens[axes[i]], fill, CurrentAxisBrushes[axes[i]], dotR, circleRadius); //260731Cl: Axis*→CurrentAxis* (ダーク時明色版)
         for (int i = 0; i < infos.Count; i++)
-            DrawClusterLabels(g, infos, i, sizes, labelFont, AxisBrushes[axes[i]], circleRadius);
+            DrawClusterLabels(g, infos, i, sizes, labelFont, CurrentAxisBrushes[axes[i]], circleRadius); //260731Cl: 同上
     }
 
     private static int ClusterAxisIndex(ClusterInfo info, int fallback)
@@ -536,7 +545,7 @@ public class SymmetryDiagramPositions : SymmetryDiagramCommon
             float y = isUpper ? cy - circleRadius - (i + 1) * sz.Height + LabelGapV : cy + circleRadius + i * sz.Height - LabelGapV;
             int idx = LabelAxisIndex(labels[i]);
             // g.DrawString(labels[i], font, idx >= 0 ? AxisBrushes[idx] : brush, x, y); // 旧: DrawString の余白を含む配置。
-            DrawTightString(g, idx >= 0 ? AxisBrushes[idx] : brush, labels[i], font, x, y); // 260510Ch
+            DrawTightString(g, idx >= 0 ? CurrentAxisBrushes[idx] : brush, labels[i], font, x, y); // 260510Ch //260731Cl: AxisBrushes→CurrentAxisBrushes
         }
     }
     #endregion

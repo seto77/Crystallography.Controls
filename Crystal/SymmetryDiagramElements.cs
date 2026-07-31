@@ -251,20 +251,22 @@ public class SymmetryDiagramElements : SymmetryDiagramCommon
         var table = tableOverride ?? SymmetryElementsTable.Get(seriesNumber); // 260713Cl (③-2): override 優先
         if (table == null) return;
 
-        using var pen        = new Pen(Color.Black, DefaultPenWidth);
-        using var mirrorPen  = new Pen(Color.Black, MirrorPenWidth);
-        using var inPlanePen = new Pen(Color.Black, MirrorPenWidth) { DashStyle = DashStyle.Custom, DashPattern = [5f, 3f] };
-        using var depthPen   = new Pen(Color.Black, MirrorPenWidth) { DashStyle = DashStyle.Custom, DashPattern = [1f, 2.5f] };
-        using var diagPen    = new Pen(Color.Black, MirrorPenWidth) { DashStyle = DashStyle.Custom, DashPattern = [5f, 2.5f, 1f, 2.5f] };
-        using var ePen       = new Pen(Color.Black, MirrorPenWidth)
+        //260731Cl 変更: ダークモード対応。Color.Black → DiagramForeColor (ダーク時 白)、Color.White → DiagramBackColor (ダーク時 #202020)。
+        //変数名 white は「背景色での抜き」の意味なので名前は維持し実体だけ背景色に追随させる。
+        using var pen        = new Pen(DiagramForeColor, DefaultPenWidth);
+        using var mirrorPen  = new Pen(DiagramForeColor, MirrorPenWidth);
+        using var inPlanePen = new Pen(DiagramForeColor, MirrorPenWidth) { DashStyle = DashStyle.Custom, DashPattern = [5f, 3f] };
+        using var depthPen   = new Pen(DiagramForeColor, MirrorPenWidth) { DashStyle = DashStyle.Custom, DashPattern = [1f, 2.5f] };
+        using var diagPen    = new Pen(DiagramForeColor, MirrorPenWidth) { DashStyle = DashStyle.Custom, DashPattern = [5f, 2.5f, 1f, 2.5f] };
+        using var ePen       = new Pen(DiagramForeColor, MirrorPenWidth)
         {
             DashStyle = DashStyle.Custom,
             DashCap = DashCap.Round,
             // DashPattern = [0.1f, EGlideDotDashUnit, 0.1f, EGlideDotDashUnit, 5.0f, EGlideDotDashUnit] // 旧: dot-dot-dash
             DashPattern = [5.0f, EGlideDotDashUnit, 0.1f, EGlideDotDashUnit, 0.1f, EGlideDotDashUnit] // (260505Ch) e-glide は dash-dot-dot
         };
-        using var fill  = new SolidBrush(Color.Black);
-        using var white = new SolidBrush(Color.White);
+        using var fill  = new SolidBrush(DiagramForeColor);
+        using var white = new SolidBrush(DiagramBackColor);
         bool isCubic     = sym.CrystalSystemNumber == 7;
         bool isCubicHigh = IsCubicHighSym(sym); // (260506Cl) stereonet inset を持つ立方晶高対称群。
         var stereonetPositions = isCubicHigh ? GetStereonetDrawPositions(sym) : null; // (260506Cl) 1 描画中に複数箇所で使うのでキャッシュ。
@@ -569,7 +571,7 @@ public class SymmetryDiagramElements : SymmetryDiagramCommon
             if (!screw)
             {
                 // 純 2 回軸: レンズに白ハローを巻いて下地と分離する。
-                using var halo = new Pen(Color.White, SymbolHaloPenWidth) { LineJoin = LineJoin.Round };
+                using var halo = new Pen(DiagramBackColor, SymbolHaloPenWidth) { LineJoin = LineJoin.Round }; //260731Cl: Color.White→背景色 (ダーク対応)
                 g.DrawPath(halo, path);
                 g.FillPath(fill, path);
                 return;
@@ -582,15 +584,15 @@ public class SymmetryDiagramElements : SymmetryDiagramCommon
             float leftFinStart  = halfAngle - TwofoldFinOverlapDeg;
             // 260504Cl: 可視部分 (= ScrewFinSweepDeg) のみ finSweepScale でスケール、overlap は不変。
             float finSweep      = ScrewFinSweepDeg * finSweepScale + TwofoldFinOverlapDeg;
-            using (var lensHalo = new Pen(Color.White, SymbolHaloPenWidth) { LineJoin = LineJoin.Round })
+            using (var lensHalo = new Pen(DiagramBackColor, SymbolHaloPenWidth) { LineJoin = LineJoin.Round }) //260731Cl: Color.White→背景色
                 g.DrawPath(lensHalo, path); // (260505Ch) mirror/glide 線上の 2_1 lens が埋もれないよう白縁を復帰。
-            using (var finHalo = new Pen(Color.White, SymbolHaloPenWidth) { LineJoin = LineJoin.Round })
+            using (var finHalo = new Pen(DiagramBackColor, SymbolHaloPenWidth) { LineJoin = LineJoin.Round }) //260731Cl: Color.White→背景色
             {
                 g.DrawArc(finHalo, rightRect, rightFinStart, finSweep);
                 g.DrawArc(finHalo, leftRect, leftFinStart, finSweep);
             }
             g.FillPath(fill, path);
-            using var finPen = new Pen(Color.Black, ScrewFinPenWidth);
+            using var finPen = new Pen(DiagramForeColor, ScrewFinPenWidth); //260731Cl: Color.Black→前景色
             g.DrawArc(finPen, rightRect, rightFinStart, finSweep);
             g.DrawArc(finPen, leftRect, leftFinStart, finSweep);
         }
@@ -627,8 +629,8 @@ public class SymmetryDiagramElements : SymmetryDiagramCommon
     private static void DrawRotationPerp(Graphics g, Brush fill, Brush white, PointF pt, int order, int finCount, int edgeStep, int N, float radius)
     {
         var poly = RegularPolygon(pt, N, radius);
-        using var halo = new Pen(Color.White, SymbolHaloPenWidth) { LineJoin = LineJoin.Round };
-        using var outline = new Pen(Color.Black, OutlinePenWidth) { LineJoin = LineJoin.Round };
+        using var halo = new Pen(DiagramBackColor, SymbolHaloPenWidth) { LineJoin = LineJoin.Round }; //260731Cl: Color.White→背景色 (ダーク対応)
+        using var outline = new Pen(DiagramForeColor, OutlinePenWidth) { LineJoin = LineJoin.Round }; //260731Cl: Color.Black→前景色
         g.DrawPolygon(halo, poly);
         if (order > 0)
         {
@@ -724,10 +726,11 @@ public class SymmetryDiagramElements : SymmetryDiagramCommon
 
         float halo = DiagThreefoldHaloWidth;
         float dotR = halo * 0.5f;
-        using var haloPen   = new Pen(Color.White, halo) { LineJoin = LineJoin.Round };
-        using var shaft2Pen = new Pen(Color.Black, OutlinePenWidth) { StartCap = LineCap.Round, EndCap = LineCap.Round };
-        using var blackPen  = new Pen(Color.Black, OutlinePenWidth);
-        using var white     = new SolidBrush(Color.White);
+        //260731Cl 変更: ダークモード対応 (White→背景色 / Black→前景色。変数名は従来のまま)
+        using var haloPen   = new Pen(DiagramBackColor, halo) { LineJoin = LineJoin.Round };
+        using var shaft2Pen = new Pen(DiagramForeColor, OutlinePenWidth) { StartCap = LineCap.Round, EndCap = LineCap.Round };
+        using var blackPen  = new Pen(DiagramForeColor, OutlinePenWidth);
+        using var white     = new SolidBrush(DiagramBackColor);
 
         g.DrawLine(haloPen, anchor, lineEnd);
         g.DrawLine(blackPen, anchor, lineEnd);
@@ -749,7 +752,7 @@ public class SymmetryDiagramElements : SymmetryDiagramCommon
             ];
 
             // 三角に黒 outline を被せて fin との辺アライメントを揃える (fin pen と同太さ)。
-            using var triHaloPen = new Pen(Color.White, halo * 0.5f) { LineJoin = LineJoin.Round };
+            using var triHaloPen = new Pen(DiagramBackColor, halo * 0.5f) { LineJoin = LineJoin.Round }; //260731Cl: Color.White→背景色
             g.DrawPolygon(triHaloPen, tri);
             g.FillPolygon(fill, tri);
             g.DrawPolygon(blackPen, tri);
@@ -887,8 +890,8 @@ public class SymmetryDiagramElements : SymmetryDiagramCommon
         float stereonetArrowShift = 0f)
     {
         if (drafts.Count == 0) return;
-        using var pen = new Pen(Color.Black, InPlaneAxisPenWidth);
-        using var white = new SolidBrush(Color.White); // (260503Cl) -4 軸の白塗り平行四辺形 / 2/2_1 と並列時の labels には使わない。
+        using var pen = new Pen(DiagramForeColor, InPlaneAxisPenWidth); //260731Cl: Color.Black→前景色
+        using var white = new SolidBrush(DiagramBackColor); // (260503Cl) -4 軸の白塗り平行四辺形 / 2/2_1 と並列時の labels には使わない。//260731Cl: Color.White→背景色
         foreach (var group in drafts.Values
             .GroupBy(d => ((long)Math.Round(d.Anchor.X * 1000), (long)Math.Round(d.Anchor.Y * 1000),
                            (long)Math.Round(d.OutUx * 1000), (long)Math.Round(d.OutUy * 1000)))) // (260502Ch)
@@ -1083,7 +1086,7 @@ public class SymmetryDiagramElements : SymmetryDiagramCommon
         float hUx = (float)(c.Horz.X / hLen), hUy = (float)(c.Horz.Y / hLen);
         float vUx = (float)(c.Vert.X / vLen), vUy = (float)(c.Vert.Y / vLen);
         var apex0 = new PointF(c.TopLeft.X - offset * (hUx + vUx), c.TopLeft.Y - offset * (hUy + vUy));
-        using var pen = new Pen(Color.Black, CornerBracketPenWidth);
+        using var pen = new Pen(DiagramForeColor, CornerBracketPenWidth); //260731Cl: Color.Black→前景色
 
         // (260503Ch) [ITA-D2], [ITA-D4] mirror は高さ 0 を優先、glide は方向ごとに低い高さを採用、e-glide (Ccce 等) は同高さの直交ペアを 1 個の bracket に統合。
         var symbols = new List<ParallelMirrorSymbol>();
@@ -2218,8 +2221,8 @@ public class SymmetryDiagramElements : SymmetryDiagramCommon
             new PointF((float)(cx + radius * Math.Cos(apexAngleRad - baseDeltaRad)),  (float)(cy + radius * Math.Sin(apexAngleRad - baseDeltaRad))),
         };
 
-        using var halo    = new Pen(Color.White, SymbolHaloPenWidth) { LineJoin = LineJoin.Round };
-        using var outline = new Pen(Color.Black, OutlinePenWidth)    { LineJoin = LineJoin.Round };
+        using var halo    = new Pen(DiagramBackColor, SymbolHaloPenWidth) { LineJoin = LineJoin.Round }; //260731Cl: Color.White→背景色
+        using var outline = new Pen(DiagramForeColor, OutlinePenWidth)    { LineJoin = LineJoin.Round }; //260731Cl: Color.Black→前景色
         g.DrawPolygon(halo, poly);
         g.FillPolygon(fill, poly);
         g.DrawPolygon(outline, poly);

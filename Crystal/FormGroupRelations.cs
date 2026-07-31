@@ -1777,7 +1777,11 @@ public partial class FormGroupRelations : FormBase
         using var g = Graphics.FromImage(bmp);
         g.SmoothingMode = SmoothingMode.AntiAlias;
         g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit; // 透明背景では ClearType 不可 (グレースケール AA)
-        draw(g, bmp.Size);
+        // 260731Cl 追加: 本フォームのレイヤ合成 (ColorMatrix ティント) は「黒前景・白ハロー」前提のため、
+        // ダークモードでも描画器のライト配色を強制する (SymmetryDiagramCommon の DiagramFore/BackColor が黒/白に固定される)。
+        SymmetryDiagramCommon.ForceLightTheme = true;
+        try { draw(g, bmp.Size); }
+        finally { SymmetryDiagramCommon.ForceLightTheme = false; }
         return bmp;
     }
 
