@@ -55,7 +55,8 @@ public partial class PoleFigureControl : UserControlBase
     public void Draw(bool renewDensityPixels)
     {
         magnification = Math.Min(pictureBox.Width, pictureBox.Height) / 2.2;
-        if (pictureBox.ClientSize.Width == 0 || pictureBox.ClientSize.Height == 0) return;
+        //if (pictureBox.ClientSize.Width == 0 || pictureBox.ClientSize.Height == 0) return; //260731Cl 変更前
+        if (pictureBox.ClientSize.Width <= 0 || pictureBox.ClientSize.Height <= 0) return; //260731Cl 変更: ハンドル未作成時のDockレイアウト過渡で ClientSize が負になり得る (PoleFigureControl2 と同型の高DPI起動クラッシュ対策)
 
         // 前回の Image を解放してから差し替え (bmp は pictureBox.Image に握られて生存するため g のみ using)
         var oldImage = pictureBox.Image;

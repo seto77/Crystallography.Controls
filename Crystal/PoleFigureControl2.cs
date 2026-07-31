@@ -70,7 +70,8 @@ public partial class PoleFigureControl2 : UserControlBase
     public void Draw(bool force = true)
     {
         magnification = Math.Min(pictureBox.Width, pictureBox.Height) / 2.4;
-        if (pictureBox.ClientSize.Width == 0 || pictureBox.ClientSize.Height == 0) return;
+        //if (pictureBox.ClientSize.Width == 0 || pictureBox.ClientSize.Height == 0) return; //260731Cl 変更前
+        if (pictureBox.ClientSize.Width <= 0 || pictureBox.ClientSize.Height <= 0) return; //260731Cl 変更: ハンドル未作成時のDockレイアウト過渡で ClientSize が負になり得る (高DPIで起動クラッシュ)
         if (!force && pictureBox.ClientSize == lastDrawnSize && pictureBox.Image != null) return; // 260725Cl 追加
         lastDrawnSize = pictureBox.ClientSize; // 260725Cl 追加
 
@@ -308,6 +309,7 @@ public partial class PoleFigureControl2 : UserControlBase
 
     public void DrawColorScale()
     {
+        if (pictureBox1.ClientSize.Width <= 0 || pictureBox1.ClientSize.Height <= 0) return; //260731Cl 追加: Dockレイアウト過渡のゼロ/負サイズガード (高DPIで起動クラッシュ)
         var oldImage = pictureBox1.Image;
         var bmp = new Bitmap(pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height);
         using (var gScale = Graphics.FromImage(bmp))

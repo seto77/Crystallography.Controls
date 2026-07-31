@@ -818,7 +818,8 @@ public partial class GraphControl : UserControlBase
         //pictureBox.Image = new Bitmap(PictureBoxSize.Width, PictureBoxSize.Height); // (260611Ch) 旧: 旧 Image/Bmp/G が未解放
         var oldBmp = Bmp; // (260611Ch)
         var oldG = G; // (260611Ch)
-        Bmp = new Bitmap(PictureBoxSize.Width, PictureBoxSize.Height); // (260611Ch)
+        //Bmp = new Bitmap(PictureBoxSize.Width, PictureBoxSize.Height); // (260611Ch) //260731Cl 変更前
+        Bmp = new Bitmap(Math.Max(1, PictureBoxSize.Width), Math.Max(1, PictureBoxSize.Height)); //260731Cl 変更: レイアウト過渡のゼロ/負サイズでも例外を出さない (Draw と違い早期returnせずクリア動作は維持)
         G = null; // (260611Ch)
         pictureBox.Image = Bmp; // (260611Ch)
         oldG?.Dispose(); // (260611Ch)
