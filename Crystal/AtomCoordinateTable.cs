@@ -19,6 +19,9 @@ public partial class AtomCoordinateTable : UserControlBase
     public AtomCoordinateTable() // 260704Cl VS デザイナ保存時に Designer.cs の resx 間接参照 (GetString) が英語直書きへ巻き戻るため、翻訳ツールチップはコード側で適用する
     {
         InitializeComponent();
+        // 260731Cl 追加: ダークモード時、ヒストグラム描画面の背景をキャンバス背景 (ダーク時 #202020) に合わせる (Designer は White 固定)
+        if (Application.IsDarkModeEnabled)
+            pictureBox.BackColor = FormBase.CanvasBackColor;
         var resources = new ComponentResourceManager(typeof(AtomCoordinateTable));
         foreach (var target in new Control[] { comboBox, dataGridView, label1, numericUpDownMaxLength, numericUpDownWidth })
             if (resources.GetString($"{target.Name}.ToolTip") is { Length: > 0 } tip) // 言語 resx に翻訳がある場合のみ上書き (EN は Designer.cs の直書き文言)
@@ -158,7 +161,8 @@ public partial class AtomCoordinateTable : UserControlBase
             bmp = new Bitmap(pictureBox.Width, pictureBox.Height);
             g = Graphics.FromImage(bmp);
         }
-        g.Clear(Color.White);
+        //g.Clear(Color.White); //260731Cl 変更前
+        g.Clear(FormBase.CanvasBackColor); //260731Cl 変更: ダークモード追随 (ダーク時 #202020 の一元定義)
         g.SmoothingMode = SmoothingMode.AntiAlias;
         DoubleBuffered = true;
 
@@ -257,31 +261,38 @@ public partial class AtomCoordinateTable : UserControlBase
 
     private void DrawGraduation()
     {
-        g.FillRectangle(Brushes.White, 0, 0, OriginPos.X, pictureBox.Height);
-        g.FillRectangle(Brushes.White, 0, pictureBox.Height - OriginPos.Y, pictureBox.Width, pictureBox.Height);
+        //260731Cl 変更: ダークモード対応。軸外マスクの White→背景色、軸線/目盛り文字の Black→ControlText (ダーク時 白)、
+        //グリッド線の LightGray→ダーク時は暗色版 (GraphControl.DivisionLineColor と同系の #505050)。
+        //g.FillRectangle(Brushes.White, 0, 0, OriginPos.X, pictureBox.Height); //260731Cl 変更前
+        //g.FillRectangle(Brushes.White, 0, pictureBox.Height - OriginPos.Y, pictureBox.Width, pictureBox.Height); //260731Cl 変更前
+        using var bgBrush = new SolidBrush(FormBase.CanvasBackColor);
+        g.FillRectangle(bgBrush, 0, 0, OriginPos.X, pictureBox.Height);
+        g.FillRectangle(bgBrush, 0, pictureBox.Height - OriginPos.Y, pictureBox.Width, pictureBox.Height);
+        using var gridPenDark = new Pen(Color.FromArgb(80, 80, 80)); //260731Cl 追加
+        var gridPen = Application.IsDarkModeEnabled ? gridPenDark : Pens.LightGray; //260731Cl 追加
 
         // 角度方向の目盛り
         float angleGrad = ChooseGradiation(UpperX - LowerX, [1.1, 2.2, 5.0]);
-        g.DrawLine(Pens.Black, OriginPos.X, pictureBox.Height - OriginPos.Y, pictureBox.Width, pictureBox.Height - OriginPos.Y);
+        g.DrawLine(SystemPens.ControlText, OriginPos.X, pictureBox.Height - OriginPos.Y, pictureBox.Width, pictureBox.Height - OriginPos.Y); //260731Cl: Pens.Black→ControlText
         //using var strFont = new Font(new FontFamily(WineCompat.Resolve("tahoma")), 8); //260610Cl Wine時フォント切替 // (260611Ch) 旧: FontFamily 一時生成が不要
         using var strFont = new Font(WineCompat.Resolve("tahoma"), 8); //260610Cl Wine時フォント切替 // (260611Ch)
         for (int i = (int)(LowerX / angleGrad) + 1; i < UpperX / angleGrad; i++)
         {
             float x = ConvToPicBoxCoord(i * angleGrad, 0).X;
-            g.DrawLine(Pens.Black, x, pictureBox.Height - OriginPos.Y, x, pictureBox.Height - OriginPos.Y + 5);
-            g.DrawString(Math.Round(i * angleGrad, 5).ToString("#,#.###############"), strFont, Brushes.Black, x - 2, pictureBox.Height - OriginPos.Y + 5);
-            g.DrawLine(Pens.LightGray, x, pictureBox.Height - OriginPos.Y, x, 0);
+            g.DrawLine(SystemPens.ControlText, x, pictureBox.Height - OriginPos.Y, x, pictureBox.Height - OriginPos.Y + 5); //260731Cl: Pens.Black→ControlText
+            g.DrawString(Math.Round(i * angleGrad, 5).ToString("#,#.###############"), strFont, SystemBrushes.ControlText, x - 2, pictureBox.Height - OriginPos.Y + 5); //260731Cl: Brushes.Black→ControlText
+            g.DrawLine(gridPen, x, pictureBox.Height - OriginPos.Y, x, 0); //260731Cl: Pens.LightGray→gridPen
         }
 
         // 強度方向の目盛り
         float intensityGrad = ChooseGradiation(UpperY - LowerY, [1.6, 2.2, 8.0]);
-        g.DrawLine(Pens.Black, OriginPos.X, 0, OriginPos.X, pictureBox.Height - OriginPos.Y);
+        g.DrawLine(SystemPens.ControlText, OriginPos.X, 0, OriginPos.X, pictureBox.Height - OriginPos.Y); //260731Cl: Pens.Black→ControlText
         for (int i = (int)(LowerY / intensityGrad) + 1; i < UpperY / intensityGrad; i++)
         {
             float y = ConvToPicBoxCoord(0, i * intensityGrad).Y;
-            g.DrawLine(Pens.Black, OriginPos.X - 8, y, OriginPos.X, y);
-            g.DrawString((i * intensityGrad).ToString("#,#.###############"), strFont, Brushes.Black, 0, y - 6);
-            g.DrawLine(Pens.LightGray, OriginPos.X - 8, y, pictureBox.Width, y);
+            g.DrawLine(SystemPens.ControlText, OriginPos.X - 8, y, OriginPos.X, y); //260731Cl: Pens.Black→ControlText
+            g.DrawString((i * intensityGrad).ToString("#,#.###############"), strFont, SystemBrushes.ControlText, 0, y - 6); //260731Cl: Brushes.Black→ControlText
+            g.DrawLine(gridPen, OriginPos.X - 8, y, pictureBox.Width, y); //260731Cl: Pens.LightGray→gridPen
         }
     }
 

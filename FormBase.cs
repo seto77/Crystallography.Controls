@@ -96,8 +96,16 @@ public partial class FormBase : Form
     //   (BackColor=Window #323232 / ForeColor=WindowText 白、SystemColors 再マップ) に切り替えて確実にダーク化する。
     private static void ApplyDarkModeControlFix(Control root)
     {
+        //if (root is Button b && b.FlatStyle == FlatStyle.Standard && !b.UseVisualStyleBackColor && !b.BackColor.IsSystemColor) //260731Cl 変更前
+        //    b.FlatStyle = FlatStyle.Popup;
         if (root is Button b && b.FlatStyle == FlatStyle.Standard && !b.UseVisualStyleBackColor && !b.BackColor.IsSystemColor)
+        {
             b.FlatStyle = FlatStyle.Popup;
+            // 260731Cl 追加: この種のボタンの ForeColor=HighlightText は「色付きボタンに白文字」の Designer イディオム
+            // (SteelBlue ボタン群)。ダーク時は HighlightText が白以外へ再マップされるため、非システム色の白へ固定する。
+            if (b.ForeColor == SystemColors.HighlightText)
+                b.ForeColor = Color.White;
+        }
         if (root is DataGridView dgv)
             dgv.EnableHeadersVisualStyles = false;
         if (root is ComboBox cmb && cmb.DropDownStyle == ComboBoxStyle.DropDownList && cmb.FlatStyle == FlatStyle.Standard) //260731Cl 追加
