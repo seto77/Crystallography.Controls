@@ -895,12 +895,14 @@
             loadToolStripMenuItem.Name = "loadToolStripMenuItem";
             resources.ApplyResources(loadToolStripMenuItem, "loadToolStripMenuItem");
             loadToolStripMenuItem.Click += loadToolStripMenuItem_Click;
-            // 
+            loadToolStripMenuItem.Visible = false; // 260801Cl 追加: 実装が空のまま (BinaryFormatter 廃止で無効化) なので、復活させるまで隠しておく
+            //
             // saveToolStripMenuItem
-            // 
+            //
             saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             resources.ApplyResources(saveToolStripMenuItem, "saveToolStripMenuItem");
             saveToolStripMenuItem.Click += saveToolStripMenuItem_Click;
+            saveToolStripMenuItem.Visible = false; // 260801Cl 追加: 同上
             // 
             // exportToolStripMenuItem
             // 
