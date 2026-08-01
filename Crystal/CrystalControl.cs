@@ -281,6 +281,15 @@ public partial class CrystalControl : UserControlBase
         SkipEvent = false;
         ResumeLayout();
     }
+
+    /// <summary>260731Cl 追加 (GitHub issue #65): 色ボックスの変更をその場で Crystal.Argb に書き戻し、CrystalChanged で各ビューへ通知する。
+    /// 従来は GenerateFromInterface() 経由でしか読まれず、結晶を選び直すと SetToInterface() が色ボックスを初期色で上書きして変更が失われていた。</summary>
+    private void colorControl_ColorChanged(object sender, EventArgs e)
+    {
+        if (SkipEvent || crystal == null) return;
+        crystal.Argb = colorControl.Color.ToArgb();
+        CrystalChanged?.Invoke(this, EventArgs.Empty);
+    }
     #endregion
 
     #region 長さ単位 (Å / nm) の切り替え  260729Cl 追加

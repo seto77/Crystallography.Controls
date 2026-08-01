@@ -1045,6 +1045,7 @@
             colorControl.BoxSize = new System.Drawing.Size(20, 20);
             colorControl.Name = "colorControl";
             toolTip.SetToolTip(colorControl, resources.GetString("colorControl.ToolTip"));
+            colorControl.ColorChanged += colorControl_ColorChanged; // 260731Cl 追加: 描画色をその場で Crystal.Argb へ反映する (GitHub issue #65)
             // 
             // panelFormula
             // 
