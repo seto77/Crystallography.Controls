@@ -199,32 +199,11 @@ public class GraphicsBox : PictureBox
             base.OnMouseWheel(e); // 標準の MouseWheel イベント。ホストが購読して自分の表示範囲を変える
     }
 
-    /// <summary>260801Cl 追加: このコントロールにフォーカスがあるとき、+ / - をホイールと同じ拡大縮小として扱う。
-    /// ホイール 1 ノッチ分の MouseEventArgs を合成して OnMouseWheel に流すので、ホスト側の処理は 1 つで済み、
-    /// キーとホイールで挙動がずれない。位置はカーソルではなくコントロール中心にする (キー操作でカーソル位置に
-    /// 引きずられると意図しない方向へ移動するため)。
-    /// テンキーの + / - (Add / Subtract) と、メインキーボードの ;+ / -= (Oemplus / OemMinus) の両方を受ける。
-    /// 修飾キー付きは完全一致で除外する。ProcessCmdKey で拾うのは、+ / - が ContainerControl の前処理で
-    /// 消費される場合があるため (修飾なし矢印と同じ理由)。</summary>
-    protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
-    {
-        if (MouseWheelZoom && Focused)
-        {
-            int delta = keyData switch
-            {
-                Keys.Add or Keys.Oemplus or (Keys.Oemplus | Keys.Shift) => SystemInformation.MouseWheelScrollDelta,
-                Keys.Subtract or Keys.OemMinus => -SystemInformation.MouseWheelScrollDelta,
-                _ => 0,
-            };
-            if (delta != 0)
-            {
-                var center = new Point(ClientSize.Width / 2, ClientSize.Height / 2);
-                OnMouseWheel(new MouseEventArgs(MouseButtons.None, 0, center.X, center.Y, delta));
-                return true;
-            }
-        }
-        return base.ProcessCmdKey(ref msg, keyData);
-    }
+    //260801Cl 削除: + / - キーによる拡大縮小は入れない (作者判断)。
+    //3 エンジンのうち ScalablePictureBox と GLControlAlpha は現状フォーカスを取れず (前者は内側が素の PictureBox で
+    //Selectable が false、後者は Focus() を呼んでいない)、「フォーカスがあるときだけ」という条件を成立させるには
+    //フォーカス挙動の変更が要る。これは GraphicsBox の Selectable 付与がホルダーの矢印傾斜を約半年壊した種類の
+    //変更で、姉妹アプリ 4 本にも波及するため見送る。拡大縮小はホイールのみとする。
 
     /// <summary>描画バッファを破棄する。</summary>
     protected override void Dispose(bool disposing)
