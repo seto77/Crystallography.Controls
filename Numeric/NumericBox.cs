@@ -936,11 +936,44 @@ public partial class NumericBox : UserControlBase
         if (keyData == Keys.Return && textBox.Focused && SkipEventDuringInput)
             textBox_Leave(textBox, EventArgs.Empty);
 
+        //260801Cl 追加: ↑↓ による増減。単一行 TextBox は ↑↓ を入力キーとして要求しないため、放っておくと
+        //ContainerControl.ProcessDialogKey がフォーカス移動に使ってしまい textBox_KeyDown までは届かない。
+        //条件判定は tryStepByArrowKey 側に集約。修飾キー付き (Ctrl+↑ 等) は完全一致で除外する。
+        if ((keyData == Keys.Up || keyData == Keys.Down) && tryStepByArrowKey(keyData))
+            return true;
+
         return base.ProcessCmdKey(ref msg, keyData);
+    }
+
+    //260801Cl 追加: ↑↓ で値を増減する。スピンボタン (SpinButton) は SetStyle(ControlStyles.Selectable, false) で
+    //フォーカスを取らない設計なので、これが無いとキーボードから値を変える手段が一つも無かった
+    //(260413Cl に NumericUpDown を自前実装へ置き換えた際に失われた退行。姉妹アプリ 4 本も同様)。
+    //有効にする条件は 3 つとも満たすときだけ (作者指定):
+    //  ・この NumericBox の入力欄にフォーカスがある      … 他のコントロールの ↑↓ を横取りしない
+    //  ・ShowUpDown が true                              … スピンボタンが出ていない個体では増減の意味が無い
+    //  ・Multiline が false                              … 複数行ではキャレットの行移動に ↑↓ が必要
+    //増減量はスピンボタンのクリックと同じ applySpinStep に委譲するので、マウスとキーボードで挙動が完全に一致する
+    //(SmartIncrement が有効なら桁に応じた 1→2→5 刻みもそのまま効く)。
+    private bool tryStepByArrowKey(Keys keyCode)
+    {
+        if (!ShowUpDown || Multiline || !textBox.Focused || ReadOnly)
+            return false;
+        if (keyCode == Keys.Up) { applySpinStep(1); return true; }
+        if (keyCode == Keys.Down) { applySpinStep(-1); return true; }
+        return false;
     }
 
     private void textBox_KeyDown(object sender, KeyEventArgs e)
     {
+        //260801Cl 追加: 単一行 TextBox は ↑↓ を入力キーとして要求しないので、ここではなく ProcessCmdKey 側で拾う。
+        //万一この経路に来た場合のために同じ処理へ委譲しておく (二重適用は起きない。ProcessCmdKey が先に消費するため)。
+        if (e.Modifiers == Keys.None && tryStepByArrowKey(e.KeyCode))
+        {
+            e.SuppressKeyPress = true;
+            e.Handled = true;
+            return;
+        }
+
         if ((e.Control || e.Shift) && e.KeyCode == Keys.Return)
             Calculate(sender, e);
         else if (e.KeyCode == Keys.Return && SkipEventDuringInput)
