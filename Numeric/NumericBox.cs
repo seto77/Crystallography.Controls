@@ -925,6 +925,17 @@ public partial class NumericBox : UserControlBase
             textBox_KeyDown(textBox, new KeyEventArgs(keyData));
             return true;
         }
+
+        //260801Cl 追加: 修飾キー無しの ENTER も同じ理由で AcceptButton に先取りされる。
+        //SkipEventDuringInput (既定 true) の間は入力途中の文字列が numericalValue に反映されておらず、
+        //確定は「ENTER を押す」か「フォーカスが外れる」かの 2 つしかない。AcceptButton 付きのフォームでは
+        //PerformClick がフォーカスを移さないまま OK ハンドラが走るため、入力した数値が捨てられていた
+        //(マウスで OK を押した場合は Leave が先に走るので確定される、という非対称もあった)。
+        //ここで先に確定させてから、ENTER 自体は消費せず通常どおり AcceptButton へ流す。
+        //二重確定にはならない (2 回目は値が変わらないので ValueChanged が上がらない)。
+        if (keyData == Keys.Return && textBox.Focused && SkipEventDuringInput)
+            textBox_Leave(textBox, EventArgs.Empty);
+
         return base.ProcessCmdKey(ref msg, keyData);
     }
 

@@ -760,7 +760,13 @@ public partial class FormMacro : FormBase
         }
         // F10 次のステップに進む
         if (e.KeyCode == Keys.F10 && buttonNextStep.Visible)
+        {
             buttonNextStep_Click(sender, EventArgs.Empty); // 260717Cl: new EventArgs() → EventArgs.Empty
+            // 260801Cl 追加: F10 は Windows のメニュー起動キー (WM_SYSKEYDOWN)。消費しないと DefWndProc へ流れて
+            // MainMenuStrip (menuStrip1) がアクティブになり、ステップは進むが同時に File メニューへフォーカスが移っていた。
+            e.SuppressKeyPress = true;
+            e.Handled = true;
+        }
     }
     #endregion
 

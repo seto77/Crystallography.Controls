@@ -61,9 +61,13 @@ namespace Crystallography.Controls
             e.Handled = !((e.KeyChar >= '0' && e.KeyChar <= '9') || e.KeyChar == '.' || e.KeyChar == ',' || e.KeyChar == '\b');
         }
 
+        // 260801Cl 修正: サブメニューの Enabled を切り替えるだけで AllowMouseControl 本体を書き換えていなかったため、
+        // このメニューから中ドラッグでの値変更を有効化する手段が存在しなかった (既定 false。デザイナで true にした個体でしか動かない)。
+        // 旧: toolStripMenuItem3.Enabled = toolStripMenuItem4.Enabled = allowMouseContlolToolStripMenuItem.Checked; のみ
         private void allowMouseContlolToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
         {
             toolStripMenuItem3.Enabled = toolStripMenuItem4.Enabled = allowMouseContlolToolStripMenuItem.Checked;
+            AllowMouseControl = allowMouseContlolToolStripMenuItem.Checked; // 260801Cl 追加
         }
 
         private void contextMenuStripBody_Closing(object sender, ToolStripDropDownClosingEventArgs e)
@@ -161,6 +165,10 @@ namespace Crystallography.Controls
             toolStripComboBoxDecimalPlaces.SelectedIndex = DecimalPlaces >= 0 ? DecimalPlaces + 1 : 0;
             toolStripTextBoxMaximum.Text = Maximum.ToString();
             toolStripTextBoxMimimum.Text = Minimum.ToString();
+            // 260801Cl 追加: チェック状態を実際の AllowMouseControl に同期する (デザイナで true にした個体で
+            // メニューだけ未チェックに見え、開くたびに実態とズレていた)
+            allowMouseContlolToolStripMenuItem.Checked = AllowMouseControl;
+            toolStripMenuItem3.Enabled = toolStripMenuItem4.Enabled = AllowMouseControl;
             skipEvent = false;
         }
     }
