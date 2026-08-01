@@ -6,18 +6,30 @@ using System.Windows.Forms;
 
 namespace Crystallography.Controls;
 
-/// <summary>PictureBox の標準機能に、呼び出し側が継続して描画できる描画バッファとマウスホイール通知を加えたコントロール。</summary>
+/// <summary>PictureBox の標準機能に、呼び出し側が継続して描画できる描画バッファを加えたコントロール。</summary>
 [Serializable]
 public class GraphicsBox : PictureBox
 {
-    /// <summary>マウスホイール入力後に通知するイベントデリゲート。</summary>
-    public delegate void evMouseWheeled(object sender, MouseEventArgs e);
+    //260801Cl 削除: 独自イベント MouseWheeled を廃止した。Control.MouseWheel と同じ内容を再公開していただけで、
+    //しかも 5 アプリを通じて購読者が 1 つも無かった (ホイールで何も起きない状態だった)。
+    //ホイールを使うホストは標準の MouseWheel イベントを購読すること。
+    //旧: public delegate void evMouseWheeled(object sender, MouseEventArgs e);
+    //旧: public event evMouseWheeled MouseWheeled;
 
     private Bitmap graphicsLayerBitmap = null; // (260322Ch) 描画バッファの内容を保持する
     private Graphics graphicsLayer = null; // (260322Ch) 呼び出し側が使い回せる描画バッファ用 Graphics を保持する
 
-    /// <summary>マウスホイール入力後に通知する互換イベント。</summary>
-    public event evMouseWheeled MouseWheeled;
+    /// <summary>260801Cl 追加: マウスホイールで拡大縮小するかどうか。既定 false。
+    /// このコントロールは表示範囲 (倍率・中心) を持たないため、拡大縮小の実体はホスト側にある。
+    /// true のときだけ標準の MouseWheel イベントを通知するので、ホストはそれを購読して自分の表示範囲を変える。
+    /// 既定を false にしてあるのは、姉妹アプリを含む既存の利用箇所の挙動を変えないため。</summary>
+    [DefaultValue(false)]
+    [Category("Behavior")]
+    public bool MouseWheelZoom { get; set; } = false;
+
+    /// <summary>260801Cl 追加: ホイール 1 ノッチあたりの倍率。ScalablePictureBox (pictureBox_MouseWheel) と同じ ×2 / ×0.5。
+    /// 倍率の意味 (大きいほど拡大) はホストの表示範囲の持ち方に依存するので、逆数を使うかはホスト側で判断する。</summary>
+    public static double GetWheelZoomFactor(int delta) => delta > 0 ? 2.0 : 0.5;
 
     /// <summary>GraphicBox の既定コンストラクタ。</summary>
     public GraphicsBox()
@@ -178,11 +190,40 @@ public class GraphicsBox : PictureBox
         base.OnMouseDown(e);
     }
 
-    /// <summary>ホイール入力後に互換イベントを通知する。</summary>
+    /// <summary>260801Cl 変更: MouseWheelZoom が true のときだけホイール入力をホストへ通知する。
+    /// 旧実装は常に独自イベント MouseWheeled を発火していたが購読者が存在せず、実質何も起きていなかった。
+    /// 旧: base.OnMouseWheel(e); MouseWheeled?.Invoke(this, e);</summary>
     protected override void OnMouseWheel(MouseEventArgs e)
     {
-        base.OnMouseWheel(e);
-        MouseWheeled?.Invoke(this, e); // (260322Ch) マウスホイール入力の処理後に通知する
+        if (MouseWheelZoom)
+            base.OnMouseWheel(e); // 標準の MouseWheel イベント。ホストが購読して自分の表示範囲を変える
+    }
+
+    /// <summary>260801Cl 追加: このコントロールにフォーカスがあるとき、+ / - をホイールと同じ拡大縮小として扱う。
+    /// ホイール 1 ノッチ分の MouseEventArgs を合成して OnMouseWheel に流すので、ホスト側の処理は 1 つで済み、
+    /// キーとホイールで挙動がずれない。位置はカーソルではなくコントロール中心にする (キー操作でカーソル位置に
+    /// 引きずられると意図しない方向へ移動するため)。
+    /// テンキーの + / - (Add / Subtract) と、メインキーボードの ;+ / -= (Oemplus / OemMinus) の両方を受ける。
+    /// 修飾キー付きは完全一致で除外する。ProcessCmdKey で拾うのは、+ / - が ContainerControl の前処理で
+    /// 消費される場合があるため (修飾なし矢印と同じ理由)。</summary>
+    protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+    {
+        if (MouseWheelZoom && Focused)
+        {
+            int delta = keyData switch
+            {
+                Keys.Add or Keys.Oemplus or (Keys.Oemplus | Keys.Shift) => SystemInformation.MouseWheelScrollDelta,
+                Keys.Subtract or Keys.OemMinus => -SystemInformation.MouseWheelScrollDelta,
+                _ => 0,
+            };
+            if (delta != 0)
+            {
+                var center = new Point(ClientSize.Width / 2, ClientSize.Height / 2);
+                OnMouseWheel(new MouseEventArgs(MouseButtons.None, 0, center.X, center.Y, delta));
+                return true;
+            }
+        }
+        return base.ProcessCmdKey(ref msg, keyData);
     }
 
     /// <summary>描画バッファを破棄する。</summary>
