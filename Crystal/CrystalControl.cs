@@ -364,11 +364,16 @@ public partial class CrystalControl : UserControlBase
         e.Effect = e.Data.GetData(DataFormats.FileDrop) != null ? DragDropEffects.Copy : DragDropEffects.None;
     #endregion
 
-    private void CrystalControl_KeyDown(object sender, KeyEventArgs e)
-    {
-        if (e.Control && e.Shift && e.KeyCode == Keys.R)
-            crystal.Reserved = !crystal.Reserved;
-    }
+    //260801Cl 削除: Ctrl+Shift+R (crystal.Reserved のトグル) を廃止 (作者判断)。
+    //KeyPreview で KeyDown を上げるのは Form だけなので、UserControl 自身の KeyDown に配線されたこのハンドラは
+    //構造的に一度も発火していなかった (CrystalControl は子コントロールを多数持つコンテナで、フォーカスは常に子側にある)。
+    //ReciPro のマニュアル (0-main-window / 21-shortcuts) には全 11 言語で「アプリ全体で有効」と記載されていたので、文書側も要修正。
+    //旧:
+    //private void CrystalControl_KeyDown(object sender, KeyEventArgs e)
+    //{
+    //    if (e.Control && e.Shift && e.KeyCode == Keys.R)
+    //        crystal.Reserved = !crystal.Reserved;
+    //}
 
     /// <summary>外部から呼び出される EOS 計算</summary>
     public void CalculateEOS() => eosControl.CalculatePressure();

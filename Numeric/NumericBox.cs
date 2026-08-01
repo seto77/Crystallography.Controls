@@ -909,6 +909,25 @@ public partial class NumericBox : UserControlBase
             e.Handled = true;
     }
 
+    //260801Cl 追加: SHIFT+ENTER (式の評価) が、AcceptButton を持つフォームでは効かなかった。
+    //Form.ProcessDialogKey は ENTER を AcceptButton へ回すが、その除外条件は Alt|Control だけで Shift は含まれないため、
+    //OK ボタンが先に PerformClick され textBox_KeyDown まで届かない (CommonDialog / FormSuperStructure /
+    //FormResolution / FormAnotherSpaceGroup などで発生)。ProcessCmdKey は ProcessDialogKey より前に、かつ
+    //フォーカス中のコントロールから親へ遡って呼ばれるので、ここで拾えばフォームの AcceptButton 有無によらず動く。
+    //true を返すと textBox_KeyDown は走らないので二重評価にはならない。
+    //★ Calculate を直接呼ばずに textBox_KeyDown へ委譲すること。あちらは Calculate の後に公開イベント KeyDown を
+    //再送出しており、SearchCrystalControl がそれを購読して Enter (修飾キーを見ない) で検索を実行している
+    //(SearchCrystalControl.cs:368、姉妹アプリ 4 本にも同じ配線がある)。直接呼ぶと Shift+Enter でその検索が走らなくなる。
+    protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+    {
+        if ((keyData == (Keys.Return | Keys.Shift) || keyData == (Keys.Return | Keys.Control)) && textBox.Focused)
+        {
+            textBox_KeyDown(textBox, new KeyEventArgs(keyData));
+            return true;
+        }
+        return base.ProcessCmdKey(ref msg, keyData);
+    }
+
     private void textBox_KeyDown(object sender, KeyEventArgs e)
     {
         if ((e.Control || e.Shift) && e.KeyCode == Keys.Return)

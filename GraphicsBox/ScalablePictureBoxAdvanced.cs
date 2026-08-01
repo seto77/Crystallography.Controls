@@ -777,25 +777,29 @@ public partial class ScalablePictureBoxAdvanced : UserControlBase
         }
     }
 
-    private void ScalablePictureBoxAdvanced_DragDrop(object sender, DragEventArgs e)
-    {
-        string[] fileName = (string[])e.Data.GetData(DataFormats.FileDrop, false);
-        Array.Sort(fileName);
-
-        //まず、フォルダかどうかを判断する
-        if (fileName.Length == 1 && Directory.Exists(fileName[0]))
-        {//フォルダの場合
-        }
-        else
-        {//ファイル群の場合
-            ReadImage(fileName[0]);
-        }
-    }
-
-    private void ScalablePictureBoxAdvanced_DragEnter(object sender, DragEventArgs e)
-    {
-        e.Effect = (e.Data.GetData(DataFormats.FileDrop) != null) ? DragDropEffects.Copy : DragDropEffects.None;
-    }
+    //260801Cl 削除: このコントロール自身の DragDrop / DragEnter ハンドラは一度も発火しない死に配線だった (作者判断で削除)。
+    //WinForms は AllowDrop = false のコントロールには DragEnter/DragDrop を一切発生させないが、
+    //AllowDrop を true にする箇所がライブラリにもホスト (FormEBSD / FormSpotIDV2) にも存在しなかった。
+    //画像へのドラッグ&ドロップ自体はホストのフォーム側の配線で動いているので、ユーザーから見た挙動は変わらない。
+    //旧:
+    //private void ScalablePictureBoxAdvanced_DragDrop(object sender, DragEventArgs e)
+    //{
+    //    string[] fileName = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+    //    Array.Sort(fileName);
+    //    //まず、フォルダかどうかを判断する
+    //    if (fileName.Length == 1 && Directory.Exists(fileName[0]))
+    //    {//フォルダの場合
+    //    }
+    //    else
+    //    {//ファイル群の場合
+    //        ReadImage(fileName[0]);
+    //    }
+    //}
+    //
+    //private void ScalablePictureBoxAdvanced_DragEnter(object sender, DragEventArgs e)
+    //{
+    //    e.Effect = (e.Data.GetData(DataFormats.FileDrop) != null) ? DragDropEffects.Copy : DragDropEffects.None;
+    //}
 
     #region 座標変換関連 scalablePictureBoxで定義されているものを呼び出すだけ
     /// <summary>クライアントのPointをソースのPointに変換</summary>

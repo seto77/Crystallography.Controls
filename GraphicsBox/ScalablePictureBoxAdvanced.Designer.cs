@@ -460,8 +460,8 @@
             Controls.Add(panelUpper);
             Controls.Add(statusStrip1);
             Name = "ScalablePictureBoxAdvanced";
-            DragDrop += ScalablePictureBoxAdvanced_DragDrop;
-            DragEnter += ScalablePictureBoxAdvanced_DragEnter;
+            // 260801Cl 削除: DragDrop / DragEnter の配線 (AllowDrop を立てる箇所が無く一度も発火しない死に配線だった)
+
             panelTrackBar.ResumeLayout(false);
             panelTrackBar.PerformLayout();
             flowLayoutPanelGradient.ResumeLayout(false);

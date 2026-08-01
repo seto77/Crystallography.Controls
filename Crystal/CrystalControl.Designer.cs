@@ -1235,7 +1235,7 @@
             Load += CrystalForm_Load;
             DragDrop += FormCrystal_DragDrop;
             DragEnter += FormCrystal_DragEnter;
-            KeyDown += CrystalControl_KeyDown;
+            // 260801Cl 削除: KeyDown += CrystalControl_KeyDown; (Ctrl+Shift+R = Reserved トグルの廃止。UserControl の KeyDown は構造的に発火しない)
             Resize += CrystalControl_Resize_1;
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
