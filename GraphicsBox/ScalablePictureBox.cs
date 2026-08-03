@@ -317,6 +317,13 @@ public partial class ScalablePictureBox : UserControlBase
             if (value != null)
             {
                 if (value.Width * value.Height == 0) return;
+                //260802Cl 追加: 差し替え前に表示中の Image を手放す。GetImage() が返すのは PseudoBitmap 内部の
+                //キャッシュ destBmp で、その PseudoBitmap が別サイズで再描画されると Dispose される。
+                //ここで外さないと「このコントロールは新しい PseudoBitmap を持っているのに、pictureBox.Image は
+                //前の PseudoBitmap のキャッシュを指したまま」になり、前のオブジェクトが他所で再描画された瞬間に
+                //破棄済み Bitmap を描こうとして PictureBox.OnPaint が ArgumentException で落ちる (実機で再現)。
+                if (!ReferenceEquals(_pseudoBitmap, value))
+                    pictureBox.Image = null;
                 _pseudoBitmap = value;
                 ResetMinimumZoomValue(); // 260717Cl: 同一計算式の重複を既存メソッド呼び出しへ (代入直後なので同値)
                 if (!FixZoomAndCenter)
@@ -515,6 +522,13 @@ public partial class ScalablePictureBox : UserControlBase
 
         if (PseudoBitmap == null || pictureBox.Size.Width == 0 || pictureBox.Size.Height == 0 || Center.IsNaN)
             return;
+        //pictureBox.Image = PseudoBitmap.GetImage(Center, Zoom, pictureBox.ClientSize); //260802Cl 変更前
+        //260802Cl 変更: GetImage を呼ぶ前に、表示中の Image を必ず手放す。GetImage が返すのは PseudoBitmap の
+        //内部キャッシュ destBmp で、サイズが変われば「まず破棄 → 作り直し」となる。その区間は pictureBox.Image が
+        //破棄済み Bitmap を指したままであり、STA スレッドでは GetImage 内部の待機でメッセージがポンプされ得るので、
+        //そこへ WM_PAINT が入ると GDI+ が ArgumentException ("Parameter is not valid.") を投げてアプリが落ちる。
+        //(実測: dispose から代入までの 20 ms の間に paint が入っていた)
+        pictureBox.Image = null;
         pictureBox.Image = PseudoBitmap.GetImage(Center, Zoom, pictureBox.ClientSize);
         //if(pictureBox.Image !=null)
         // justBeforeImage = new Bitmap(pictureBox.Image);
