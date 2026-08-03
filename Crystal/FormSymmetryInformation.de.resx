@@ -96,6 +96,12 @@ in die Zwischenablage verwendet wird: Vektor (emf) oder Bitmap (bmp).</value>
 Raumgruppe: welche hkl-Reflexe durch die Gitterzentrierung
 und Symmetrie erlaubt oder ausgelöscht sind.</value>
   </data>
+  <data name="miniTableWyckoff.ToolTip" xml:space="preserve">
+    <value>Wyckoff-Positionen dieser Raumgruppe: jede Zeile gibt einen
+Satz symmetrieäquivalenter Atomlagen mit Zähligkeit,
+Wyckoff-Buchstabe, Lagesymmetrie und fraktionellen
+Koordinaten an (schreibgeschützt).</value>
+  </data>
   <data name="numericBoxAngleAxes.ToolTip" xml:space="preserve">
     <value>Winkel (in Grad) zwischen Achse 1 (u₁v₁w₁) und Achse
 2 (u₂v₂w₂); automatisch berechnet (schreibgeschützt).</value>

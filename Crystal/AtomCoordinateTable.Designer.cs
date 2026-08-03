@@ -28,6 +28,9 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            //260802Cl 復元: VS の再シリアライズで消えた宣言。ツールチップは各言語の
+            //AtomCoordinateTable.<lang>.resx から resources.GetString で引くため、この行が無いと多言語化が切れる。
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AtomCoordinateTable));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             toolTip = new System.Windows.Forms.ToolTip(components);
             comboBox = new System.Windows.Forms.ComboBox();
@@ -66,7 +69,7 @@
             comboBox.Name = "comboBox";
             comboBox.Size = new System.Drawing.Size(121, 23);
             comboBox.TabIndex = 0;
-            toolTip.SetToolTip(comboBox, "Select the target atom; neighboring\r\natoms and their interatomic distances\r\nare listed and plotted around this atom.");
+            toolTip.SetToolTip(comboBox, resources.GetString("comboBox.ToolTip"));
             comboBox.SelectedIndexChanged += comboBox_SelectedIndexChanged;
             // 
             // label1
@@ -79,7 +82,7 @@
             label1.Size = new System.Drawing.Size(80, 17);
             label1.TabIndex = 1;
             label1.Text = "Target Atom";
-            toolTip.SetToolTip(label1, "Select the target atom; neighboring\r\natoms and their interatomic distances\r\nare listed and plotted around this atom.");
+            toolTip.SetToolTip(label1, resources.GetString("label1.ToolTip"));
             // 
             // dataGridView
             // 
@@ -108,7 +111,7 @@
             dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             dataGridView.Size = new System.Drawing.Size(224, 171);
             dataGridView.TabIndex = 2;
-            toolTip.SetToolTip(dataGridView, "List of neighboring atoms with their\r\ndistance (in angstroms, Å) from the target\r\natom, sorted by increasing distance.");
+            toolTip.SetToolTip(dataGridView, resources.GetString("dataGridView.ToolTip"));
             // 
             // atomLabelDataGridViewTextBoxColumn
             // 
@@ -161,7 +164,7 @@
             numericUpDownWidth.ShowUpDown = true;
             numericUpDownWidth.Size = new System.Drawing.Size(139, 25);
             numericUpDownWidth.TabIndex = 4;
-            toolTip.SetToolTip(numericUpDownWidth, "Half-width of the distance-histogram\r\nbars, in angstroms (Å); larger values\r\nbroaden each bar so nearby peaks merge.");
+            toolTip.SetToolTip(numericUpDownWidth, resources.GetString("numericUpDownWidth.ToolTip"));
             numericUpDownWidth.UpDown_Increment = 0.01D;
             numericUpDownWidth.Value = 0.1D;
             numericUpDownWidth.ValueBoxWidth = 45;
@@ -186,7 +189,7 @@
             numericUpDownMaxLength.ShowUpDown = true;
             numericUpDownMaxLength.Size = new System.Drawing.Size(161, 25);
             numericUpDownMaxLength.TabIndex = 4;
-            toolTip.SetToolTip(numericUpDownMaxLength, "Maximum interatomic distance to search,\r\nin angstroms (Å); only atoms within this\r\nradius of the target atom are listed.");
+            toolTip.SetToolTip(numericUpDownMaxLength, resources.GetString("numericUpDownMaxLength.ToolTip"));
             numericUpDownMaxLength.UpDown_Increment = 0.5D;
             numericUpDownMaxLength.Value = 5D;
             numericUpDownMaxLength.ValueBoxWidth = 40;

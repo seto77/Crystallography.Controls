@@ -96,6 +96,12 @@ negli appunti: vettoriale (emf) o bitmap (bmp).</value>
 gruppo spaziale: quali riflessioni hkl sono permesse o
 estinte dalla centratura del reticolo e dalla simmetria.</value>
   </data>
+  <data name="miniTableWyckoff.ToolTip" xml:space="preserve">
+    <value>Posizioni di Wyckoff di questo gruppo spaziale: ogni riga
+fornisce un insieme di siti atomici equivalenti per simmetria
+con la sua molteplicità, lettera di Wyckoff, simmetria del sito
+e coordinate frazionarie (sola lettura).</value>
+  </data>
   <data name="numericBoxAngleAxes.ToolTip" xml:space="preserve">
     <value>Angolo (in gradi) tra l'asse 1 (u₁v₁w₁) e l'asse
 2 (u₂v₂w₂); calcolato automaticamente (sola lettura).</value>

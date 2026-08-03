@@ -96,6 +96,12 @@ dans le presse-papiers : vectoriel (emf) ou bitmap (bmp).</value>
 groupe d'espace : quelles réflexions hkl sont permises ou
 éteintes par le mode de réseau et la symétrie.</value>
   </data>
+  <data name="miniTableWyckoff.ToolTip" xml:space="preserve">
+    <value>Positions de Wyckoff de ce groupe d'espace : chaque ligne donne
+un ensemble de sites atomiques équivalents par symétrie avec sa
+multiplicité, sa lettre de Wyckoff, sa symétrie de site et ses
+coordonnées fractionnaires (lecture seule).</value>
+  </data>
   <data name="numericBoxAngleAxes.ToolTip" xml:space="preserve">
     <value>Angle (en degrés) entre l'axe 1 (u₁v₁w₁) et l'axe
 2 (u₂v₂w₂) ; calculé automatiquement (lecture seule).</value>

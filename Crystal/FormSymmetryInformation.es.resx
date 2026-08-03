@@ -96,6 +96,12 @@ al portapapeles: vector (emf) o mapa de bits (bmp).</value>
 grupo espacial: qué reflexiones hkl están permitidas o
 extinguidas por el centrado de la red y la simetría.</value>
   </data>
+  <data name="miniTableWyckoff.ToolTip" xml:space="preserve">
+    <value>Posiciones de Wyckoff de este grupo espacial: cada fila da un
+conjunto de sitios atómicos equivalentes por simetría con su
+multiplicidad, letra de Wyckoff, simetría de sitio y
+coordenadas fraccionarias (solo lectura).</value>
+  </data>
   <data name="numericBoxAngleAxes.ToolTip" xml:space="preserve">
     <value>Ángulo (en grados) entre el eje 1 (u₁v₁w₁) y el eje
 2 (u₂v₂w₂); calculado automáticamente (solo lectura).</value>

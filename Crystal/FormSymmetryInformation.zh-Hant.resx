@@ -96,6 +96,10 @@
 顯示哪些 hkl 繞射因晶格置心與對稱性
 而被許可或消光。</value>
   </data>
+  <data name="miniTableWyckoff.ToolTip" xml:space="preserve">
+    <value>該空間群的 Wyckoff 位置。每列給出一組對稱等價的原子位置，
+並顯示其多重度、Wyckoff 字母、位置對稱性與分數座標（唯讀）。</value>
+  </data>
   <data name="numericBoxAngleAxes.ToolTip" xml:space="preserve">
     <value>軸 1 (u₁v₁w₁) 與軸 2 (u₂v₂w₂) 之間的
 夾角（單位：°）；自動計算（唯讀）。</value>

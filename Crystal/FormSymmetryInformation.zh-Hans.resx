@@ -96,6 +96,10 @@
 化和对称性决定哪些 hkl 衍射被允许或
 消光。</value>
   </data>
+  <data name="miniTableWyckoff.ToolTip" xml:space="preserve">
+    <value>该空间群的 Wyckoff 位置。每行给出一组对称等价的原子位置，
+并显示其多重度、Wyckoff 字母、位置对称性与分数坐标（只读）。</value>
+  </data>
   <data name="numericBoxAngleAxes.ToolTip" xml:space="preserve">
     <value>轴 1 (u₁v₁w₁) 与轴 2 (u₂v₂w₂) 之间的夹角
 （单位：度）；自动计算（只读）。</value>

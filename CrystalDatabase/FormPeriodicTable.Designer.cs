@@ -25,6 +25,9 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            //260802Cl 復元: VS の再シリアライズで消えた宣言。ツールチップは各言語の
+            //FormPeriodicTable.<lang>.resx から resources.GetString で引くため、この行が無いと多言語化が切れる。
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPeriodicTable));
             toolTip = new System.Windows.Forms.ToolTip(components);
             buttonLa = new System.Windows.Forms.Button();
             buttonAc = new System.Windows.Forms.Button();
@@ -58,7 +61,7 @@
             buttonLa.Size = new System.Drawing.Size(29, 25);
             buttonLa.TabIndex = 0;
             buttonLa.Text = "La";
-            toolTip.SetToolTip(buttonLa, "Placeholder for the lanthanide series (La-Lu),\r\nshown as a separate row below the main table.");
+            toolTip.SetToolTip(buttonLa, resources.GetString("buttonLa.ToolTip"));
             buttonLa.UseVisualStyleBackColor = false;
             // 
             // buttonAc
@@ -73,7 +76,7 @@
             buttonAc.Size = new System.Drawing.Size(29, 27);
             buttonAc.TabIndex = 0;
             buttonAc.Text = "Ac";
-            toolTip.SetToolTip(buttonAc, "Placeholder for the actinide series (Ac-Lr),\r\nshown as a separate row below the main table.");
+            toolTip.SetToolTip(buttonAc, resources.GetString("buttonAc.ToolTip"));
             buttonAc.UseVisualStyleBackColor = false;
             // 
             // labelLa
@@ -87,7 +90,7 @@
             labelLa.Size = new System.Drawing.Size(81, 15);
             labelLa.TabIndex = 1;
             labelLa.Text = "La: lanthanide";
-            toolTip.SetToolTip(labelLa, "Placeholder for the lanthanide series (La-Lu),\r\nshown as a separate row below the main table.");
+            toolTip.SetToolTip(labelLa, resources.GetString("labelLa.ToolTip"));
             // 
             // labelAc
             // 
@@ -100,7 +103,7 @@
             labelAc.Size = new System.Drawing.Size(69, 15);
             labelAc.TabIndex = 1;
             labelAc.Text = "Ac: actinide";
-            toolTip.SetToolTip(labelAc, "Placeholder for the actinide series (Ac-Lr),\r\nshown as a separate row below the main table.");
+            toolTip.SetToolTip(labelAc, resources.GetString("labelAc.ToolTip"));
             // 
             // buttonMustInclude
             // 
@@ -111,7 +114,7 @@
             buttonMustInclude.Name = "buttonMustInclude";
             buttonMustInclude.Size = new System.Drawing.Size(25, 25);
             buttonMustInclude.TabIndex = 0;
-            toolTip.SetToolTip(buttonMustInclude, "Mark every element as \"must include\"; only crystals\r\ncontaining them are kept in the search results.");
+            toolTip.SetToolTip(buttonMustInclude, resources.GetString("buttonMustInclude.ToolTip"));
             buttonMustInclude.UseVisualStyleBackColor = false;
             buttonMustInclude.Click += buttonMustInclude_Click;
             // 
@@ -124,7 +127,7 @@
             buttonMustExclude.Name = "buttonMustExclude";
             buttonMustExclude.Size = new System.Drawing.Size(25, 25);
             buttonMustExclude.TabIndex = 0;
-            toolTip.SetToolTip(buttonMustExclude, "Mark every element as \"must exclude\";\r\ncrystals containing any of them are\r\nremoved from the search results.");
+            toolTip.SetToolTip(buttonMustExclude, resources.GetString("buttonMustExclude.ToolTip"));
             buttonMustExclude.UseVisualStyleBackColor = false;
             buttonMustExclude.Click += buttonMustExclude_Click;
             // 
@@ -138,7 +141,7 @@
             label3.Size = new System.Drawing.Size(76, 15);
             label3.TabIndex = 1;
             label3.Text = "must include";
-            toolTip.SetToolTip(label3, "Mark every element as \"must include\"; only crystals\r\ncontaining them are kept in the search results.");
+            toolTip.SetToolTip(label3, resources.GetString("label3.ToolTip"));
             // 
             // label4
             // 
@@ -150,7 +153,7 @@
             label4.Size = new System.Drawing.Size(77, 15);
             label4.TabIndex = 1;
             label4.Text = "must exclude";
-            toolTip.SetToolTip(label4, "Mark every element as \"must exclude\";\r\ncrystals containing any of them are\r\nremoved from the search results.");
+            toolTip.SetToolTip(label4, resources.GetString("label4.ToolTip"));
             // 
             // label5
             // 
@@ -162,7 +165,7 @@
             label5.Size = new System.Drawing.Size(107, 15);
             label5.TabIndex = 1;
             label5.Text = "may or not include";
-            toolTip.SetToolTip(label5, "Reset all elements to the neutral state\r\n(may or may not be present); clears all\r\nelement constraints from the search.");
+            toolTip.SetToolTip(label5, resources.GetString("label5.ToolTip"));
             // 
             // buttonMayInclude
             // 
@@ -173,7 +176,7 @@
             buttonMayInclude.Name = "buttonMayInclude";
             buttonMayInclude.Size = new System.Drawing.Size(25, 25);
             buttonMayInclude.TabIndex = 0;
-            toolTip.SetToolTip(buttonMayInclude, "Reset all elements to the neutral state\r\n(may or may not be present); clears all\r\nelement constraints from the search.");
+            toolTip.SetToolTip(buttonMayInclude, resources.GetString("buttonMayInclude.ToolTip"));
             buttonMayInclude.UseVisualStyleBackColor = false;
             buttonMayInclude.Click += buttonMayInclude_Click;
             // 

@@ -96,6 +96,11 @@
 대칭에 의해 어떤 hkl 반사가 허용되거나
 소멸되는지를 나타냅니다.</value>
   </data>
+  <data name="miniTableWyckoff.ToolTip" xml:space="preserve">
+    <value>이 공간군의 Wyckoff 위치입니다. 각 행은 대칭적으로 등가인
+원자 위치의 집합을 나타내며, 다중도·Wyckoff 문자·
+자리 대칭성·분율 좌표를 표시합니다(읽기 전용).</value>
+  </data>
   <data name="numericBoxAngleAxes.ToolTip" xml:space="preserve">
     <value>축 1 (u₁v₁w₁)과 축 2 (u₂v₂w₂) 사이의 각도
 (단위 °). 자동 계산되는 읽기 전용 값입니다.</value>

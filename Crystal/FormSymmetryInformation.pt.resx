@@ -96,6 +96,12 @@ para a área de transferência: vetor (emf) ou bitmap (bmp).</value>
 grupo espacial: quais reflexões hkl são permitidas ou
 extintas pela centragem da rede e pela simetria.</value>
   </data>
+  <data name="miniTableWyckoff.ToolTip" xml:space="preserve">
+    <value>Posições de Wyckoff deste grupo espacial: cada linha dá um
+conjunto de sítios atômicos equivalentes por simetria com sua
+multiplicidade, letra de Wyckoff, simetria de sítio e
+coordenadas fracionárias (somente leitura).</value>
+  </data>
   <data name="numericBoxAngleAxes.ToolTip" xml:space="preserve">
     <value>Ângulo (em graus) entre o eixo 1 (u₁v₁w₁) e o eixo
 2 (u₂v₂w₂); calculado automaticamente (somente leitura).</value>

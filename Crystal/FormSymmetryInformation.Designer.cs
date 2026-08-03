@@ -190,7 +190,7 @@
             buttonCopyElements.Size = new System.Drawing.Size(45, 25);
             buttonCopyElements.TabIndex = 0;
             buttonCopyElements.Text = "Copy";
-            toolTip.SetToolTip(buttonCopyElements, "Copy the symmetry-element diagram to the clipboard\r\nin the selected format (emf vector or bmp bitmap).");
+            toolTip.SetToolTip(buttonCopyElements, resources.GetString("buttonCopyElements.ToolTip"));
             buttonCopyElements.UseVisualStyleBackColor = true;
             buttonCopyElements.Click += buttonCopySymmetryElements_Click;
             // 
@@ -205,7 +205,7 @@
             buttonCopyPositions.Size = new System.Drawing.Size(45, 25);
             buttonCopyPositions.TabIndex = 0;
             buttonCopyPositions.Text = "Copy";
-            toolTip.SetToolTip(buttonCopyPositions, "Copy the general-position diagram to the clipboard\r\nin the selected format (emf vector or bmp bitmap).");
+            toolTip.SetToolTip(buttonCopyPositions, resources.GetString("buttonCopyPositions.ToolTip"));
             buttonCopyPositions.UseVisualStyleBackColor = true;
             buttonCopyPositions.Click += buttonCopyGeneralPositions_Click;
             // 
@@ -228,7 +228,7 @@
             numericBoxPositionA.ShowUpDown = true;
             numericBoxPositionA.Size = new System.Drawing.Size(57, 25);
             numericBoxPositionA.TabIndex = 6;
-            toolTip.SetToolTip(numericBoxPositionA, "Fractional coordinate x of the test point\r\nplotted in the general-position diagram\r\n(range -1 to 1; redraws the diagram).");
+            toolTip.SetToolTip(numericBoxPositionA, resources.GetString("numericBoxPositionA.ToolTip"));
             numericBoxPositionA.UpDown_Increment = 0.01D;
             numericBoxPositionA.ValueBoxWidth = 40;
             numericBoxPositionA.ValueFontSize = 9F;
@@ -253,7 +253,7 @@
             numericBoxPositionB.ShowUpDown = true;
             numericBoxPositionB.Size = new System.Drawing.Size(57, 25);
             numericBoxPositionB.TabIndex = 6;
-            toolTip.SetToolTip(numericBoxPositionB, "Fractional coordinate y of the test point\r\nplotted in the general-position diagram\r\n(range -1 to 1; redraws the diagram).");
+            toolTip.SetToolTip(numericBoxPositionB, resources.GetString("numericBoxPositionB.ToolTip"));
             numericBoxPositionB.UpDown_Increment = 0.01D;
             numericBoxPositionB.ValueBoxWidth = 40;
             numericBoxPositionB.ValueFontSize = 9F;
@@ -278,7 +278,7 @@
             numericBoxPositionC.ShowUpDown = true;
             numericBoxPositionC.Size = new System.Drawing.Size(57, 25);
             numericBoxPositionC.TabIndex = 6;
-            toolTip.SetToolTip(numericBoxPositionC, "Fractional coordinate z of the test point\r\nplotted in the general-position diagram\r\n(range -1 to 1; redraws the diagram).");
+            toolTip.SetToolTip(numericBoxPositionC, resources.GetString("numericBoxPositionC.ToolTip"));
             numericBoxPositionC.UpDown_Increment = 0.01D;
             numericBoxPositionC.ValueBoxWidth = 40;
             numericBoxPositionC.ValueFontSize = 9F;
@@ -295,7 +295,7 @@
             radioButtonBmp.TabIndex = 1;
             radioButtonBmp.Text = "bmp";
             radioButtonBmp.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            toolTip.SetToolTip(radioButtonBmp, "Copy diagrams to the clipboard as a bitmap\r\n(bmp) raster image (fixed resolution).");
+            toolTip.SetToolTip(radioButtonBmp, resources.GetString("radioButtonBmp.ToolTip"));
             radioButtonBmp.UseVisualStyleBackColor = true;
             // 
             // radioButtonEmf
@@ -311,7 +311,7 @@
             radioButtonEmf.TabStop = true;
             radioButtonEmf.Text = "emf";
             radioButtonEmf.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            toolTip.SetToolTip(radioButtonEmf, "Copy diagrams to the clipboard as an\r\nEnhanced Metafile (emf) vector image\r\nthat scales without pixelation (default).");
+            toolTip.SetToolTip(radioButtonEmf, resources.GetString("radioButtonEmf.ToolTip"));
             radioButtonEmf.UseVisualStyleBackColor = true;
             // 
             // numericBoxAnglePlanes
@@ -329,7 +329,7 @@
             numericBoxAnglePlanes.ReadOnly = true;
             numericBoxAnglePlanes.Size = new System.Drawing.Size(72, 25);
             numericBoxAnglePlanes.TabIndex = 12;
-            toolTip.SetToolTip(numericBoxAnglePlanes, "Angle (in degrees) between plane 1 (h₁k₁l₁) and\r\nplane 2 (h₂k₂l₂); computed automatically (read-only).");
+            toolTip.SetToolTip(numericBoxAnglePlanes, resources.GetString("numericBoxAnglePlanes.ToolTip"));
             numericBoxAnglePlanes.ValueBackColor = System.Drawing.SystemColors.Control;
             numericBoxAnglePlanes.ValueTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -343,7 +343,7 @@
             textBoxZoneAxis.Size = new System.Drawing.Size(72, 23);
             textBoxZoneAxis.TabIndex = 18;
             textBoxZoneAxis.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            toolTip.SetToolTip(textBoxZoneAxis, "Zone axis [uvw]: the crystal direction\r\nlying in both plane 1 and plane 2\r\n(their common zone), shown read-only.");
+            toolTip.SetToolTip(textBoxZoneAxis, resources.GetString("textBoxZoneAxis.ToolTip"));
             // 
             // numericBoxAngleAxes
             // 
@@ -360,7 +360,7 @@
             numericBoxAngleAxes.ReadOnly = true;
             numericBoxAngleAxes.Size = new System.Drawing.Size(72, 25);
             numericBoxAngleAxes.TabIndex = 17;
-            toolTip.SetToolTip(numericBoxAngleAxes, "Angle (in degrees) between axis 1 (u₁v₁w₁) and axis\r\n2 (u₂v₂w₂); computed automatically (read-only).");
+            toolTip.SetToolTip(numericBoxAngleAxes, resources.GetString("numericBoxAngleAxes.ToolTip"));
             numericBoxAngleAxes.ValueBackColor = System.Drawing.SystemColors.Control;
             numericBoxAngleAxes.ValueTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -375,7 +375,7 @@
             indexControlPlane2.Size = new System.Drawing.Size(128, 25);
             indexControlPlane2.SubScript = "2";
             indexControlPlane2.TabIndex = 14;
-            toolTip.SetToolTip(indexControlPlane2, "Enter the Miller indices (h₂ k₂ l₂) of\r\nplane 2; updates its interplanar spacing,\r\nthe inter-plane angle and the zone axis.");
+            toolTip.SetToolTip(indexControlPlane2, resources.GetString("indexControlPlane2.ToolTip"));
             indexControlPlane2.ValueChanged += numericBox_ValueChanged;
             // 
             // numericBoxLengthPlane2
@@ -393,7 +393,7 @@
             numericBoxLengthPlane2.ReadOnly = true;
             numericBoxLengthPlane2.Size = new System.Drawing.Size(67, 25);
             numericBoxLengthPlane2.TabIndex = 14;
-            toolTip.SetToolTip(numericBoxLengthPlane2, "Interplanar spacing d of plane 2 (h₂k₂l₂), in\r\nångström (Å); computed automatically (read-only).");
+            toolTip.SetToolTip(numericBoxLengthPlane2, resources.GetString("numericBoxLengthPlane2.ToolTip"));
             numericBoxLengthPlane2.ValueBackColor = System.Drawing.SystemColors.Control;
             numericBoxLengthPlane2.ValueTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -406,7 +406,7 @@
             label40.Size = new System.Drawing.Size(176, 32);
             label40.TabIndex = 6;
             label40.Text = "The axis normal to both planes";
-            toolTip.SetToolTip(label40, "Zone axis [uvw]: the crystal direction\r\nlying in both plane 1 and plane 2\r\n(their common zone), shown read-only.");
+            toolTip.SetToolTip(label40, resources.GetString("label40.ToolTip"));
             // 
             // indexControlAxis2
             // 
@@ -420,7 +420,7 @@
             indexControlAxis2.Size = new System.Drawing.Size(128, 25);
             indexControlAxis2.SubScript = "2";
             indexControlAxis2.TabIndex = 14;
-            toolTip.SetToolTip(indexControlAxis2, "Enter the direction indices (u₂ v₂ w₂)\r\nof axis 2; updates its length, the\r\ninter-axis angle and the common plane.");
+            toolTip.SetToolTip(indexControlAxis2, resources.GetString("indexControlAxis2.ToolTip"));
             indexControlAxis2.ValueChanged += numericBox_ValueChanged;
             // 
             // numericBoxLengthAxis2
@@ -438,7 +438,7 @@
             numericBoxLengthAxis2.ReadOnly = true;
             numericBoxLengthAxis2.Size = new System.Drawing.Size(67, 25);
             numericBoxLengthAxis2.TabIndex = 4;
-            toolTip.SetToolTip(numericBoxLengthAxis2, "Length of the lattice direction vector\r\nfor axis 2 (u₂v₂w₂), in ångström (Å);\r\ncomputed automatically (read-only).");
+            toolTip.SetToolTip(numericBoxLengthAxis2, resources.GetString("numericBoxLengthAxis2.ToolTip"));
             numericBoxLengthAxis2.ValueBackColor = System.Drawing.SystemColors.Control;
             numericBoxLengthAxis2.ValueTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -457,7 +457,7 @@
             numericBoxAnglePlaneAxis1.ReadOnly = true;
             numericBoxAnglePlaneAxis1.Size = new System.Drawing.Size(72, 25);
             numericBoxAnglePlaneAxis1.TabIndex = 15;
-            toolTip.SetToolTip(numericBoxAnglePlaneAxis1, "Angle (in degrees) between plane 1 (h₁k₁l₁) and\r\naxis 1 (u₁v₁w₁); computed automatically (read-only).");
+            toolTip.SetToolTip(numericBoxAnglePlaneAxis1, resources.GetString("numericBoxAnglePlaneAxis1.ToolTip"));
             numericBoxAnglePlaneAxis1.ValueBackColor = System.Drawing.SystemColors.Control;
             numericBoxAnglePlaneAxis1.ValueTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -473,7 +473,7 @@
             indexControlAxis1.Size = new System.Drawing.Size(128, 25);
             indexControlAxis1.SubScript = "1";
             indexControlAxis1.TabIndex = 14;
-            toolTip.SetToolTip(indexControlAxis1, "Enter the direction indices (u₁ v₁ w₁)\r\nof axis 1; updates its length, the\r\ninter-axis angle and the common plane.");
+            toolTip.SetToolTip(indexControlAxis1, resources.GetString("indexControlAxis1.ToolTip"));
             indexControlAxis1.ValueChanged += numericBox_ValueChanged;
             // 
             // numericBoxLengthAxis1
@@ -491,7 +491,7 @@
             numericBoxLengthAxis1.ReadOnly = true;
             numericBoxLengthAxis1.Size = new System.Drawing.Size(67, 25);
             numericBoxLengthAxis1.TabIndex = 4;
-            toolTip.SetToolTip(numericBoxLengthAxis1, "Length of the lattice direction vector\r\nfor axis 1 (u₁v₁w₁), in ångström (Å);\r\ncomputed automatically (read-only).");
+            toolTip.SetToolTip(numericBoxLengthAxis1, resources.GetString("numericBoxLengthAxis1.ToolTip"));
             numericBoxLengthAxis1.ValueBackColor = System.Drawing.SystemColors.Control;
             numericBoxLengthAxis1.ValueTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -510,7 +510,7 @@
             numericBoxAnglePlaneAxis2.ReadOnly = true;
             numericBoxAnglePlaneAxis2.Size = new System.Drawing.Size(72, 25);
             numericBoxAnglePlaneAxis2.TabIndex = 16;
-            toolTip.SetToolTip(numericBoxAnglePlaneAxis2, "Angle (in degrees) between plane 2 (h₂k₂l₂) and\r\naxis 2 (u₂v₂w₂); computed automatically (read-only).");
+            toolTip.SetToolTip(numericBoxAnglePlaneAxis2, resources.GetString("numericBoxAnglePlaneAxis2.ToolTip"));
             numericBoxAnglePlaneAxis2.ValueBackColor = System.Drawing.SystemColors.Control;
             numericBoxAnglePlaneAxis2.ValueTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -525,7 +525,7 @@
             indexControlPlane1.Size = new System.Drawing.Size(128, 25);
             indexControlPlane1.SubScript = "1";
             indexControlPlane1.TabIndex = 14;
-            toolTip.SetToolTip(indexControlPlane1, "Enter the Miller indices (h₁ k₁ l₁) of\r\nplane 1; updates its interplanar spacing,\r\nthe inter-plane angle and the zone axis.");
+            toolTip.SetToolTip(indexControlPlane1, resources.GetString("indexControlPlane1.ToolTip"));
             indexControlPlane1.ValueChanged += numericBox_ValueChanged;
             // 
             // numericBoxLengthPlane1
@@ -543,7 +543,7 @@
             numericBoxLengthPlane1.ReadOnly = true;
             numericBoxLengthPlane1.Size = new System.Drawing.Size(67, 25);
             numericBoxLengthPlane1.TabIndex = 13;
-            toolTip.SetToolTip(numericBoxLengthPlane1, "Interplanar spacing d of plane 1 (h₁k₁l₁), in\r\nångström (Å); computed automatically (read-only).");
+            toolTip.SetToolTip(numericBoxLengthPlane1, resources.GetString("numericBoxLengthPlane1.ToolTip"));
             numericBoxLengthPlane1.ValueBackColor = System.Drawing.SystemColors.Control;
             numericBoxLengthPlane1.ValueTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -557,7 +557,7 @@
             textBoxZonePlane.Size = new System.Drawing.Size(72, 23);
             textBoxZonePlane.TabIndex = 19;
             textBoxZonePlane.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            toolTip.SetToolTip(textBoxZonePlane, "Lattice plane (hkl) that contains both\r\naxis 1 and axis 2 (the plane common to\r\nthe two directions), shown read-only.");
+            toolTip.SetToolTip(textBoxZonePlane, resources.GetString("textBoxZonePlane.ToolTip"));
             // 
             // label42
             // 
@@ -568,7 +568,7 @@
             label42.Size = new System.Drawing.Size(175, 32);
             label42.TabIndex = 6;
             label42.Text = "The plane normal to both axes";
-            toolTip.SetToolTip(label42, "Lattice plane (hkl) that contains both\r\naxis 1 and axis 2 (the plane common to\r\nthe two directions), shown read-only.");
+            toolTip.SetToolTip(label42, resources.GetString("label42.ToolTip"));
             // 
             // miniTableWyckoff
             // 
@@ -585,7 +585,7 @@
             miniTableWyckoff.Size = new System.Drawing.Size(677, 160);
             miniTableWyckoff.TabIndex = 0;
             miniTableWyckoff.TabStop = false;
-            toolTip.SetToolTip(miniTableWyckoff, "Wyckoff positions of this space group: each row\r\ngives a set of symmetry-equivalent atomic sites\r\nwith its multiplicity, Wyckoff letter, site\r\nsymmetry and fractional coordinates (read-only).");
+            toolTip.SetToolTip(miniTableWyckoff, resources.GetString("miniTableWyckoff.ToolTip"));
             // 
             // label49
             // 
@@ -598,7 +598,7 @@
             label49.Size = new System.Drawing.Size(213, 21);
             label49.TabIndex = 7;
             label49.Text = "Conditions limiting possible reflections";
-            toolTip.SetToolTip(label49, "Reflection conditions (systematic absences) of this\r\nspace group: which hkl reflections are allowed or\r\nextinguished by the lattice centering and symmetry.");
+            toolTip.SetToolTip(label49, resources.GetString("label49.ToolTip"));
             // 
             // label8
             // 
@@ -610,7 +610,7 @@
             label8.TabIndex = 1;
             label8.Text = "SF symbol:";
             label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            toolTip.SetToolTip(label8, "Schoenflies (SF) symbol of the space group (e.g. O_h^7).");
+            toolTip.SetToolTip(label8, resources.GetString("label8.ToolTip"));
             // 
             // label9
             // 
@@ -622,7 +622,7 @@
             label9.TabIndex = 1;
             label9.Text = "Hall symbol:";
             label9.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            toolTip.SetToolTip(label9, "Hall symbol of the space group: a\r\ncompact notation that encodes the full\r\nset of generating symmetry operations.");
+            toolTip.SetToolTip(label9, resources.GetString("label9.ToolTip"));
             // 
             // label5
             // 
@@ -634,7 +634,7 @@
             label5.TabIndex = 1;
             label5.Text = "HM symbol (short):";
             label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            toolTip.SetToolTip(label5, "Short Hermann–Mauguin (HM) symbol of the\r\nspace group (international standard notation).");
+            toolTip.SetToolTip(label5, resources.GetString("label5.ToolTip"));
             // 
             // label6
             // 
@@ -646,7 +646,7 @@
             label6.TabIndex = 1;
             label6.Text = "HM symbol (full):";
             label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            toolTip.SetToolTip(label6, "Full Hermann–Mauguin (HM) symbol of the space group,\r\nlisting the symmetry along each axis explicitly.");
+            toolTip.SetToolTip(label6, resources.GetString("label6.ToolTip"));
             // 
             // label
             // 
@@ -658,7 +658,7 @@
             label.TabIndex = 1;
             label.Text = "Crystal System:";
             label.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            toolTip.SetToolTip(label, "Crystal system of the structure (e.g.\r\ncubic, hexagonal, orthorhombic).");
+            toolTip.SetToolTip(label, resources.GetString("label.ToolTip"));
             // 
             // label10
             // 
@@ -669,7 +669,7 @@
             label10.TabIndex = 1;
             label10.Text = "HM symbol:";
             label10.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            toolTip.SetToolTip(label10, "Hermann–Mauguin (HM) symbol of the point group (e.g. m-3m).");
+            toolTip.SetToolTip(label10, resources.GetString("label10.ToolTip"));
             // 
             // label11
             // 
@@ -681,7 +681,7 @@
             label11.TabIndex = 1;
             label11.Text = "SF symbol:";
             label11.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            toolTip.SetToolTip(label11, "Schoenflies (SF) symbol of the point group (e.g. O_h).");
+            toolTip.SetToolTip(label11, resources.GetString("label11.ToolTip"));
             // 
             // label4
             // 
@@ -693,7 +693,7 @@
             label4.TabIndex = 1;
             label4.Text = "Number:";
             label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            toolTip.SetToolTip(label4, "Space-group number (1–230) from the\r\nInternational Tables for Crystallography,\r\nwith its setting sub-number.");
+            toolTip.SetToolTip(label4, resources.GetString("label4.ToolTip"));
             // 
             // label16
             // 
@@ -705,7 +705,7 @@
             label16.Size = new System.Drawing.Size(55, 15);
             label16.TabIndex = 6;
             label16.Text = "Direction";
-            toolTip.SetToolTip(label16, "Projection direction of the symmetry-element\r\nand general-position diagrams (selectable\r\nfor orthorhombic crystals).");
+            toolTip.SetToolTip(label16, resources.GetString("label16.ToolTip"));
             // 
             // radioButtonDirectionA
             // 
@@ -718,7 +718,7 @@
             radioButtonDirectionA.TabIndex = 1;
             radioButtonDirectionA.Text = "a";
             radioButtonDirectionA.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            toolTip.SetToolTip(radioButtonDirectionA, "Project the symmetry-element and\r\ngeneral-position diagrams along the a-axis\r\n(available for orthorhombic crystals).");
+            toolTip.SetToolTip(radioButtonDirectionA, resources.GetString("radioButtonDirectionA.ToolTip"));
             radioButtonDirectionA.UseVisualStyleBackColor = true;
             radioButtonDirectionA.CheckedChanged += radioButtonDirection_CheckedChanged;
             // 
@@ -733,7 +733,7 @@
             radioButtonDirectionB.TabIndex = 1;
             radioButtonDirectionB.Text = "b";
             radioButtonDirectionB.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            toolTip.SetToolTip(radioButtonDirectionB, "Project the symmetry-element and\r\ngeneral-position diagrams along the b-axis\r\n(available for orthorhombic crystals).");
+            toolTip.SetToolTip(radioButtonDirectionB, resources.GetString("radioButtonDirectionB.ToolTip"));
             radioButtonDirectionB.UseVisualStyleBackColor = true;
             radioButtonDirectionB.CheckedChanged += radioButtonDirection_CheckedChanged;
             // 
@@ -748,7 +748,7 @@
             radioButtonDirectionC.TabIndex = 1;
             radioButtonDirectionC.Text = "c";
             radioButtonDirectionC.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            toolTip.SetToolTip(radioButtonDirectionC, "Project the symmetry-element and\r\ngeneral-position diagrams along the c-axis\r\n(default; selectable for orthorhombic crystals).");
+            toolTip.SetToolTip(radioButtonDirectionC, resources.GetString("radioButtonDirectionC.ToolTip"));
             radioButtonDirectionC.UseVisualStyleBackColor = true;
             radioButtonDirectionC.CheckedChanged += radioButtonDirection_CheckedChanged;
             // 
@@ -762,7 +762,7 @@
             label12.Size = new System.Drawing.Size(74, 15);
             label12.TabIndex = 6;
             label12.Text = "Copy format";
-            toolTip.SetToolTip(label12, "Choose the image format used when copying a diagram\r\nto the clipboard: vector (emf) or bitmap (bmp).");
+            toolTip.SetToolTip(label12, resources.GetString("label12.ToolTip"));
             // 
             // miniTableConditions
             // 

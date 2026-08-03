@@ -141,6 +141,11 @@
 心 (centering) と対称性により、どの
 hkl 反射が許容/消滅するかを示します。</value>
   </data>
+  <data name="miniTableWyckoff.ToolTip" xml:space="preserve">
+    <value>この空間群の Wyckoff 位置です。各行は対称等価な原子位置の
+組を表し、多重度・Wyckoff 記号・サイト対称性・
+分率座標を示します (読み取り専用)。</value>
+  </data>
   <data name="numericBoxAngleAxes.ToolTip" xml:space="preserve">
     <value>軸1 (u₁v₁w₁) と軸2 (u₂v₂w₂) のなす角度
 (単位: °)。自動計算の読み取り専用です。</value>
