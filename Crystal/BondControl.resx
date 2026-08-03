@@ -590,7 +590,7 @@ atoms) of the coordination polyhedron.</value>
     <value>100, 25</value>
   </data>
   <data name="numericBoxPolyhedronAlpha.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>1</value>
   </data>
   <data name="numericBoxPolyhedronAlpha.ToolTip" xml:space="preserve">
     <value>Opacity of the polyhedron faces (0
@@ -627,7 +627,7 @@ atoms) of the coordination polyhedron.</value>
     <value>89, 19</value>
   </data>
   <data name="checkBoxShowEdges.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>4</value>
   </data>
   <data name="checkBoxShowEdges.Text" xml:space="preserve">
     <value>Show Edges</value>
@@ -682,7 +682,7 @@ polyhedron, and enable the edge-width setting.</value>
     <value>96, 27</value>
   </data>
   <data name="numericBoxEdgeWidth.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>5</value>
   </data>
   <data name="numericBoxEdgeWidth.ToolTip" xml:space="preserve">
     <value>Line width of the polyhedron edges.</value>
