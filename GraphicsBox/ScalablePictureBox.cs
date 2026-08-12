@@ -768,7 +768,8 @@ public partial class ScalablePictureBox : UserControlBase
                     }
                 }
 
-            if (TitleVisible)
+            //if (TitleVisible) // 260813Cl 旧: Title 未設定 (Font=null) のまま TitleVisible だけ true だと Paint で NullReferenceException (SpotID v2 で Show zone axis が復元 checked のとき、画像読込直後〜Identify 前に発生)
+            if (TitleVisible && Title.Font != null) // 260813Cl
             {
                 var ff = Title.Font.FontFamily;
                 using var gp = new GraphicsPath();
