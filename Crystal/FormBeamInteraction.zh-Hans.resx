@@ -391,4 +391,7 @@ s) 模式下可用。
 使用 Waasmaier-Kirfel (1995) 参数化（5 个高斯函数与一个常数项之和）的 X 射线原子散射
 因子 f(s)。这是默认值，除中性原子外还涵盖离子，范围为 Z = 1-98。</value>
   </data>
+  <data name="colSfxModel.HeaderText" xml:space="preserve">
+    <value>模型</value>
+  </data>
 </root>

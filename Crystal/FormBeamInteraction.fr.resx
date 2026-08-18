@@ -395,4 +395,7 @@ Facteur de diffusion atomique des rayons X f(s) selon la paramétrisation de
 Waasmaier-Kirfel (1995) (somme de 5 gaussiennes plus une constante). C'est l'option
 par défaut ; elle couvre les ions comme les atomes neutres sur Z = 1-98.</value>
   </data>
+  <data name="colSfxModel.HeaderText" xml:space="preserve">
+    <value>modèle</value>
+  </data>
 </root>

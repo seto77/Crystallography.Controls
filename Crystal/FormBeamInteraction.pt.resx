@@ -389,4 +389,7 @@ Fator de espalhamento atômico de raios X f(s) usando a parametrização de
 Waasmaier-Kirfel (1995) (uma soma de 5 Gaussianas mais uma constante). É o padrão e
 cobre íons além de átomos neutros em Z = 1-98.</value>
   </data>
+  <data name="colSfxModel.HeaderText" xml:space="preserve">
+    <value>modelo</value>
+  </data>
 </root>

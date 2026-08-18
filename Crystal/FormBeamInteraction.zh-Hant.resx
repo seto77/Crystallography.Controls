@@ -391,4 +391,7 @@ s) 模式下可用。
 使用 Waasmaier-Kirfel (1995) 參數化（5 個高斯函數與一個常數項之和）計算的 X 光原子散
 射因子 f(s)。此為預設值，除中性原子外亦涵蓋離子，範圍為 Z = 1-98。</value>
   </data>
+  <data name="colSfxModel.HeaderText" xml:space="preserve">
+    <value>模型</value>
+  </data>
 </root>

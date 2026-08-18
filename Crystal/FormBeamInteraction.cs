@@ -523,7 +523,9 @@ public partial class FormBeamInteraction : FormBase
         //260607Cl 線種別 3 表の列はデザイナ定義 (ヘッダ翻訳は resx/.ja.resx)。ここでは整列/書式/AutoSize/非ソートだけコードで設定する。
         //          元素/モデル列は内容フィット (AllCells)、数値列は Fill で伸縮 (相対幅はデザイナの FillWeight で微調整可)。
         var R = DataGridViewContentAlignment.MiddleRight;
-        ConfigCol(colSfxElem, default); ConfigCol(colSfxZ, R, "0", true); ConfigCol(colSfxFs, R, "g4", true); ConfigCol(colSfxFp, R, "g3", true); ConfigCol(colSfxFpp, R, "g3", true);
+        //260819Cl colSfxModel 追加: 電子線表の model 列と対称に、X線 f(s) の出典 (Waasmaier-Kirfel / Temari) を出す。
+        //  出典名は内容フィット (AllCells) にする — "Waasmaier-Kirfel" は Fill だと確実に切れる。
+        ConfigCol(colSfxElem, default); ConfigCol(colSfxZ, R, "0", true); ConfigCol(colSfxFs, R, "g4", true); ConfigCol(colSfxFp, R, "g3", true); ConfigCol(colSfxFpp, R, "g3", true); ConfigCol(colSfxModel, default);
         ConfigCol(colSfeElem, default); ConfigCol(colSfeZ, R, "0", true); ConfigCol(colSfeFe, R, "g4", true); ConfigCol(colSfeModel, default);
         ConfigCol(colSfnElem, default); ConfigCol(colSfnBcoh, R, "g4", true); ConfigCol(colSfnScoh, R, "g4", true); ConfigCol(colSfnSinc, R, "g4", true);
 
@@ -755,6 +757,8 @@ public partial class FormBeamInteraction : FormBase
         bool electron = src == WaveSource.Electron;
         var model = electron ? CurrentElectronModel() : default;//260818Cl 表示名にのみ使う (因子は scatFactors で事前解決済み)
         var modelName = model == ElectronModel.EightGaussian ? "8-Gauss" : model.ToString();
+        //260819Cl 追加: X線 f(s) の出典名。⚠ ラジオのラベル (resx) と同じ綴りにする — 表と GUI で別の呼び方をしない
+        var xraySourceName = electron ? null : CurrentXrayIsTemari() ? radioButtonXraySrcTemari.Text : radioButtonXraySrcWK.Text;
         double s2 = sAng * sAng * 100.0;
 
         var rows = new List<object[]>(scatElements.Length);
@@ -777,7 +781,9 @@ public partial class FormBeamInteraction : FormBase
                 // f′ = Fi、慣用 f″ = −Fii (Xraylib 内で符号反転済)。利用不可は NaN → 空欄。260606Cl
                 //260606Cl s 非依存の f'/f'' は UpdateScatteringFactors が事前計算した scatXrayDisp を参照(ドラッグ毎の native 呼びを回避)。
                 var (fp, fpp) = i < scatXrayDisp.Length ? scatXrayDisp[i] : (double.NaN, double.NaN);
-                rows.Add([el.Name, el.Z, fCell, double.IsNaN(fp) ? null : fp, double.IsNaN(fpp) ? null : fpp]);
+                //260819Cl 出典列を追加 (電子線表の model 列と対称)。⚠ F(q)+S(q) モードでも f(s) 列は Waasmaier-Kirfel の値なので、
+                //  そこでも出典は WK と出るのが正しい (CurrentXrayIsTemari が f(s) モードを条件に含んでいる)。
+                rows.Add([el.Name, el.Z, fCell, double.IsNaN(fp) ? null : fp, double.IsNaN(fpp) ? null : fpp, xraySourceName]);
             }
         }
         (electron ? miniTableScatteringFactorsElectron : miniTableScatteringFactorsXray).SetRows(rows);

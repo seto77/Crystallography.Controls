@@ -2554,7 +2554,7 @@ above 36 keV).</value>
     <value>6, 6</value>
   </data>
   <data name="miniTableScatteringFactorsXray.Size" type="System.Drawing.Size, System.Drawing">
-    <value>326, 100</value>
+    <value>436, 100</value>
   </data>
   <data name="miniTableScatteringFactorsXray.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -2593,7 +2593,7 @@ above 36 keV).</value>
     <value>6, 112</value>
   </data>
   <data name="miniTableScatteringFactorsElectron.Size" type="System.Drawing.Size, System.Drawing">
-    <value>326, 100</value>
+    <value>436, 100</value>
   </data>
   <data name="miniTableScatteringFactorsElectron.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -2638,7 +2638,7 @@ above 36 keV).</value>
     <value>6, 218</value>
   </data>
   <data name="miniTableScatteringFactorsNeutron.Size" type="System.Drawing.Size, System.Drawing">
-    <value>326, 100</value>
+    <value>436, 100</value>
   </data>
   <data name="miniTableScatteringFactorsNeutron.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -2668,7 +2668,7 @@ above 36 keV).</value>
     <value>3, 3, 3, 3</value>
   </data>
   <data name="flowLayoutPanel8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>340, 509</value>
+    <value>450, 509</value>
   </data>
   <data name="flowLayoutPanel8.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -3473,4 +3473,13 @@ covers ions as well as neutral atoms over Z = 1-98.</value>
   <metadata name="labelTemariNotice.Name" xml:space="preserve">
     <value>labelTemariNotice</value>
   </metadata>
+  <data name="colSfxModel.AutoSizeMode" type="System.Windows.Forms.DataGridViewAutoSizeColumnMode, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="colSfxModel.Width" type="System.Int32, mscorlib">
+    <value>110</value>
+  </data>
+  <data name="colSfxModel.HeaderText" xml:space="preserve">
+    <value>model</value>
+  </data>
 </root>

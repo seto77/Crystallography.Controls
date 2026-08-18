@@ -389,4 +389,7 @@ Factor de dispersión atómica de rayos X f(s) con la parametrización de
 Waasmaier-Kirfel (1995) (suma de 5 gaussianas más una constante). Es la opción
 predeterminada y cubre iones además de átomos neutros en Z = 1-98.</value>
   </data>
+  <data name="colSfxModel.HeaderText" xml:space="preserve">
+    <value>modelo</value>
+  </data>
 </root>

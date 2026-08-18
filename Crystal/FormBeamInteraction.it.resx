@@ -401,4 +401,7 @@ Fattore di scattering atomico dei raggi X f(s) con la parametrizzazione di
 Waasmaier-Kirfel (1995) (somma di 5 gaussiane più una costante). È l'impostazione
 predefinita e copre gli ioni oltre agli atomi neutri su Z = 1-98.</value>
   </data>
+  <data name="colSfxModel.HeaderText" xml:space="preserve">
+    <value>modello</value>
+  </data>
 </root>

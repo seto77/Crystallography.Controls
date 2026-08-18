@@ -492,4 +492,7 @@ Waasmaier-Kirfel (1995) のパラメータ化 (5 個のガウス関数と定数�
 散乱因子 f(s)。既定値であり、中性原子に加えイオンにも対応し Z = 1-98 を収録しています
 。</value>
   </data>
+  <data name="colSfxModel.HeaderText" xml:space="preserve">
+    <value>モデル</value>
+  </data>
 </root>

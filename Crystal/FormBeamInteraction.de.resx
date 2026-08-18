@@ -401,4 +401,7 @@ Atomarer Röntgenstreufaktor f(s) mit der Parametrisierung von Waasmaier-Kirfel 
 (Summe aus 5 Gaußfunktionen plus Konstante). Dies ist die Vorgabe; sie erfasst neben
 neutralen Atomen auch Ionen über Z = 1-98.</value>
   </data>
+  <data name="colSfxModel.HeaderText" xml:space="preserve">
+    <value>Modell</value>
+  </data>
 </root>

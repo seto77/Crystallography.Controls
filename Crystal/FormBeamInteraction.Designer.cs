@@ -139,6 +139,7 @@
             colSfxFs = new System.Windows.Forms.DataGridViewTextBoxColumn();
             colSfxFp = new System.Windows.Forms.DataGridViewTextBoxColumn();
             colSfxFpp = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            colSfxModel = new System.Windows.Forms.DataGridViewTextBoxColumn();
             miniTableScatteringFactorsElectron = new MiniTable();
             colSfeElem = new System.Windows.Forms.DataGridViewTextBoxColumn();
             colSfeZ = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -1124,7 +1125,7 @@
             // 
             miniTableScatteringFactorsXray.AutoFitHeight = true;
             miniTableScatteringFactorsXray.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            miniTableScatteringFactorsXray.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { colSfxElem, colSfxZ, colSfxFs, colSfxFp, colSfxFpp });
+            miniTableScatteringFactorsXray.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { colSfxElem, colSfxZ, colSfxFs, colSfxFp, colSfxFpp, colSfxModel });
             resources.ApplyResources(miniTableScatteringFactorsXray, "miniTableScatteringFactorsXray");
             miniTableScatteringFactorsXray.Name = "miniTableScatteringFactorsXray";
             miniTableScatteringFactorsXray.TabStop = false;
@@ -1163,6 +1164,13 @@
             resources.ApplyResources(colSfxFpp, "colSfxFpp");
             colSfxFpp.Name = "colSfxFpp";
             colSfxFpp.ReadOnly = true;
+            // 
+            // colSfxModel
+            // 
+            colSfxModel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            resources.ApplyResources(colSfxModel, "colSfxModel");
+            colSfxModel.Name = "colSfxModel";
+            colSfxModel.ReadOnly = true;
             // 
             // miniTableScatteringFactorsElectron
             // 
@@ -1516,6 +1524,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colSfxFs;
         private System.Windows.Forms.DataGridViewTextBoxColumn colSfxFp;
         private System.Windows.Forms.DataGridViewTextBoxColumn colSfxFpp;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colSfxModel; // 260819Cl X線 f(s) の出典 (電子線表の model 列と対称に)
         private System.Windows.Forms.DataGridViewTextBoxColumn colSfnElem;
         private System.Windows.Forms.DataGridViewTextBoxColumn colSfnBcoh;
         private System.Windows.Forms.DataGridViewTextBoxColumn colSfnScoh;
