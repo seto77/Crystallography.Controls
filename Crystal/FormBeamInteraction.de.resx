@@ -225,8 +225,11 @@ großem Winkel übergeht. Deaktiviert, wenn xraylib nicht verfügbar ist.</value
   <data name="labelModel.ToolTip" xml:space="preserve">
     <value>Wählt die Formel (Parametrisierung) zur Berechnung des Atomformfaktors -
 wie stark ein einzelnes Atom den Strahl als Funktion des Winkels streut.
-Die verfügbaren Auswahlmöglichkeiten ändern sich mit dem Strahl: Röntgen bietet f(s) oder F(q)+S(q);
-Elektronen bieten die Modelle Peng, Kirkland oder 8-Gauss.</value>
+Die verfügbaren Auswahlmöglichkeiten ändern sich mit dem Strahl: Röntgen bietet f(s)
+oder
+F(q)+S(q), und eine zweite Zeile wählt die Quelle von f(s) (Waasmaier-Kirfel oder
+Temari);
+Elektronen bieten die Modelle Peng, 8-Gauss, Kirkland oder Temari.</value>
   </data>
   <data name="checkBoxTest.ToolTip" xml:space="preserve">
     <value>Den Testmodus einschalten. Dies zeigt ein Panel, in dem Sie einen beliebigen Bereich von
@@ -364,5 +367,38 @@ daten; ohne diesen werden die Atome als ruhend behandelt.</value>
 (3 Lorentz-Funktionen plus 3 Gauss-Funktionen).
 Oft bevorzugt für Bildsimulationen bei großen Winkeln / hoher Auflösung, da er bis zu
 großen s genau bleibt.</value>
+  </data>
+  <data name="labelTemariNotice.Text" xml:space="preserve">
+    <value>Temari: nur neutrale Atome Z = 1-86. Ionen und nicht unterstützte Elemente werden
+nicht angezeigt.</value>
+  </data>
+  <data name="labelTemariNotice.ToolTip" xml:space="preserve">
+    <value>Temari wird für isolierte neutrale Atome berechnet und die Tabellen enden bei Z = 86;
+für Ionen und Z = 87-98 gibt es daher keine Einträge. Ihre Kurven entfallen und ihre
+Tabellenzellen bleiben leer, statt durch Werte neutraler Atome ersetzt zu werden.</value>
+  </data>
+  <data name="radioButtonElectronTemari.ToolTip" xml:space="preserve">
+    <value>Atomarer Elektronenstreufaktor fe(s) aus Temari dataset-factors v1.0.0. Dies ist eine
+Ab-initio-Rechnung (volles Dirac-SCF mit exaktem KLI-Austausch), keine angepasste
+Parametrisierung. Nur neutrale Atome Z = 1-86, und der relativistische Faktor gamma
+ist nicht enthalten (dieselbe Konvention wie bei Peng). Alle Stützstellen und die
+vorgeschriebene Interpolation werden verwendet; die veröffentlichten Werte sind
+requantisiert (größte Abweichung 5e-12 Å). CC-BY-4.0.</value>
+  </data>
+  <data name="radioButtonXraySrcTemari.ToolTip" xml:space="preserve">
+    <value>Diese Zeile wählt, woher f(s) stammt, nicht was dargestellt wird - das ist die Zeile
+f(s) / F(q)+S(q) links. Sie ist nur im Modus f(s) verfügbar.
+Atomarer Röntgenstreufaktor f(s) aus Temari dataset-factors v1.0.0. Dies ist eine
+Ab-initio-Rechnung (volles Dirac-SCF mit exaktem KLI-Austausch), keine angepasste
+Parametrisierung. Nur neutrale Atome Z = 1-86. Alle Stützstellen und die
+vorgeschriebene Interpolation werden verwendet; die veröffentlichten Werte sind
+requantisiert (größte Abweichung 5e-11 Elektronen). CC-BY-4.0.</value>
+  </data>
+  <data name="radioButtonXraySrcWK.ToolTip" xml:space="preserve">
+    <value>Diese Zeile wählt, woher f(s) stammt, nicht was dargestellt wird - das ist die Zeile
+f(s) / F(q)+S(q) links. Sie ist nur im Modus f(s) verfügbar.
+Atomarer Röntgenstreufaktor f(s) mit der Parametrisierung von Waasmaier-Kirfel (1995)
+(Summe aus 5 Gaußfunktionen plus Konstante). Dies ist die Vorgabe; sie erfasst neben
+neutralen Atomen auch Ionen über Z = 1-98.</value>
   </data>
 </root>

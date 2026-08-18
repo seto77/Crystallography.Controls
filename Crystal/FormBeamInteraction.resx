@@ -1381,8 +1381,10 @@ low-angle ones. Unit: nm or Angstrom, matching the length-unit setting.</value>
   <data name="labelModel.ToolTip" xml:space="preserve">
     <value>Selects the formula (parameterization) used to compute the atomic scattering factor -
 how strongly a single atom scatters the beam as a function of angle.
-The available choices change with the beam: X-ray offers f(s) or F(q)+S(q);
-electron offers the Peng, Kirkland or 8-Gaussian models.</value>
+The available choices change with the beam: X-ray offers f(s) or F(q)+S(q), and a
+second
+row selects where f(s) comes from (Waasmaier-Kirfel or Temari);
+electron offers the Peng, 8-Gaussian, Kirkland or Temari models.</value>
   </data>
   <data name="&gt;&gt;labelModel.Name" xml:space="preserve">
     <value>labelModel</value>
@@ -3334,4 +3336,141 @@ above 36 keV).</value>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>Crystallography.Controls.FormBase, Crystallography.Controls, Culture=neutral, PublicKeyToken=null</value>
   </data>
+  <data name="radioButtonElectronTemari.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="radioButtonElectronTemari.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="radioButtonElectronTemari.Location" type="System.Drawing.Point, System.Drawing">
+    <value>224, 0</value>
+  </data>
+  <data name="radioButtonElectronTemari.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="radioButtonElectronTemari.Size" type="System.Drawing.Size, System.Drawing">
+    <value>66, 21</value>
+  </data>
+  <data name="radioButtonElectronTemari.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="radioButtonElectronTemari.Text" xml:space="preserve">
+    <value>Temari</value>
+  </data>
+  <data name="flowLayoutPanelSource_Xray.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="flowLayoutPanelSource_Xray.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="flowLayoutPanelSource_Xray.Location" type="System.Drawing.Point, System.Drawing">
+    <value>176, 0</value>
+  </data>
+  <data name="flowLayoutPanelSource_Xray.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 10, 0</value>
+  </data>
+  <data name="flowLayoutPanelSource_Xray.Size" type="System.Drawing.Size, System.Drawing">
+    <value>226, 21</value>
+  </data>
+  <data name="flowLayoutPanelSource_Xray.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="radioButtonXraySrcWK.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="radioButtonXraySrcWK.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="radioButtonXraySrcWK.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="radioButtonXraySrcWK.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="radioButtonXraySrcWK.Size" type="System.Drawing.Size, System.Drawing">
+    <value>140, 21</value>
+  </data>
+  <data name="radioButtonXraySrcWK.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="radioButtonXraySrcWK.Text" xml:space="preserve">
+    <value>Waasmaier-Kirfel</value>
+  </data>
+  <data name="radioButtonXraySrcTemari.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="radioButtonXraySrcTemari.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="radioButtonXraySrcTemari.Location" type="System.Drawing.Point, System.Drawing">
+    <value>140, 0</value>
+  </data>
+  <data name="radioButtonXraySrcTemari.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="radioButtonXraySrcTemari.Size" type="System.Drawing.Size, System.Drawing">
+    <value>66, 21</value>
+  </data>
+  <data name="radioButtonXraySrcTemari.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="radioButtonXraySrcTemari.Text" xml:space="preserve">
+    <value>Temari</value>
+  </data>
+  <data name="labelTemariNotice.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="labelTemariNotice.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>10, 4, 3, 0</value>
+  </data>
+  <data name="labelTemariNotice.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="labelTemariNotice.Text" xml:space="preserve">
+    <value>Temari: neutral atoms Z = 1-86 only. Ions and unsupported elements are not shown.</value>
+  </data>
+  <data name="labelTemariNotice.ToolTip" xml:space="preserve">
+    <value>Temari is computed for isolated neutral atoms and its tables stop at Z = 86, so ions
+and Z = 87-98 have no entry. Their curves are omitted and their table cells are left
+blank rather than being substituted with neutral-atom values.</value>
+  </data>
+  <data name="radioButtonElectronTemari.ToolTip" xml:space="preserve">
+    <value>Electron atomic scattering factor fe(s) from Temari dataset-factors v1.0.0. This is a
+first-principles calculation (full Dirac SCF with exact KLI exchange), not a fitted
+parameterization. Neutral atoms Z = 1-86 only, and the relativistic factor gamma is
+not included (the same convention as Peng). All nodes and the specified interpolation
+are used; the published values are requantized (largest difference 5e-12 A).
+CC-BY-4.0.</value>
+  </data>
+  <data name="radioButtonXraySrcTemari.ToolTip" xml:space="preserve">
+    <value>This row chooses where f(s) comes from, not what is plotted - that is the f(s) /
+F(q)+S(q) row to the left. It is available in f(s) mode only.
+X-ray atomic scattering factor f(s) from Temari dataset-factors v1.0.0. This is a
+first-principles calculation (full Dirac SCF with exact KLI exchange), not a fitted
+parameterization. Neutral atoms Z = 1-86 only. All nodes and the specified
+interpolation are used; the published values are requantized (largest difference
+5e-11 electrons). CC-BY-4.0.</value>
+  </data>
+  <data name="radioButtonXraySrcWK.ToolTip" xml:space="preserve">
+    <value>This row chooses where f(s) comes from, not what is plotted - that is the f(s) /
+F(q)+S(q) row to the left. It is available in f(s) mode only.
+X-ray atomic scattering factor f(s) using the Waasmaier-Kirfel (1995)
+parameterization (a sum of 5 Gaussians plus a constant). This is the default, and it
+covers ions as well as neutral atoms over Z = 1-98.</value>
+  </data>
+  <metadata name="radioButtonElectronTemari.Name" xml:space="preserve">
+    <value>radioButtonElectronTemari</value>
+  </metadata>
+  <metadata name="flowLayoutPanelSource_Xray.Name" xml:space="preserve">
+    <value>flowLayoutPanelSource_Xray</value>
+  </metadata>
+  <metadata name="radioButtonXraySrcWK.Name" xml:space="preserve">
+    <value>radioButtonXraySrcWK</value>
+  </metadata>
+  <metadata name="radioButtonXraySrcTemari.Name" xml:space="preserve">
+    <value>radioButtonXraySrcTemari</value>
+  </metadata>
+  <metadata name="labelTemariNotice.Name" xml:space="preserve">
+    <value>labelTemariNotice</value>
+  </metadata>
 </root>

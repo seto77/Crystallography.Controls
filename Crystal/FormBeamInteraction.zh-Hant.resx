@@ -225,8 +225,8 @@ Rutherford 近似）。</value>
   <data name="labelModel.ToolTip" xml:space="preserve">
     <value>選擇用於計算原子散射因子的公式（參數化）—
 即單一原子隨角度變化對射束散射的強弱。
-可用選項隨射束而變：X 射線提供 f(s) 或 F(q)+S(q)；
-電子提供 Peng、Kirkland 或 8-Gaussian 模型。</value>
+可用選項隨射束而變：X 射線提供 f(s) 或 F(q)+S(q)，並有第二列用於選擇 f(s) 的資料來源
+（Waasmaier-Kirfel 或 Temari）；電子提供 Peng、8-Gaussian、Kirkland 或 Temari 模型。</value>
   </data>
   <data name="checkBoxTest.ToolTip" xml:space="preserve">
     <value>開啟測試模式。這會顯示一個面板，讓您可掃描任意範圍的
@@ -364,5 +364,31 @@ X 射線射束比例。
 計算的電子原子散射因子 fe(s)。
 因其在大 s 處仍保持準確，常為高角／高解析度影像
 模擬工作所偏好。</value>
+  </data>
+  <data name="labelTemariNotice.Text" xml:space="preserve">
+    <value>Temari：僅支援中性原子 Z = 1-86。離子與不支援的元素不予顯示。</value>
+  </data>
+  <data name="labelTemariNotice.ToolTip" xml:space="preserve">
+    <value>Temari 針對孤立中性原子計算，其表格止於 Z = 86，因此離子與 Z = 87-98 沒有對應數值。程
+式不會以中性原子數值替代，而是不繪製其曲線並將表格儲存格留空。</value>
+  </data>
+  <data name="radioButtonElectronTemari.ToolTip" xml:space="preserve">
+    <value>來自 Temari dataset-factors v1.0.0 的電子原子散射因子 fe(s)。這是第一原理計算（完全 D
+irac 自洽場與精確 KLI 交換），而非擬合的參數化。僅支援中性原子 Z = 1-86，且不含相對論
+因子 gamma（與 Peng 相同的約定）。使用全部節點並遵循規定的內插方法，但已發布數值經過
+重新量化（最大偏差 5e-12 Å）。CC-BY-4.0。</value>
+  </data>
+  <data name="radioButtonXraySrcTemari.ToolTip" xml:space="preserve">
+    <value>本列選擇 f(s) 的資料來源，而非繪製什麼（那由左側的 f(s) / F(q)+S(q) 列決定）。僅在 f(
+s) 模式下可用。
+來自 Temari dataset-factors v1.0.0 的 X 光原子散射因子 f(s)。這是第一原理計算（完全 D
+irac 自洽場與精確 KLI 交換），而非擬合的參數化。僅支援中性原子 Z = 1-86。使用全部節點
+並遵循規定的內插方法，但已發布數值經過重新量化（最大偏差 5e-11 電子）。CC-BY-4.0。</value>
+  </data>
+  <data name="radioButtonXraySrcWK.ToolTip" xml:space="preserve">
+    <value>本列選擇 f(s) 的資料來源，而非繪製什麼（那由左側的 f(s) / F(q)+S(q) 列決定）。僅在 f(
+s) 模式下可用。
+使用 Waasmaier-Kirfel (1995) 參數化（5 個高斯函數與一個常數項之和）計算的 X 光原子散
+射因子 f(s)。此為預設值，除中性原子外亦涵蓋離子，範圍為 Z = 1-98。</value>
   </data>
 </root>

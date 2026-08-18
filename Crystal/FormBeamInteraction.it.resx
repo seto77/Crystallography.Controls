@@ -223,10 +223,13 @@ alto angolo. Disabilitato quando xraylib non è disponibile.</value>
     <value>Valore più alto dell'indice k raggiunto nella scansione in modalità di prova.</value>
   </data>
   <data name="labelModel.ToolTip" xml:space="preserve">
-    <value>Seleziona la formula (parametrizzazione) usata per calcolare il fattore di diffusione atomica -
+    <value>Seleziona la formula (parametrizzazione) usata per calcolare il fattore di diffusione
+atomica -
 quanto fortemente un singolo atomo diffonde il fascio in funzione dell'angolo.
-Le scelte disponibili cambiano con il fascio: i raggi X offrono f(s) o F(q)+S(q);
-gli elettroni offrono i modelli Peng, Kirkland o 8-Gaussian.</value>
+Le scelte disponibili cambiano con il fascio: i raggi X offrono f(s) o F(q)+S(q), e
+una
+seconda riga sceglie la provenienza di f(s) (Waasmaier-Kirfel o Temari);
+gli elettroni offrono i modelli Peng, 8-Gaussian, Kirkland o Temari.</value>
   </data>
   <data name="checkBoxTest.ToolTip" xml:space="preserve">
     <value>Attiva la modalità di prova. Questa rivela un pannello in cui puoi scansionare un intervallo arbitrario di
@@ -364,5 +367,38 @@ cristallografici; con questo disattivato, gli atomi sono trattati come stazionar
 (3 lorentziane più 3 gaussiane).
 Spesso preferito per il lavoro di simulazione di immagini ad alto angolo / alta risoluzione perché rimane
 accurato fino a grandi s.</value>
+  </data>
+  <data name="labelTemariNotice.Text" xml:space="preserve">
+    <value>Temari: solo atomi neutri Z = 1-86. Gli ioni e gli elementi non supportati non
+vengono mostrati.</value>
+  </data>
+  <data name="labelTemariNotice.ToolTip" xml:space="preserve">
+    <value>Temari è calcolato per atomi neutri isolati e le sue tabelle si fermano a Z = 86,
+quindi ioni e Z = 87-98 non hanno voci. Le loro curve sono omesse e le celle restano
+vuote invece di essere sostituite con valori di atomo neutro.</value>
+  </data>
+  <data name="radioButtonElectronTemari.ToolTip" xml:space="preserve">
+    <value>Fattore di scattering atomico degli elettroni fe(s) da Temari dataset-factors v1.0.0.
+È un calcolo da principi primi (SCF di Dirac completo con scambio KLI esatto), non
+una parametrizzazione interpolata. Solo atomi neutri Z = 1-86, e il fattore
+relativistico gamma non è incluso (la stessa convenzione di Peng). Si usano tutti i
+nodi e l'interpolazione prescritta; i valori pubblicati sono riquantizzati
+(differenza massima 5e-12 Å). CC-BY-4.0.</value>
+  </data>
+  <data name="radioButtonXraySrcTemari.ToolTip" xml:space="preserve">
+    <value>Questa riga sceglie da dove proviene f(s), non che cosa viene tracciato: quella è la
+riga f(s) / F(q)+S(q) a sinistra. È disponibile solo in modalità f(s).
+Fattore di scattering atomico dei raggi X f(s) da Temari dataset-factors v1.0.0. È un
+calcolo da principi primi (SCF di Dirac completo con scambio KLI esatto), non una
+parametrizzazione interpolata. Solo atomi neutri Z = 1-86. Si usano tutti i nodi e
+l'interpolazione prescritta; i valori pubblicati sono riquantizzati (differenza
+massima 5e-11 elettroni). CC-BY-4.0.</value>
+  </data>
+  <data name="radioButtonXraySrcWK.ToolTip" xml:space="preserve">
+    <value>Questa riga sceglie da dove proviene f(s), non che cosa viene tracciato: quella è la
+riga f(s) / F(q)+S(q) a sinistra. È disponibile solo in modalità f(s).
+Fattore di scattering atomico dei raggi X f(s) con la parametrizzazione di
+Waasmaier-Kirfel (1995) (somma di 5 gaussiane più una costante). È l'impostazione
+predefinita e copre gli ioni oltre agli atomi neutri su Z = 1-98.</value>
   </data>
 </root>

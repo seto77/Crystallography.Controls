@@ -87,6 +87,7 @@
             radioButtonXrayFqSq = new System.Windows.Forms.RadioButton();
             radioButtonElectronPeng = new System.Windows.Forms.RadioButton();
             radioButtonElectronKirkland = new System.Windows.Forms.RadioButton();
+            radioButtonElectronTemari = new System.Windows.Forms.RadioButton();
             radioButtonElectronEightGaussian = new System.Windows.Forms.RadioButton();
             checkBoxDebyeWaller = new System.Windows.Forms.CheckBox();
             numericBoxAttenThickness = new NumericBox();
@@ -151,6 +152,10 @@
             flowLayoutPanelScatteringFactorModel = new System.Windows.Forms.FlowLayoutPanel();
             flowLayoutPanelModel_Xray = new System.Windows.Forms.FlowLayoutPanel();
             flowLayoutPanelModel_Electron = new System.Windows.Forms.FlowLayoutPanel();
+            flowLayoutPanelSource_Xray = new System.Windows.Forms.FlowLayoutPanel();
+            radioButtonXraySrcWK = new System.Windows.Forms.RadioButton();
+            radioButtonXraySrcTemari = new System.Windows.Forms.RadioButton();
+            labelTemariNotice = new System.Windows.Forms.Label();
             tabPageFluorescence = new System.Windows.Forms.TabPage();
             panel4 = new System.Windows.Forms.Panel();
             graphControlFluor = new GraphControl();
@@ -193,6 +198,7 @@
             flowLayoutPanelScatteringFactorModel.SuspendLayout();
             flowLayoutPanelModel_Xray.SuspendLayout();
             flowLayoutPanelModel_Electron.SuspendLayout();
+            flowLayoutPanelSource_Xray.SuspendLayout();
             tabPageFluorescence.SuspendLayout();
             panel4.SuspendLayout();
             flowLayoutPanel7.SuspendLayout();
@@ -670,6 +676,30 @@
             radioButtonXrayFqSq.UseVisualStyleBackColor = true;
             radioButtonXrayFqSq.CheckedChanged += scattering_OptionChanged;
             // 
+            // radioButtonXraySrcWK
+            // 
+            resources.ApplyResources(radioButtonXraySrcWK, "radioButtonXraySrcWK");
+            radioButtonXraySrcWK.Name = "radioButtonXraySrcWK";
+            radioButtonXraySrcWK.TabStop = true;
+            toolTip.SetToolTip(radioButtonXraySrcWK, resources.GetString("radioButtonXraySrcWK.ToolTip"));
+            radioButtonXraySrcWK.UseVisualStyleBackColor = true;
+            radioButtonXraySrcWK.CheckedChanged += scattering_OptionChanged;
+            // 
+            // radioButtonXraySrcTemari
+            // 
+            resources.ApplyResources(radioButtonXraySrcTemari, "radioButtonXraySrcTemari");
+            radioButtonXraySrcTemari.Name = "radioButtonXraySrcTemari";
+            radioButtonXraySrcTemari.TabStop = true;
+            toolTip.SetToolTip(radioButtonXraySrcTemari, resources.GetString("radioButtonXraySrcTemari.ToolTip"));
+            radioButtonXraySrcTemari.UseVisualStyleBackColor = true;
+            radioButtonXraySrcTemari.CheckedChanged += scattering_OptionChanged;
+            // 
+            // labelTemariNotice
+            // 
+            resources.ApplyResources(labelTemariNotice, "labelTemariNotice");
+            labelTemariNotice.Name = "labelTemariNotice";
+            toolTip.SetToolTip(labelTemariNotice, resources.GetString("labelTemariNotice.ToolTip"));
+            // 
             // radioButtonElectronPeng
             // 
             resources.ApplyResources(radioButtonElectronPeng, "radioButtonElectronPeng");
@@ -687,6 +717,15 @@
             toolTip.SetToolTip(radioButtonElectronKirkland, resources.GetString("radioButtonElectronKirkland.ToolTip"));
             radioButtonElectronKirkland.UseVisualStyleBackColor = true;
             radioButtonElectronKirkland.CheckedChanged += scattering_OptionChanged;
+            // 
+            // radioButtonElectronTemari
+            // 
+            resources.ApplyResources(radioButtonElectronTemari, "radioButtonElectronTemari");
+            radioButtonElectronTemari.Name = "radioButtonElectronTemari";
+            radioButtonElectronTemari.TabStop = true;
+            toolTip.SetToolTip(radioButtonElectronTemari, resources.GetString("radioButtonElectronTemari.ToolTip"));
+            radioButtonElectronTemari.UseVisualStyleBackColor = true;
+            radioButtonElectronTemari.CheckedChanged += scattering_OptionChanged;
             // 
             // radioButtonElectronEightGaussian
             // 
@@ -1204,8 +1243,10 @@
             resources.ApplyResources(flowLayoutPanelScatteringFactorModel, "flowLayoutPanelScatteringFactorModel");
             flowLayoutPanelScatteringFactorModel.Controls.Add(labelModel);
             flowLayoutPanelScatteringFactorModel.Controls.Add(flowLayoutPanelModel_Xray);
+            flowLayoutPanelScatteringFactorModel.Controls.Add(flowLayoutPanelSource_Xray);
             flowLayoutPanelScatteringFactorModel.Controls.Add(flowLayoutPanelModel_Electron);
             flowLayoutPanelScatteringFactorModel.Controls.Add(checkBoxDebyeWaller);
+            flowLayoutPanelScatteringFactorModel.Controls.Add(labelTemariNotice);
             flowLayoutPanelScatteringFactorModel.Name = "flowLayoutPanelScatteringFactorModel";
             // 
             // flowLayoutPanelModel_Xray
@@ -1221,7 +1262,15 @@
             flowLayoutPanelModel_Electron.Controls.Add(radioButtonElectronPeng);
             flowLayoutPanelModel_Electron.Controls.Add(radioButtonElectronEightGaussian);
             flowLayoutPanelModel_Electron.Controls.Add(radioButtonElectronKirkland);
+            flowLayoutPanelModel_Electron.Controls.Add(radioButtonElectronTemari);
             flowLayoutPanelModel_Electron.Name = "flowLayoutPanelModel_Electron";
+            // 
+            // flowLayoutPanelSource_Xray
+            // 
+            resources.ApplyResources(flowLayoutPanelSource_Xray, "flowLayoutPanelSource_Xray");
+            flowLayoutPanelSource_Xray.Controls.Add(radioButtonXraySrcWK);
+            flowLayoutPanelSource_Xray.Controls.Add(radioButtonXraySrcTemari);
+            flowLayoutPanelSource_Xray.Name = "flowLayoutPanelSource_Xray";
             // 
             // tabPageFluorescence
             // 
@@ -1363,6 +1412,8 @@
             flowLayoutPanelModel_Xray.PerformLayout();
             flowLayoutPanelModel_Electron.ResumeLayout(false);
             flowLayoutPanelModel_Electron.PerformLayout();
+            flowLayoutPanelSource_Xray.ResumeLayout(false);
+            flowLayoutPanelSource_Xray.PerformLayout();
             tabPageFluorescence.ResumeLayout(false);
             panel4.ResumeLayout(false);
             flowLayoutPanel7.ResumeLayout(false);
@@ -1427,11 +1478,16 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelModel_Electron; // 260606Cl
         private System.Windows.Forms.RadioButton radioButtonElectronPeng;
         private System.Windows.Forms.RadioButton radioButtonElectronKirkland;
+        private System.Windows.Forms.RadioButton radioButtonElectronTemari; // 260818Cl
         private System.Windows.Forms.RadioButton radioButtonElectronEightGaussian;
         // private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel7; // 260606Cl 旧名(リネーム取りこぼし)
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelModel_Xray; // 260606Cl
         private System.Windows.Forms.Label labelModel;
         private System.Windows.Forms.RadioButton radioButtonXrayFqSq;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelSource_Xray; // 260818Cl X線 f(s) の出典選択 (モード軸とは別)
+        private System.Windows.Forms.RadioButton radioButtonXraySrcWK; // 260818Cl
+        private System.Windows.Forms.RadioButton radioButtonXraySrcTemari; // 260818Cl
+        private System.Windows.Forms.Label labelTemariNotice; // 260818Cl Temari 選択時のみ表示する対応範囲の注記
         private System.Windows.Forms.RadioButton radioButtonXrayFs;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelScatteringFactorModel;
         private System.Windows.Forms.CheckBox checkBoxDebyeWaller;

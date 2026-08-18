@@ -250,8 +250,9 @@ X線・中性子では波長 λ(または光子エネルギー)を、電子線�
   <data name="labelModel.ToolTip" xml:space="preserve">
     <value>原子散乱因子(1個の原子が角度に応じてどれだけビームを散乱するか)を計算する式
 (パラメータ化)を選びます。
-選択肢はビームで変わり、X線では f(s) または F(q)+S(q)、電子線では Peng / Kirkland /
-8-Gaussian モデルが選べます。</value>
+選択肢はビームで変わります。X線では f(s) または F(q)+S(q) を選び、さらに f(s) の出典
+(Waasmaier-Kirfel / Temari) を選ぶ行があります。電子線では Peng / 8-Gaussian /
+Kirkland / Temari モデルが選べます。</value>
   </data>
   <data name="radioButtonXrayFs.ToolTip" xml:space="preserve">
     <value>X線の原子散乱因子 f(s) を表示します。これは1個の原子が弾性的に散乱する振幅
@@ -462,5 +463,33 @@ B は結晶データの等方性変位パラメータ(Biso)です。オフのと
   </data>
   <data name="graphControlFluor.Font" type="System.Drawing.Font, System.Drawing">
     <value>Yu Gothic UI, 9pt</value>
+  </data>
+  <data name="labelTemariNotice.Text" xml:space="preserve">
+    <value>Temari は中性原子 Z = 1-86 のみ対応。イオンと非対応元素は表示しません。</value>
+  </data>
+  <data name="labelTemariNotice.ToolTip" xml:space="preserve">
+    <value>Temari は孤立中性原子について計算されており、表は Z = 86 までです。イオンと Z = 87-98
+には値がないため、中性原子の値で代用せず、曲線を描かず表のセルを空欄にします。</value>
+  </data>
+  <data name="radioButtonElectronTemari.ToolTip" xml:space="preserve">
+    <value>Temari dataset-factors v1.0.0 による電子原子散乱因子 fe(s)。フィットによるパラメータ
+化ではなく第一原理計算 (完全 Dirac SCF と厳密交換 KLI) です。中性原子 Z = 1-86 のみで
+、相対論因子 gamma は含みません (Peng と同じ規約)。全節点を使用し規定の補間法に準拠し
+ていますが、公開値は再量子化されています (最大差 5e-12 Å)。CC-BY-4.0。</value>
+  </data>
+  <data name="radioButtonXraySrcTemari.ToolTip" xml:space="preserve">
+    <value>この行は f(s) の値を「どこから取るか」(出典) を選びます。何を描くかを決める左の行 (f(
+s) / F(q)+S(q)) とは別の軸で、f(s) モードのときだけ有効です。
+Temari dataset-factors v1.0.0 による X 線原子散乱因子 f(s)。フィットによるパラメータ
+化ではなく第一原理計算 (完全 Dirac SCF と厳密交換 KLI) です。中性原子 Z = 1-86 のみ。
+全節点を使用し規定の補間法に準拠していますが、公開値は再量子化されています (最大差 5e
+-11 電子単位)。CC-BY-4.0。</value>
+  </data>
+  <data name="radioButtonXraySrcWK.ToolTip" xml:space="preserve">
+    <value>この行は f(s) の値を「どこから取るか」(出典) を選びます。何を描くかを決める左の行 (f(
+s) / F(q)+S(q)) とは別の軸で、f(s) モードのときだけ有効です。
+Waasmaier-Kirfel (1995) のパラメータ化 (5 個のガウス関数と定数項の和) による X 線原子
+散乱因子 f(s)。既定値であり、中性原子に加えイオンにも対応し Z = 1-98 を収録しています
+。</value>
   </data>
 </root>

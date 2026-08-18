@@ -490,13 +490,18 @@ public partial class FormBeamInteraction : FormBase
         Color.FromArgb(0x17, 0xbe, 0xcf),
     ];
 
-    private enum ElectronModel { Peng, Kirkland, EightGaussian }
+    //private enum ElectronModel { Peng, Kirkland, EightGaussian }//260818Cl 旧
+    private enum ElectronModel { Peng, Kirkland, EightGaussian, Temari }//260818Cl 変更: Temari (第一原理・中性原子 Z=1-86) を追加
 
     // MiniTable のカーソル再計算用に現在の構成元素を保持
     private readonly record struct ScatElement(string Name, int Z, int Sub, double Biso, Color Color);
     private ScatElement[] scatElements = [];
     //260606Cl X線異常分散 f'/f''((Z,energy)依存=カーソル s 非依存)を scatElements と同順で事前計算したキャッシュ。電子線時は空。カーソルドラッグ毎の native 呼びを避ける。
     private (double fp, double fpp)[] scatXrayDisp = [];
+    //260818Cl 追加: 原子散乱因子 Factor(s²) は s 非依存の選択 (Z/sub/線種/モデル/出典) だけで決まるのに、
+    //  UpdateScatteringTable がカーソルドラッグの度に元素数ぶん作り直していた。scatXrayDisp と同じ方針で
+    //  UpdateScatteringFactors が 1 回だけ構築し、描画と表の両方がこれを引く。scatElements と同順・同長。
+    private Func<double, double>[] scatFactors = [];
     private double scatCursorS = 0.5; // カーソル縦線位置 (s, Å⁻¹)。ドラッグで更新 (0 だと Y 軸に重なり掴みにくいので 0.5 始点)
     private const int scatMaxPeakLabels = 30; // 260607Cl 回折ピークオーバーレイで hkl ラベルを付ける本数 (強度上位)
 
@@ -505,9 +510,15 @@ public partial class FormBeamInteraction : FormBase
     {
         //260607Cl ラジオ/チェック/LinePositionChanged のイベントはデザイナ登録へ移動 (Form 全体でデザイナ登録に統一)
         if (!radioButtonXrayFs.Checked && !radioButtonXrayFqSq.Checked) radioButtonXrayFs.Checked = true;                  // 既定: f(s)
-        if (!radioButtonElectronPeng.Checked && !radioButtonElectronKirkland.Checked && !radioButtonElectronEightGaussian.Checked) radioButtonElectronPeng.Checked = true; // 既定: Peng
+        //260818Cl 追加: X線 f(s) の「出典」はモード軸 (f(s) / F(q)+S(q)) とは別の軸。既定は Waasmaier-Kirfel (現行挙動を変えない)
+        if (!radioButtonXraySrcWK.Checked && !radioButtonXraySrcTemari.Checked) radioButtonXraySrcWK.Checked = true;
+        //if (!radioButtonElectronPeng.Checked && !radioButtonElectronKirkland.Checked && !radioButtonElectronEightGaussian.Checked) radioButtonElectronPeng.Checked = true; // 260818Cl 旧
+        if (!radioButtonElectronPeng.Checked && !radioButtonElectronKirkland.Checked && !radioButtonElectronEightGaussian.Checked && !radioButtonElectronTemari.Checked) radioButtonElectronPeng.Checked = true; // 既定: Peng
 
         graphControlScatteringFactor.VerticalLineMarkerVisible = true; // 各曲線にカーソル交点マーカー
+        //260818Cl 注記ラベルは Temari 選択時だけ出す。既定 true のままだと、Crystal 未設定 / 別タブのまま
+        //  散乱因子タブを開いたときに UpdateScatteringFactors が早期 return するので出っぱなしになる。
+        labelTemariNotice.Visible = false;
 
         //260607Cl 線種別 3 表の列はデザイナ定義 (ヘッダ翻訳は resx/.ja.resx)。ここでは整列/書式/AutoSize/非ソートだけコードで設定する。
         //          元素/モデル列は内容フィット (AllCells)、数値列は Fill で伸縮 (相対幅はデザイナの FillWeight で微調整可)。
@@ -521,8 +532,21 @@ public partial class FormBeamInteraction : FormBase
             t.AllowVerticalScroll = true;
     }
 
-    private ElectronModel CurrentElectronModel()
-        => radioButtonElectronKirkland.Checked ? ElectronModel.Kirkland : radioButtonElectronEightGaussian.Checked ? ElectronModel.EightGaussian : ElectronModel.Peng;
+    //private ElectronModel CurrentElectronModel()
+    //    => radioButtonElectronKirkland.Checked ? ElectronModel.Kirkland : radioButtonElectronEightGaussian.Checked ? ElectronModel.EightGaussian : ElectronModel.Peng;//260818Cl 旧
+    private ElectronModel CurrentElectronModel()//260818Cl 変更: Temari を追加
+        => radioButtonElectronKirkland.Checked ? ElectronModel.Kirkland
+         : radioButtonElectronEightGaussian.Checked ? ElectronModel.EightGaussian
+         : radioButtonElectronTemari.Checked ? ElectronModel.Temari
+         : ElectronModel.Peng;
+
+    /// <summary>X線 f(s) の出典に Temari を選んでいるか。260818Cl 追加。
+    /// <para>⚠ **f(s) モードであることも条件に含める**。F(q)+S(q) は xraylib 固有で出典軸を持たないため。
+    /// 260818Cl 修正: ここが出典ラジオだけを見ていたので、F(q)+S(q) へ切り替えても
+    /// <b>表の f(s) 列だけ Temari のまま</b>という漏れがあった (曲線は DrawFqSqCurves へ逃げるが、
+    /// UpdateScatteringTable は fqsq で分岐しない)。出典ラジオは Disabled・注記も非表示なので、
+    /// イオンや Z=87-98 のセルが理由の見えないまま空欄になっていた。</para></summary>
+    private bool CurrentXrayIsTemari() => radioButtonXrayFs.Checked && radioButtonXraySrcTemari.Checked;
 
     private void scattering_OptionChanged(object sender, EventArgs e)
     {
@@ -548,6 +572,13 @@ public partial class FormBeamInteraction : FormBase
         // モード切替ラジオ (flowLayoutPanel) をビームで表示/非表示
         flowLayoutPanelModel_Xray.Visible = src == WaveSource.Xray;
         flowLayoutPanelModel_Electron.Visible = src == WaveSource.Electron;
+        //260818Cl 追加: X線 f(s) の出典ラジオ (Waasmaier-Kirfel / Temari)。F(q)+S(q) は xraylib 固有なので出典軸を無効化する
+        flowLayoutPanelSource_Xray.Visible = src == WaveSource.Xray;
+        flowLayoutPanelSource_Xray.Enabled = src == WaveSource.Xray && radioButtonXrayFs.Checked;
+        //260818Cl 追加: Temari は中性原子 Z=1-86 のみなので、切り替えた瞬間に曲線が消える元素がある。
+        //  ツールチップだけでは消えた理由が見えないので、Temari 選択中に限り 1 行の注記を出す (中性子ではどちらの条件も成立しない)。
+        labelTemariNotice.Visible = (src == WaveSource.Electron && radioButtonElectronTemari.Checked)
+                                 || (src == WaveSource.Xray && CurrentXrayIsTemari());//260818Cl f(s) モード判定は CurrentXrayIsTemari 側に集約 (旧: ここで radioButtonXrayFs.Checked を再掲していた)
 
         //260607Cl 線種別 MiniTable は選択中の線種だけ Visible (他は非表示)
         miniTableScatteringFactorsXray.Visible = src == WaveSource.Xray;
@@ -561,6 +592,7 @@ public partial class FormBeamInteraction : FormBase
         if (neutron)
         {
             scatXrayDisp = [];
+            scatFactors = [];
             DrawNeutronScatteringInfo();
             UpdateNeutronScatteringTable();
             return;
@@ -573,6 +605,11 @@ public partial class FormBeamInteraction : FormBase
         scatXrayDisp = electron
             ? []
             : [.. scatElements.Select(el => (Xraylib.Fprime(el.Z, waveLengthControl.Energy), Xraylib.Fdoubleprime(el.Z, waveLengthControl.Energy)))];
+
+        //260818Cl 追加: 因子デリゲートを元素ごとに 1 回だけ解決する (未対応は null のまま = 曲線を描かず表は空欄)
+        var model = electron ? CurrentElectronModel() : default;
+        bool xrayTemari = !electron && CurrentXrayIsTemari();
+        scatFactors = [.. scatElements.Select(el => GetFactor(el.Z, el.Sub, electron, model, xrayTemari))];
 
         //260606Cl 縦線(カーソル)を AddProfiles より前に設定し、AddProfiles 内部の Draw() で曲線・縦線・交点マーカーを一括描画する(旧: AddProfiles 後に縦線設定→明示 Draw() で二重描画していた)。
         graphControlScatteringFactor.VerticalLines = [new PointD(scatCursorS, double.NaN)];
@@ -616,13 +653,14 @@ public partial class FormBeamInteraction : FormBase
             return;
         }
 
-        var model = electron ? CurrentElectronModel() : default;
+        //260818Cl 変更: model/xrayTemari の解決と GetFactor 呼びは UpdateScatteringFactors へ移した (scatFactors)
         double sMax = electron ? scatSMaxElectron : scatSMaxXray;//260611Cl 追加: 線種別の X 軸上限
         int nPt = (int)(sMax * scatPointsPerAng);//260611Cl 追加
         var profiles = new List<Profile>(scatElements.Length);
-        foreach (var el in scatElements)
+        for (int ei = 0; ei < scatElements.Length; ei++)
         {
-            var factor = GetFactor(el.Z, el.Sub, electron, model);
+            var el = scatElements[ei];
+            var factor = ei < scatFactors.Length ? scatFactors[ei] : null;
             if (factor == null) continue;
             var pts = new List<PointD>(nPt + 1);
             for (int i = 0; i <= nPt; i++)
@@ -630,8 +668,10 @@ public partial class FormBeamInteraction : FormBase
                 //double sAng = scatSMaxAng * i / scatPoints;          // s = sinθ/λ [Å⁻¹] //260611Cl 旧
                 double sAng = sMax * i / nPt;                        // s = sinθ/λ [Å⁻¹]
                 double s2 = sAng * sAng * 100.0;                     // [nm⁻²] (1 Å⁻¹ = 10 nm⁻¹)
-                double y = factor(s2) * (electron ? 1.0 : 10.0);     // X線は電子単位へ ×10、電子は nm そのまま
+                //double y = factor(s2) * (electron ? 1.0 : 10.0);     // X線は電子単位へ ×10、電子は nm そのまま //260818Cl 旧
+                double y = factor(s2);                               //260818Cl 変更: GetFactor が表示単位 (X線 electrons / 電子 nm) で返すようになった
                 if (checkBoxDebyeWaller.Checked) y *= Math.Exp(-el.Biso * s2); // Debye-Waller exp(-B·s²)
+                if (double.IsNaN(y)) continue;                       //260818Cl 追加: 値を持たない点は打たない (Temari の定義域外に限らず、どのモデルが NaN を返しても同じ)
                 pts.Add(new PointD(sAng, y));
             }
             //profiles.Add(new Profile(pts) { Color = el.Color });//260611Cl 旧: text なし
@@ -713,7 +753,7 @@ public partial class FormBeamInteraction : FormBase
         var src = waveLengthControl.WaveSource;
         if (src != WaveSource.Xray && src != WaveSource.Electron) return;//260607Cl 中性子は UpdateNeutronScatteringTable が担当
         bool electron = src == WaveSource.Electron;
-        var model = electron ? CurrentElectronModel() : default;
+        var model = electron ? CurrentElectronModel() : default;//260818Cl 表示名にのみ使う (因子は scatFactors で事前解決済み)
         var modelName = model == ElectronModel.EightGaussian ? "8-Gauss" : model.ToString();
         double s2 = sAng * sAng * 100.0;
 
@@ -721,11 +761,12 @@ public partial class FormBeamInteraction : FormBase
         for (int i = 0; i < scatElements.Length; i++)
         {
             var el = scatElements[i];
-            var factor = GetFactor(el.Z, el.Sub, electron, model);
-            double f = double.NaN;
+            var factor = i < scatFactors.Length ? scatFactors[i] : null;//260818Cl 変更: ドラッグ毎の再構築をやめ事前解決を引く
+            double f = double.NaN;// 未対応 (Temari のイオン・Z=87-98 など) は NaN のまま → セルは空欄
             if (factor != null)
             {
-                f = factor(s2) * (electron ? 1.0 : 10.0);
+                //f = factor(s2) * (electron ? 1.0 : 10.0);//260818Cl 旧
+                f = factor(s2);                            //260818Cl 変更: GetFactor が表示単位で返す
                 if (checkBoxDebyeWaller.Checked) f *= Math.Exp(-el.Biso * s2);
             }
             object fCell = double.IsNaN(f) ? null : f;
@@ -774,18 +815,37 @@ public partial class FormBeamInteraction : FormBase
         return D(h) + D(k) + D(l);
     }
 
-    /// <summary>原子散乱因子 Factor(s²[nm⁻²]) を返す (なければ null)。ES 型名に依存しないよう var で受ける。</summary>
-    private static Func<double, double> GetFactor(int z, int sub, bool electron, ElectronModel model)
+    /// <summary>原子散乱因子 Factor(s²[nm⁻²]) を返す (なければ null)。ES 型名に依存しないよう var で受ける。
+    /// <para>260818Cl 変更: 戻り値を<b>表示単位</b>に統一した (X線 = electrons、電子線 = nm)。旧実装は ES の内部規約
+    /// (electrons × 0.1) をそのまま返し、呼び出し側 2 箇所が ×10 して戻していた。Temari は electrons を直接返すので、
+    /// 同じ関数の中に 2 つの単位規約が同居することになり事故の元だった。→ ×10 はこの関数の WK 分岐 1 箇所だけに閉じ込める。</para>
+    /// <para>⚠ Temari は<b>中性原子 Z=1-86 のみ</b>。イオン (Valence≠0) と未収録 Z では null を返す。中性値で代用したり
+    /// Peng 型の Mott-Bethe 単極子を足したりしてはいけない (Temari が「イオンは導出できない」と明記している)。</para></summary>
+    //private static Func<double, double> GetFactor(int z, int sub, bool electron, ElectronModel model)//260818Cl 旧シグネチャ
+    private static Func<double, double> GetFactor(int z, int sub, bool electron, ElectronModel model, bool xrayTemari = false)
     {
         try
         {
             if (!electron)
             {
                 var a = AtomStatic.XrayScatteringWK;
-                return z < a.Length && a[z] != null && sub < a[z].Length ? a[z][sub]?.Factor : null;
+                if (z >= a.Length || a[z] == null || sub >= a[z].Length || a[z][sub] == null) return null;
+                //260818Cl 追加: X線 f(s) の出典が Temari のとき。f_x は electrons なので換算不要
+                if (xrayTemari)
+                    return a[z][sub].Valence != 0 ? null : TemariFactorOrNull(z, electron: false);
+                //return z < a.Length && a[z] != null && sub < a[z].Length ? a[z][sub]?.Factor : null;//260818Cl 旧: ES 規約 (electrons×0.1) のまま返していた
+                var wk = a[z][sub];
+                return s2 => wk.Factor(s2) * 10.0;// ES は electrons×0.1 を返すのでここで electrons へ戻す
             }
             switch (model)
             {
+                case ElectronModel.Temari:
+                    //260818Cl 追加: Temari の f_e は [Å] かつ γ 非含有 (Peng と同じ規約) → nm へ ×0.1 するだけ。γ はここで掛けない
+                    //  ⚠ 表に無い (z, sub) は「中性と見なす」のではなく **未対応として null** にする (fail-closed)。
+                    //     イオンへ中性値を出すのが最も避けたい誤りで、X 線側 (上の Valence 判定) も同じ向きに倒してある。
+                    var pTem = AtomStatic.ElectronScatteringPeng;
+                    if (z >= pTem.Length || pTem[z] == null || sub >= pTem[z].Length || pTem[z][sub] == null) return null;
+                    return pTem[z][sub].Valence != 0 ? null : TemariFactorOrNull(z, electron: true);
                 case ElectronModel.Kirkland:
                     var k = AtomStatic.ElectronScatteringKirkland;//260606Cl 綴り修正 Kirkrand→Kirkland
                     return z < k.Length ? k[z]?.Factor : null;
@@ -805,6 +865,22 @@ public partial class FormBeamInteraction : FormBase
             }
         }
         catch { return null; }
+    }
+
+    /// <summary>Temari の f_x [electrons] / f_e [nm] を s²[nm⁻²] 引数のラムダで返す (未収録 Z なら null)。260818Cl 追加。
+    /// <para>s[Å⁻¹] = √(s²[nm⁻²]) × 0.1。定義域 (0 ≤ s ≤ 6 Å⁻¹) の外は<b>例外にせず NaN</b> を返す —
+    /// API 側 (AtomStatic) は契約どおり外挿もクランプもせず例外を投げるが、GUI はそれで落ちてはいけないので
+    /// ここで受けて空欄にする。現在の描画範囲は X線 4 / 電子 2 Å⁻¹ なので通常は起きない。</para>
+    /// <para>⚠ 判定を <c>s > sMax</c> でなく <c>!(s &lt;= sMax)</c> と書いてあるのは意図的。
+    /// s が NaN のとき前者は false になり <c>Fx/Fe</c> の Guard が<b>例外を投げてしまう</b> —
+    /// しかもこの例外は GetFactor の try/catch (ラムダ<b>生成</b>のみを包む) の外、描画ループの中で起きる。</para></summary>
+    private static Func<double, double> TemariFactorOrNull(int z, bool electron)
+    {
+        var t = AtomStatic.TemariScattering(z);// Z = 87-98 は未収録 → null
+        if (t == null) return null;
+        //260818Cl electron 分岐はラムダの外で 1 回だけ解決する (旧: 2 本のラムダが sqrt とドメイン判定を重複して持っていた)
+        Func<double, double> f = electron ? s => t.Fe(s) * 0.1 : t.Fx;// [Å] → [nm] / [electrons] のまま
+        return s2 => { double s = Math.Sqrt(s2) * 0.1; return !(s <= AtomStatic.TemariSMaxAngstromInv) ? double.NaN : f(s); };
     }
 
     #endregion

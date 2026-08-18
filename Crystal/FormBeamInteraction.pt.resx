@@ -211,10 +211,13 @@ Juntas, elas mostram como o espalhamento muda de coerente em ângulos baixos par
     <value>Maior valor do índice k alcançado na varredura do modo de teste.</value>
   </data>
   <data name="labelModel.ToolTip" xml:space="preserve">
-    <value>Seleciona a fórmula (parametrização) usada para calcular o fator de espalhamento atômico -
+    <value>Seleciona a fórmula (parametrização) usada para calcular o fator de espalhamento
+atômico -
 quão fortemente um único átomo espalha o feixe em função do ângulo.
-As opções disponíveis mudam com o feixe: raios X oferece f(s) ou F(q)+S(q);
-elétrons oferece os modelos de Peng, Kirkland ou 8-Gaussianas.</value>
+As opções disponíveis mudam com o feixe: raios X oferece f(s) ou F(q)+S(q), e uma
+segunda
+linha escolhe a origem de f(s) (Waasmaier-Kirfel ou Temari);
+elétrons oferece os modelos de Peng, 8-Gaussianas, Kirkland ou Temari.</value>
   </data>
   <data name="checkBoxTest.ToolTip" xml:space="preserve">
     <value>Ativa o modo de teste. Isto revela um painel onde você pode varrer um intervalo arbitrário de
@@ -352,5 +355,38 @@ do cristal; com isto desativado, os átomos são tratados como estacionários.</
 (3 Lorentzianas mais 3 Gaussianas).
 Frequentemente preferido para trabalho de simulação de imagem de ângulo alto / alta resolução porque permanece
 preciso até valores grandes de s.</value>
+  </data>
+  <data name="labelTemariNotice.Text" xml:space="preserve">
+    <value>Temari: apenas átomos neutros Z = 1-86. Íons e elementos não suportados não são
+exibidos.</value>
+  </data>
+  <data name="labelTemariNotice.ToolTip" xml:space="preserve">
+    <value>O Temari é calculado para átomos neutros isolados e suas tabelas terminam em Z = 86,
+portanto íons e Z = 87-98 não têm entrada. Suas curvas são omitidas e suas células
+ficam em branco em vez de serem substituídas por valores de átomo neutro.</value>
+  </data>
+  <data name="radioButtonElectronTemari.ToolTip" xml:space="preserve">
+    <value>Fator de espalhamento atômico de elétrons fe(s) do Temari dataset-factors v1.0.0. É
+um cálculo de primeiros princípios (SCF de Dirac completo com troca KLI exata), não
+uma parametrização ajustada. Apenas átomos neutros Z = 1-86, e o fator relativístico
+gamma não está incluído (a mesma convenção de Peng). Todos os nós e a interpolação
+especificada são usados; os valores publicados são requantizados (diferença máxima
+5e-12 Å). CC-BY-4.0.</value>
+  </data>
+  <data name="radioButtonXraySrcTemari.ToolTip" xml:space="preserve">
+    <value>Esta linha escolhe de onde vem f(s), não o que é traçado: isso é a linha f(s) /
+F(q)+S(q) à esquerda. Só está disponível no modo f(s).
+Fator de espalhamento atômico de raios X f(s) do Temari dataset-factors v1.0.0. É um
+cálculo de primeiros princípios (SCF de Dirac completo com troca KLI exata), não uma
+parametrização ajustada. Apenas átomos neutros Z = 1-86. Todos os nós e a
+interpolação especificada são usados; os valores publicados são requantizados
+(diferença máxima 5e-11 elétrons). CC-BY-4.0.</value>
+  </data>
+  <data name="radioButtonXraySrcWK.ToolTip" xml:space="preserve">
+    <value>Esta linha escolhe de onde vem f(s), não o que é traçado: isso é a linha f(s) /
+F(q)+S(q) à esquerda. Só está disponível no modo f(s).
+Fator de espalhamento atômico de raios X f(s) usando a parametrização de
+Waasmaier-Kirfel (1995) (uma soma de 5 Gaussianas mais uma constante). É o padrão e
+cobre íons além de átomos neutros em Z = 1-98.</value>
   </data>
 </root>

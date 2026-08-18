@@ -221,8 +221,9 @@ xraylib를 사용할 수 없으면 비활성화됩니다.</value>
   <data name="labelModel.ToolTip" xml:space="preserve">
     <value>원자 산란 인자(단일 원자가 각도에 따라 빔을 얼마나 강하게 산란하는지)를 계산하는 데
 사용할 식(매개변수화)을 선택합니다.
-선택지는 빔에 따라 바뀝니다: X선은 f(s) 또는 F(q)+S(q)를,
-전자는 Peng, Kirkland 또는 8-Gaussian 모델을 제공합니다.</value>
+선택지는 빔에 따라 바뀝니다: X선은 f(s) 또는 F(q)+S(q)를 제공하며, 두 번째 행에서
+f(s)의 출처(Waasmaier-Kirfel 또는 Temari)를 고릅니다.
+전자는 Peng, 8-Gaussian, Kirkland 또는 Temari 모델을 제공합니다.</value>
   </data>
   <data name="checkBoxTest.ToolTip" xml:space="preserve">
     <value>테스트 모드를 켭니다. 물리적으로 허용되는 반사만이 아니라 임의 범위의
@@ -358,5 +359,37 @@ B는 결정 데이터에서 가져온 등방성 변위 매개변수(Biso)입니�
 원자 산란 인자 fe(s)입니다.
 큰 s까지 정확도가 유지되므로 고각 / 고분해능 영상 시뮬레이션 작업에서 흔히
 선호됩니다.</value>
+  </data>
+  <data name="labelTemariNotice.Text" xml:space="preserve">
+    <value>Temari: 중성 원자 Z = 1-86만 지원합니다. 이온과 지원되지 않는 원소는 표시하지 않습니
+다.</value>
+  </data>
+  <data name="labelTemariNotice.ToolTip" xml:space="preserve">
+    <value>Temari는 고립된 중성 원자에 대해 계산되었고 표는 Z = 86까지이므로 이온과 Z = 87-98에
+는 값이 없습니다. 중성 원자 값으로 대체하지 않고 곡선을 그리지 않으며 표의 셀은 비워
+둡니다.</value>
+  </data>
+  <data name="radioButtonElectronTemari.ToolTip" xml:space="preserve">
+    <value>Temari dataset-factors v1.0.0의 전자의 원자 산란 인자 fe(s)입니다. 맞춤한 매개변수화
+가 아니라 제일원리 계산(완전 Dirac SCF와 엄밀한 KLI 교환)입니다. 중성 원자 Z = 1-86만
+지원하며, 상대론 인자 gamma는 포함되지 않습니다(Peng과 같은 규약). 모든 절점과 규정된
+보간법을 사용하지만 공개된 값은 재양자화되어 있습니다(최대 차이 5e-12 Å). CC-BY-4.0.</value>
+  </data>
+  <data name="radioButtonXraySrcTemari.ToolTip" xml:space="preserve">
+    <value>이 행은 무엇을 그릴지가 아니라 f(s)를 어디에서 가져올지(출처)를 선택합니다. 무엇을 그
+릴지는 왼쪽의 f(s) / F(q)+S(q) 행이 정하며, 이 행은 f(s) 모드에서만 사용할 수 있습니
+다.
+Temari dataset-factors v1.0.0의 X선의 원자 산란 인자 f(s)입니다. 맞춤한 매개변수화가
+아니라 제일원리 계산(완전 Dirac SCF와 엄밀한 KLI 교환)입니다. 중성 원자 Z = 1-86만 지
+원합니다. 모든 절점과 규정된 보간법을 사용하지만 공개된 값은 재양자화되어 있습니다(최
+대 차이 5e-11 전자). CC-BY-4.0.</value>
+  </data>
+  <data name="radioButtonXraySrcWK.ToolTip" xml:space="preserve">
+    <value>이 행은 무엇을 그릴지가 아니라 f(s)를 어디에서 가져올지(출처)를 선택합니다. 무엇을 그
+릴지는 왼쪽의 f(s) / F(q)+S(q) 행이 정하며, 이 행은 f(s) 모드에서만 사용할 수 있습니
+다.
+Waasmaier-Kirfel(1995)의 매개변수화(5개의 가우스 함수와 상수항의 합)를 사용한 X선의
+원자 산란 인자 f(s)입니다. 기본값이며 중성 원자뿐 아니라 이온도 Z = 1-98 범위로 수록
+합니다.</value>
   </data>
 </root>

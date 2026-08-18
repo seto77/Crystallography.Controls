@@ -211,10 +211,13 @@ alto ángulo. Deshabilitado cuando xraylib no está disponible.</value>
     <value>Valor máximo que alcanza el índice k en el barrido en modo de prueba.</value>
   </data>
   <data name="labelModel.ToolTip" xml:space="preserve">
-    <value>Selecciona la fórmula (parametrización) usada para calcular el factor de dispersión atómica:
+    <value>Selecciona la fórmula (parametrización) usada para calcular el factor de dispersión
+atómica:
 con qué intensidad un solo átomo dispersa el haz en función del ángulo.
-Las opciones disponibles cambian con el haz: los rayos X ofrecen f(s) o F(q)+S(q);
-los electrones ofrecen los modelos de Peng, Kirkland o de 8 gaussianas.</value>
+Las opciones disponibles cambian con el haz: los rayos X ofrecen f(s) o F(q)+S(q), y
+una
+segunda fila elige la procedencia de f(s) (Waasmaier-Kirfel o Temari);
+los electrones ofrecen los modelos de Peng, de 8 gaussianas, Kirkland o Temari.</value>
   </data>
   <data name="checkBoxTest.ToolTip" xml:space="preserve">
     <value>Activa el modo de prueba. Esto revela un panel donde puede barrer un rango arbitrario de
@@ -352,5 +355,38 @@ cristal; con esta opción desactivada, los átomos se tratan como estacionarios.
 (3 lorentzianas más 3 gaussianas).
 A menudo preferida para trabajos de simulación de imágenes a alto ángulo / alta resolución porque mantiene
 la precisión hasta valores grandes de s.</value>
+  </data>
+  <data name="labelTemariNotice.Text" xml:space="preserve">
+    <value>Temari: solo átomos neutros Z = 1-86. No se muestran los iones ni los elementos no
+admitidos.</value>
+  </data>
+  <data name="labelTemariNotice.ToolTip" xml:space="preserve">
+    <value>Temari se calcula para átomos neutros aislados y sus tablas terminan en Z = 86, por
+lo que los iones y Z = 87-98 no tienen entrada. Se omiten sus curvas y sus celdas
+quedan en blanco en lugar de sustituirse por valores de átomo neutro.</value>
+  </data>
+  <data name="radioButtonElectronTemari.ToolTip" xml:space="preserve">
+    <value>Factor de dispersión atómica de electrones fe(s) de Temari dataset-factors v1.0.0. Es
+un cálculo de primeros principios (SCF de Dirac completo con intercambio KLI exacto),
+no una parametrización ajustada. Solo átomos neutros Z = 1-86, y no incluye el factor
+relativista gamma (la misma convención que Peng). Se usan todos los nodos y la
+interpolación especificada; los valores publicados están recuantizados (diferencia
+máxima 5e-12 Å). CC-BY-4.0.</value>
+  </data>
+  <data name="radioButtonXraySrcTemari.ToolTip" xml:space="preserve">
+    <value>Esta fila elige de dónde procede f(s), no qué se representa: eso es la fila f(s) /
+F(q)+S(q) de la izquierda. Solo está disponible en el modo f(s).
+Factor de dispersión atómica de rayos X f(s) de Temari dataset-factors v1.0.0. Es un
+cálculo de primeros principios (SCF de Dirac completo con intercambio KLI exacto), no
+una parametrización ajustada. Solo átomos neutros Z = 1-86. Se usan todos los nodos y
+la interpolación especificada; los valores publicados están recuantizados (diferencia
+máxima 5e-11 electrones). CC-BY-4.0.</value>
+  </data>
+  <data name="radioButtonXraySrcWK.ToolTip" xml:space="preserve">
+    <value>Esta fila elige de dónde procede f(s), no qué se representa: eso es la fila f(s) /
+F(q)+S(q) de la izquierda. Solo está disponible en el modo f(s).
+Factor de dispersión atómica de rayos X f(s) con la parametrización de
+Waasmaier-Kirfel (1995) (suma de 5 gaussianas más una constante). Es la opción
+predeterminada y cubre iones además de átomos neutros en Z = 1-98.</value>
   </data>
 </root>

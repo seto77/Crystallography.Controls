@@ -217,10 +217,13 @@ grands angles. Désactivé lorsque xraylib n'est pas disponible.</value>
     <value>Plus grande valeur de l'indice k atteinte dans le balayage en mode test.</value>
   </data>
   <data name="labelModel.ToolTip" xml:space="preserve">
-    <value>Sélectionne la formule (paramétrisation) utilisée pour calculer le facteur de diffusion atomique -
+    <value>Sélectionne la formule (paramétrisation) utilisée pour calculer le facteur de
+diffusion atomique -
 l'intensité avec laquelle un atome unique diffuse le faisceau en fonction de l'angle.
-Les choix disponibles changent avec le faisceau : les rayons X proposent f(s) ou F(q)+S(q) ;
-les électrons proposent les modèles Peng, Kirkland ou 8-Gaussiennes.</value>
+Les choix disponibles changent avec le faisceau : les rayons X proposent f(s) ou
+F(q)+S(q),
+et une seconde ligne choisit la provenance de f(s) (Waasmaier-Kirfel ou Temari) ;
+les électrons proposent les modèles Peng, 8-Gaussiennes, Kirkland ou Temari.</value>
   </data>
   <data name="checkBoxTest.ToolTip" xml:space="preserve">
     <value>Activer le mode test. Cela révèle un panneau où vous pouvez balayer une plage arbitraire d'indices
@@ -358,5 +361,38 @@ cristallines ; lorsque cette option est désactivée, les atomes sont traités c
 (3 lorentziennes plus 3 gaussiennes).
 Souvent préféré pour les travaux de simulation d'image à grand angle / haute résolution car il reste
 précis jusqu'aux grandes valeurs de s.</value>
+  </data>
+  <data name="labelTemariNotice.Text" xml:space="preserve">
+    <value>Temari : atomes neutres Z = 1-86 uniquement. Les ions et les éléments non pris en
+charge ne sont pas affichés.</value>
+  </data>
+  <data name="labelTemariNotice.ToolTip" xml:space="preserve">
+    <value>Temari est calculé pour des atomes neutres isolés et ses tables s'arrêtent à Z = 86 ;
+les ions et Z = 87-98 n'ont donc pas d'entrée. Leurs courbes sont omises et leurs
+cellules laissées vides plutôt que remplacées par des valeurs d'atome neutre.</value>
+  </data>
+  <data name="radioButtonElectronTemari.ToolTip" xml:space="preserve">
+    <value>Facteur de diffusion atomique des électrons fe(s) issu de Temari dataset-factors
+v1.0.0. Il s'agit d'un calcul ab initio (SCF de Dirac complet avec échange KLI
+exact), et non d'une paramétrisation ajustée. Atomes neutres Z = 1-86 uniquement, et
+le facteur relativiste gamma n'est pas inclus (la même convention que Peng). Tous les
+nœuds et l'interpolation prescrite sont utilisés ; les valeurs publiées sont
+requantifiées (écart maximal 5e-12 Å). CC-BY-4.0.</value>
+  </data>
+  <data name="radioButtonXraySrcTemari.ToolTip" xml:space="preserve">
+    <value>Cette ligne choisit d'où provient f(s), et non ce qui est tracé : c'est la ligne f(s)
+/ F(q)+S(q) à gauche. Elle n'est disponible qu'en mode f(s).
+Facteur de diffusion atomique des rayons X f(s) issu de Temari dataset-factors
+v1.0.0. Il s'agit d'un calcul ab initio (SCF de Dirac complet avec échange KLI
+exact), et non d'une paramétrisation ajustée. Atomes neutres Z = 1-86 uniquement.
+Tous les nœuds et l'interpolation prescrite sont utilisés ; les valeurs publiées sont
+requantifiées (écart maximal 5e-11 électrons). CC-BY-4.0.</value>
+  </data>
+  <data name="radioButtonXraySrcWK.ToolTip" xml:space="preserve">
+    <value>Cette ligne choisit d'où provient f(s), et non ce qui est tracé : c'est la ligne f(s)
+/ F(q)+S(q) à gauche. Elle n'est disponible qu'en mode f(s).
+Facteur de diffusion atomique des rayons X f(s) selon la paramétrisation de
+Waasmaier-Kirfel (1995) (somme de 5 gaussiennes plus une constante). C'est l'option
+par défaut ; elle couvre les ions comme les atomes neutres sur Z = 1-98.</value>
   </data>
 </root>
