@@ -25,7 +25,7 @@ namespace Crystallography.Controls;
 /// 撮影方式: 各フォームを画面内 (0,0) に最前面表示し、<see cref="Graphics.CopyFromScreen(Point, Point, Size)"/> で実描画をそのまま撮る。
 /// 以前は画面外 (-32000,-32000) + <see cref="Control.DrawToBitmap(Bitmap, Rectangle)"/> 方式だったが、
 /// DrawToBitmap (WM_PRINT) ではタブヘッダー・GraphicsBox の GDI 描画・GPU(OpenGL) 描画が正しく取れず、
-/// 重なり合うコントロールの z-order も反転していた (FormCaptureGUI.cs:575 のコメント参照)。
+/// 重なり合うコントロールの z-order も反転していた (FormCaptureGUI.cs の CopyFromScreen 注記参照)。
 /// そこで対話ツール FormCaptureGUI と同じ CopyFromScreen 方式へ統一した。通常起動 (引数なし) では一切実行されない。
 ///
 /// 本ライブラリ所有のフォーム (FormMacro / FormBeamInteraction / FormGroupRelations) の代表状態づくりとモード別ショットは
@@ -40,7 +40,7 @@ public abstract class GuiCaptureHarness
 
     /// <summary>
     /// 260522Cl 追加: --capture で言語を強制指定 (en/ja) した場合のカルチャ。
-    /// FormMain ctor がレジストリ値で CurrentUICulture を上書きするため、各フォーム構築前に再設定する。
+    /// メインフォームの ctor がレジストリ値で CurrentUICulture を上書きするため、各フォーム構築前に再設定する。
     /// </summary>
     public static System.Globalization.CultureInfo ForcedUICulture;
 
@@ -338,7 +338,7 @@ public abstract class GuiCaptureHarness
 
         // フォームの Load / VisibleChanged 等で投げられた例外を握りつぶす。
         // これをしないと WinForms 標準の未処理例外ダイアログ (モーダル) が出てハーネスがハングする
-        // (例: FormCTF を親なしで構築すると get_ImageMode が NullReferenceException)。
+        // (例: ReciPro の FormCTF を親なしで構築すると get_ImageMode が NullReferenceException)。
         Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
         Application.ThreadException += (_, e) => OnThreadException(e.Exception, Trace);
 
@@ -520,14 +520,6 @@ public abstract class GuiCaptureHarness
     }
 
     /// <summary>
-    /// 260602Cl 追加: FormImageSimulator の「全体フォーム画像」をモードごとに撮る。
-    /// HRTEM / STEM / POTENTIAL を順に選び、各モードで Simulate → 画面安定待ち → ウィンドウ全体を CopyFromScreen し、
-    /// <c>FormImageSimulator-{hrtem|stem|potential}.png</c> として保存する。コントロール単体クロップは
-    /// <see cref="RenderHiddenControl"/> によりモード非依存で全 groupBox 分すでに撮れているため、ここでは追加しない。
-    /// STEM は計算が重いので、完了判定は既定モードと同じく <see cref="WaitUntilScreenStable"/> (画面が止まったら完了) に委ねる。
-    /// 既存の <c>FormImageSimulator.png</c> (既定=HRTEM の全体画像) はそのまま残す (index 等の既存参照を壊さない)。
-    /// </summary>
-    /// <summary>
     /// 260807Cl 追加: 特殊撮影 (モード別・タブ別) 5 種に共通する定型を 1 箇所へ集約する。
     /// 各メソッドで固有なのは「状態づくり (<paramref name="apply"/>)」と「何を撮るか (<paramref name="capture"/>)」だけで、
     /// 残り — レイアウト反映待ち・最前面化・計算完了待ち・保存・失敗しても次へ進む・後始末 — は全て同じだった。
@@ -556,7 +548,7 @@ public abstract class GuiCaptureHarness
         }
         catch (Exception ex)
         {
-            // 1 バリエーションの失敗で残りを諦めない (GuiCapture 全体の「可能な限り次へ進む」方針)。
+            // 1 バリエーションの失敗で残りを諦めない (ハーネス全体の「可能な限り次へ進む」方針)。
             trace($"{name}\tWARN\tvariant shot: {ex.GetType().Name}: {ex.Message}");
         }
         finally
@@ -732,12 +724,12 @@ public abstract class GuiCaptureHarness
     /// <summary>
     /// 260524Cl 追加: 指定ミリ秒のあいだ DoEvents を回して描画を画面へ反映させる。
     /// --capture は Application.Run を回さないため、CopyFromScreen の前にこの明示的な描画待ちが要る。
-    /// OpenGL 領域は通常の Invalidate では更新されないことがあるので、毎回 Render() で可視バッファへ最新シーンを出す。
+    /// GPU (OpenGL) 領域は通常の Invalidate では更新されないことがあるので、毎回 <see cref="RenderGpuControls"/> で可視バッファへ最新シーンを出す。
     /// </summary>
     protected void Settle(Form form, int ms, Action<string> trace)
     {
         try { form.Refresh(); } catch { /* Refresh 時例外は無視 */ }
-        RenderGpuControls(form, trace); // 260820Cl: 旧 RenderOpenGlControls (GL 描画はホストアプリのフックへ)
+        RenderGpuControls(form, trace); // GL 描画はホストアプリのフック (ReciPro: GLControlAlpha.Render())
         var until = Environment.TickCount64 + Math.Max(ms, 0);//260718Cl TickCount→TickCount64 (32bit の ~24.9 日ラップ回避)
         do
         {
@@ -830,21 +822,20 @@ public abstract class GuiCaptureHarness
     /// 260523Cl 追加 / 260524Cl 改修: Designer で <c>Capture=true</c> を付けたコントロール単位のクロップを、対話 UI を出さずに生成する。
     /// 各対象を CopyFromScreen で個別に撮る (FormCaptureGUI と同方式)。命名は手動キャプチャと同じ規則
     /// (form.Name 起点、SplitterPanel/ToolStripPanel/無名は除外) で、既存の Wiki 画像 raw URL を壊さない。
-    /// Crystallography.Controls 側へは <see cref="Crystallography.Controls.CaptureExtender.IsCaptureEnabled"/>
-    /// (Capture=true 判定) だけを依存し、対象列挙・パス命名・空白判定はすべてここで行う。
+    /// Capture=true 判定は <see cref="CaptureExtender.IsCaptureEnabled"/>、対象列挙・パス命名・空白判定はここで行う。
     /// </summary>
     /// <returns>保存できたクロップ数。</returns>
     private int CaptureControlCrops(Form form, string name, string outDir, Action<string> trace)
     {
         ReportTextOverflow(form, name, trace); //260807Cl 追加 (/simplify2 フォローアップ)
         var count = 0;
-        // Capture=true のコントロールを列挙する。ToolStripItem (メニュードロップダウン展開等) は
-        // 別ウィンドウのため非対話では撮らない (= EnumerateControls には現れないので自然に除外される)。
+        // Capture=true のコントロールを列挙する。ToolStripItem (メニュー展開) は別ウィンドウで EnumerateControls に
+        // 現れないため、<see cref="CaptureToolStripItemCrops"/> が別途撮る。
         foreach (var control in EnumerateControls(form))
         {
             if (control is Form || string.IsNullOrEmpty(control.Name) || control.IsDisposed || control.Width <= 0 || control.Height <= 0)
                 continue;
-            if (!Crystallography.Controls.CaptureExtender.IsCaptureEnabled(control))
+            if (!CaptureExtender.IsCaptureEnabled(control))
                 continue;
 
             try
@@ -871,7 +862,7 @@ public abstract class GuiCaptureHarness
                     // region.Refresh() 直後の 1 回 DoEvents では描画が画面 (front buffer) へ反映されず単色で撮れることがある
                     // (全体像は撮れているのにクロップだけ空白になる)。全体像と同じく Settle で描画を反映させ、
                     // さらに retryIfSolid=true で単色フレームを掴んだら数回撮り直す (本当に単色の領域は最終的に null=スキップ)。
-                    Settle(form, TabSwitchSettleMs, trace); // Refresh + RenderOpenGlControls + DoEvents ループ
+                    Settle(form, TabSwitchSettleMs, trace); // Refresh + RenderGpuControls + DoEvents ループ
                     crop = CaptureScreen(new Rectangle(GetScreenLocation(region), region.Size), form, trace, $"{name}.{control.Name}", retryIfSolid: true);
                     if (crop == null)
                         continue; // RDP 画面が一時的に取得不能 or 何度撮っても単色なら、このクロップは諦めて次へ
@@ -889,7 +880,7 @@ public abstract class GuiCaptureHarness
             }
             catch (Exception ex)
             {
-                // 1 コントロールの失敗で残りのクロップを諦めない (GuiCapture 全体の「可能な限り次へ進む」方針)。
+                // 1 コントロールの失敗で残りのクロップを諦めない (ハーネス全体の「可能な限り次へ進む」方針)。
                 trace($"{name}\tWARN\tcrop {control.Name}: {ex.GetType().Name}: {ex.Message}");
             }
         }
@@ -957,7 +948,7 @@ public abstract class GuiCaptureHarness
         var count = 0;
         foreach (var item in EnumerateToolStripItems(form))
         {
-            if (string.IsNullOrEmpty(item.Name) || !Crystallography.Controls.CaptureExtender.IsCaptureEnabled(item))
+            if (string.IsNullOrEmpty(item.Name) || !CaptureExtender.IsCaptureEnabled(item))
                 continue;
 
             try
@@ -1327,7 +1318,7 @@ public abstract class GuiCaptureHarness
 
     /// <summary>
     /// (260523Ch) フォーム配下の全コントロールを深さ優先で列挙する。
-    /// GLControlAlpha は Panel / SplitContainer / TabPage などの奥に入っているため、Controls 直下だけでは拾えない。
+    /// Capture 対象や GPU 描画コントロールは Panel / SplitContainer / TabPage などの奥に入っているため、Controls 直下だけでは拾えない。
     /// </summary>
     protected static IEnumerable<Control> EnumerateControls(Control root)
     {

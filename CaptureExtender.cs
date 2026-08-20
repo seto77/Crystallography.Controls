@@ -72,8 +72,9 @@ public sealed class CaptureExtender : Component, IExtenderProvider
 
     internal bool HasCaptureTargets() => captureTargets.Count > 0;
 
-    // internal static bool IsCaptureEnabled(Component extendee) // 260523Cl: ReciPro/GuiCapture.cs の非対話クロップが Capture=true 判定に使うため public 化 (キャプチャ責務は GuiCapture 側)
-    public static bool IsCaptureEnabled(Component extendee)
+    // 260523Cl: ReciPro/GuiCapture.cs の非対話クロップから使うため public 化していたが、260820Cl に利用元 (GuiCaptureHarness / FormCaptureGUI) が
+    // 同一アセンブリへ揃ったので internal へ戻した (旧: public static bool IsCaptureEnabled(Component extendee))。
+    internal static bool IsCaptureEnabled(Component extendee)
     {
         foreach (var extender in EnumerateCandidateExtenders(extendee))
         {

@@ -138,12 +138,13 @@ public partial class FormGroupRelations : FormBase
     }
     #endregion
 
-    #region --capture 用 (GuiCapture の代表状態撮影) 260705Cl 追加
+    #region --capture 用 (GuiCaptureHarness の代表状態撮影) 260705Cl 追加
     /// <summary>--capture 用: ノードを選択する (AfterSelect 経由で詳細タブ全部が populate される)。
     /// プレースホルダ「ツリーから選択してください」でなく実データの見た目を確認できるようにする。
     /// 260705Cl 修正 (Phase 2e): 超群 (Minimal supergroups、(P,p)⁻¹ 表示の新機能) を優先的に選ぶ。索引が
     /// バックグラウンド構築中なら最大 10 秒待つ (通常のフォームオープンでは待たない、--capture 専用の同期待ち)。</summary>
-    public void PrepareCaptureForGuiAudit()
+    // public void PrepareCaptureForGuiAudit() // 260820Cl 旧: ReciPro の GuiCapture から呼ぶため public だった
+    internal void PrepareCaptureForGuiAudit() // 260820Cl: 呼び出し元 (GuiCaptureHarness) が同一アセンブリになったので internal 化
     {
         var sw = System.Diagnostics.Stopwatch.StartNew();
         while (!TSubgroupFinder.SupergroupIndexReady && sw.ElapsedMilliseconds < 10000)
@@ -171,8 +172,8 @@ public partial class FormGroupRelations : FormBase
             treeRelations.SelectedNode = fallback;
     }
 
-    /// <summary>--capture 用: Diagram タブ (Bärnighausen グラフ) へのクロップ撮影のためタブ切替を公開する。</summary>
-    public TabControl CaptureTabControl => tabDetail;
+    /// <summary>--capture 用: Diagram タブ (Bärnighausen グラフ) へのクロップ撮影のためタブ切替をハーネスへ見せる。260820Cl internal 化 (旧 public)。</summary>
+    internal TabControl CaptureTabControl => tabDetail;
     #endregion
 
     #region ナビゲーション

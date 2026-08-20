@@ -53,12 +53,13 @@ public partial class FormBeamInteraction : FormBase
 
     #endregion
 
-    #region --capture 用 (GuiCapture の線種別モード撮影) 260608Cl 追加
-    /// <summary>--capture 用: 線源を設定して全タブを再計算する (GuiCapture.CaptureBeamInteractionModeShots から呼ぶ)。
+    #region --capture 用 (GuiCaptureHarness の線種別モード撮影) 260608Cl 追加
+    /// <summary>--capture 用: 線源を設定して全タブを再計算する (GuiCaptureHarness.CaptureBeamInteractionModeShots から呼ぶ)。
     /// 線源切替で ApplyBeamDependentVisibility が走り、蛍光タブの増減 (X線のみ) も反映される。
     /// 既定の Cu Kα (8 keV) は電子線では MonteCarlo の低エネルギー端で退化し輸送グラフが NaN になるため、
     /// マニュアル用に線種ごとの代表値へ設定する (電子線=20 keV / X線=Cu Kα / 中性子=熱中性子 ~1.8 Å)。260608Cl 追加。</summary>
-    public void SetCaptureBeam(WaveSource source)
+    // public void SetCaptureBeam(WaveSource source) // 260820Cl 旧: ReciPro の GuiCapture から呼ぶため public だった
+    internal void SetCaptureBeam(WaveSource source) // 260820Cl: 呼び出し元 (GuiCaptureHarness) が同一アセンブリになったので internal 化
     {
         waveLengthControl.WaveSource = source;
         if (source == WaveSource.Electron)
@@ -71,8 +72,8 @@ public partial class FormBeamInteraction : FormBase
         UpdateAllTabs();
     }
 
-    /// <summary>--capture 用: 線種×タブのクロップを撮るために TabControl を公開する。260608Cl 追加。</summary>
-    public TabControl CaptureTabControl => tabControl;
+    /// <summary>--capture 用: 線種×タブのクロップを撮るために TabControl をハーネスへ見せる。260608Cl 追加、260820Cl internal 化 (旧 public)。</summary>
+    internal TabControl CaptureTabControl => tabControl;
     #endregion
 
     #region 共通: Crystal / 波長変更の追従 (両タブを更新)
