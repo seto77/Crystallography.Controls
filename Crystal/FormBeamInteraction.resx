@@ -3417,23 +3417,6 @@ above 36 keV).</value>
   <data name="radioButtonXraySrcTemari.Text" xml:space="preserve">
     <value>Temari</value>
   </data>
-  <data name="labelTemariNotice.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="labelTemariNotice.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>10, 4, 3, 0</value>
-  </data>
-  <data name="labelTemariNotice.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="labelTemariNotice.Text" xml:space="preserve">
-    <value>Temari: neutral atoms Z = 1-86 only. Ions and unsupported elements are not shown.</value>
-  </data>
-  <data name="labelTemariNotice.ToolTip" xml:space="preserve">
-    <value>Temari is computed for isolated neutral atoms and its tables stop at Z = 86, so ions
-and Z = 87-98 have no entry. Their curves are omitted and their table cells are left
-blank rather than being substituted with neutral-atom values.</value>
-  </data>
   <data name="radioButtonElectronTemari.ToolTip" xml:space="preserve">
     <value>Electron atomic scattering factor fe(s) from Temari dataset-factors v1.0.0. This is a
 first-principles calculation (full Dirac SCF with exact KLI exchange), not a fitted
@@ -3469,9 +3452,6 @@ covers ions as well as neutral atoms over Z = 1-98.</value>
   </metadata>
   <metadata name="radioButtonXraySrcTemari.Name" xml:space="preserve">
     <value>radioButtonXraySrcTemari</value>
-  </metadata>
-  <metadata name="labelTemariNotice.Name" xml:space="preserve">
-    <value>labelTemariNotice</value>
   </metadata>
   <data name="colSfxModel.AutoSizeMode" type="System.Windows.Forms.DataGridViewAutoSizeColumnMode, System.Windows.Forms">
     <value>None</value>

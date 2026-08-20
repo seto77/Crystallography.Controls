@@ -516,9 +516,6 @@ public partial class FormBeamInteraction : FormBase
         if (!radioButtonElectronPeng.Checked && !radioButtonElectronKirkland.Checked && !radioButtonElectronEightGaussian.Checked && !radioButtonElectronTemari.Checked) radioButtonElectronPeng.Checked = true; // 既定: Peng
 
         graphControlScatteringFactor.VerticalLineMarkerVisible = true; // 各曲線にカーソル交点マーカー
-        //260818Cl 注記ラベルは Temari 選択時だけ出す。既定 true のままだと、Crystal 未設定 / 別タブのまま
-        //  散乱因子タブを開いたときに UpdateScatteringFactors が早期 return するので出っぱなしになる。
-        labelTemariNotice.Visible = false;
 
         //260607Cl 線種別 3 表の列はデザイナ定義 (ヘッダ翻訳は resx/.ja.resx)。ここでは整列/書式/AutoSize/非ソートだけコードで設定する。
         //          元素/モデル列は内容フィット (AllCells)、数値列は Fill で伸縮 (相対幅はデザイナの FillWeight で微調整可)。
@@ -577,10 +574,8 @@ public partial class FormBeamInteraction : FormBase
         //260818Cl 追加: X線 f(s) の出典ラジオ (Waasmaier-Kirfel / Temari)。F(q)+S(q) は xraylib 固有なので出典軸を無効化する
         flowLayoutPanelSource_Xray.Visible = src == WaveSource.Xray;
         flowLayoutPanelSource_Xray.Enabled = src == WaveSource.Xray && radioButtonXrayFs.Checked;
-        //260818Cl 追加: Temari は中性原子 Z=1-86 のみなので、切り替えた瞬間に曲線が消える元素がある。
-        //  ツールチップだけでは消えた理由が見えないので、Temari 選択中に限り 1 行の注記を出す (中性子ではどちらの条件も成立しない)。
-        labelTemariNotice.Visible = (src == WaveSource.Electron && radioButtonElectronTemari.Checked)
-                                 || (src == WaveSource.Xray && CurrentXrayIsTemari());//260818Cl f(s) モード判定は CurrentXrayIsTemari 側に集約 (旧: ここで radioButtonXrayFs.Checked を再掲していた)
+        //260819Cl labelTemariNotice を廃止 (作者判断)。対応範囲は Temari ラジオのツールチップが述べており、
+        //  近い将来 Temari がイオンにも対応する予定なので、「中性原子のみ」を恒久的な GUI 要素にしない。
 
         //260607Cl 線種別 MiniTable は選択中の線種だけ Visible (他は非表示)
         miniTableScatteringFactorsXray.Visible = src == WaveSource.Xray;

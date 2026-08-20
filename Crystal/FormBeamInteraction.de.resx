@@ -368,15 +368,6 @@ daten; ohne diesen werden die Atome als ruhend behandelt.</value>
 Oft bevorzugt für Bildsimulationen bei großen Winkeln / hoher Auflösung, da er bis zu
 großen s genau bleibt.</value>
   </data>
-  <data name="labelTemariNotice.Text" xml:space="preserve">
-    <value>Temari: nur neutrale Atome Z = 1-86. Ionen und nicht unterstützte Elemente werden
-nicht angezeigt.</value>
-  </data>
-  <data name="labelTemariNotice.ToolTip" xml:space="preserve">
-    <value>Temari wird für isolierte neutrale Atome berechnet und die Tabellen enden bei Z = 86;
-für Ionen und Z = 87-98 gibt es daher keine Einträge. Ihre Kurven entfallen und ihre
-Tabellenzellen bleiben leer, statt durch Werte neutraler Atome ersetzt zu werden.</value>
-  </data>
   <data name="radioButtonElectronTemari.ToolTip" xml:space="preserve">
     <value>Atomarer Elektronenstreufaktor fe(s) aus Temari dataset-factors v1.0.0. Dies ist eine
 Ab-initio-Rechnung (volles Dirac-SCF mit exaktem KLI-Austausch), keine angepasste

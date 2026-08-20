@@ -364,13 +364,6 @@ fe(s)。这是默认值，也是良好的通用选择。
 因其在大 s 处仍保持准确，在高角/高分辨率图像模拟工作中
 常被优先采用。</value>
   </data>
-  <data name="labelTemariNotice.Text" xml:space="preserve">
-    <value>Temari：仅支持中性原子 Z = 1-86。离子和不支持的元素不予显示。</value>
-  </data>
-  <data name="labelTemariNotice.ToolTip" xml:space="preserve">
-    <value>Temari 针对孤立中性原子计算，其表格止于 Z = 86，因此离子和 Z = 87-98 没有对应数据。程
-序不会用中性原子数值替代，而是不绘制其曲线并将表格单元格留空。</value>
-  </data>
   <data name="radioButtonElectronTemari.ToolTip" xml:space="preserve">
     <value>来自 Temari dataset-factors v1.0.0 的电子原子散射因子 fe(s)。这是第一性原理计算（完全
 Dirac 自洽场与精确 KLI 交换），而非拟合的参数化。仅支持中性原子 Z = 1-86，且不包含相

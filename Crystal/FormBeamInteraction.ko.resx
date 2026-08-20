@@ -360,15 +360,6 @@ B는 결정 데이터에서 가져온 등방성 변위 매개변수(Biso)입니�
 큰 s까지 정확도가 유지되므로 고각 / 고분해능 영상 시뮬레이션 작업에서 흔히
 선호됩니다.</value>
   </data>
-  <data name="labelTemariNotice.Text" xml:space="preserve">
-    <value>Temari: 중성 원자 Z = 1-86만 지원합니다. 이온과 지원되지 않는 원소는 표시하지 않습니
-다.</value>
-  </data>
-  <data name="labelTemariNotice.ToolTip" xml:space="preserve">
-    <value>Temari는 고립된 중성 원자에 대해 계산되었고 표는 Z = 86까지이므로 이온과 Z = 87-98에
-는 값이 없습니다. 중성 원자 값으로 대체하지 않고 곡선을 그리지 않으며 표의 셀은 비워
-둡니다.</value>
-  </data>
   <data name="radioButtonElectronTemari.ToolTip" xml:space="preserve">
     <value>Temari dataset-factors v1.0.0의 전자의 원자 산란 인자 fe(s)입니다. 맞춤한 매개변수화
 가 아니라 제일원리 계산(완전 Dirac SCF와 엄밀한 KLI 교환)입니다. 중성 원자 Z = 1-86만

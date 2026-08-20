@@ -362,15 +362,6 @@ cristallines ; lorsque cette option est désactivée, les atomes sont traités c
 Souvent préféré pour les travaux de simulation d'image à grand angle / haute résolution car il reste
 précis jusqu'aux grandes valeurs de s.</value>
   </data>
-  <data name="labelTemariNotice.Text" xml:space="preserve">
-    <value>Temari : atomes neutres Z = 1-86 uniquement. Les ions et les éléments non pris en
-charge ne sont pas affichés.</value>
-  </data>
-  <data name="labelTemariNotice.ToolTip" xml:space="preserve">
-    <value>Temari est calculé pour des atomes neutres isolés et ses tables s'arrêtent à Z = 86 ;
-les ions et Z = 87-98 n'ont donc pas d'entrée. Leurs courbes sont omises et leurs
-cellules laissées vides plutôt que remplacées par des valeurs d'atome neutre.</value>
-  </data>
   <data name="radioButtonElectronTemari.ToolTip" xml:space="preserve">
     <value>Facteur de diffusion atomique des électrons fe(s) issu de Temari dataset-factors
 v1.0.0. Il s'agit d'un calcul ab initio (SCF de Dirac complet avec échange KLI

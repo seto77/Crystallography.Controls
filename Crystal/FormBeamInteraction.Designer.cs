@@ -156,7 +156,6 @@
             flowLayoutPanelSource_Xray = new System.Windows.Forms.FlowLayoutPanel();
             radioButtonXraySrcWK = new System.Windows.Forms.RadioButton();
             radioButtonXraySrcTemari = new System.Windows.Forms.RadioButton();
-            labelTemariNotice = new System.Windows.Forms.Label();
             tabPageFluorescence = new System.Windows.Forms.TabPage();
             panel4 = new System.Windows.Forms.Panel();
             graphControlFluor = new GraphControl();
@@ -694,12 +693,6 @@
             toolTip.SetToolTip(radioButtonXraySrcTemari, resources.GetString("radioButtonXraySrcTemari.ToolTip"));
             radioButtonXraySrcTemari.UseVisualStyleBackColor = true;
             radioButtonXraySrcTemari.CheckedChanged += scattering_OptionChanged;
-            // 
-            // labelTemariNotice
-            // 
-            resources.ApplyResources(labelTemariNotice, "labelTemariNotice");
-            labelTemariNotice.Name = "labelTemariNotice";
-            toolTip.SetToolTip(labelTemariNotice, resources.GetString("labelTemariNotice.ToolTip"));
             // 
             // radioButtonElectronPeng
             // 
@@ -1254,7 +1247,6 @@
             flowLayoutPanelScatteringFactorModel.Controls.Add(flowLayoutPanelSource_Xray);
             flowLayoutPanelScatteringFactorModel.Controls.Add(flowLayoutPanelModel_Electron);
             flowLayoutPanelScatteringFactorModel.Controls.Add(checkBoxDebyeWaller);
-            flowLayoutPanelScatteringFactorModel.Controls.Add(labelTemariNotice);
             flowLayoutPanelScatteringFactorModel.Name = "flowLayoutPanelScatteringFactorModel";
             // 
             // flowLayoutPanelModel_Xray
@@ -1495,7 +1487,6 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelSource_Xray; // 260818Cl X線 f(s) の出典選択 (モード軸とは別)
         private System.Windows.Forms.RadioButton radioButtonXraySrcWK; // 260818Cl
         private System.Windows.Forms.RadioButton radioButtonXraySrcTemari; // 260818Cl
-        private System.Windows.Forms.Label labelTemariNotice; // 260818Cl Temari 選択時のみ表示する対応範囲の注記
         private System.Windows.Forms.RadioButton radioButtonXrayFs;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelScatteringFactorModel;
         private System.Windows.Forms.CheckBox checkBoxDebyeWaller;

@@ -365,13 +365,6 @@ X 射線射束比例。
 因其在大 s 處仍保持準確，常為高角／高解析度影像
 模擬工作所偏好。</value>
   </data>
-  <data name="labelTemariNotice.Text" xml:space="preserve">
-    <value>Temari：僅支援中性原子 Z = 1-86。離子與不支援的元素不予顯示。</value>
-  </data>
-  <data name="labelTemariNotice.ToolTip" xml:space="preserve">
-    <value>Temari 針對孤立中性原子計算，其表格止於 Z = 86，因此離子與 Z = 87-98 沒有對應數值。程
-式不會以中性原子數值替代，而是不繪製其曲線並將表格儲存格留空。</value>
-  </data>
   <data name="radioButtonElectronTemari.ToolTip" xml:space="preserve">
     <value>來自 Temari dataset-factors v1.0.0 的電子原子散射因子 fe(s)。這是第一原理計算（完全 D
 irac 自洽場與精確 KLI 交換），而非擬合的參數化。僅支援中性原子 Z = 1-86，且不含相對論

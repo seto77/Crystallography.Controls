@@ -464,13 +464,6 @@ B は結晶データの等方性変位パラメータ(Biso)です。オフのと
   <data name="graphControlFluor.Font" type="System.Drawing.Font, System.Drawing">
     <value>Yu Gothic UI, 9pt</value>
   </data>
-  <data name="labelTemariNotice.Text" xml:space="preserve">
-    <value>Temari は中性原子 Z = 1-86 のみ対応。イオンと非対応元素は表示しません。</value>
-  </data>
-  <data name="labelTemariNotice.ToolTip" xml:space="preserve">
-    <value>Temari は孤立中性原子について計算されており、表は Z = 86 までです。イオンと Z = 87-98
-には値がないため、中性原子の値で代用せず、曲線を描かず表のセルを空欄にします。</value>
-  </data>
   <data name="radioButtonElectronTemari.ToolTip" xml:space="preserve">
     <value>Temari dataset-factors v1.0.0 による電子原子散乱因子 fe(s)。フィットによるパラメータ
 化ではなく第一原理計算 (完全 Dirac SCF と厳密交換 KLI) です。中性原子 Z = 1-86 のみで

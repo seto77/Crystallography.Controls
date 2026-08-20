@@ -356,15 +356,6 @@ cristal; con esta opción desactivada, los átomos se tratan como estacionarios.
 A menudo preferida para trabajos de simulación de imágenes a alto ángulo / alta resolución porque mantiene
 la precisión hasta valores grandes de s.</value>
   </data>
-  <data name="labelTemariNotice.Text" xml:space="preserve">
-    <value>Temari: solo átomos neutros Z = 1-86. No se muestran los iones ni los elementos no
-admitidos.</value>
-  </data>
-  <data name="labelTemariNotice.ToolTip" xml:space="preserve">
-    <value>Temari se calcula para átomos neutros aislados y sus tablas terminan en Z = 86, por
-lo que los iones y Z = 87-98 no tienen entrada. Se omiten sus curvas y sus celdas
-quedan en blanco en lugar de sustituirse por valores de átomo neutro.</value>
-  </data>
   <data name="radioButtonElectronTemari.ToolTip" xml:space="preserve">
     <value>Factor de dispersión atómica de electrones fe(s) de Temari dataset-factors v1.0.0. Es
 un cálculo de primeros principios (SCF de Dirac completo con intercambio KLI exacto),

@@ -368,15 +368,6 @@ cristallografici; con questo disattivato, gli atomi sono trattati come stazionar
 Spesso preferito per il lavoro di simulazione di immagini ad alto angolo / alta risoluzione perché rimane
 accurato fino a grandi s.</value>
   </data>
-  <data name="labelTemariNotice.Text" xml:space="preserve">
-    <value>Temari: solo atomi neutri Z = 1-86. Gli ioni e gli elementi non supportati non
-vengono mostrati.</value>
-  </data>
-  <data name="labelTemariNotice.ToolTip" xml:space="preserve">
-    <value>Temari è calcolato per atomi neutri isolati e le sue tabelle si fermano a Z = 86,
-quindi ioni e Z = 87-98 non hanno voci. Le loro curve sono omesse e le celle restano
-vuote invece di essere sostituite con valori di atomo neutro.</value>
-  </data>
   <data name="radioButtonElectronTemari.ToolTip" xml:space="preserve">
     <value>Fattore di scattering atomico degli elettroni fe(s) da Temari dataset-factors v1.0.0.
 È un calcolo da principi primi (SCF di Dirac completo con scambio KLI esatto), non
