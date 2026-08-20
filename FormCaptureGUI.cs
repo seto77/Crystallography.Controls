@@ -564,7 +564,7 @@ public partial class FormCaptureGUI : FormBase
         // 260323Cl: コントロールが TabPage の子孫なら、そのタブを選択して前面に出す
         EnsureAncestorTabsSelected(control);
 
-        var fileName = SanitizeFileName(path) + ".png";
+        var fileName = GuiCaptureHarness.SanitizeFileName(path) + ".png";
         // var captureTarget = control; // 旧実装: 常に対象コントロール自身の矩形だけをキャプチャしていた
         var captureTarget = GetCaptureRegionControl(control, ignoreLegacyCaptureRules); // (260323Ch) extender 優先モードの TabPage は親 TabControl のタブ見出しも含めて撮る
 
@@ -582,7 +582,7 @@ public partial class FormCaptureGUI : FormBase
         }
 
         // 260323Cl: 単色ビットマップ (Visible=false のパネル等) はファイルを生成しない
-        if (IsSolidColor(bmp))
+        if (GuiCaptureHarness.IsSolidColor(bmp))
         {
             bmp.Dispose();
             return;
@@ -625,7 +625,7 @@ public partial class FormCaptureGUI : FormBase
         captureHost.Refresh();
         Application.DoEvents();
 
-        var fileName = SanitizeFileName(path) + ".png";
+        var fileName = GuiCaptureHarness.SanitizeFileName(path) + ".png";
         var screenPos = captureHost.PointToScreen(System.Drawing.Point.Empty);
         using var bmp = new Bitmap(captureHost.Width, captureHost.Height);
         using (var g = Graphics.FromImage(bmp))
@@ -633,7 +633,7 @@ public partial class FormCaptureGUI : FormBase
             g.CopyFromScreen(screenPos, System.Drawing.Point.Empty, captureHost.Size);
         }
 
-        if (IsSolidColor(bmp))
+        if (GuiCaptureHarness.IsSolidColor(bmp))
             return;
 
         bmp.Save(Path.Combine(outputDir, fileName), ImageFormat.Png); // 260717Cl: 素通し化した SaveCompressedPng をインライン化 (ImageSharp 撤去後は名前も実態と乖離)
@@ -655,7 +655,7 @@ public partial class FormCaptureGUI : FormBase
 
     private static ToolStrip EnsureToolStripCaptureHostVisible(ToolStripItem item)
     {
-        EnsureAncestorDropDownsVisible(item);
+        GuiCaptureHarness.EnsureAncestorDropDownsVisible(item); // 260820Cl: ハーネス版へ
 
         if (item is ToolStripDropDownItem dropDownItem && dropDownItem.HasDropDownItems)
         {
@@ -704,19 +704,7 @@ public partial class FormCaptureGUI : FormBase
         }
     }
 
-    private static void EnsureAncestorDropDownsVisible(ToolStripItem item)
-    {
-        if (item.OwnerItem is not ToolStripDropDownItem ownerItem) return;
-
-        EnsureAncestorDropDownsVisible(ownerItem);
-        if (!ownerItem.DropDown.Visible)
-        {
-            ownerItem.ShowDropDown();
-            ownerItem.DropDown.Refresh();
-            Application.DoEvents();
-            System.Threading.Thread.Sleep(200);
-        }
-    }
+    // 260820Cl 削除: EnsureAncestorDropDownsVisible は GuiCaptureHarness.EnsureAncestorDropDownsVisible (同一実装) へ集約
 
     // 260323Cl: タブ Click イベント発火用 (OnClick はprotectedのためリフレクション)
     private static readonly System.Reflection.MethodInfo onClickMethod =
@@ -794,45 +782,7 @@ public partial class FormCaptureGUI : FormBase
         return null;
     }
 
-    /// <summary>
-    /// <summary>
-    /// 260323Cl 追加
-    /// ビットマップの内側領域（上下左右5px除外）で 99% 以上が同一色であるかを判定する。
-    /// Visible=false のパネルなどで灰色一色のビットマップが生成されるケースを検出し、
-    /// 無意味なファイルの保存を防止する。3D枠線の影響を避けるため端を除外する。
-    /// </summary>
-    private static bool IsSolidColor(Bitmap bmp)
-    {
-        const int margin = 5;
-        int x0 = margin, y0 = margin;
-        int x1 = bmp.Width - margin, y1 = bmp.Height - margin;
-        if (x1 <= x0 || y1 <= y0) return true; // margin で内側が残らない場合は単色扱い
-
-        var rect = new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height);
-        var data = bmp.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-        try
-        {
-            var row = new int[bmp.Width];
-            // 基準色は内側の最初のピクセルから取得
-            System.Runtime.InteropServices.Marshal.Copy(data.Scan0 + y0 * data.Stride, row, 0, bmp.Width);
-            int firstPixel = row[x0];
-
-            for (int y = y0; y < y1; y++)
-            {
-                System.Runtime.InteropServices.Marshal.Copy(data.Scan0 + y * data.Stride, row, 0, bmp.Width);
-                for (int x = x0; x < x1; x++)
-                {
-                    if (row[x] != firstPixel)
-                        return false;
-                }
-            }
-            return true;
-        }
-        finally
-        {
-            bmp.UnlockBits(data);
-        }
-    }
+    // 260820Cl 削除: IsSolidColor は GuiCaptureHarness.IsSolidColor (同一実装: 内側 5px を除いた一様色判定) へ集約
 
     // 260717Cl: ImageSharp 撤去 (260513Cl) 以降は bmp.Save への素通しで、名前 (Compressed) も実態と乖離していたため
     // 2 呼び出し箇所へインライン化して削除。旧 ImageSharp 実装の記録は下のコメントに残す。
@@ -860,14 +810,7 @@ public partial class FormCaptureGUI : FormBase
         // image.SaveAsPng(filePath, encoder);
     //}
 
-    /// <summary>ファイル名に使えない文字を置換</summary>
-    private static string SanitizeFileName(string name)
-    {
-        var invalid = Path.GetInvalidFileNameChars();
-        foreach (var c in invalid)
-            name = name.Replace(c, '_');
-        return name;
-    }
+    // 260820Cl 削除: SanitizeFileName は GuiCaptureHarness.SanitizeFileName (同一実装) へ集約
 
     /// <summary>260521Cl 追加: 対象フォーム ComboBox の表示用ラッパ</summary>
     private sealed record FormChoice(Form Form)

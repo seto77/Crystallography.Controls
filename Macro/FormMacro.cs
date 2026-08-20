@@ -145,6 +145,17 @@ public partial class FormMacro : FormBase
         finally { skipEvent = false; }
     }
 
+    /// <summary>260820Cl 追加: --capture (GuiCaptureHarness) 用にサンプルマクロ表示状態へ切り替える。
+    /// 旧: ReciPro / IPAnalyzer / PDIndexer の各 GuiCapture が private な checkBoxSamples を reflection でトグルしていた
+    /// (「Controls は触らない」方針の下でキャプチャ対象に Controls 自身のフォームが含まれていた矛盾の産物)。
+    /// CheckedChanged (toggleSamplesMode) がサンプルマクロをエディタへ流し込む (fresh load なので未保存確認は出ない)。
+    /// サンプル未定義 (checkBoxSamples 非表示) なら何もしない。</summary>
+    internal void PrepareCaptureForGuiAudit()
+    {
+        if (checkBoxSamples.Visible && !checkBoxSamples.Checked)
+            checkBoxSamples.Checked = true;
+    }
+
     // 260415Cl 改修 checkBoxSamples.CheckedChanged でサンプル表示とユーザーマクロをトグル切り替え (旧: samplesToolStripMenuItem.Click)
     private void toggleSamplesMode(object sender, EventArgs e)
     {
