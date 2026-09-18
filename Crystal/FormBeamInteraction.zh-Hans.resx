@@ -365,7 +365,7 @@ fe(s)。这是默认值，也是良好的通用选择。
 常被优先采用。</value>
   </data>
   <data name="radioButtonElectronTemari.ToolTip" xml:space="preserve">
-    <value>来自 Temari dataset-factors v1.0.0 的电子原子散射因子 fe(s)。这是第一性原理计算（完全
+    <value>来自 Temari dataset-factors v2.0.0 的电子原子散射因子 fe(s)。这是第一性原理计算（完全
 Dirac 自洽场与精确 KLI 交换），而非拟合的参数化。仅支持中性原子 Z = 1-86，且不包含相
 对论因子 gamma（与 Peng 相同的约定）。使用全部节点并遵循规定的插值方法，但已发布数值
 经过重新量化（最大偏差 5e-12 Å）。CC-BY-4.0。</value>
@@ -373,7 +373,7 @@ Dirac 自洽场与精确 KLI 交换），而非拟合的参数化。仅支持中
   <data name="radioButtonXraySrcTemari.ToolTip" xml:space="preserve">
     <value>本行选择 f(s) 的数据来源，而非绘制什么（那由左侧的 f(s) / F(q)+S(q) 行决定）。仅在 f(
 s) 模式下可用。
-来自 Temari dataset-factors v1.0.0 的 X 射线原子散射因子 f(s)。这是第一性原理计算（完
+来自 Temari dataset-factors v2.0.0 的 X 射线原子散射因子 f(s)。这是第一性原理计算（完
 全 Dirac 自洽场与精确 KLI 交换），而非拟合的参数化。仅支持中性原子 Z = 1-86。使用全部
 节点并遵循规定的插值方法，但已发布数值经过重新量化（最大偏差 5e-11 电子）。CC-BY-4.0
 。</value>

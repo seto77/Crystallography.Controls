@@ -369,7 +369,7 @@ Spesso preferito per il lavoro di simulazione di immagini ad alto angolo / alta 
 accurato fino a grandi s.</value>
   </data>
   <data name="radioButtonElectronTemari.ToolTip" xml:space="preserve">
-    <value>Fattore di scattering atomico degli elettroni fe(s) da Temari dataset-factors v1.0.0.
+    <value>Fattore di scattering atomico degli elettroni fe(s) da Temari dataset-factors v2.0.0.
 È un calcolo da principi primi (SCF di Dirac completo con scambio KLI esatto), non
 una parametrizzazione interpolata. Solo atomi neutri Z = 1-86, e il fattore
 relativistico gamma non è incluso (la stessa convenzione di Peng). Si usano tutti i
@@ -379,7 +379,7 @@ nodi e l'interpolazione prescritta; i valori pubblicati sono riquantizzati
   <data name="radioButtonXraySrcTemari.ToolTip" xml:space="preserve">
     <value>Questa riga sceglie da dove proviene f(s), non che cosa viene tracciato: quella è la
 riga f(s) / F(q)+S(q) a sinistra. È disponibile solo in modalità f(s).
-Fattore di scattering atomico dei raggi X f(s) da Temari dataset-factors v1.0.0. È un
+Fattore di scattering atomico dei raggi X f(s) da Temari dataset-factors v2.0.0. È un
 calcolo da principi primi (SCF di Dirac completo con scambio KLI esatto), non una
 parametrizzazione interpolata. Solo atomi neutri Z = 1-86. Si usano tutti i nodi e
 l'interpolazione prescritta; i valori pubblicati sono riquantizzati (differenza

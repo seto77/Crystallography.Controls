@@ -3418,7 +3418,7 @@ above 36 keV).</value>
     <value>Temari</value>
   </data>
   <data name="radioButtonElectronTemari.ToolTip" xml:space="preserve">
-    <value>Electron atomic scattering factor fe(s) from Temari dataset-factors v1.0.0. This is a
+    <value>Electron atomic scattering factor fe(s) from Temari dataset-factors v2.0.0. This is a
 first-principles calculation (full Dirac SCF with exact KLI exchange), not a fitted
 parameterization. Neutral atoms Z = 1-86 only, and the relativistic factor gamma is
 not included (the same convention as Peng). All nodes and the specified interpolation
@@ -3428,7 +3428,7 @@ CC-BY-4.0.</value>
   <data name="radioButtonXraySrcTemari.ToolTip" xml:space="preserve">
     <value>This row chooses where f(s) comes from, not what is plotted - that is the f(s) /
 F(q)+S(q) row to the left. It is available in f(s) mode only.
-X-ray atomic scattering factor f(s) from Temari dataset-factors v1.0.0. This is a
+X-ray atomic scattering factor f(s) from Temari dataset-factors v2.0.0. This is a
 first-principles calculation (full Dirac SCF with exact KLI exchange), not a fitted
 parameterization. Neutral atoms Z = 1-86 only. All nodes and the specified
 interpolation are used; the published values are requantized (largest difference

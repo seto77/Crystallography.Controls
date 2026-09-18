@@ -361,7 +361,7 @@ B는 결정 데이터에서 가져온 등방성 변위 매개변수(Biso)입니�
 선호됩니다.</value>
   </data>
   <data name="radioButtonElectronTemari.ToolTip" xml:space="preserve">
-    <value>Temari dataset-factors v1.0.0의 전자의 원자 산란 인자 fe(s)입니다. 맞춤한 매개변수화
+    <value>Temari dataset-factors v2.0.0의 전자의 원자 산란 인자 fe(s)입니다. 맞춤한 매개변수화
 가 아니라 제일원리 계산(완전 Dirac SCF와 엄밀한 KLI 교환)입니다. 중성 원자 Z = 1-86만
 지원하며, 상대론 인자 gamma는 포함되지 않습니다(Peng과 같은 규약). 모든 절점과 규정된
 보간법을 사용하지만 공개된 값은 재양자화되어 있습니다(최대 차이 5e-12 Å). CC-BY-4.0.</value>
@@ -370,7 +370,7 @@ B는 결정 데이터에서 가져온 등방성 변위 매개변수(Biso)입니�
     <value>이 행은 무엇을 그릴지가 아니라 f(s)를 어디에서 가져올지(출처)를 선택합니다. 무엇을 그
 릴지는 왼쪽의 f(s) / F(q)+S(q) 행이 정하며, 이 행은 f(s) 모드에서만 사용할 수 있습니
 다.
-Temari dataset-factors v1.0.0의 X선의 원자 산란 인자 f(s)입니다. 맞춤한 매개변수화가
+Temari dataset-factors v2.0.0의 X선의 원자 산란 인자 f(s)입니다. 맞춤한 매개변수화가
 아니라 제일원리 계산(완전 Dirac SCF와 엄밀한 KLI 교환)입니다. 중성 원자 Z = 1-86만 지
 원합니다. 모든 절점과 규정된 보간법을 사용하지만 공개된 값은 재양자화되어 있습니다(최
 대 차이 5e-11 전자). CC-BY-4.0.</value>
