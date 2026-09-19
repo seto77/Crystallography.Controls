@@ -78,7 +78,10 @@ namespace Crystallography.Controls
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         [DefaultValue(84)] // 260607Cl
-        public int NumericBoxSize { get { return splitContainer.SplitterDistance; } set { splitContainer.SplitterDistance = value; } }
+        // 260920Cl 変更: SplitterDistance だけを動かすと内側 numericBox の Width が設計時の値 (84) のまま残り、
+        //   数値欄を広げても表示が切れたままになる (TrackBarAdvanced_Resize は本体の Resize でしか走らないため)。幅の再配分をここでも呼ぶ。
+        // public int NumericBoxSize { get { return splitContainer.SplitterDistance; } set { splitContainer.SplitterDistance = value; } } // 260920Cl 変更前
+        public int NumericBoxSize { get { return splitContainer.SplitterDistance; } set { splitContainer.SplitterDistance = value; TrackBarAdvanced_Resize(this, EventArgs.Empty); } }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         [DefaultValue(Orientation.Vertical)] // 260607Cl
