@@ -34,6 +34,15 @@ namespace Crystallography.Controls
              }*/
         }
 
+        // 260920Cl 追加 (/simplify2): 内部の splitContainer / trackBar / numericBox が本体表面を完全に覆う (Dock=Fill + Resize で
+        //   両パネルいっぱいに広げる) ため、配置先 Form が toolTip.SetToolTip(this, …) をしても hover してチップが出なかった。
+        //   NumericBox / ColorControl / SizeControl と同じく基底の配布機構 (UserControlBase.RelayHostToolTip) へ配布先を渡す。
+        //   numericBox は UserControlBase 派生なので、そこからさらに内部の textBox / ラベルへ再帰的に配布される
+        protected override Control[] GetToolTipTargets() => [splitContainer, splitContainer.Panel1, splitContainer.Panel2, trackBar, numericBox];
+
+        // 260920Cl 追加: 親がチップを設定したときは内部の汎用チップを抑止して親のバルーンへ一本化する
+        protected internal override ToolTip InternalToolTip => toolTip;
+
         #region プロパティ
 
         //public int SmallChange { get { return trackBar.SmallChange; } set { trackBar.SmallChange = value; } }
