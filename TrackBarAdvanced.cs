@@ -12,6 +12,20 @@ namespace Crystallography.Controls
         {
             InitializeComponent();
             this.Resize += TrackBarAdvanced_Resize;
+            //260920Cl 追加: ValueBoxWidth 指定時の numericBox は AutoSize なので、HeaderText/FooterText/Font が
+            //  後から変わると外形幅も変わる (ApplyResources はプロパティ設定順が不定)。本体 Resize だけでは追随できないため、
+            //  numericBox 自身のサイズ変化を splitter へ伝える。ValueBoxWidth < 0 (従来モード) では何もしないので再帰しない
+            numericBox.SizeChanged += (_, _) => { if (numericBox.ValueBoxWidth >= 0) syncSplitterToNumericBox(); };
+        }
+
+        /// <summary>260920Cl 追加: 数値欄の幅指定モードで、splitter を numericBox の優先幅 (ヘッダ + 数値欄 + spin + フッタ) へ合わせる。
+        /// SplitterDistance が「幅」を意味するのは分割が Vertical (左=数値欄 / 右=トラックバー) のときだけなので、Horizontal では何もしない</summary>
+        private void syncSplitterToNumericBox()
+        {
+            if (splitContainer.Orientation != Orientation.Vertical) return;
+            var max = splitContainer.Width - splitContainer.SplitterWidth - splitContainer.Panel2MinSize;
+            var w = Math.Max(splitContainer.Panel1MinSize, Math.Min(numericBox.PreferredSize.Width, max)); //レイアウト途中で max が負になりうるので下限も掛ける
+            if (splitContainer.SplitterDistance != w) splitContainer.SplitterDistance = w;
         }
 
         private void TrackBarAdvanced_Resize(object sender, EventArgs e)
@@ -20,7 +34,14 @@ namespace Crystallography.Controls
             trackBar.Size = splitContainer.Panel2.ClientSize;
 
             numericBox.Location = new Point(0, 0);
-            numericBox.Width = splitContainer.Panel1.ClientSize.Width;
+            //260920Cl 変更 (作者指示「ValueBoxWidth に変更してほしい」): 幅の決まる向きを逆転させた。
+            //  ValueBoxWidth >= 0 のときは numericBox 自身が AutoSize で「ヘッダ + 数値欄 + spin + フッタ」の幅を決めるので、
+            //  こちらから Width を押し付けない (AutoSize なので代入しても layout に戻される)。代わりに splitter をその幅へ合わせる。
+            //旧: numericBox.Width = splitContainer.Panel1.ClientSize.Width;
+            if (numericBox.ValueBoxWidth >= 0)
+                syncSplitterToNumericBox();
+            else
+                numericBox.Width = splitContainer.Panel1.ClientSize.Width;
 
             /* if (Orientation == Orientation.Vertical)
              {
@@ -85,8 +106,28 @@ namespace Crystallography.Controls
         [DefaultValue(typeof(Font), "Segoe UI, 9.75pt")] // 260607Cl
         public Font FooterFont { get { return numericBox.FooterFont; } set { numericBox.FooterFont = value; } }
 
+        /// <summary>260920Cl 追加 (作者指示): 数値を入れるボックスの幅 (96dpi 論理px)。内側 NumericBox の同名プロパティへそのまま流す。
+        /// -1 (既定) なら従来どおり数値欄は残り幅を Fill し、外形幅は <see cref="NumericBoxSize"/> (= splitter 位置) が決める。
+        /// 0 以上なら数値欄をこの幅に固定し、外形幅は「ヘッダ + 数値欄 + spin ボタン + フッタ」から自動で決まる
+        /// (= splitter 位置がこちらに従う)。ヘッダ/フッタの文字幅が言語ごとに違っても数値欄の幅が変わらないので、
+        /// 11 言語ぶんの外形幅をひとつずつ調整しなくてよくなる</summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-        [DefaultValue(84)] // 260607Cl
+        [DefaultValue(-1)] // 260920Cl 追加 (NumericBox.ValueBoxWidth の既定と同値)
+        [Description("数値を入れるボックスの幅 (論理px)。-1 で残り幅を Fill (外形幅は NumericBoxSize が決める)。0 以上で数値欄を固定し、外形幅はヘッダ + 数値欄 + spin + フッタから自動決定する。")]
+        public int ValueBoxWidth
+        {
+            get => numericBox.ValueBoxWidth;
+            set { numericBox.ValueBoxWidth = value; TrackBarAdvanced_Resize(this, EventArgs.Empty); }
+        }
+
+        /// <summary>外形幅 (= splitter 位置) の直接指定。260920Cl に <see cref="ValueBoxWidth"/> へ置き換えた旧プロパティ。
+        /// ⚠ReciPro 側の呼び出しは全て移行済みだが、IPAnalyzer の FormMain がまだ本プロパティを使っているため public のまま残す。
+        /// デザイナのプロパティ グリッドと再シリアライズからは外してあるので、新規の配置では ValueBoxWidth を使うこと。
+        /// ValueBoxWidth >= 0 のときはそちらが splitter を決めるので、本プロパティへの代入は上書きされる</summary>
+        [Browsable(false)] // 260920Cl 追加
+        [EditorBrowsable(EditorBrowsableState.Never)] // 260920Cl 追加
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] // 260920Cl 変更: Visible → Hidden
+        // [DefaultValue(84)] // 260607Cl (260920Cl: Hidden 化で不要)
         // 260920Cl 変更: SplitterDistance だけを動かすと内側 numericBox の Width が設計時の値 (84) のまま残り、
         //   数値欄を広げても表示が切れたままになる (TrackBarAdvanced_Resize は本体の Resize でしか走らないため)。幅の再配分をここでも呼ぶ。
         // public int NumericBoxSize { get { return splitContainer.SplitterDistance; } set { splitContainer.SplitterDistance = value; } } // 260920Cl 変更前
