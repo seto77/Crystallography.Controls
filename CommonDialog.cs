@@ -54,7 +54,8 @@ namespace Crystallography.Controls
                     {
                         labelSoftwareAndVersion.Visible = false;
                         Text = Software + " License (MIT)";
-                        textBox.Text = License;
+                        // textBox.Text = License; // 261004Cl 旧
+                        textBox.Text = string.IsNullOrEmpty(LicenseNote) ? License : LicenseNote + "\r\n\r\n" + License; // 261004Cl 変更: アプリが渡す注を MIT の本文の前に置く
                     }
                     else
                     {
@@ -119,6 +120,11 @@ namespace Crystallography.Controls
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string History { get; set; } = "";
+
+        // 261004Cl 追加: License の窓で MIT の本文の前に出す注。既定は空 (MIT の本文だけ。他のアプリの窓は変わらない)
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public string LicenseNote { get; set; } = "";
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
