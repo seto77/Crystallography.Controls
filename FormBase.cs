@@ -121,8 +121,35 @@ public partial class FormBase : Form
         // 260625Ch 追加: 派生フォームの多くは通常の×ボタンで閉じずに非表示へ戻すため FormClosing で
         // e.Cancel=true にしている。Application.Restart()/Application.Exit() 由来の終了だけはキャンセルを解除し、
         // 言語切替の再起動や Application.Exit() を使う更新/終了経路を子フォームが止めないようにする。
-        if (e.CloseReason == CloseReason.ApplicationExitCall)
+        //if (e.CloseReason == CloseReason.ApplicationExitCall) // 261024Cl 変更前
+        //    e.Cancel = false;
+        // 261024Cl 変更: Windows のシャットダウン/再起動/サインアウトの問い合わせ (WM_QUERYENDSESSION → CloseReason.WindowsShutDown) でも解除する。
+        // 閉じると隠すだけのフォームは一度開くとハンドルが残り、隠れていても WM_QUERYENDSESSION に「拒否」と答えるため、
+        // 「このアプリがシャットダウンを妨げています」の画面が出ていた。4 アプリの FormClosing を調べた限り、終了を意図的に止める
+        // フォーム (保存確認など) は無い (261024 時点)。TaskManagerClosing は対象にしない (タスクマネージャーの WM_CLOSE で
+        // 隠しフォームだけが破棄され、アプリが動き続けたまま次に開くと破棄済みフォームに触れてしまうため)。
+        // WindowsShutDown は「問い合わせを処理している最中」に限る: WinForms は CloseReason を戻さないので、他アプリがシャットダウンを
+        // 中止した後に来た生の WM_CLOSE まで WindowsShutDown 扱いになり、隠しフォームが破棄されてしまう (実測)
+        if (e.CloseReason == CloseReason.ApplicationExitCall
+            || (e.CloseReason == CloseReason.WindowsShutDown && isQueryingEndSession))
             e.Cancel = false;
+    }
+
+    //261024Cl 追加: WM_QUERYENDSESSION (シャットダウン/サインアウトの問い合わせ) を処理している間だけ true。OnFormClosing で使う
+    private bool isQueryingEndSession;
+    private const int WM_QUERYENDSESSION = 0x0011; //261024Cl 追加
+
+    //261024Cl 追加: WM_QUERYENDSESSION の処理中であることを OnFormClosing へ伝える (他のメッセージはそのまま基底へ)
+    protected override void WndProc(ref Message m)
+    {
+        if (m.Msg != WM_QUERYENDSESSION)
+        {
+            base.WndProc(ref m);
+            return;
+        }
+        isQueryingEndSession = true;
+        try { base.WndProc(ref m); }
+        finally { isQueryingEndSession = false; }
     }
 
     //260604Cl 追加: タイトル(Text)の右端に現在の UI 言語の案内文字列を配置する (本文との間を全角スペースで詰めて右寄せ)。

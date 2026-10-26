@@ -141,6 +141,16 @@ public partial class CrystalControl : UserControlBase
     public FormBeamInteraction FormBeamInteraction;
     public FormSymmetryInformation FormSymmetryInformation;
     public FormStrain formStrain;
+    //public FormChemicalComposition FormChemicalComposition; // 261024Cl 追加: 右クリック「Details of the chemical composition」で開く // 261026Cl 変更前
+    /// <summary>右クリック「Details of the chemical composition」で開くフォーム。261024Cl 追加。
+    /// 261026Cl 変更: 初めて使う時に作る (CrystalControl は 4 アプリで多数作られ、このフォームは開かれないことが多いので、コンストラクタで毎回作らない)</summary>
+    //public FormChemicalComposition FormChemicalComposition => formChemicalComposition ??= new FormChemicalComposition { CrystalControl = this, Visible = false }; // 261026Cl 変更前
+    // 261026Cl 変更: デザイナーのプロパティグリッドがこの getter を読んでフォームを作らないよう隠す。破棄済みなら作り直す (FormSymmetryInformation と同じ)
+    [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public FormChemicalComposition FormChemicalComposition
+        => formChemicalComposition is { IsDisposed: false } ? formChemicalComposition
+        : formChemicalComposition = new FormChemicalComposition { CrystalControl = this, Visible = false };
+    private FormChemicalComposition formChemicalComposition; // 261026Cl 追加
 
     #endregion
 
@@ -151,6 +161,10 @@ public partial class CrystalControl : UserControlBase
         FormBeamInteraction = new FormBeamInteraction { CrystalControl = this, Visible = false };
         FormSymmetryInformation = new FormSymmetryInformation { CrystalControl = this, Visible = false };
         formStrain = new FormStrain { CrystalControl = this, Visible = false };
+        //FormChemicalComposition = new FormChemicalComposition { CrystalControl = this, Visible = false }; // 261024Cl 追加 // 261026Cl 変更前 (初めて使う時に作る。上のプロパティ参照)
+        // 261026Cl 追加: 化学組成フォームは閉じても隠すだけなので Application.OpenForms に残り、この CrystalControl と結晶を参照し続ける。
+        // 一時ダイアログ (FormCrystalSelection など) の CrystalControl が破棄された時に一緒に破棄する (Dispose は FormClosing のキャンセルを通らない)
+        Disposed += (_, _) => formChemicalComposition?.Dispose();
 
         FormBeamInteraction.VisibleChanged += formBeamInteraction_VisibleChanged;
         FormSymmetryInformation.VisibleChanged += formSymmetryInformation_VisibleChanged;
@@ -187,6 +201,7 @@ public partial class CrystalControl : UserControlBase
         atomControl.ResetSymmetry(SymmetrySeriesNumber);
 
         var rot = crystal != null ? crystal.RotationMatrix : new Matrix3D();
+        var valences = crystal?.ElementValences ?? []; // 261025Cl 追加: 化学組成フォームで手入力した価数は UI に無いので、作り直しても消えないよう旧 crystal から引き継ぐ
 
         crystal = new Crystal(
             symmetryControl.CellConstants, symmetryControl.CellConstantsErr,
@@ -195,6 +210,7 @@ public partial class CrystalControl : UserControlBase
             bondControl.GetAll(), boundControl.GetAll(), latticePlaneControl.GetAll(), eosControl.EOScondition);
 
         crystal.ElasticStiffness = elasticityControl1.Stiffness.ToArray();
+        crystal.ElementValences = [.. valences]; // 261025Cl 追加 (上の valences を複製して持たせる)
 
         crystal.AngleResolution = (double)numericUpDownAngleResolution.Value;
         crystal.SubDivision = (int)numericUpDownAngleSubDivision.Value;
@@ -401,6 +417,7 @@ public partial class CrystalControl : UserControlBase
     // BinaryFormatter が使えなくなったので read/save は無効化 (2022/11/10)
     //260801Cl: 中身は 2022/11/10 の BinaryFormatter 廃止で空になったまま。メニューは表示・クリックできるのに無反応だったので、
     //Designer 側で Visible = false にして眠らせた (作者判断)。別形式で実装し直すときに Visible を戻すこと。
+    //(261026Cl 追記: VS の再シリアライズで、この Visible = false は CrystalControl.resx の loadToolStripMenuItem.Visible / saveToolStripMenuItem.Visible へ移った)
     private void loadToolStripMenuItem_Click(object sender, EventArgs e) { }
     private void saveToolStripMenuItem_Click(object sender, EventArgs e) { }
 
@@ -607,6 +624,17 @@ public partial class CrystalControl : UserControlBase
     {
         formStrain.crystal ??= Crystal;
         formStrain.Visible = !formStrain.Visible;
+    }
+
+    /// <summary>化学組成の詳細フォームを開く。ShowDialog ではなく Visible=true で開き、閉じるとフォーム側で非表示に戻る。
+    /// 既に開いている場合は前面に出し、最小化されていれば元に戻す。261024Cl 追加 (Designer が生成した空ハンドラを、この region へ移して実装)</summary>
+    private void detailsOfTheChemicalCompositionToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        FormChemicalComposition.Visible = true;
+        // 最小化中 (または最小化のまま閉じて隠れた後) は Activate だけでは戻らない。表示した「後」に Normal へ戻すこと
+        if (FormChemicalComposition.WindowState == FormWindowState.Minimized)
+            FormChemicalComposition.WindowState = FormWindowState.Normal;
+        FormChemicalComposition.Activate();
     }
 
     /// <summary>空間群 P1 に変換</summary>

@@ -519,6 +519,12 @@ public partial class NumericBox : UserControlBase
     [DefaultValue(false)]
     public bool ShowFraction { set; get; } = false;
 
+    /// <summary>値が NaN のときに表示する文字列。null (既定) なら従来どおり double.NaN.ToString()。261025Cl 追加</summary>
+    [Category("Value format")]
+    [DefaultValue(null)]
+    //public string NaNText { get => nanText; set { nanText = value; refreshText(); } } // 261026Cl 変更前
+    public string NaNText { get => nanText; set { if (nanText == value) return; nanText = value; refreshText(); } } // 261026Cl 変更: 同値ガード (ThousandsSeparator などと同じ)
+    private string nanText = null; // 261025Cl 追加
 
     /// <summary>値が三角関数に出来る場合、三角関数で表示するか</summary>
     [DefaultValue(false)]
@@ -1050,7 +1056,8 @@ public partial class NumericBox : UserControlBase
 
         string text = "";
         if (double.IsNaN(numericalValue))
-            return double.NaN.ToString();
+            //return double.NaN.ToString(); // 261025Cl 変更前
+            return NaNText ?? double.NaN.ToString(); // 261025Cl 変更: NaNText を設定したときだけその文字列 (化学組成フォームの「価数未設定」を空欄や ? で見せるため)
 
         if (numericalValue != 0 && ShowFraction) //分数で表示するとき
         {

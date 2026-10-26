@@ -125,6 +125,9 @@
   <data name="strainControlToolStripMenuItem.Text" xml:space="preserve">
     <value>Controle de deformação</value>
   </data>
+  <data name="detailsOfTheChemicalCompositionToolStripMenuItem.Text" xml:space="preserve">
+    <value>Detalhes da composição química</value>
+  </data>
   <data name="convertToP1SymmetryToolStripMenuItem.Text" xml:space="preserve">
     <value>Converter para o grupo espacial P1</value>
   </data>

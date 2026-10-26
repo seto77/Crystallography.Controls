@@ -128,6 +128,9 @@
   <data name="strainControlToolStripMenuItem.Text" xml:space="preserve">
     <value>應變控制</value>
   </data>
+  <data name="detailsOfTheChemicalCompositionToolStripMenuItem.Text" xml:space="preserve">
+    <value>化學組成詳情</value>
+  </data>
   <data name="convertToP1SymmetryToolStripMenuItem.Text" xml:space="preserve">
     <value>轉換為 P1 空間群</value>
   </data>

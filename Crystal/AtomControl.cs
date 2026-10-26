@@ -501,6 +501,10 @@ public partial class AtomControl : UserControlBase
         int n = bindingSource.Position;
         if (n <= 0) return;
         table.MoveItem(n, n - 1);
+        // 261025Cl 追加 (作者決定): 並べ替えも変更として通知し、Crystal.Atoms の順 (化学組成フォームの「登録順」、GL 表示チェックの行番号) をすぐ揃える。
+        // 旧来は通知せず、次の変更まで Crystal 側が古い順のままだった (並べ替え後の GL チェックが別の原子に効くバグの原因)。
+        // 通知で CrystalControl が原子リストを入れ直して選択が先頭に戻るので、選択位置は通知の「後」に設定する (Change/Delete ボタンと同じ順)
+        ItemsChanged?.Invoke(this, EventArgs.Empty);
         bindingSource.Position = n - 1;
     }
 
@@ -509,6 +513,7 @@ public partial class AtomControl : UserControlBase
         int n = bindingSource.Position;
         if (n >= bindingSource.Count - 1) return;
         table.MoveItem(n, n + 1);
+        ItemsChanged?.Invoke(this, EventArgs.Empty); // 261025Cl 追加 (buttonUp_Click と同じ理由。選択位置は通知の後に設定する)
         bindingSource.Position = n + 1;
     }
     #endregion

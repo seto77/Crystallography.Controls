@@ -158,6 +158,8 @@
             buttonSymmetryInfo = new System.Windows.Forms.Button();
             flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             panelNameAndActions = new System.Windows.Forms.Panel();
+            detailsOfTheChemicalCompositionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -361,7 +363,6 @@
             numericBoxDensity.SkipEventDuringInput = false;
             numericBoxDensity.SmartIncrement = true;
             numericBoxDensity.TabStop = false;
-            numericBoxDensity.ThousandsSeparator = true;
             toolTip.SetToolTip(numericBoxDensity, resources.GetString("numericBoxDensity.ToolTip"));
             numericBoxDensity.ValueBackColor = System.Drawing.SystemColors.Control;
             numericBoxDensity.ValueBoxWidth = 54;
@@ -418,7 +419,7 @@
             // numericBoxAtomicNumberDensity
             // 
             numericBoxAtomicNumberDensity.BackColor = System.Drawing.SystemColors.Control;
-            numericBoxAtomicNumberDensity.DecimalPlaces = 7; // 260729Cl 変更: デザイナ表示用の既定 (Å⁻³)。実行時の桁数は symmetryControl_LengthUnitChanged が FormatSpecifier で決める
+            numericBoxAtomicNumberDensity.DecimalPlaces = 7;
             resources.ApplyResources(numericBoxAtomicNumberDensity, "numericBoxAtomicNumberDensity");
             numericBoxAtomicNumberDensity.Name = "numericBoxAtomicNumberDensity";
             numericBoxAtomicNumberDensity.ReadOnly = true;
@@ -426,16 +427,15 @@
             numericBoxAtomicNumberDensity.SkipEventDuringInput = false;
             numericBoxAtomicNumberDensity.SmartIncrement = true;
             numericBoxAtomicNumberDensity.TabStop = false;
-            numericBoxAtomicNumberDensity.ThousandsSeparator = true;
             toolTip.SetToolTip(numericBoxAtomicNumberDensity, resources.GetString("numericBoxAtomicNumberDensity.ToolTip"));
             numericBoxAtomicNumberDensity.ValueBackColor = System.Drawing.SystemColors.Control;
-            numericBoxAtomicNumberDensity.ValueBoxWidth = 68; // 260729Cl 変更: デザイナ表示用の既定 (Å⁻³ の 7/6 桁が幅 60 でクリップするため)
+            numericBoxAtomicNumberDensity.ValueBoxWidth = 68;
             numericBoxAtomicNumberDensity.ValueFontSize = 9F;
             // 
             // numericBoxElectronDensity
             // 
             numericBoxElectronDensity.BackColor = System.Drawing.SystemColors.Control;
-            numericBoxElectronDensity.DecimalPlaces = 6; // 260729Cl 変更: デザイナ表示用の既定 (Å⁻³)。実行時の桁数は symmetryControl_LengthUnitChanged が FormatSpecifier で決める
+            numericBoxElectronDensity.DecimalPlaces = 6;
             resources.ApplyResources(numericBoxElectronDensity, "numericBoxElectronDensity");
             numericBoxElectronDensity.Name = "numericBoxElectronDensity";
             numericBoxElectronDensity.ReadOnly = true;
@@ -443,10 +443,9 @@
             numericBoxElectronDensity.SkipEventDuringInput = false;
             numericBoxElectronDensity.SmartIncrement = true;
             numericBoxElectronDensity.TabStop = false;
-            numericBoxElectronDensity.ThousandsSeparator = true;
             toolTip.SetToolTip(numericBoxElectronDensity, resources.GetString("numericBoxElectronDensity.ToolTip"));
             numericBoxElectronDensity.ValueBackColor = System.Drawing.SystemColors.Control;
-            numericBoxElectronDensity.ValueBoxWidth = 68; // 260729Cl 変更: デザイナ表示用の既定 (Å⁻³ の 7/6 桁が幅 60 でクリップするため)
+            numericBoxElectronDensity.ValueBoxWidth = 68;
             numericBoxElectronDensity.ValueFontSize = 9F;
             // 
             // flowLayoutPanelSymmetryActions
@@ -475,8 +474,8 @@
             // 
             resources.ApplyResources(symmetryControl, "symmetryControl");
             symmetryControl.Name = "symmetryControl";
+            symmetryControl.LengthUnitChanged += symmetryControl_LengthUnitChanged;
             symmetryControl.ItemChanged += symmetryControl_ItemChanged;
-            symmetryControl.LengthUnitChanged += symmetryControl_LengthUnitChanged; // 260729Cl 追加: Å/nm 切り替えに体積・数密度の表示を追従させる
             // 
             // tabPageAtom
             // 
@@ -895,14 +894,12 @@
             loadToolStripMenuItem.Name = "loadToolStripMenuItem";
             resources.ApplyResources(loadToolStripMenuItem, "loadToolStripMenuItem");
             loadToolStripMenuItem.Click += loadToolStripMenuItem_Click;
-            loadToolStripMenuItem.Visible = false; // 260801Cl 追加: 実装が空のまま (BinaryFormatter 廃止で無効化) なので、復活させるまで隠しておく
-            //
+            // 
             // saveToolStripMenuItem
-            //
+            // 
             saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             resources.ApplyResources(saveToolStripMenuItem, "saveToolStripMenuItem");
             saveToolStripMenuItem.Click += saveToolStripMenuItem_Click;
-            saveToolStripMenuItem.Visible = false; // 260801Cl 追加: 同上
             // 
             // exportToolStripMenuItem
             // 
@@ -1047,7 +1044,7 @@
             colorControl.BoxSize = new System.Drawing.Size(20, 20);
             colorControl.Name = "colorControl";
             toolTip.SetToolTip(colorControl, resources.GetString("colorControl.ToolTip"));
-            colorControl.ColorChanged += colorControl_ColorChanged; // 260731Cl 追加: 描画色をその場で Crystal.Argb へ反映する (GitHub issue #65)
+            colorControl.ColorChanged += colorControl_ColorChanged;
             // 
             // panelFormula
             // 
@@ -1081,7 +1078,6 @@
             numericBoxZnumber.SkipEventDuringInput = false;
             numericBoxZnumber.SmartIncrement = true;
             numericBoxZnumber.TabStop = false;
-            numericBoxZnumber.ThousandsSeparator = true;
             toolTip.SetToolTip(numericBoxZnumber, resources.GetString("numericBoxZnumber.ToolTip"));
             numericBoxZnumber.ValueBackColor = System.Drawing.SystemColors.Control;
             numericBoxZnumber.ValueFontSize = 9F;
@@ -1089,7 +1085,7 @@
             // contextMenuStrip
             // 
             contextMenuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
-            contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { beamInteractionToolStripMenuItem, symmetryInformationToolStripMenuItem, toolStripSeparator2, importCrystalFromCIFAMCToolStripMenuItem, exportThisCrystalAsCIFToolStripMenuItem, sendThisCrystalToOtherSoftwareToolStripMenuItem, toolStripSeparator1, revertCellConstantsToolStripMenuItem, toolStripSeparator3, strainControlToolStripMenuItem, convertToP1SymmetryToolStripMenuItem, convertToSuperstructureToolStripMenuItem, convertToAnotherSpacegroupToolStripMenuItem });
+            contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { detailsOfTheChemicalCompositionToolStripMenuItem, toolStripSeparator2, beamInteractionToolStripMenuItem, symmetryInformationToolStripMenuItem, toolStripSeparator4, importCrystalFromCIFAMCToolStripMenuItem, exportThisCrystalAsCIFToolStripMenuItem, sendThisCrystalToOtherSoftwareToolStripMenuItem, toolStripSeparator1, revertCellConstantsToolStripMenuItem, toolStripSeparator3, strainControlToolStripMenuItem, convertToP1SymmetryToolStripMenuItem, convertToSuperstructureToolStripMenuItem, convertToAnotherSpacegroupToolStripMenuItem });
             contextMenuStrip.Name = "contextMenuStrip1";
             resources.ApplyResources(contextMenuStrip, "contextMenuStrip");
             // 
@@ -1221,6 +1217,17 @@
             resources.ApplyResources(panelNameAndActions, "panelNameAndActions");
             panelNameAndActions.Name = "panelNameAndActions";
             // 
+            // detailsOfTheChemicalCompositionToolStripMenuItem
+            // 
+            detailsOfTheChemicalCompositionToolStripMenuItem.Name = "detailsOfTheChemicalCompositionToolStripMenuItem";
+            resources.ApplyResources(detailsOfTheChemicalCompositionToolStripMenuItem, "detailsOfTheChemicalCompositionToolStripMenuItem");
+            detailsOfTheChemicalCompositionToolStripMenuItem.Click += detailsOfTheChemicalCompositionToolStripMenuItem_Click;
+            // 
+            // toolStripSeparator4
+            // 
+            toolStripSeparator4.Name = "toolStripSeparator4";
+            resources.ApplyResources(toolStripSeparator4, "toolStripSeparator4");
+            // 
             // CrystalControl
             // 
             AllowDrop = true;
@@ -1237,7 +1244,6 @@
             Load += CrystalForm_Load;
             DragDrop += FormCrystal_DragDrop;
             DragEnter += FormCrystal_DragEnter;
-            // 260801Cl 削除: KeyDown += CrystalControl_KeyDown; (Ctrl+Shift+R = Reserved トグルの廃止。UserControl の KeyDown は構造的に発火しない)
             Resize += CrystalControl_Resize_1;
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
@@ -1414,5 +1420,7 @@
         private LabelLaTeX labelLaTex1;
         private LabelLaTeX labelLaTex13;
         private LabelLaTeX labelLaTex12;
+        private System.Windows.Forms.ToolStripMenuItem detailsOfTheChemicalCompositionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
     }
 }

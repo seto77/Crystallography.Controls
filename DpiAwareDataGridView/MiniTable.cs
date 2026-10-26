@@ -630,6 +630,14 @@ public class MiniTable : DpiAwareDataGridView
             + 2;
     }
 
+    /// <summary>表の内容を切らずに見せるのに要る幅 = 行ヘッダー (表示中なら) + 全 (可視) 列幅の合計 + 縦スクロールバー (表示中なら) + 2 (枠は含まない)。
+    /// 入れ物のフォーム側で幅を決める時に使う (DataGridView のスクロールバーはクライアント領域の内側の子コントロールなので、
+    /// <see cref="FitWidthToColumns"/> の Width − ClientSize.Width には含まれない)。261026Cl 追加</summary>
+    [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public int PreferredContentWidth
+        => (RowHeadersVisible ? RowHeadersWidth : 0) + Columns.GetColumnsWidth(DataGridViewElementStates.Visible)
+         + (VerticalScrollBar.Visible ? VerticalScrollBar.Width : 0) + 2;
+
     /// <summary>コントロール幅を「現在の全 (可視) 列幅の合計」に合わせる (横スクロールなし前提)。<see cref="FitHeightToRows"/> の幅版。
     /// 手動 <see cref="AddRow"/> 後は明示的に呼ぶ。260607Cl 追加 (実験的)。</summary>
     /// <remarks>
@@ -889,9 +897,11 @@ public class MiniTable : DpiAwareDataGridView
         if (cell is DataGridViewLatexTextBoxCell)
         {
             var text = Convert.ToString(cell.Value) ?? "";
-            return expand ? DataGridViewLatexTextBoxCell.LatexToPlainText(text) : text;
+            //return expand ? DataGridViewLatexTextBoxCell.LatexToPlainText(text) : text; // 261026Cl 変更前
+            return (expand ? DataGridViewLatexTextBoxCell.LatexToPlainText(text) : text).ReplaceLineEndings(" "); // 261026Cl 変更: コピーでは改行をスペースに置き換える (作者指示。タブ区切りの行が崩れないように)
         }
-        return Convert.ToString(cell.FormattedValue) ?? "";
+        //return Convert.ToString(cell.FormattedValue) ?? ""; // 261026Cl 変更前
+        return (Convert.ToString(cell.FormattedValue) ?? "").ReplaceLineEndings(" "); // 261026Cl 変更: 同上
     }
 
     private void CopyCell(bool expand)
@@ -914,7 +924,8 @@ public class MiniTable : DpiAwareDataGridView
         if (cols.Length == 0)
             return;
         var sb = new StringBuilder();
-        sb.AppendLine(string.Join("\t", cols.Select(c => c.HeaderText)));
+        //sb.AppendLine(string.Join("\t", cols.Select(c => c.HeaderText))); // 261026Cl 変更前
+        sb.AppendLine(string.Join("\t", cols.Select(c => c.HeaderText.ReplaceLineEndings(" ")))); // 261026Cl 変更: 2 行の見出し (改行入り) でも 1 行の見出し行にする (改行のままだとタブ区切りの行が崩れる)
         foreach (DataGridViewRow r in Rows)
             sb.AppendLine(string.Join("\t", cols.Select(c => GetCellText(r.Index, c.Index, expand))));
         SetClipboardText(sb.ToString());
@@ -936,7 +947,8 @@ public class MiniTable : DpiAwareDataGridView
         var sb = new StringBuilder();
         sb.AppendLine(@"\begin{tabular}{" + string.Concat(cols.Select(ColSpec)) + "}");
         sb.AppendLine(@"\hline");
-        sb.AppendLine(string.Join(" & ", cols.Select(c => EscapeTabular(c.HeaderText))) + @" \\");
+        //sb.AppendLine(string.Join(" & ", cols.Select(c => EscapeTabular(c.HeaderText))) + @" \\"); // 261026Cl 変更前
+        sb.AppendLine(string.Join(" & ", cols.Select(c => EscapeTabular(c.HeaderText.ReplaceLineEndings(" ")))) + @" \\"); // 261026Cl 変更: 2 行の見出しも 1 行にする
         sb.AppendLine(@"\hline");
         foreach (DataGridViewRow r in Rows)
             sb.AppendLine(string.Join(" & ", cols.Select(c => TabularCellText(r.Index, c.Index))) + @" \\");
