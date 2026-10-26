@@ -364,7 +364,7 @@ précis jusqu'aux grandes valeurs de s.</value>
   </data>
   <data name="radioButtonElectronTemari.ToolTip" xml:space="preserve">
     <value>Facteur de diffusion atomique des électrons fe(s) issu de Temari dataset-factors
-v1.0.0. Il s'agit d'un calcul ab initio (SCF de Dirac complet avec échange KLI
+v2.0.0. Il s'agit d'un calcul ab initio (SCF de Dirac complet avec échange KLI
 exact), et non d'une paramétrisation ajustée. Atomes neutres Z = 1-86 uniquement, et
 le facteur relativiste gamma n'est pas inclus (la même convention que Peng). Tous les
 nœuds et l'interpolation prescrite sont utilisés ; les valeurs publiées sont
@@ -374,7 +374,7 @@ requantifiées (écart maximal 5e-12 Å). CC-BY-4.0.</value>
     <value>Cette ligne choisit d'où provient f(s), et non ce qui est tracé : c'est la ligne f(s)
 / F(q)+S(q) à gauche. Elle n'est disponible qu'en mode f(s).
 Facteur de diffusion atomique des rayons X f(s) issu de Temari dataset-factors
-v1.0.0. Il s'agit d'un calcul ab initio (SCF de Dirac complet avec échange KLI
+v2.0.0. Il s'agit d'un calcul ab initio (SCF de Dirac complet avec échange KLI
 exact), et non d'une paramétrisation ajustée. Atomes neutres Z = 1-86 uniquement.
 Tous les nœuds et l'interpolation prescrite sont utilisés ; les valeurs publiées sont
 requantifiées (écart maximal 5e-11 électrons). CC-BY-4.0.</value>

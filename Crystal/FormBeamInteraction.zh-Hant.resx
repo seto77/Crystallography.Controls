@@ -366,7 +366,7 @@ X 射線射束比例。
 模擬工作所偏好。</value>
   </data>
   <data name="radioButtonElectronTemari.ToolTip" xml:space="preserve">
-    <value>來自 Temari dataset-factors v1.0.0 的電子原子散射因子 fe(s)。這是第一原理計算（完全 D
+    <value>來自 Temari dataset-factors v2.0.0 的電子原子散射因子 fe(s)。這是第一原理計算（完全 D
 irac 自洽場與精確 KLI 交換），而非擬合的參數化。僅支援中性原子 Z = 1-86，且不含相對論
 因子 gamma（與 Peng 相同的約定）。使用全部節點並遵循規定的內插方法，但已發布數值經過
 重新量化（最大偏差 5e-12 Å）。CC-BY-4.0。</value>
@@ -374,7 +374,7 @@ irac 自洽場與精確 KLI 交換），而非擬合的參數化。僅支援中�
   <data name="radioButtonXraySrcTemari.ToolTip" xml:space="preserve">
     <value>本列選擇 f(s) 的資料來源，而非繪製什麼（那由左側的 f(s) / F(q)+S(q) 列決定）。僅在 f(
 s) 模式下可用。
-來自 Temari dataset-factors v1.0.0 的 X 光原子散射因子 f(s)。這是第一原理計算（完全 D
+來自 Temari dataset-factors v2.0.0 的 X 光原子散射因子 f(s)。這是第一原理計算（完全 D
 irac 自洽場與精確 KLI 交換），而非擬合的參數化。僅支援中性原子 Z = 1-86。使用全部節點
 並遵循規定的內插方法，但已發布數值經過重新量化（最大偏差 5e-11 電子）。CC-BY-4.0。</value>
   </data>

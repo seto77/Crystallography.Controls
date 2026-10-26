@@ -465,7 +465,7 @@ B は結晶データの等方性変位パラメータ(Biso)です。オフのと
     <value>Yu Gothic UI, 9pt</value>
   </data>
   <data name="radioButtonElectronTemari.ToolTip" xml:space="preserve">
-    <value>Temari dataset-factors v1.0.0 による電子原子散乱因子 fe(s)。フィットによるパラメータ
+    <value>Temari dataset-factors v2.0.0 による電子原子散乱因子 fe(s)。フィットによるパラメータ
 化ではなく第一原理計算 (完全 Dirac SCF と厳密交換 KLI) です。中性原子 Z = 1-86 のみで
 、相対論因子 gamma は含みません (Peng と同じ規約)。全節点を使用し規定の補間法に準拠し
 ていますが、公開値は再量子化されています (最大差 5e-12 Å)。CC-BY-4.0。</value>
@@ -473,7 +473,7 @@ B は結晶データの等方性変位パラメータ(Biso)です。オフのと
   <data name="radioButtonXraySrcTemari.ToolTip" xml:space="preserve">
     <value>この行は f(s) の値を「どこから取るか」(出典) を選びます。何を描くかを決める左の行 (f(
 s) / F(q)+S(q)) とは別の軸で、f(s) モードのときだけ有効です。
-Temari dataset-factors v1.0.0 による X 線原子散乱因子 f(s)。フィットによるパラメータ
+Temari dataset-factors v2.0.0 による X 線原子散乱因子 f(s)。フィットによるパラメータ
 化ではなく第一原理計算 (完全 Dirac SCF と厳密交換 KLI) です。中性原子 Z = 1-86 のみ。
 全節点を使用し規定の補間法に準拠していますが、公開値は再量子化されています (最大差 5e
 -11 電子単位)。CC-BY-4.0。</value>

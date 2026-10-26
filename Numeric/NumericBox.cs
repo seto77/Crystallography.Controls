@@ -162,6 +162,23 @@ public partial class NumericBox : UserControlBase
     }
     private double minimum = double.NegativeInfinity;
 
+    /// <summary>260820Cl 追加: Minimum と Maximum を一括で設定する。
+    /// 個別の setter は「Minimum &lt; Maximum」を満たす代入しか受け付けず、満たさないと**黙って無視**されるため
+    /// (順序依存)、呼び出し側が「Maximum を +∞ に解放してから入れる」迂回を書く羽目になっていた (FormALCHEMI / PDIndexer)。
+    /// min &gt; max と NaN は ArgumentException。min == max は退化範囲として許容する (Value はその値に固定される)。</summary>
+    public void SetRange(double min, double max)
+    {
+        if (double.IsNaN(min) || double.IsNaN(max) || min > max)
+            throw new ArgumentException($"NumericBox.SetRange: invalid range [{min}, {max}]");
+        minimum = min;
+        maximum = max;
+        if (RestrictLimitValue)
+        {
+            if (Value < min) Value = min;
+            else if (Value > max) Value = max;
+        }
+    }
+
     /// <summary>Maximum, Minimumの範囲に入力値を制限する。範囲外の場合は、自動的にどちらかの場合に変更される</summary>
     [DefaultValue(true)]
     [Category("Value")]
@@ -189,7 +206,10 @@ public partial class NumericBox : UserControlBase
 
     // 260531Cl 追加: 配置先 Form が標準 ToolTip でこの NumericBox 本体にチップを設定した場合の配布先 (内部子)。
     // これにより textBox/ラベル上で hover してもチップが表示される (UserControlBase.RelayHostToolTip 参照)。
-    protected override System.Windows.Forms.Control[] GetToolTipTargets() => [textBox, labelHeader, labelFooter]; // 260717Cl: collection expression 化 (完全修飾は MathNet.Numerics.Control との衝突回避のため必須)
+    //protected override System.Windows.Forms.Control[] GetToolTipTargets() => [textBox, labelHeader, labelFooter]; // 260717Cl: collection expression 化 (完全修飾は MathNet.Numerics.Control との衝突回避のため必須)
+    // 260820Cl 変更: ShowUpDown=true のとき右端 17px を占めるスピンボタン領域が配布先に無く、そこではチップが出なかった。
+    // spinButtonPanel / spinButton も配布先に加える (relayInto は null を読み飛ばすので未生成でも安全)
+    protected override System.Windows.Forms.Control[] GetToolTipTargets() => [textBox, labelHeader, labelFooter, spinButtonPanel, spinButton];
 
     // 260531Cl 追加: 独自プロパティ由来の内部 ToolTip。親がチップを設定した場合はこれを抑止して親のバルーンへ一本化する。
     protected internal override System.Windows.Forms.ToolTip InternalToolTip => toolTip;

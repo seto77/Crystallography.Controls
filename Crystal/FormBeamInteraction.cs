@@ -894,7 +894,8 @@ public partial class FormBeamInteraction : FormBase
 
     private const double ClassicalElectronRadiusCm = 2.8179403262e-13; // r_e [cm]
     private MonteCarlo attenMc;                       // 電子輸送用 (物性タプルでキャッシュ)
-    private (double z, double a, double rho, double nv)? attenMcKey;//260606Cl nv(質量重み平均価電子数)もキャッシュキーに含める
+    //旧: private (double z, double a, double rho, double nv)? attenMcKey; // 260921Cl 手前
+    private (double z, double a, double rho, double nv, double jEv)? attenMcKey;//260606Cl nv もキャッシュキーに含める //260921Cl J を追加
 
     /// <summary>構成元素を (Z, 単位胞内原子数合計) で集約 (Multiplicity×Occ)。260606Cl 追加。
     /// 260612Cl サイト多重度を乗算 (旧: Occ のみ集計→多重度が元素間で異なる結晶で組成が歪み、GeO2 の透過率が GeO 相当になるバグ)。</summary>
@@ -1185,12 +1186,17 @@ public partial class FormBeamInteraction : FormBase
     private void UpdateAttenuationElectron((int z, double occ)[] els, double totalOcc)
     {
         double kev = waveLengthControl.Energy;
-        double avgZ = els.Sum(x => x.occ * x.z) / totalOcc;
-        double avgA = els.Sum(x => x.occ * AtomStatic.AtomicWeight(x.z)) / totalOcc;
+        //260921Cl 変更: Z/A/Nv/J を MonteCarlo.GetMeanAtomicParameters の 1 箇所から取る。
+        //  旧は avgZ/avgA が原子数平均なのに Nv だけ質量重みで、TPP-2M の U = Nv·ρ/A が化合物で狂っていた
+        //  (Cu₂(OH)₃Cl で 1.63 倍、Mg(OH)₂ で 1.30 倍。単体元素では一致するので露見しなかった)。
+        //  ⚠ avgZ / avgA の値は変わらない (els は Multiplicity×Occ 重み = GetMeanAtomicParameters と同じ規約)。
+        //double avgZ = els.Sum(x => x.occ * x.z) / totalOcc;
+        //double avgA = els.Sum(x => x.occ * AtomStatic.AtomicWeight(x.z)) / totalOcc;
+        //double nv = MonteCarlo.EstimateAverageValenceElectronCount(els.Select(x => (x.z, x.occ * AtomStatic.AtomicWeight(x.z))));//260606Cl 質量重み平均価電子数 Nv(plasma E/IMFP の TPP-2M 精度向上。旧: avgZ 単一推定)
+        var (avgZ, avgA, nv, meanJEv) = MonteCarlo.GetMeanAtomicParameters(Crystal.Atoms);//260921Cl
         double rho = Crystal.Density;
 
-        double nv = MonteCarlo.EstimateAverageValenceElectronCount(els.Select(x => (x.z, x.occ * AtomStatic.AtomicWeight(x.z))));//260606Cl 質量重み平均価電子数 Nv(plasma E/IMFP の TPP-2M 精度向上。旧: avgZ 単一推定)
-        var mc = GetAttenMonteCarlo(avgZ, avgA, rho, nv);
+        var mc = GetAttenMonteCarlo(avgZ, avgA, rho, nv, meanJEv);
         var (_, sigma, mfp, dEds) = mc.GetParameters(kev);
         double imfpA = mc.GetInelasticMeanFreePathAngstrom(kev * 1000); // keV → eV
         double lambdaNm = UniversalConstants.Convert.EnergyToElectronWaveLength(kev);
@@ -1222,12 +1228,13 @@ public partial class FormBeamInteraction : FormBase
     }
 
     /// <summary>物性タプル (avgZ,avgA,ρ) でキャッシュした MonteCarlo (固定 30keV 構築・混合系 atoms 渡し)。260606Cl 追加。</summary>
-    private MonteCarlo GetAttenMonteCarlo(double avgZ, double avgA, double rho, double valenceElectronCount)//260606Cl valenceElectronCount 追加(質量重み Nv で plasma/IMFP 精度向上)
+    //旧: private MonteCarlo GetAttenMonteCarlo(double avgZ, double avgA, double rho, double valenceElectronCount) // 260921Cl 手前
+    private MonteCarlo GetAttenMonteCarlo(double avgZ, double avgA, double rho, double valenceElectronCount, double meanIonizationPotentialEv)//260606Cl valenceElectronCount 追加 //260921Cl J を追加 (化合物では Bragg 則)
     {
-        var key = (avgZ, avgA, rho, valenceElectronCount);
+        var key = (avgZ, avgA, rho, valenceElectronCount, meanIonizationPotentialEv);//260921Cl J もキーに入れる
         if (attenMc == null || attenMcKey != key)
         {
-            attenMc = new MonteCarlo(avgZ, avgA, rho, 30, 0, valenceElectronCount: valenceElectronCount, atoms: Crystal.Atoms);//260606Cl 旧: valenceElectronCount 未指定(=avgZ 単一推定)。質量重み Nv を渡す
+            attenMc = new MonteCarlo(avgZ, avgA, rho, 30, 0, valenceElectronCount: valenceElectronCount, atoms: Crystal.Atoms, meanIonizationPotentialEv: meanIonizationPotentialEv);//260606Cl 旧: valenceElectronCount 未指定(=avgZ 単一推定) //260921Cl J を明示
             attenMcKey = key;
         }
         return attenMc;

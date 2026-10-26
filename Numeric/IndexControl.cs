@@ -6,8 +6,28 @@ using System.Windows.Forms;
 
 namespace Crystallography.Controls
 {
-    public partial class IndexControl : UserControl
+    //public partial class IndexControl : UserControl // 260820Cl 変更
+    // 260820Cl 変更: UserControlBase を継承し、配置先 Form の標準 ToolTip で本体に設定されたチップを内部の h/k/l 欄へ中継する。
+    // 旧来は UserControl 直系だったため relay 機構 (UserControlBase.RelayHostToolTip) に参加せず、本体は tableLayoutPanel1 に
+    // 全面を覆われて hover 面積がほぼゼロ、内部の numericBox 上では IndexControl 自身の汎用チップ (resx) が出ていた
+    // (FormMain / FormEBSD / FormMovie / FormStereonet / FormALCHEMI の全配置先で同じ)。
+    // [ToolboxItem(true)] は基底の [ToolboxItem(false)] を打ち消すために必須 (NumericBox と同じ)。
+    [ToolboxItem(true)]
+    public partial class IndexControl : UserControlBase
     {
+        /// <summary>260820Cl 追加: 配置先 Form が標準 ToolTip で本体にチップを設定したときの配布先 (内部子)。
+        /// numericBox は UserControlBase なので relayInto が再帰的に textBox / ラベル / スピンまで配る。</summary>
+        protected override Control[] GetToolTipTargets() =>
+        [
+            tableLayoutPanel1, numericBoxH, numericBoxK, numericBoxL, numericBoxI,
+            labelLaTexX, labelLaTexY, labelLaTexZ, labelLaTexW,
+            labelLaTexStart, labelLaTexEnd, labelLaTexPM1, labelLaTexPM2, labelLaTexPM4,
+        ];
+
+        /// <summary>260820Cl 追加: 独自の内部 ToolTip (resx の汎用 h/k/l 説明)。親がチップを設定した場合は抑止され親のバルーンへ一本化、
+        /// 親がチップ未設定の配置先では従来どおり汎用チップが出る (他リポ無影響)。</summary>
+        protected internal override ToolTip InternalToolTip => toolTip;
+
         #region Enum
 
         public enum ModeEnum { Plane, Axis }

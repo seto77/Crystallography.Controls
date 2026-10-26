@@ -357,7 +357,7 @@ Frequentemente preferido para trabalho de simulação de imagem de ângulo alto 
 preciso até valores grandes de s.</value>
   </data>
   <data name="radioButtonElectronTemari.ToolTip" xml:space="preserve">
-    <value>Fator de espalhamento atômico de elétrons fe(s) do Temari dataset-factors v1.0.0. É
+    <value>Fator de espalhamento atômico de elétrons fe(s) do Temari dataset-factors v2.0.0. É
 um cálculo de primeiros princípios (SCF de Dirac completo com troca KLI exata), não
 uma parametrização ajustada. Apenas átomos neutros Z = 1-86, e o fator relativístico
 gamma não está incluído (a mesma convenção de Peng). Todos os nós e a interpolação
@@ -367,7 +367,7 @@ especificada são usados; os valores publicados são requantizados (diferença m
   <data name="radioButtonXraySrcTemari.ToolTip" xml:space="preserve">
     <value>Esta linha escolhe de onde vem f(s), não o que é traçado: isso é a linha f(s) /
 F(q)+S(q) à esquerda. Só está disponível no modo f(s).
-Fator de espalhamento atômico de raios X f(s) do Temari dataset-factors v1.0.0. É um
+Fator de espalhamento atômico de raios X f(s) do Temari dataset-factors v2.0.0. É um
 cálculo de primeiros princípios (SCF de Dirac completo com troca KLI exata), não uma
 parametrização ajustada. Apenas átomos neutros Z = 1-86. Todos os nós e a
 interpolação especificada são usados; os valores publicados são requantizados
