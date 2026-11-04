@@ -131,6 +131,12 @@
   <data name="detailsOfTheChemicalCompositionToolStripMenuItem.Text" xml:space="preserve">
     <value>Details der chemischen Zusammensetzung</value>
   </data>
+  <data name="detailsOfTheChemicalCompositionToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>Öffnet ein Fenster mit der Zusammensetzung dieses
+Kristalls: Gew.-%, Atom-% und normierte Atomanzahl
+jedes Elements oder formale Umrechnung in Oxide,
+Halogenide oder Sulfide mit bearbeitbaren Valenzen.</value>
+  </data>
   <data name="convertToP1SymmetryToolStripMenuItem.Text" xml:space="preserve">
     <value>In Raumgruppe P1 umwandeln</value>
   </data>

@@ -125,6 +125,12 @@
   <data name="detailsOfTheChemicalCompositionToolStripMenuItem.Text" xml:space="preserve">
     <value>Detalles de la composición química</value>
   </data>
+  <data name="detailsOfTheChemicalCompositionToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>Abre una ventana con la composición de este cristal:
+% en peso, % atómico y número de átomos normalizado
+de cada elemento, o conversión formal a óxidos,
+haluros o sulfuros con valencias editables.</value>
+  </data>
   <data name="convertToP1SymmetryToolStripMenuItem.Text" xml:space="preserve">
     <value>Convertir al grupo espacial P1</value>
   </data>

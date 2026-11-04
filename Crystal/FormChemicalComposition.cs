@@ -11,7 +11,7 @@ using RowKind = Crystallography.CompositionConverter.RowKind; // 261025Cl 追加
 namespace Crystallography.Controls
 {
     /// <summary>化学組成の詳細を表示するフォーム。CrystalControl の右クリックメニューから開く。
-    /// CrystalControl が 1 個だけ生成して使い回し、閉じても破棄せず非表示に戻す (FormBeamInteraction / FormStrain と同じ方式)。
+    /// CrystalControl が初めて使う時に 1 個だけ生成して使い回し (破棄されていたら作り直す)、閉じても破棄せず非表示に戻す (261105Cl: 説明を実装に合わせた。旧「FormBeamInteraction / FormStrain と同じ方式」= コンストラクタで生成)。
     /// 表には元素ごとの重量%・原子%と、指定した元素の原子数で規格化した原子数を出す (例: O = 24)。261024Cl 追加
     /// <para>261025Cl 拡張: 表示モード (元素 / 酸化物 / ハロゲン化物 / 硫化物) と並び順 (登録順 / 原子番号順) を選べる。
     /// 左の価数の表に 元素 | 単位胞中の原子数 | 価数 (分数可。手入力した値は Crystal.ElementValences に保存) | Σ=0 | 規格化した原子数 と、
@@ -78,7 +78,13 @@ namespace Crystallography.Controls
             // CrystalControl は外部から代入される参照 (このフォームの子コントロールでない) ためコードで配線 (FormStrain と同じ)。
             // --capture-form などで単体生成された時は null なので配線しない。261024Cl 追加
             if (CrystalControl != null)
+            {
                 CrystalControl.CrystalChanged += crystalControl_CrystalChanged;
+                // 261105Cl 追加: このフォームだけが破棄された時 (シャットダウンの問い合わせで閉じた後に取り消された等) に、
+                // CrystalControl の呼び出しリストに破棄済みのフォームを残さない (CrystalControl.FormChemicalComposition は次に使う時に作り直す)
+                var owner = CrystalControl;
+                Disposed += (_, _) => owner.CrystalChanged -= crystalControl_CrystalChanged;
+            }
         }
 
         /// <summary>×ボタンで閉じても破棄せず非表示にするだけにする (次に開くときも同じインスタンスを使う)。261024Cl 追加</summary>
@@ -198,7 +204,8 @@ namespace Crystallography.Controls
             }
             finally { skipEvent = false; }
 
-            UpdateValenceBoxes(crystal, display);
+            //UpdateValenceBoxes(crystal, display); // 261105Cl 変更前 (価数欄の値は FillTable が入れるので、結晶は要らなくなった)
+            UpdateValenceBoxes(display);
             FillTable();
         }
 
@@ -235,14 +242,16 @@ namespace Crystallography.Controls
                 z => saved.TryGetValue(z, out var v) ? v : double.NaN, z => CompositionConverter.IonicValence(crystal, z));
         }
 
-        /// <summary>価数の表 (元素 | 単位胞中の原子数 | 価数 | Σ=0 | 規格化した原子数) を表示順に並べ、価数を入れる。規格化した原子数は FillTable で入れる。
+        /// <summary>価数の表 (元素 | 単位胞中の原子数 | 価数 | Σ=0 | 規格化した原子数) を表示順に並べる。価数と規格化した原子数は直後の FillTable で入れる
+        /// (261105Cl 変更: 以前は価数もここで入れていたが、FillTable が必ず同じ値を入れ直していた)。
         /// 元素ごとの行のコントロールは原子番号で使い回す (入力中のフォーカスを保つため)。261025Cl 追加
         /// <para>261025Cl 変更: 上部の規格化の欄を廃止したので、元素モードでも表を出す (規格化の列で基準を指定するため)。
         /// 元素モードでは価数の列 (見出し・価数・Σ=0・合計の電荷・既定に戻す) だけを隠す。</para></summary>
-        private void UpdateValenceBoxes(Crystal crystal, List<(int Z, string Symbol, double N)> display)
+        //private void UpdateValenceBoxes(Crystal crystal, List<(int Z, string Symbol, double N)> display) // 261105Cl 変更前
+        private void UpdateValenceBoxes(List<(int Z, string Symbol, double N)> display)
         {
             var converted = currentMode != Mode.Elements;
-            var valences = Valences(crystal, display); // 261026Cl 追加: 全元素の価数を 1 度に求める
+            //var valences = Valences(crystal, display); // 261026Cl 追加: 全元素の価数を 1 度に求める // 261105Cl 削除 (価数欄の値は FillTable が入れる)
             //panelValence.Visible = converted; // 261025Cl 変更前
             //if (!converted)
             //    return;
@@ -333,6 +342,7 @@ namespace Crystallography.Controls
                             ValueBoxWidth = 60,
                             SkipEventDuringInput = false, // 打鍵ごとに確定
                             Margin = new Padding(3, 1, 3, 1), // 261026Cl 追加: 行間を詰める (作者指示)
+                            NaNText = "", // 261105Cl 追加: 倍率が決まらない時 (基準の欄に 0 を打った途中、原子数 0 の元素が基準 等) は空欄 (FillTable の説明どおり。未設定だと「NaN」、ru では「не число」と出ていた)
                             Tag = z,
                         };
                         normalized.ValueChanged += normalizedBox_ValueChanged;
@@ -373,7 +383,7 @@ namespace Crystallography.Controls
                     //balanceButtons[z].Visible = converted && !isFixed; // 固定の陰イオンは動かせないのでボタンを出さない (261025Cl 以降、固定の価数は無い) // 261026Cl 変更前
                     balanceButtons[z].Visible = converted;
                     //valenceBoxes[z].Value = AppliedValence(crystal, z); // 261026Cl 変更前
-                    valenceBoxes[z].Value = valences[z];
+                    //valenceBoxes[z].Value = valences[z]; // 261105Cl 削除 (FillTable が入れる。新しく作った欄もフォーカスが無いので必ず入る)
                     //// 使い回す欄は固定 ⇔ 編集可 が結晶・モードで変わるので、内部のテキストボックスにも配り直す (SetToolTip だけだと古い文言が残る) // 261026Cl 変更前 (固定が無くなり文言は変わらないので、行を作る時に 1 度だけ)
                     //valenceBoxes[z].SetHostToolTip(toolTip, isFixed ? fixedValenceTip : valenceTip);
                 }
@@ -387,7 +397,7 @@ namespace Crystallography.Controls
             panelValence.Width = table.GetPreferredSize(System.Drawing.Size.Empty).Width + SystemInformation.GetVerticalScrollBarWidthForDpi(DeviceDpi) + LogicalToDeviceUnits(6);
         }
 
-        /// <summary>元素ごとの重量%・原子数%・規格化した原子数 (換算モードでは成分ごとの重量%・原子数と補正・合計・過不足) を表に出す。261024Cl 追加 (261025Cl 拡張)
+        /// <summary>元素ごとの重量%・原子%・規格化した原子数 (換算モードでは成分ごとの重量%・原子数と補正・合計・過不足) を表に出す。261024Cl 追加 (261025Cl 拡張)
         /// <para>原子数は Crystal.ElementNum (= 単位胞あたりの 多重度×占有率 の合計) を使う。重量は標準原子量 × 原子数で、
         /// Crystal.GetFormulaAndDensity の密度計算と同じ式。換算の定義は CompositionConverter を参照。</para></summary>
         private void FillTable()
@@ -451,7 +461,10 @@ namespace Crystallography.Controls
                         // wt% と原子数の両方が表示桁 (F3) で 0 になる時も出さない (分数の価数で浮動小数の残り 1e-14 が出るため)
                         if (result.HasUnset || (Math.Abs(r.WeightPercent) < 0.0005 && !(Math.Abs(r.Atoms) >= 0.0005)))
                             break;
-                        rows.Add([string.Format(r.WeightPercent > 0 ? excessText : deficitText, baseSymbol), r.WeightPercent, null, num(r.Atoms)]);
+                        //rows.Add([string.Format(r.WeightPercent > 0 ? excessText : deficitText, baseSymbol), r.WeightPercent, null, num(r.Atoms)]); // 261105Cl 変更前
+                        // 261105Cl 変更: 片方だけが表示桁を超えた時に、もう片方 (表示桁で 0) が「-0.000」と出ないように +0 にそろえる
+                        rows.Add([string.Format(r.WeightPercent > 0 ? excessText : deficitText, baseSymbol), Math.Abs(r.WeightPercent) < 0.0005 ? 0.0 : r.WeightPercent, null,
+                            num(Math.Abs(r.Atoms) < 0.0005 ? 0 : r.Atoms)]);
                         break;
                 }
             //miniTable1.SetRows(rows); // 261026Cl 変更前
@@ -515,7 +528,11 @@ namespace Crystallography.Controls
                         normalized.ReadOnly = !isBasis;
                         normalized.SetHostToolTip(toolTip, isBasis ? normalizedBasisTip : normalizedOtherTip);
                     }
-                    normalized.Value = isBasis ? target : elements.Where(e => e.Z == z).Sum(e => e.N) * scale;
+                    //normalized.Value = isBasis ? target : elements.Where(e => e.Z == z).Sum(e => e.N) * scale; // 261105Cl 変更前
+                    // 261105Cl 変更: 同じ値なら入れない (NumericBox.Value の同値判定は NaN 同士を別の値とみなすので、空欄の欄に打鍵ごと NaN を入れ直していた)
+                    var normalizedValue = isBasis ? target : elements.Where(e => e.Z == z).Sum(e => e.N) * scale;
+                    if (!normalized.Value.Equals(normalizedValue))
+                        normalized.Value = normalizedValue;
                     //normalized.SetHostToolTip(toolTip, isBasis ? normalizedBasisTip : normalizedOtherTip); // 261026Cl 変更前
                 }
             }

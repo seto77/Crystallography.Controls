@@ -652,7 +652,8 @@ public class MiniTable : DpiAwareDataGridView
     /// </remarks>
     public void FitWidthToColumns()
     {
-        var chrome = Width - ClientSize.Width; // 枠 + (表示中の) 縦スクロールバー
+        //var chrome = Width - ClientSize.Width; // 枠 + (表示中の) 縦スクロールバー // 261105Cl 変更前 (説明が誤り)
+        var chrome = Width - ClientSize.Width; // 枠ぶん。261105Cl 変更: 縦スクロールバーはクライアント領域の内側の子コントロールなので含まれず、ここでも足さない (縦スクロールなし = FitHeightToRows と併用する前提。足す時は PreferredContentWidth)
         Width = chrome
             + (RowHeadersVisible ? RowHeadersWidth : 0)
             + Columns.GetColumnsWidth(DataGridViewElementStates.Visible)

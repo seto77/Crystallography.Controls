@@ -131,6 +131,11 @@
   <data name="detailsOfTheChemicalCompositionToolStripMenuItem.Text" xml:space="preserve">
     <value>化学组成详情</value>
   </data>
+  <data name="detailsOfTheChemicalCompositionToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>在窗口中显示此晶体的化学组成：
+各元素的质量%、原子% 和归一化后的原子数，
+或按可编辑的价数形式换算为氧化物、卤化物或硫化物。</value>
+  </data>
   <data name="convertToP1SymmetryToolStripMenuItem.Text" xml:space="preserve">
     <value>转换为 P1 空间群</value>
   </data>

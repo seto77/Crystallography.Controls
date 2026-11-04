@@ -131,6 +131,12 @@
   <data name="detailsOfTheChemicalCompositionToolStripMenuItem.Text" xml:space="preserve">
     <value>화학 조성 상세</value>
   </data>
+  <data name="detailsOfTheChemicalCompositionToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>이 결정의 화학 조성을 창에 표시합니다.
+각 원소의 질량%, 원자%, 정규화한 원자 수, 또는
+원자가를 지정하여 산화물·할로겐화물·황화물로
+형식적으로 환산한 결과를 볼 수 있습니다.</value>
+  </data>
   <data name="convertToP1SymmetryToolStripMenuItem.Text" xml:space="preserve">
     <value>P1 공간군으로 변환</value>
   </data>

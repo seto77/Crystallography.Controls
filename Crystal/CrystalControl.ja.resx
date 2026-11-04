@@ -382,6 +382,12 @@
   <data name="detailsOfTheChemicalCompositionToolStripMenuItem.Text" xml:space="preserve">
     <value>化学組成の詳細</value>
   </data>
+  <data name="detailsOfTheChemicalCompositionToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>この結晶の化学組成の詳細を別ウィンドウで表示します。
+元素ごとの重量%・原子%・規格化した原子数のほか、
+価数を指定して酸化物・ハロゲン化物・硫化物に
+形式的に換算できます。</value>
+  </data>
   <data name="convertToP1SymmetryToolStripMenuItem.Text" xml:space="preserve">
     <value>P1に変換</value>
   </data>

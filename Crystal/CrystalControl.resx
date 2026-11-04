@@ -3518,6 +3518,12 @@ structure view and in the diffraction-profile curves.</value>
   <data name="detailsOfTheChemicalCompositionToolStripMenuItem.Text" xml:space="preserve">
     <value>Details of the chemical composition</value>
   </data>
+  <data name="detailsOfTheChemicalCompositionToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>Open a window with the composition of this crystal:
+wt%, at% and normalized number of atoms of each element,
+or formal conversion to oxides, halides or sulfides
+with editable valences.</value>
+  </data>
   <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
     <value>259, 6</value>
   </data>

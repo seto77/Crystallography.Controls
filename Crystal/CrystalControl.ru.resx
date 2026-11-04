@@ -131,6 +131,12 @@
   <data name="detailsOfTheChemicalCompositionToolStripMenuItem.Text" xml:space="preserve">
     <value>Подробный химический состав</value>
   </data>
+  <data name="detailsOfTheChemicalCompositionToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>Открывает окно с составом этого кристалла:
+мас. %, ат. % и нормированное число атомов
+каждого элемента или формальный пересчёт на оксиды,
+галогениды или сульфиды с изменяемыми валентностями.</value>
+  </data>
   <data name="convertToP1SymmetryToolStripMenuItem.Text" xml:space="preserve">
     <value>Преобразовать в пр. группу P1</value>
   </data>
