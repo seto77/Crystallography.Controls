@@ -374,7 +374,7 @@
     <value>CIFファイルとして出力</value>
   </data>
   <data name="revertCellConstantsToolStripMenuItem.Text" xml:space="preserve">
-    <value>アプリ起動時の格子定数に戻す</value>
+    <value>読み込み時の格子定数に戻す</value>
   </data>
   <data name="strainControlToolStripMenuItem.Text" xml:space="preserve">
     <value>格子ひずみ (invisible)</value>

@@ -96,6 +96,10 @@ public partial class CrystalControl : UserControlBase
         {
             crystal = value;
             if (crystal == null) return;
+            // 261105Cl 追加 (監査 A13): 読み込み時の格子定数を持たない結晶 (CIF・AMC・クリップボード・データベースから来たもの) は、初めて表示した時の値を
+            // 「Revert cell constants」の戻り先にする (結晶リストの XML から読んだ結晶は ConvertToCrystalList が保存済み)
+            if (crystal.InitialA == 0)
+                crystal.SaveInitialCellConstants();
 
             Enabled = !crystal.FlexibleMode;
             SetToInterface();
@@ -202,6 +206,7 @@ public partial class CrystalControl : UserControlBase
 
         var rot = crystal != null ? crystal.RotationMatrix : new Matrix3D();
         var valences = crystal?.ElementValences ?? []; // 261025Cl 追加: 化学組成フォームで手入力した価数は UI に無いので、作り直しても消えないよう旧 crystal から引き継ぐ
+        var previous = crystal; // 261105Cl 追加 (監査 A13・A19): UI に無い値 (読み込み時の格子定数・応力) を、作り直す前の結晶から引き継ぐ
 
         crystal = new Crystal(
             symmetryControl.CellConstants, symmetryControl.CellConstantsErr,
@@ -226,6 +231,15 @@ public partial class CrystalControl : UserControlBase
             numericBoxStrain12.Value, numericBoxStrain22.Value, numericBoxStrain23.Value,
             numericBoxStrain13.Value, numericBoxStrain23.Value, numericBoxStrain33.Value);
         crystal.HillCoefficient = numericBoxHill.Value;
+
+        if (previous != null)
+        {
+            // 261105Cl 追加 (監査 A13): 「Revert cell constants」の戻り先を引き継ぐ。以前は格子定数を一度でも編集すると (結晶を作り直すので) 失われ、Revert が何もしなかった
+            (crystal.InitialA, crystal.InitialB, crystal.InitialC, crystal.InitialAlpha, crystal.InitialBeta, crystal.InitialGamma) = (previous.InitialA, previous.InitialB, previous.InitialC, previous.InitialAlpha, previous.InitialBeta, previous.InitialGamma);
+            (crystal.InitialA_err, crystal.InitialB_err, crystal.InitialC_err, crystal.InitialAlpha_err, crystal.InitialBeta_err, crystal.InitialGamma_err) = (previous.InitialA_err, previous.InitialB_err, previous.InitialC_err, previous.InitialAlpha_err, previous.InitialBeta_err, previous.InitialGamma_err);
+            // 261105Cl 追加 (監査 A19): 応力は画面の欄から読んでいない (欄は配線されていない) ので、結晶の値を消さないよう引き継ぐ
+            crystal.Stress = new Matrix3D(previous.Stress ?? new Matrix3D(0, 0, 0, 0, 0, 0, 0, 0, 0));
+        }
 
         SkipEvent = false;
         SetToInterface(false);
@@ -296,6 +310,14 @@ public partial class CrystalControl : UserControlBase
         numericUpDownAngleResolution.Value = Math.Min((decimal)crystal.AngleResolution, numericUpDownAngleResolution.Maximum);
         numericUpDownAngleSubDivision.Value = crystal.SubDivision;
         poleFigureControl.Crystal = crystal;
+
+        // 261105Cl 追加 (監査 A19): 歪み・Hill 係数・結晶子サイズの欄も結晶の値にする。以前は更新せず、GenerateFromInterface (Replace・編集のたび) が
+        // 前の結晶の値 (粉末シミュレータ) や欄の既定値 (主画面では欄が隠れていて、Hill = 1・歪み 0・サイズ 100 nm) を結晶に書き込んでいた
+        var strain = crystal.Strain ?? new Matrix3D(0, 0, 0, 0, 0, 0, 0, 0, 0);
+        (numericBoxStrain11.Value, numericBoxStrain12.Value, numericBoxStrain13.Value) = (strain.E11, strain.E12, strain.E13);
+        (numericBoxStrain22.Value, numericBoxStrain23.Value, numericBoxStrain33.Value) = (strain.E22, strain.E23, strain.E33);
+        numericBoxHill.Value = crystal.HillCoefficient;
+        numericUpDownCrystallineSize.Value = Math.Clamp((decimal)crystal.GrainSize, numericUpDownCrystallineSize.Minimum, numericUpDownCrystallineSize.Maximum);
 
         SkipEvent = false;
         ResumeLayout();
