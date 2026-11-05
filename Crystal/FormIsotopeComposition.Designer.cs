@@ -71,7 +71,8 @@
             dataGridViewCellStyle1.Format = "N2";
             dataGridViewCellStyle1.NullValue = null;
             this.ColumnAtomicWeight.DefaultCellStyle = dataGridViewCellStyle1;
-            this.ColumnAtomicWeight.HeaderText = "Atomic Weight";
+            //this.ColumnAtomicWeight.HeaderText = "Atomic Weight"; // 261105Cl 変更前
+            this.ColumnAtomicWeight.HeaderText = "Mass Number"; // 261105Cl 変更 (監査 A23): 列の値は同位体の質量数。実行時の表示は LocalizationData の 11 言語訳
             this.ColumnAtomicWeight.Name = "ColumnAtomicWeight";
             this.ColumnAtomicWeight.ReadOnly = true;
             this.ColumnAtomicWeight.Resizable = System.Windows.Forms.DataGridViewTriState.False;

@@ -197,7 +197,21 @@ public partial class CrystalControl : UserControlBase
         if (A < 0 || B < 0 || C < 0 || Alpha > Math.PI || Beta > Math.PI || Gamma > Math.PI)
         {
             SkipEvent = false;
-            MessageBox.Show("Input valid cell constants");
+            //MessageBox.Show("Input valid cell constants"); // 261105Cl 変更前
+            // 261105Cl 変更 (監査 A25): 英語だけの固定文だったので 11 言語に。何が正しくないかも書く
+            MessageBox.Show(Crystallography.Localization.Loc(
+                en: "Invalid cell constants: the lengths must not be negative and the angles must not exceed 180°.",
+                ja: "格子定数が正しくありません。長さは負にできず、角度は 180° 以下です。",
+                de: "Ungültige Gitterkonstanten: Längen dürfen nicht negativ sein und Winkel 180° nicht überschreiten.",
+                fr: "Paramètres de maille non valides : les longueurs ne peuvent pas être négatives et les angles ne peuvent pas dépasser 180°.",
+                es: "Constantes de celda no válidas: las longitudes no pueden ser negativas y los ángulos no pueden superar 180°.",
+                pt: "Constantes de célula inválidas: os comprimentos não podem ser negativos e os ângulos não podem exceder 180°.",
+                it: "Costanti di cella non valide: le lunghezze non possono essere negative e gli angoli non possono superare 180°.",
+                ru: "Недопустимые параметры ячейки: длины не могут быть отрицательными, а углы не могут превышать 180°.",
+                zhHans: "晶胞常数无效：长度不能为负，角度不能超过 180°。",
+                zhHant: "晶胞常數無效：長度不能為負，角度不能超過 180°。",
+                ko: "격자 상수가 올바르지 않습니다. 길이는 음수일 수 없고 각도는 180°를 넘을 수 없습니다."),
+                Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return;
         }
 

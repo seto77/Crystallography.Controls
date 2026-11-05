@@ -43,9 +43,24 @@ public partial class FormIsotopeComposition : FormBase
     private void dataGridView_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
     {
         if (e.RowIndex < 0 || e.ColumnIndex < 1) return;
-        if (!double.TryParse(e.FormattedValue?.ToString(), out var d) || d > 100)
+        //if (!double.TryParse(e.FormattedValue?.ToString(), out var d) || d > 100) // 261105Cl 変更前
+        if (!double.TryParse(e.FormattedValue?.ToString(), out var d) || d > 100 || d < 0) // 261105Cl 変更: 負の存在比もはじく (下の案内文の 0〜100 と合わせる)
         {
-            MessageBox.Show("Incorrect Value!");
+            //MessageBox.Show("Incorrect Value!"); // 261105Cl 変更前
+            // 261105Cl 変更 (監査 A25): 英語だけの固定文だったので 11 言語に。入れられる範囲も書く
+            MessageBox.Show(Crystallography.Localization.Loc(
+                en: "Enter an abundance between 0 and 100 (%).",
+                ja: "存在比は 0〜100 (%) の数値で入力してください。",
+                de: "Geben Sie eine Häufigkeit zwischen 0 und 100 (%) ein.",
+                fr: "Saisissez une abondance comprise entre 0 et 100 (%).",
+                es: "Introduzca una abundancia entre 0 y 100 (%).",
+                pt: "Insira uma abundância entre 0 e 100 (%).",
+                it: "Inserire un'abbondanza compresa tra 0 e 100 (%).",
+                ru: "Введите распространённость от 0 до 100 (%).",
+                zhHans: "请输入 0 到 100 (%) 之间的丰度。",
+                zhHant: "請輸入 0 到 100 (%) 之間的豐度。",
+                ko: "존재비는 0~100(%) 사이의 숫자로 입력하십시오."),
+                Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Warning); // 共有の部品なので題はアプリ名 (このフォームの Text は "FormIsotopeComposition" のまま)
             e.Cancel = true;
         }
     }
