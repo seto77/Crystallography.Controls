@@ -27,7 +27,8 @@ public partial class SymmetryControl : UserControlBase
             ? SymmetryStatic.BelongingNumberOfSymmetry[CrystalSystemIndex][PointGroupIndex][SpaceGroupIndex] : 0;
         set
         {
-            if (value < 0 || value > SymmetryStatic.TotalSpaceGroupNumber) return;
+            //if (value < 0 || value > SymmetryStatic.TotalSpaceGroupNumber) return; // 261105Cl 変更前 (Symmetries の添字は 0..Total-1 なので 1 ずれていた)
+            if (value < 0 || value >= SymmetryStatic.TotalSpaceGroupNumber) return; // 261105Cl 変更
             var (cs, pg, sg) = SymmetryStatic.GetSystemAndGroupFromSeriesNumber(value);
             SkipEvent = true;
             SuspendLayout();
@@ -160,9 +161,13 @@ public partial class SymmetryControl : UserControlBase
     }
 
     #region 空間群検索
+    // 261105Cl 追加: 検索結果の各項目の通し番号。H-M 記号が同じ設定が 9 組 (Cmme の 2 設定、Ccce(1) の 2 設定など) あり、項目の文字列からは決まらない
+    private readonly System.Collections.Generic.List<int> searchResultSeries = [];
+
     private void textBoxSearch_TextChanged(object sender, EventArgs e)
     {
         comboBoxSearchResult.Items.Clear();
+        searchResultSeries.Clear(); // 261105Cl 追加
         comboBoxSearchResult.Enabled = false;
         if (textBoxSearch.Text.Length == 0) return;
 
@@ -180,7 +185,10 @@ public partial class SymmetryControl : UserControlBase
                 startIndex = index;
             }
             if (ok)
+            {
                 comboBoxSearchResult.Items.Add($"{sym.SpaceGroupNumber}:{sym.SpaceGroupHMStr}");
+                searchResultSeries.Add(n); // 261105Cl 追加
+            }
         }
         if (comboBoxSearchResult.Items.Count > 0)
             comboBoxSearchResult.Enabled = true;
@@ -188,14 +196,18 @@ public partial class SymmetryControl : UserControlBase
 
     private void comboBoxSearchResult_SelectedIndexChanged(object sender, EventArgs e)
     {
-        var target = comboBoxSearchResult.Text.Split(':')[1];
-        var sym = Enumerable.Range(0, SymmetryStatic.TotalSpaceGroupNumber)
-            .Select(n => SymmetryStatic.Symmetries[n])
-            .First(s => s.SpaceGroupHMStr == target);
+        //var target = comboBoxSearchResult.Text.Split(':')[1]; // 261105Cl 変更前 (H-M 記号が同じ設定では先頭の設定になった)
+        //var sym = Enumerable.Range(0, SymmetryStatic.TotalSpaceGroupNumber)
+        //    .Select(n => SymmetryStatic.Symmetries[n])
+        //    .First(s => s.SpaceGroupHMStr == target);
 
-        comboBoxCrystalSystem.Text = sym.CrystalSystemStr;
-        comboBoxPointGroup.Text = sym.PointGroupHMStr;
-        comboBoxSpaceGroup.Text = $"{sym.SpaceGroupNumber}:{sym.SpaceGroupHMStr}";
+        //comboBoxCrystalSystem.Text = sym.CrystalSystemStr; // 261105Cl 変更前: 結晶系のコンボは訳した名前 (ja「立方晶系」など) なので、英語の名前を
+        //comboBoxPointGroup.Text = sym.PointGroupHMStr;     //   入れても一致せず、英語以外の UI では検索の結果を選んでも切り替わらなかった
+        //comboBoxSpaceGroup.Text = $"{sym.SpaceGroupNumber}:{sym.SpaceGroupHMStr}";
+        // 261105Cl 変更: 選んだ項目の通し番号で 3 つのコンボを設定する (言語に依らない。最後に ItemChanged が 1 回出る)
+        var i = comboBoxSearchResult.SelectedIndex;
+        if (i < 0 || i >= searchResultSeries.Count) return;
+        SymmetrySeriesNumber = searchResultSeries[i];
     }
     #endregion
 
@@ -321,6 +333,7 @@ public partial class SymmetryControl : UserControlBase
                     numericBoxAlpha.Enabled = true;
                     numericBoxBeta.Enabled = numericBoxGamma.Enabled = false;
                     numericBoxGamma.Value = numericBoxBeta.Value = numericBoxAlpha.Value;
+                    numericBoxGammaErr.Value = numericBoxBetaErr.Value = numericBoxAlphaErr.Value; // 261105Cl 追加: 菱面体軸では α の誤差も β・γ にそろえる (長さの誤差と同じ扱い。以前は前の値が残った)
                 }
                 break;
 
