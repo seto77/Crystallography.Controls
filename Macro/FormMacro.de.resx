@@ -101,8 +101,8 @@ makros (schreibgeschützt) um. Ihre eigenen Makros werden
 beiseitegelegt und beim Deaktivieren wiederhergestellt.</value>
   </data>
   <data name="dataGridView.ToolTip" xml:space="preserve">
-    <value>Referenzliste der in ReciPro integrierten Makro-
-funktionen und ihrer Beschreibungen. Doppelklicken Sie eine
+    <value>Referenzliste der integrierten Makrofunktionen dieser
+Anwendung und ihrer Beschreibungen. Doppelklicken Sie eine
 Funktion, um sie an der Cursorposition im Editor einzufügen.</value>
   </data>
   <data name="dataGridViewDebug.ToolTip" xml:space="preserve">
@@ -112,7 +112,7 @@ Werte an der angehaltenen Zeile an.</value>
   </data>
   <data name="label2.ToolTip" xml:space="preserve">
     <value>Makros verwenden grundlegende Python-Syntax zusammen mit
-den von ReciPro bereitgestellten integrierten Funktionen.</value>
+den von dieser Anwendung bereitgestellten integrierten Funktionen.</value>
   </data>
   <data name="listBoxMacro.ToolTip" xml:space="preserve">
     <value>Liste der gespeicherten Makros. Wählen Sie eines aus, um

@@ -1330,7 +1330,7 @@
     <value>GrowAndShrink</value>
   </data>
   <data name="numericBoxDensity.FooterText" xml:space="preserve">
-    <value>g/cc</value>
+    <value>g/cm³</value>
   </data>
   <data name="numericBoxDensity.Location" type="System.Drawing.Point, System.Drawing">
     <value>7, 13</value>

@@ -101,8 +101,8 @@
 сохраняются отдельно и восстанавливаются при снятии флажка.</value>
   </data>
   <data name="dataGridView.ToolTip" xml:space="preserve">
-    <value>Справочный список встроенных макрофункций ReciPro
-и их описаний. Дважды щёлкните по функции,
+    <value>Справочный список встроенных макрофункций этого
+приложения и их описаний. Дважды щёлкните по функции,
 чтобы вставить её в позицию курсора в редакторе.</value>
   </data>
   <data name="dataGridViewDebug.ToolTip" xml:space="preserve">
@@ -112,7 +112,7 @@
   </data>
   <data name="label2.ToolTip" xml:space="preserve">
     <value>Макросы используют базовый синтаксис Python вместе
-со встроенными функциями, предоставляемыми ReciPro.</value>
+со встроенными функциями, предоставляемыми этим приложением.</value>
   </data>
   <data name="listBoxMacro.ToolTip" xml:space="preserve">
     <value>Список сохранённых макросов. Выберите один,

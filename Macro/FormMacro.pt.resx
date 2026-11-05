@@ -102,7 +102,7 @@ guardadas à parte e restauradas ao desmarcar.</value>
   </data>
   <data name="dataGridView.ToolTip" xml:space="preserve">
     <value>Lista de referência das funções de macro integradas
-do ReciPro e suas descrições. Dê duplo clique em uma
+deste aplicativo e suas descrições. Dê duplo clique em uma
 função para inseri-la na posição do cursor no editor.</value>
   </data>
   <data name="dataGridViewDebug.ToolTip" xml:space="preserve">
@@ -112,7 +112,7 @@ valores atuais na linha pausada.</value>
   </data>
   <data name="label2.ToolTip" xml:space="preserve">
     <value>As macros usam a sintaxe básica do Python juntamente com
-as funções integradas fornecidas pelo ReciPro.</value>
+as funções integradas fornecidas por este aplicativo.</value>
   </data>
   <data name="listBoxMacro.ToolTip" xml:space="preserve">
     <value>Lista de macros salvas. Selecione uma para

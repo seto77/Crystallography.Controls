@@ -138,7 +138,7 @@ public partial class FormBeamInteraction : FormBase
         [" electrons"] = (" Elektronen", " électrons", " electrones", " elétrons", " elettroni", " электронов", " 个电子", " 個電子", " 전자"),
         // --- グラフのタイトル ---
         ["EDX requires xraylib"] = ("EDX erfordert xraylib", "EDX nécessite xraylib", "EDX requiere xraylib", "EDX requer xraylib", "EDX richiede xraylib", "Для EDX требуется xraylib", "EDX 需要 xraylib", "EDX 需要 xraylib", "EDX에는 xraylib가 필요합니다"),
-        ["EDX emission lines"] = ("EDX-Emissionslinien", "Raies d'émission EDX", "Líneas de emisión EDX", "Linhas de emissão EDX", "Righe di emissione EDX", "Линии излучения EDX", "EDX 发射谱线", "EDX 發射譜線", "EDX 방출선"),
+        //["EDX emission lines"] = ("EDX-Emissionslinien", "Raies d'émission EDX", "Líneas de emisión EDX", "Linhas de emissão EDX", "Righe di emissione EDX", "Линии излучения EDX", "EDX 发射谱线", "EDX 發射譜線", "EDX 방출선"), // 261105Cl 変更前 (監査 J6 で題に注記を足した。新しい訳は表の末尾)
         ["Electron transport"] = ("Elektronentransport", "Transport des électrons", "Transporte de electrones", "Transporte de elétrons", "Trasporto degli elettroni", "Перенос электронов", "电子输运", "電子輸運", "전자 수송"),
         ["F(q) coherent and S(q) incoherent scattering"] = ("F(q) kohärente und S(q) inkohärente Streuung", "Diffusion cohérente F(q) et incohérente S(q)", "Dispersión coherente F(q) e incoherente S(q)", "Espalhamento coerente F(q) e incoerente S(q)", "Diffusione coerente F(q) e incoerente S(q)", "Когерентное F(q) и некогерентное S(q) рассеяние", "F(q) 相干与 S(q) 非相干散射", "F(q) 同調與 S(q) 非同調散射", "F(q) 가간섭성 및 S(q) 비간섭성 산란"),
         ["F(q)+S(q) requires xraylib"] = ("F(q)+S(q) erfordert xraylib", "F(q)+S(q) nécessite xraylib", "F(q)+S(q) requiere xraylib", "F(q)+S(q) requer xraylib", "F(q)+S(q) richiede xraylib", "Для F(q)+S(q) требуется xraylib", "F(q)+S(q) 需要 xraylib", "F(q)+S(q) 需要 xraylib", "F(q)+S(q)에는 xraylib가 필요합니다"),
@@ -173,7 +173,13 @@ public partial class FormBeamInteraction : FormBase
         ["Coherent SLD"] = ("Kohärente SLD", "SLD cohérente", "SLD coherente", "SLD coerente", "SLD coerente", "Когерентная SLD", "相干 SLD", "同調 SLD", "가간섭성 SLD"),
         ["Σ_total (macro)"] = ("Σ_total (makroskopisch)", "Σ_total (macro)", "Σ_total (macro)", "Σ_total (macro)", "Σ_total (macro)", "Σ_total (макро)", "Σ_total (宏观)", "Σ_total (巨觀)", "Σ_total (거시)"),
         ["Atten. length (1/Σ)"] = ("Schwächungslänge (1/Σ)", "Long. d'atténuation (1/Σ)", "Long. de atenuación (1/Σ)", "Compr. de atenuação (1/Σ)", "Lungh. di attenuazione (1/Σ)", "Длина ослабления (1/Σ)", "衰减长度 (1/Σ)", "衰減長度 (1/Σ)", "감쇠 길이 (1/Σ)"),
-        ["strongest line"] = ("stärkste Linie", "raie la plus intense", "línea más intensa", "linha mais intensa", "riga più intensa", "самая сильная линия", "最强谱线", "最強譜線", "최강선"),
+        //["strongest line"] = ("stärkste Linie", "raie la plus intense", "línea más intensa", "linha mais intensa", "riga più intensa", "самая сильная линия", "最强谱线", "最強譜線", "최강선"), // 261105Cl 変更前 (監査 J6 で注記を足した。新しい訳は下)
+        // 261105Cl 追加 (監査 J6・J5)
+        // 行名は表の Quantity 列 (200 px) に収まる長さにした (ru は「сильнейшая」だと収まらないので「главная」)。グラフの題は略さない
+        ["strongest line (excitation ignored)"] = ("stärkste Linie (Anregung ignoriert)", "raie la plus intense (excit. ignorée)", "línea más intensa (excit. ignorada)", "linha mais intensa (excit. ignorada)", "riga più intensa (eccit. ignorata)", "главная линия (без учёта возб.)", "最强谱线（不考虑激发）", "最強譜線（不考慮激發）", "최강선 (여기는 고려하지 않음)"),
+        ["EDX emission lines (reference list; excitation not considered)"] = ("EDX-Emissionslinien (Referenzliste; Anregung nicht berücksichtigt)", "Raies d'émission EDX (liste de référence ; excitation non prise en compte)", "Líneas de emisión EDX (lista de referencia; sin considerar la excitación)", "Linhas de emissão EDX (lista de referência; excitação não considerada)", "Righe di emissione EDX (elenco di riferimento; eccitazione non considerata)", "Линии излучения EDX (справочный список; возбуждение не учитывается)", "EDX 发射谱线（参考列表，不考虑激发）", "EDX 發射譜線（參考清單，不考慮激發）", "EDX 방출선 (참고 목록, 여기는 고려하지 않음)"),
+        // 題の末尾に足すので短く (電子線の単一量の題 + これがグラフの幅 557 px に収まる長さ)
+        [" (current {0} keV is out of range)"] = (" (aktuelle {0} keV außerhalb des Bereichs)", " ({0} keV actuels hors plage)", " ({0} keV actuales fuera de rango)", " ({0} keV atuais fora do intervalo)", " ({0} keV attuali fuori intervallo)", " ({0} keV вне диапазона)", "（当前 {0} keV 超出范围）", "（目前 {0} keV 超出範圍）", " (현재 {0} keV는 범위 밖)"),
     };
     // 260608Cl 変更: グラフ見出し文字列を resx から「コード内テーブル」へ移行。
     // 理由: これらは FormBeamInteraction.resx に手書きで追加していたが、VS デザイナでフォームを
@@ -224,7 +230,9 @@ public partial class FormBeamInteraction : FormBase
         "Graph.Label.TwoTheta" => "2θ:",
         // --- グラフタイトル(GraphTitle) ---
         "Graph.Title.EdxRequiresXraylib" => Loc("EDX requires xraylib", "EDX には xraylib が必要です"),
-        "Graph.Title.EdxSticks" => Loc("EDX emission lines", "EDX 発光線"),
+        //"Graph.Title.EdxSticks" => Loc("EDX emission lines", "EDX 発光線"), // 261105Cl 変更前
+        // 261105Cl 変更 (監査 J6): 蛍光のタブは入射エネルギーを見ず、励起できない線も描くので、参考の一覧だと明記する
+        "Graph.Title.EdxSticks" => Loc("EDX emission lines (reference list; excitation not considered)", "EDX 発光線 (励起は考えない参考の一覧)"), // 261105Cl
         //"Graph.Title.ElectronTransportNormalized" => Loc("Electron transport (normalized: σ, elastic MFP, dE/ds)", "電子輸送 (正規化: σ・弾性MFP・dE/ds)"),//260611Cl 旧: 括弧内の曲線列挙は色付き凡例ラベルへ統合 (正規化は Y 軸ラベルが示す)
         "Graph.Title.ElectronTransportNormalized" => Loc("Electron transport", "電子輸送"),
         "Graph.Title.FqSq" => Loc("F(q) coherent and S(q) incoherent scattering", "F(q) 干渉性・S(q) 非干渉性散乱"),
@@ -931,9 +939,18 @@ public partial class FormBeamInteraction : FormBase
                     if (z >= pTem.Length || pTem[z] == null || sub >= pTem[z].Length || pTem[z][sub] == null) return null;
                     return pTem[z][sub].Valence != 0 ? null : TemariFactorOrNull(z, electron: true);
                 case ElectronModel.Kirkland:
-                    var k = AtomStatic.ElectronScatteringKirkland;//260606Cl 綴り修正 Kirkrand→Kirkland
-                    return z < k.Length ? k[z]?.Factor : null;
-                case ElectronModel.EightGaussian:
+                case ElectronModel.EightGaussian: // 261105Cl 追加 (監査 J12): イオンの判定を Kirkland と共有するため case を並べた
+                    // 261105Cl 追加 (監査 J12): Kirkland・8-Gauss は中性原子の表しかない。以前はイオンにも中性原子の値をそのまま出していた (注記なし)。
+                    //  イオン (Peng の表で Valence≠0) は Temari と同じく空欄 (null = 曲線なし・表は空欄) にする。
+                    //  sub (電子線の副番号) が 0 なら中性。0 でないのに Peng の表に無い組は、Temari と同じく未対応として空欄 (fail-closed)
+                    var pIon = AtomStatic.ElectronScatteringPeng; // 261105Cl
+                    if (sub != 0 && (z >= pIon.Length || pIon[z] == null || sub >= pIon[z].Length || pIon[z][sub] == null || pIon[z][sub].Valence != 0)) return null; // 261105Cl
+                    if (model == ElectronModel.Kirkland) // 261105Cl
+                    {
+                        var k = AtomStatic.ElectronScatteringKirkland;//260606Cl 綴り修正 Kirkrand→Kirkland
+                        return z < k.Length ? k[z]?.Factor : null;
+                    }
+                    //case ElectronModel.EightGaussian: // 261105Cl 上へ移動
                     var g = AtomStatic.ElectronScatteringEightGaussian;
                     return z < g.Length ? g[z]?.Factor : null;
                 default:
@@ -1248,6 +1265,9 @@ public partial class FormBeamInteraction : FormBase
             if (pRay.Count > 0) profiles.Add(new Profile(pRay) { Color = Color.FromArgb(0x2c, 0xa0, 0x2c), text = "Rayleigh" });
             if (pCom.Count > 0) profiles.Add(new Profile(pCom) { Color = Color.FromArgb(0x1f, 0x77, 0xb4), text = "Compton" });
         }
+        // 261105Cl 追加 (監査 J5): 横軸は 1〜60 keV の固定で、範囲の外のエネルギーでは縦線の印が曲線と交わらない。範囲の外ならグラフの題に書く
+        if (currentE < eMin || currentE > eMax) // 261105Cl
+            graphControlAtten.GraphTitle += string.Format(System.Globalization.CultureInfo.CurrentCulture, Loc(" (current {0} keV is out of range)", " (現在の {0} keV は範囲外)"), currentE.ToString("g4", System.Globalization.CultureInfo.CurrentCulture)); // 261105Cl
 
         //260608Cl 縦線は現在エネルギーの1本のみ表示 (交点マーカー値の読取りを1本に集約)。AddProfiles より前に設定し内部 Draw() で一括描画。
         //          旧: 現在エネルギーに加えて各元素の吸収端(K/L3)も縦線で描いていた → 1本に変更
@@ -1328,6 +1348,10 @@ public partial class FormBeamInteraction : FormBase
         //const int n = 200;//260611Cl 旧: 範囲拡大に合わせ点密度をほぼ維持
         const double kMin = 1, kMax = 50;
         const int n = 250;
+        // 261105Cl 追加 (監査 J5): 横軸は 1〜50 keV の固定 (TEM の 100〜300 kV は外)。範囲の外のエネルギーでは縦線の印が曲線と交わらないので、題に書く (下の 2 か所の GraphTitle に足す)
+        var outOfRange = currentKev < kMin || currentKev > kMax // 261105Cl
+            ? string.Format(System.Globalization.CultureInfo.CurrentCulture, Loc(" (current {0} keV is out of range)", " (現在の {0} keV は範囲外)"), currentKev.ToString("g4", System.Globalization.CultureInfo.CurrentCulture))
+            : "";
         //260607Cl 0:全正規化 1:σ 2:MFP 3:dE/ds 4:IMFP 5:Range (combo→ラジオ群に変更。既定は radioButtonElecAll=0)
         int q = radioButtonElecSigma.Checked ? 1 : radioButtonElecEMFP.Checked ? 2 : radioButtonElecDeds.Checked ? 3 : radioButtonElecIMFP.Checked ? 4 : radioButtonElecRange.Checked ? 5 : 0;
         var raw = new (double k, double s, double m, double d, double imfp, double range)[n + 1];
@@ -1367,7 +1391,8 @@ public partial class FormBeamInteraction : FormBase
             }
             graphControlAtten.YLog = false;
             graphControlAtten.AxisLabelY = R("Graph.Axis.Normalized"); graphControlAtten.LabelY = R("Graph.Label.Normalized"); graphControlAtten.UnitY = "";//260607Ch resx 化
-            graphControlAtten.GraphTitle = R("Graph.Title.ElectronTransportNormalized");
+            //graphControlAtten.GraphTitle = R("Graph.Title.ElectronTransportNormalized"); // 261105Cl 変更前
+            graphControlAtten.GraphTitle = R("Graph.Title.ElectronTransportNormalized") + outOfRange; // 261105Cl 変更 (監査 J5)
             graphControlAtten.AddProfiles(
             [
                 new Profile(sig) { Color = Color.FromArgb(0xd6, 0x27, 0x28), text = "σ elastic" },
@@ -1391,7 +1416,8 @@ public partial class FormBeamInteraction : FormBase
             for (int i = 0; i <= n; i++) { double v = sel(i); if (!double.IsNaN(v) && !double.IsInfinity(v)) pts.Add(new PointD(raw[i].k, v)); }
             graphControlAtten.YLog = false;
             graphControlAtten.AxisLabelY = R(axisKey); graphControlAtten.LabelY = R(labelKey); graphControlAtten.UnitY = R(unitKey);//260607Ch resx 化
-            graphControlAtten.GraphTitle = string.Format(System.Globalization.CultureInfo.CurrentCulture, R("Graph.Title.QuantityVsE"), graphControlAtten.AxisLabelY);
+            //graphControlAtten.GraphTitle = string.Format(System.Globalization.CultureInfo.CurrentCulture, R("Graph.Title.QuantityVsE"), graphControlAtten.AxisLabelY); // 261105Cl 変更前
+            graphControlAtten.GraphTitle = string.Format(System.Globalization.CultureInfo.CurrentCulture, R("Graph.Title.QuantityVsE"), graphControlAtten.AxisLabelY) + outOfRange; // 261105Cl 変更 (監査 J5)
             //graphControlAtten.AddProfiles([new Profile(pts) { Color = color, LineWidth = 1.6f, text = graphControlAtten.LabelY.TrimEnd(':') }]);//260611Cl 旧: X軸全範囲表示
             graphControlAtten.AddProfiles([new Profile(pts) { Color = color, LineWidth = 1.6f, text = graphControlAtten.LabelY.TrimEnd(':') }],
                 new RectangleD(0, double.NaN, 20, double.NaN), minimalX: 0, maximalX: kMax);//260611Cl 変更: 全正規化モードと同じく X軸 0〜50 keV・初期表示 0-20
@@ -1548,7 +1574,9 @@ public partial class FormBeamInteraction : FormBase
             double wk = xrl ? Xraylib.FluorescenceYield(z, Xraylib.XrlShell.K) : double.NaN;
             scalarRows.Add([$"ω_K ({AtomStatic.AtomicName(z)})", double.IsNaN(wk) ? "N/A" : wk.ToString("g3")]);
         }
-        scalarRows.Add([Loc("strongest line", "最強線"), strongest]);  //260608Cl ラベルを Loc() 化 (ω_K は記号で据置)
+        //scalarRows.Add([Loc("strongest line", "最強線"), strongest]);  //260608Cl ラベルを Loc() 化 (ω_K は記号で据置) // 261105Cl 変更前
+        // 261105Cl 変更 (監査 J6): 入射エネルギーを見ず、励起できない線も含めた全部の線から選んでいるので、そう明記する (グラフの題にも書いた)
+        scalarRows.Add([Loc("strongest line (excitation ignored)", "最強線 (励起は考えない)"), strongest]); // 261105Cl
         //scalarRows.Add([Loc("source", "出典"), xrl ? "internal (E) / xraylib (I, ω)" : "internal (E only)"]); // 261105Cl 変更前
         // 261105Cl 変更 (監査 J13): xraylib が有効なときは線のエネルギーも xraylib から取っている (上のループの LineEnergyKeV)。以前の表示は「E は内蔵」だった
         scalarRows.Add([Loc("source", "出典"), xrl ? "xraylib (E, I, ω)" : "internal (E only)"]); // 261105Cl

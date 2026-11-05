@@ -101,7 +101,7 @@
 取消勾選時即還原。</value>
   </data>
   <data name="dataGridView.ToolTip" xml:space="preserve">
-    <value>ReciPro 內建巨集函式及其說明的
+    <value>本應用程式內建巨集函式及其說明的
 參考清單。雙擊某個函式可將其
 插入編輯器中游標所在位置。</value>
   </data>
@@ -112,7 +112,7 @@
   </data>
   <data name="label2.ToolTip" xml:space="preserve">
     <value>巨集使用基本的 Python 語法，
-搭配 ReciPro 提供的內建函式撰寫。</value>
+搭配本應用程式提供的內建函式撰寫。</value>
   </data>
   <data name="listBoxMacro.ToolTip" xml:space="preserve">
     <value>已儲存巨集的清單。選取某項即可

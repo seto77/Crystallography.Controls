@@ -1640,7 +1640,7 @@ per unit wavelength interval is constant.</value>
     <value>radioButtonDspacingUnitNm</value>
   </data>
   <data name="radioButtonEnergyUnitKev.Text" xml:space="preserve">
-    <value>KeV</value>
+    <value>keV</value>
   </data>
   <data name="groupBoxWaveProperty.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9.75pt, style=Bold</value>

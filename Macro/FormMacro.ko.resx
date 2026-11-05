@@ -101,7 +101,7 @@
 보관되어 체크를 해제하면 복원됩니다.</value>
   </data>
   <data name="dataGridView.ToolTip" xml:space="preserve">
-    <value>ReciPro 의 내장 매크로 함수와 그 설명의
+    <value>이 애플리케이션의 내장 매크로 함수와 그 설명의
 참조 목록입니다. 함수를 더블 클릭하면
 에디터의 커서 위치에 삽입됩니다.</value>
   </data>
@@ -111,7 +111,7 @@
 값을 표시합니다.</value>
   </data>
   <data name="label2.ToolTip" xml:space="preserve">
-    <value>매크로는 기본적인 Python 구문과 ReciPro 가
+    <value>매크로는 기본적인 Python 구문과 이 애플리케이션이
 제공하는 내장 함수를 사용하여 작성합니다.</value>
   </data>
   <data name="listBoxMacro.ToolTip" xml:space="preserve">

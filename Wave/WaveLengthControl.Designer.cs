@@ -90,6 +90,7 @@
             comboBoxXrayLine.Name = "comboBoxXrayLine";
             toolTip.SetToolTip(comboBoxXrayLine, resources.GetString("comboBoxXrayLine.ToolTip"));
             comboBoxXrayLine.SelectedIndexChanged += comboBoxXrayLine_SelectedIndexChanged;
+            comboBoxXrayLine.Format += comboBoxXrayLine_Format; // 261105Cl 追加 (監査 K2): 線種を Kα1 などで表示
             // 
             // numericBoxEnergy
             // 

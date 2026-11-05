@@ -101,7 +101,7 @@
 恢复。</value>
   </data>
   <data name="dataGridView.ToolTip" xml:space="preserve">
-    <value>ReciPro 内置宏函数及其说明的
+    <value>本应用程序内置宏函数及其说明的
 参考列表。双击某个函数可将其插入到
 编辑器中光标所在位置。</value>
   </data>
@@ -112,7 +112,7 @@
   </data>
   <data name="label2.ToolTip" xml:space="preserve">
     <value>宏使用基本的 Python 语法，并配合
-ReciPro 提供的内置函数来编写。</value>
+本应用程序提供的内置函数来编写。</value>
   </data>
   <data name="listBoxMacro.ToolTip" xml:space="preserve">
     <value>已保存宏的列表。选择某一项可将

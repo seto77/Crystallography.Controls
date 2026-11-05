@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic; // 261105Cl 追加: lastEnergy (線源ごとの最後のエネルギー)
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
@@ -427,17 +428,63 @@ public partial class WaveLengthControl : UserControlBase
     // 260426Cl 整理: sender に空 object、引数に new EventArgs() を渡していた箇所を素直な値へ
     public void SetCharacteristicXray() => comboBoxXrayLine_SelectedIndexChanged(this, EventArgs.Empty);
 
+    // 261105Cl 追加 (監査 J18): 線源ごとの最後のエネルギー (X 線は keV、電子線は keV = kV、中性子は meV) と、X 線の元素・線種。
+    //  線源を切り替えたら、出ていく線源の値をここに覚え、入る線源の値を戻す。以前は波長を保ったまま線源だけ替えたので、
+    //  X 線 (Cu Kα, 0.154 nm) から電子線へ切り替えると約 0.063 keV の電子になっていた。
+    //  一度も使っていない線源は既定値: X 線 = Cu Kα (BeamInteraction・横軸の部品の Designer の既定と同じ)、
+    //  電子線 = 200 keV (回折シミュレータ・Spot ID v2 の既定)、中性子 = 25.3 meV (熱中性子、λ ≈ 0.18 nm。BeamInteraction の撮影用の値と同じ)。
+    //  記憶はこの部品が生きている間だけ (各アプリが保存・読込する Property には入れない。Property の形式は変えない)
+    private readonly Dictionary<WaveSource, double> lastEnergy = new() // 261105Cl 追加
+    {
+        [WaveSource.Xray] = 8.04114721, // Cu Kα (元素と線種で決まるので、元素 = Custom のときだけ使う)
+        [WaveSource.Electron] = 200,
+        [WaveSource.Neutron] = 25.3,
+    };
+    private int lastXrayElement = 29; // 261105Cl 追加: Cu
+    private XrayLine lastXrayLine = XrayLine.Ka; // 261105Cl 追加
+    private WaveSource shownSource = WaveSource.Xray; // 261105Cl 追加: 今の欄の値がどの線源のものか (Designer の既定は X 線)
+
     /// <summary>線源が変更されたとき</summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
     private void radioButtonWaveSource_CheckedChanged(object sender, EventArgs e)
     {
+        // 261105Cl 追加 (監査 J18): 切り替えのたびに外れた側と入った側の 2 回呼ばれる (どちらの時点でもラジオは新しい状態)。
+        //  入った側の 1 回だけ処理する (以前は同じ処理を 2 回して WaveSourceChanged も 2 回出ていた)
+        if (sender is RadioButton { Checked: false }) return; // 261105Cl
+
+        // 261105Cl 追加 (監査 J18): 出ていく線源の値を覚え、入る線源の値を戻す。
+        //  ハンドルができる前 (各アプリの InitializeComponent・コンストラクタで初期値を入れている間) は従来どおり波長を保つ:
+        //  Designer は Energy・WaveLength を WaveSource より先に書くので、そこで値を戻すと各アプリの既定 (EBSD の 20 keV など) が消える。
+        //  ハンドルができた後はユーザの切り替えも、コードからの WaveSource の代入 (横軸の部品のラジオ・マクロ・ファイルの読込) も同じに扱う。
+        //  ファイルの読込は WaveSource の後にエネルギー・波長を入れ直すので、読み込んだ値が残る。VS のデザイナの上では従来どおり (Designer.cs の値を変えない)
+        var newSource = WaveSource; // 261105Cl
+        bool restore = IsHandleCreated && !DesignMode && newSource != shownSource; // 261105Cl
+        if (restore) // 261105Cl
+        {
+            if (double.IsFinite(numericBoxEnergy.Value) && numericBoxEnergy.Value > 0) // 0・∞ (波長 0 の欄) は覚えない
+                lastEnergy[shownSource] = numericBoxEnergy.Value;
+            if (shownSource == WaveSource.Xray)
+            {
+                lastXrayElement = comboBoxXRayElement.SelectedIndex;
+                lastXrayLine = XrayWaveSourceLine;
+            }
+        }
+        shownSource = newSource; // 261105Cl
+
         if (radioButtonXray.Checked)
         {
             //flowLayoutPanelElement.Visible = true; // 261105Cl 変更前
             flowLayoutPanelElement.Visible = monochrome; // 261105Cl 変更 (監査 J17): 白色 (Back-Laue) では元素・線種を出さない (Monochrome の setter と同じ条件)
             numericBoxEnergy.FooterText = "keV";
-            comboBoxXRayElement_SelectedIndexChanged(sender, e);
+            //comboBoxXRayElement_SelectedIndexChanged(sender, e); // 261105Cl 変更前
+            // 261105Cl 変更 (監査 J18): 覚えていた元素を選ぶ (元素の欄の SelectedIndexChanged が線種の一覧を作り直す)。元素が同じなら従来どおり作り直すだけ
+            if (restore && lastXrayElement >= 0 && lastXrayElement < comboBoxXRayElement.Items.Count && comboBoxXRayElement.SelectedIndex != lastXrayElement) // 261105Cl
+                comboBoxXRayElement.SelectedIndex = lastXrayElement; // 261105Cl
+            else // 261105Cl
+                comboBoxXRayElement_SelectedIndexChanged(sender, e);
+            if (restore && comboBoxXRayElement.SelectedIndex != 0) // 261105Cl: 一覧の作り直しで先頭の線 (Kα) になるので、覚えていた線種に戻す
+                XrayWaveSourceLine = lastXrayLine; // 261105Cl
         }
         else
         {
@@ -452,8 +499,27 @@ public partial class WaveLengthControl : UserControlBase
             else if (radioButtonNeutron.Checked)
                 numericBoxEnergy.FooterText = "meV";
         }
-        numericBoxWaveLength_ValueChanged(sender, e);
+        //numericBoxWaveLength_ValueChanged(sender, e); // 261105Cl 変更前: 常に波長を保ってエネルギーを計算し直していた
+        // 261105Cl 変更 (監査 J18): 戻すときはエネルギーを入れて、この線源の式で波長を計算し直す (特性 X 線は上で線種が波長を決めている)
+        if (restore && (newSource != WaveSource.Xray || comboBoxXRayElement.SelectedIndex == 0)) // 261105Cl
+        {
+            skipEvent = true; // 値が変わったときの ValueChanged を止め、下で 1 回だけ計算する (値が同じでも計算させるため)
+            numericBoxEnergy.Value = lastEnergy[newSource];
+            skipEvent = false;
+            numericBoxEnergy_ValueChanged(sender, e); // 波長を計算し WavelengthChanged を出す
+        }
+        else // 261105Cl
+            numericBoxWaveLength_ValueChanged(sender, e);
         WaveSourceChanged?.Invoke(sender, e);
+    }
+
+    // 261105Cl 追加 (監査 K2/J20): 線種の一覧は XrayLine の値 (Ka1 など) をそのまま項目にしているので、表示だけ Kα1・Kβ1 にする
+    //  (BeamInteraction の蛍光の表と同じ表記。KbI2 → KβI2 は resx の項目の表記と同じ)。enum の名前は a・b がギリシャ文字の印で、ほかに小文字は無い。
+    //  項目 (SelectedItem) は enum のままなので、XrayWaveSourceLine の読み書きと保存する値は変わらない
+    private void comboBoxXrayLine_Format(object sender, ListControlConvertEventArgs e)
+    {
+        if (e.ListItem is XrayLine line)
+            e.Value = line.ToString().Replace('a', 'α').Replace('b', 'β');
     }
 
     private bool skipEvent = false;

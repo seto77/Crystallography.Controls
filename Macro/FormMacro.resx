@@ -646,7 +646,7 @@
     <value>8</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
-    <value>Use basic Python syntax and the built-in functions provided by ReciPro</value>
+    <value>Use basic Python syntax and this application's built-in functions</value>
   </data>
   <data name="&gt;&gt;label2.Name" xml:space="preserve">
     <value>label2</value>
@@ -1338,7 +1338,7 @@ macros (read-only). Your own macros are
 kept aside and restored when unchecked.</value>
   </data>
   <data name="dataGridView.ToolTip" xml:space="preserve">
-    <value>Reference list of ReciPro's built-in macro
+    <value>Reference list of this application's built-in macro
 functions and their descriptions. Double-click a
 function to insert it at the cursor in the editor.</value>
   </data>
@@ -1349,7 +1349,7 @@ current values at the paused line.</value>
   </data>
   <data name="label2.ToolTip" xml:space="preserve">
     <value>Macros use basic Python syntax together with
-the built-in functions provided by ReciPro.</value>
+the built-in functions provided by this application.</value>
   </data>
   <data name="listBoxMacro.ToolTip" xml:space="preserve">
     <value>List of saved macros. Select one to

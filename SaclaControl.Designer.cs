@@ -76,7 +76,7 @@
             // 
             this.numericBoxPixelWidth.BackColor = System.Drawing.SystemColors.Control;
             this.numericBoxPixelWidth.FooterBackColor = System.Drawing.SystemColors.Control;
-            this.numericBoxPixelWidth.FooterText = "pixel";
+            this.numericBoxPixelWidth.FooterText = "px"; // 261105Cl 変更 (監査 K21): 旧 "pixel"。ピクセルの単位は px に統一
             this.numericBoxPixelWidth.HeaderBackColor = System.Drawing.SystemColors.Control;
             this.numericBoxPixelWidth.HeaderText = "Width";
             this.numericBoxPixelWidth.Location = new System.Drawing.Point(7, 21);
@@ -101,7 +101,7 @@
             // 
             this.numericBoxPixelHeight.BackColor = System.Drawing.SystemColors.Control;
             this.numericBoxPixelHeight.FooterBackColor = System.Drawing.SystemColors.Control;
-            this.numericBoxPixelHeight.FooterText = "pixel";
+            this.numericBoxPixelHeight.FooterText = "px"; // 261105Cl 変更 (監査 K21): 旧 "pixel"。ピクセルの単位は px に統一
             this.numericBoxPixelHeight.HeaderBackColor = System.Drawing.SystemColors.Control;
             this.numericBoxPixelHeight.HeaderText = "Height";
             this.numericBoxPixelHeight.Location = new System.Drawing.Point(7, 46);
@@ -164,7 +164,7 @@
             // 
             this.numericBoxFootY.BackColor = System.Drawing.SystemColors.Control;
             this.numericBoxFootY.FooterBackColor = System.Drawing.SystemColors.Control;
-            this.numericBoxFootY.FooterText = "pix";
+            this.numericBoxFootY.FooterText = "px"; // 261105Cl 変更 (監査 K21): 旧 "pix"。ピクセルの単位は px に統一
             this.numericBoxFootY.HeaderBackColor = System.Drawing.SystemColors.Control;
             this.numericBoxFootY.HeaderText = "y";
             this.numericBoxFootY.Location = new System.Drawing.Point(147, 72);
@@ -188,7 +188,7 @@
             // 
             this.numericBoxFootX.BackColor = System.Drawing.SystemColors.Control;
             this.numericBoxFootX.FooterBackColor = System.Drawing.SystemColors.Control;
-            this.numericBoxFootX.FooterText = "pix";
+            this.numericBoxFootX.FooterText = "px"; // 261105Cl 変更 (監査 K21): 旧 "pix"。ピクセルの単位は px に統一
             this.numericBoxFootX.HeaderBackColor = System.Drawing.SystemColors.Control;
             this.numericBoxFootX.HeaderText = "x";
             this.numericBoxFootX.Location = new System.Drawing.Point(53, 72);
