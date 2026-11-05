@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32721.290
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crystallography.Controls", "Crystallography.Controls\Crystallography.Controls.csproj", "{9146B807-6430-487A-AF4A-445A027D25D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crystallography.Controls", "Crystallography.Controls.csproj", "{9146B807-6430-487A-AF4A-445A027D25D2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crystallography", "..\Crystallography\Crystallography\Crystallography.csproj", "{7A2E2FF5-0BFE-4AF4-A653-E51770C78478}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crystallography", "..\Crystallography\Crystallography.csproj", "{7A2E2FF5-0BFE-4AF4-A653-E51770C78478}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
