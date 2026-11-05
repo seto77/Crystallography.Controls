@@ -365,10 +365,30 @@ public partial class CrystalControl : UserControlBase
     }
     #endregion
 
-    public void ReadCrystal(string filename)
+    //public void ReadCrystal(string filename) // 261105Cl 変更前
+    //{
+    //    try { Crystal = ConvertCrystalData.ConvertToCrystal(filename); }
+    //    catch (Exception ex) { if (AssemblyState.IsDebug) MessageBox.Show(ex.ToString()); }
+    //}
+    /// <summary>CIF・AMC のファイルから結晶を読む。261105Cl 変更 (監査 #28): 読めなければ今の結晶はそのまま (以前は黙って null を入れ、
+    /// その後の回転などで例外になっていた)。showError なら、読めなかったことを画面に出す (マクロからの呼び出しでは出さない)</summary>
+    /// <returns>261105Cl 追加: 読めたら true</returns>
+    public bool ReadCrystal(string filename, bool showError = false)
     {
-        try { Crystal = ConvertCrystalData.ConvertToCrystal(filename); }
+        Crystal c = null;
+        try { c = ConvertCrystalData.ConvertToCrystal(filename); }
         catch (Exception ex) { if (AssemblyState.IsDebug) MessageBox.Show(ex.ToString()); }
+        if (c == null)
+        {
+            if (showError)
+                MessageBox.Show(System.Globalization.CultureInfo.CurrentUICulture.Name == "ja"
+                    ? $"{System.IO.Path.GetFileName(filename)} から結晶を読み込めませんでした。今の結晶はそのままです。"
+                    : $"Could not read a crystal from {System.IO.Path.GetFileName(filename)}. The current crystal is unchanged.",
+                    Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Warning); // 共有の部品なので題はアプリ名
+            return false;
+        }
+        Crystal = c;
+        return true;
     }
 
     #region ドラッグドロップ
@@ -376,7 +396,8 @@ public partial class CrystalControl : UserControlBase
     {
         var fileName = (string[])e.Data.GetData(DataFormats.FileDrop, false);
         if (fileName.Length == 1)
-            ReadCrystal(fileName[0]);
+            //ReadCrystal(fileName[0]); // 261105Cl 変更前
+            ReadCrystal(fileName[0], showError: true); // 261105Cl 変更
     }
 
     private void FormCrystal_DragEnter(object sender, DragEventArgs e) =>
@@ -583,7 +604,8 @@ public partial class CrystalControl : UserControlBase
     {
         var dlg = new OpenFileDialog { Filter = " *.cif; *.amc | *.cif;*.amc" };
         if (dlg.ShowDialog() == DialogResult.OK)
-            ReadCrystal(dlg.FileName);
+            //ReadCrystal(dlg.FileName); // 261105Cl 変更前
+            ReadCrystal(dlg.FileName, showError: true); // 261105Cl 変更
     }
 
     public void exportThisCrystalAsCIFToolStripMenuItem_Click(object sender, EventArgs e)
