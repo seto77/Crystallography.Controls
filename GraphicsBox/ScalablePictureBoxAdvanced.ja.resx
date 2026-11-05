@@ -179,7 +179,7 @@ Cold-Warm / Spectrum / Fire) を選択します。
   </data>
   <data name="label.ToolTip" xml:space="preserve">
     <value>カーソル位置 (画像座標 X, Y) と、グレースケール
-画像ではカーソル下の生の画素値を表示します。</value>
+画像ではカーソル下の生のピクセル値を表示します。</value>
   </data>
   <data name="labelResolution.ToolTip" xml:space="preserve">
     <value>現在の画像の表示倍率 (ズーム倍率) を表示し
@@ -192,8 +192,8 @@ Cold-Warm / Spectrum / Fire) を選択します。
   </data>
   <data name="numericBoxDustScratchesThreshold.ToolTip" xml:space="preserve">
     <value>Dust &amp; Scratches のしきい値 (0〜10) を設定します。
-近傍との差がこの値を超える画素だけを欠陥として置換し
-ます。小さいほど多くの画素が除去対象になります。</value>
+近傍との差がこの値を超えるピクセルだけを欠陥として置換し
+ます。小さいほど多くのピクセルが除去対象になります。</value>
   </data>
   <data name="numericBoxGaussianFWHM.ToolTip" xml:space="preserve">
     <value>ガウシアンぼかしの幅を FWHM (Full Width at Half
@@ -205,12 +205,12 @@ Maximum = 半値全幅) でピクセル単位 (0〜100 px)
 フィルタの処理経過時間などのメッセージを表示します。</value>
   </data>
   <data name="trackBarAdvancedMaximum.ToolTip" xml:space="preserve">
-    <value>強度の上限を設定します。これを超える画素値は白
-(最大輝度) に飽和します。Min. スライダと合わせ
+    <value>強度の上限を設定します。これを超えるピクセル値は白
+(最大の明るさ) に飽和します。Min. スライダと合わせ
 て表示の明るさ・コントラスト範囲を決めます。</value>
   </data>
   <data name="trackBarAdvancedMinimum.ToolTip" xml:space="preserve">
-    <value>強度の下限を設定します。これを下回る画素値は
+    <value>強度の下限を設定します。これを下回るピクセル値は
 黒につぶれます。Max. スライダと合わせて
 表示の明るさ・コントラスト範囲を決めます。</value>
   </data>
@@ -221,13 +221,13 @@ Maximum = 半値全幅) でピクセル単位 (0〜100 px)
     <value>現在の画像の表示倍率 (Magnification = 倍率) を表示します。</value>
   </data>
   <data name="label2.ToolTip" xml:space="preserve">
-    <value>強度の下限を設定します。これを下回る画素値は
+    <value>強度の下限を設定します。これを下回るピクセル値は
 黒につぶれます。Max. スライダと合わせて
 表示の明るさ・コントラスト範囲を決めます。</value>
   </data>
   <data name="label3.ToolTip" xml:space="preserve">
-    <value>強度の上限を設定します。これを超える画素値は白
-(最大輝度) に飽和します。Min. スライダと合わせ
+    <value>強度の上限を設定します。これを超えるピクセル値は白
+(最大の明るさ) に飽和します。Min. スライダと合わせ
 て表示の明るさ・コントラスト範囲を決めます。</value>
   </data>
   <data name="label5.ToolTip" xml:space="preserve">

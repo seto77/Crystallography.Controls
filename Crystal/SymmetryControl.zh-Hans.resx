@@ -235,4 +235,13 @@ nm；用单位选择器切换）。</value>
     <value>c 当前的长度单位（Å 或
 nm；用单位选择器切换）。</value>
   </data>
+  <data name="comboBoxCrystalSystem.Items4" xml:space="preserve">
+    <value>四方</value>
+  </data>
+  <data name="comboBoxCrystalSystem.Items5" xml:space="preserve">
+    <value>三方</value>
+  </data>
+  <data name="comboBoxCrystalSystem.Items6" xml:space="preserve">
+    <value>六方</value>
+  </data>
 </root>

@@ -198,7 +198,8 @@ public partial class FormBeamInteraction : FormBase
         "Graph.Axis.ImfpNm" => Loc("IMFP (nm)", "非弾性MFP (nm)"),
         "Graph.Axis.MuCmInv" => "µ (cm⁻¹)",
         "Graph.Axis.MuRhoCm2G" => "µ/ρ (cm²/g)",
-        "Graph.Axis.Normalized" => Loc("Normalized", "正規化"),
+        //"Graph.Axis.Normalized" => Loc("Normalized", "正規化"), // 261105Cl 変更前
+        "Graph.Axis.Normalized" => Loc("Normalized", "規格化"), // 261105Cl 変更 (作者決定 K1-A9: normalize = 規格化)
         "Graph.Axis.Q.AngstromInv" => "Q = 4π·sinθ/λ (Å⁻¹)",
         "Graph.Axis.Q.NmInv" => "Q = 4π·sinθ/λ (nm⁻¹)",
         "Graph.Axis.RangeCsdaMicron" => Loc("Range CSDA (µm)", "飛程 CSDA (µm)"),
@@ -221,7 +222,8 @@ public partial class FormBeamInteraction : FormBase
         "Graph.Label.Mfp" => "MFP:",
         "Graph.Label.Mu" => "µ:",
         "Graph.Label.MuRho" => "µ/ρ:",
-        "Graph.Label.Normalized" => Loc("norm:", "正規化:"),
+        //"Graph.Label.Normalized" => Loc("norm:", "正規化:"), // 261105Cl 変更前
+        "Graph.Label.Normalized" => Loc("norm:", "規格化:"), // 261105Cl 変更 (作者決定 K1-A9)
         "Graph.Label.Q" => "Q:",
         "Graph.Label.Range" => Loc("Range:", "飛程:"),
         "Graph.Label.S" => "s:",

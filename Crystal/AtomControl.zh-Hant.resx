@@ -86,7 +86,7 @@
 誤差</value>
   </data>
   <data name="tabPageDebyeWaller.Text" xml:space="preserve">
-    <value>德拜-沃勒因子</value>
+    <value>原子位移 (B)</value>
   </data>
   <data name="buttonEditIsotopeAbundance.Text" xml:space="preserve">
     <value>編輯</value>
@@ -209,7 +209,7 @@ B = 8π²·U，其中數值越大表示
 數值會自動換算。</value>
   </data>
   <data name="tabPageDebyeWaller.ToolTip" xml:space="preserve">
-    <value>德拜-沃勒因子的設定分頁</value>
+    <value>原子位移參數 (B 或 U) 的設定分頁</value>
   </data>
   <data name="comboBoxScatteringFactorElectron.ToolTip" xml:space="preserve">
     <value>選擇用於此原子的電子繞射/影像模擬的
@@ -239,8 +239,8 @@ X射線散射因子條目 (離子荷電狀態與
   </data>
   <data name="buttonApplyToSameElement.ToolTip" xml:space="preserve">
     <value>將目前的設定 (外觀分頁上的外觀，
-或德拜-沃勒因子分頁上的德拜-沃勒/
-位移參數) 複製到同一元素的
+或原子位移 (B) 分頁上的
+原子位移參數) 複製到同一元素的
 所有原子。</value>
   </data>
   <data name="buttonAddAtom.ToolTip" xml:space="preserve">
@@ -250,9 +250,9 @@ X射線散射因子條目 (離子荷電狀態與
     <value>以下方的原子取代所選原子</value>
   </data>
   <data name="buttonApplyToAllElements.ToolTip" xml:space="preserve">
-    <value>將目前的德拜-沃勒 (原子位移)
-參數套用至清單中的每個原子
-(於德拜-沃勒因子分頁可使用)。</value>
+    <value>將目前的原子位移參數
+套用至清單中的每個原子
+(於原子位移 (B) 分頁可使用)。</value>
   </data>
   <data name="buttonAtomUp.ToolTip" xml:space="preserve">
     <value>將所選原子上移</value>

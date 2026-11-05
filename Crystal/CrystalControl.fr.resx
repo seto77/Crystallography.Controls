@@ -87,7 +87,7 @@
     <value>Infos atome</value>
   </data>
   <data name="resetToolStripMenuItem.Text" xml:space="preserve">
-    <value>Mettre les facteurs de Debye-Waller à zéro</value>
+    <value>Mettre les paramètres de déplacement atomique à zéro</value>
   </data>
   <data name="tabPageBondsPolyhedra.Text" xml:space="preserve">
     <value>Liaisons &amp; polyèdres</value>
@@ -220,7 +220,7 @@ numéro de Hermann–Mauguin).</value>
     <value>Constantes de maille, symétrie et autres informations de base</value>
   </data>
   <data name="resetToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>Mettre à zéro le facteur de Debye–Waller de chaque atome
+    <value>Mettre à zéro le paramètre de déplacement atomique (B ou U) de chaque atome
 (atténuation de l'intensité due à la vibration thermique).</value>
   </data>
   <data name="tabPageAtom.ToolTip" xml:space="preserve">

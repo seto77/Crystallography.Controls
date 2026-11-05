@@ -235,4 +235,13 @@ nm. 단위 선택기로 전환).</value>
     <value>c의 현재 길이 단위 (Å 또는
 nm. 단위 선택기로 전환).</value>
   </data>
+  <data name="comboBoxCrystalSystem.Items4" xml:space="preserve">
+    <value>정방정계</value>
+  </data>
+  <data name="comboBoxCrystalSystem.Items5" xml:space="preserve">
+    <value>삼방정계</value>
+  </data>
+  <data name="comboBoxCrystalSystem.Items6" xml:space="preserve">
+    <value>육방정계</value>
+  </data>
 </root>

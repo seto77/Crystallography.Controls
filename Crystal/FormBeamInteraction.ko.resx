@@ -386,4 +386,7 @@ Waasmaier-Kirfel(1995)의 매개변수화(5개의 가우스 함수와 상수항�
   <data name="colSfxModel.HeaderText" xml:space="preserve">
     <value>모델</value>
   </data>
+  <data name="checkBoxDebyeWaller.Text" xml:space="preserve">
+    <value>원자 변위 (B)</value>
+  </data>
 </root>

@@ -127,7 +127,8 @@
             this.numericBoxPixelSize.FooterBackColor = System.Drawing.SystemColors.Control;
             this.numericBoxPixelSize.FooterText = "mm";
             this.numericBoxPixelSize.HeaderBackColor = System.Drawing.SystemColors.Control;
-            this.numericBoxPixelSize.HeaderText = "Pix. size";
+            //this.numericBoxPixelSize.HeaderText = "Pix. size"; // 261105Cl 変更前
+            this.numericBoxPixelSize.HeaderText = "Pixel size"; // 261105Cl 変更 (作者決定 K1-A6)
             this.numericBoxPixelSize.Location = new System.Drawing.Point(7, 71);
             this.numericBoxPixelSize.Margin = new System.Windows.Forms.Padding(0);
             this.numericBoxPixelSize.MaximumSize = new System.Drawing.Size(1000, 25);

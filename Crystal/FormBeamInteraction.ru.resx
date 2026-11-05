@@ -395,4 +395,7 @@ F(q)+S(q) слева. Доступна только в режиме f(s).
   <data name="colSfxModel.HeaderText" xml:space="preserve">
     <value>модель</value>
   </data>
+  <data name="checkBoxDebyeWaller.Text" xml:space="preserve">
+    <value>Смещение (B)</value>
+  </data>
 </root>

@@ -389,4 +389,7 @@ par défaut ; elle couvre les ions comme les atomes neutres sur Z = 1-98.</value
   <data name="colSfxModel.HeaderText" xml:space="preserve">
     <value>modèle</value>
   </data>
+  <data name="checkBoxDebyeWaller.Text" xml:space="preserve">
+    <value>Déplacement (B)</value>
+  </data>
 </root>

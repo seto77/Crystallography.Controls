@@ -86,7 +86,7 @@
 погрешность</value>
   </data>
   <data name="tabPageDebyeWaller.Text" xml:space="preserve">
-    <value>Фактор Дебая–Валлера</value>
+    <value>Смещение (B)</value>
   </data>
   <data name="buttonEditIsotopeAbundance.Text" xml:space="preserve">
     <value>Правка</value>
@@ -209,7 +209,7 @@
 обозначения значения пересчитываются.</value>
   </data>
   <data name="tabPageDebyeWaller.ToolTip" xml:space="preserve">
-    <value>Вкладка настроек фактора Дебая–Валлера</value>
+    <value>Вкладка настроек параметров атомного смещения (B или U)</value>
   </data>
   <data name="comboBoxScatteringFactorElectron.ToolTip" xml:space="preserve">
     <value>Выберите запись фактора рассеяния электронов
@@ -241,8 +241,8 @@
   </data>
   <data name="buttonApplyToSameElement.ToolTip" xml:space="preserve">
     <value>Скопировать текущие настройки (внешний вид на
-вкладке Appearance или параметры Дебая–Валлера /
-смещения на вкладке Debye–Waller) ко
+вкладке Appearance или параметры атомного смещения
+на вкладке Смещение (B)) ко
 всем атомам того же элемента.</value>
   </data>
   <data name="buttonAddAtom.ToolTip" xml:space="preserve">
@@ -252,9 +252,9 @@
     <value>Заменить выбранный атом атомом, указанным ниже</value>
   </data>
   <data name="buttonApplyToAllElements.ToolTip" xml:space="preserve">
-    <value>Применить текущие параметры Дебая–Валлера (атомного
-смещения) ко всем атомам в
-списке (доступно на вкладке Debye–Waller).</value>
+    <value>Применить текущие параметры атомного
+смещения ко всем атомам в
+списке (доступно на вкладке Смещение (B)).</value>
   </data>
   <data name="buttonAtomUp.ToolTip" xml:space="preserve">
     <value>Переместить выбранный атом вверх</value>

@@ -235,4 +235,13 @@ nm ; changez avec le sélecteur d'unité).</value>
     <value>Unité de longueur actuelle pour c (Å ou
 nm ; changez avec le sélecteur d'unité).</value>
   </data>
+  <data name="comboBoxCrystalSystem.Items4" xml:space="preserve">
+    <value>quadratique</value>
+  </data>
+  <data name="comboBoxCrystalSystem.Items5" xml:space="preserve">
+    <value>trigonal</value>
+  </data>
+  <data name="comboBoxCrystalSystem.Items6" xml:space="preserve">
+    <value>hexagonal</value>
+  </data>
 </root>

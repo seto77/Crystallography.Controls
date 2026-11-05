@@ -86,7 +86,7 @@
 误差</value>
   </data>
   <data name="tabPageDebyeWaller.Text" xml:space="preserve">
-    <value>德拜-沃勒因子</value>
+    <value>原子位移 (B)</value>
   </data>
   <data name="buttonEditIsotopeAbundance.Text" xml:space="preserve">
     <value>编辑</value>
@@ -209,7 +209,7 @@ B = 8π²·U，其中数值
 数值会自动换算。</value>
   </data>
   <data name="tabPageDebyeWaller.ToolTip" xml:space="preserve">
-    <value>德拜-沃勒因子的设置选项卡</value>
+    <value>原子位移参数 (B 或 U) 的设置选项卡</value>
   </data>
   <data name="comboBoxScatteringFactorElectron.ToolTip" xml:space="preserve">
     <value>选择用于该原子电子衍射/像
@@ -239,8 +239,8 @@ B = 8π²·U，其中数值
   </data>
   <data name="buttonApplyToSameElement.ToolTip" xml:space="preserve">
     <value>将当前设置（外观选项卡上的
-外观，或德拜-沃勒因子选项卡上的
-德拜-沃勒/位移参数）
+外观，或原子位移 (B) 选项卡上的
+原子位移参数）
 复制到同一元素的所有原子。</value>
   </data>
   <data name="buttonAddAtom.ToolTip" xml:space="preserve">
@@ -250,9 +250,9 @@ B = 8π²·U，其中数值
     <value>用下方的原子替换所选原子</value>
   </data>
   <data name="buttonApplyToAllElements.ToolTip" xml:space="preserve">
-    <value>将当前的德拜-沃勒（原子
-位移）参数应用于列表中的每个原子
-（在德拜-沃勒因子选项卡中可用）。</value>
+    <value>将当前的原子位移参数
+应用于列表中的每个原子
+（在原子位移 (B) 选项卡中可用）。</value>
   </data>
   <data name="buttonAtomUp.ToolTip" xml:space="preserve">
     <value>将所选原子上移</value>

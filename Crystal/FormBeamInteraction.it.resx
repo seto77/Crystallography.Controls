@@ -395,4 +395,7 @@ predefinita e copre gli ioni oltre agli atomi neutri su Z = 1-98.</value>
   <data name="colSfxModel.HeaderText" xml:space="preserve">
     <value>modello</value>
   </data>
+  <data name="checkBoxDebyeWaller.Text" xml:space="preserve">
+    <value>Spostamento (B)</value>
+  </data>
 </root>

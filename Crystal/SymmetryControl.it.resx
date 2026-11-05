@@ -235,4 +235,13 @@ nm; cambiabile con il selettore di unità).</value>
     <value>Unità di lunghezza corrente per c (Å o
 nm; cambiabile con il selettore di unità).</value>
   </data>
+  <data name="comboBoxCrystalSystem.Items4" xml:space="preserve">
+    <value>tetragonale</value>
+  </data>
+  <data name="comboBoxCrystalSystem.Items5" xml:space="preserve">
+    <value>trigonale</value>
+  </data>
+  <data name="comboBoxCrystalSystem.Items6" xml:space="preserve">
+    <value>esagonale</value>
+  </data>
 </root>

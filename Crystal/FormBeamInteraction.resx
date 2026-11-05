@@ -1610,7 +1610,7 @@ choice of model affects the result.</value>
     <value>2</value>
   </data>
   <data name="checkBoxDebyeWaller.Text" xml:space="preserve">
-    <value>Debye-Waller</value>
+    <value>Atomic displacement (B)</value>
   </data>
   <data name="checkBoxDebyeWaller.ToolTip" xml:space="preserve">
     <value>Multiply the scattering-factor curves by the Debye-Waller factor exp(-B*s^2), which

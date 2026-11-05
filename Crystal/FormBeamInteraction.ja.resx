@@ -285,13 +285,13 @@ fe(s)。
     <value>散乱因子の曲線に Debye-Waller 因子 exp(-B·s²) を掛けます。これは原子の熱振動を取り入れる
 項です。
 振動する原子はぼやけるため、見かけの散乱能は高角ほど速く減衰します。
-B は結晶データの等方性変位パラメータ(Biso)です。オフのとき原子は静止として扱われます。</value>
+B は結晶データの等方性の原子変位パラメータ (Biso) です。オフのとき原子は静止として扱われます。</value>
   </data>
   <data name="numericBoxAttenThickness.HeaderText" xml:space="preserve">
     <value>厚さ t</value>
   </data>
   <data name="numericBoxAttenThickness.ToolTip" xml:space="preserve">
-    <value>X線の透過率計算 T = exp(-µ·t) に使う試料厚です(µ は線吸収係数、t がこの厚み)。
+    <value>X線の透過率計算 T = exp(-µ·t) に使う試料厚です(µ は線吸収係数、t がこの厚さ)。
 表の「Transmission (t = ...)」の値と、透過率対エネルギー曲線に反映されます。
 単位: µm(マイクロメートル)。</value>
   </data>
@@ -314,7 +314,7 @@ B は結晶データの等方性変位パラメータ(Biso)です。オフのと
     <value>元素</value>
   </data>
   <data name="radioButtonElecAll.Text" xml:space="preserve">
-    <value>全て (正規化)</value>
+    <value>全て (規格化)</value>
   </data>
   <data name="radioButtonElecSigma.Text" xml:space="preserve">
     <value>σ 弾性 (nm²)</value>
@@ -392,7 +392,7 @@ B は結晶データの等方性変位パラメータ(Biso)です。オフのと
 適切な試料厚を決める目安になります。</value>
   </data>
   <data name="radioButtonElecAll.ToolTip" xml:space="preserve">
-    <value>下の3曲線を各最大で正規化して重ね、形を1枚で比較できます(絶対値は表で確認)。</value>
+    <value>下の3曲線を各最大で規格化して重ね、形を1枚で比較できます(絶対値は表で確認)。</value>
   </data>
   <data name="radioButtonElecSigma.ToolTip" xml:space="preserve">
     <value>σ 弾性 — 弾性散乱断面積: 原子1個が電子を曲げる起こりやすさ
@@ -487,5 +487,8 @@ Waasmaier-Kirfel (1995) のパラメータ化 (5 個のガウス関数と定数�
   </data>
   <data name="colSfxModel.HeaderText" xml:space="preserve">
     <value>モデル</value>
+  </data>
+  <data name="checkBoxDebyeWaller.Text" xml:space="preserve">
+    <value>原子変位 (B)</value>
   </data>
 </root>

@@ -1275,11 +1275,11 @@ for the same Hermann–Mauguin number).</value>
     <value>246, 22</value>
   </data>
   <data name="resetToolStripMenuItem.Text" xml:space="preserve">
-    <value>Set Debye-Waller Factors to Zero</value>
+    <value>Set atomic displacement parameters to zero</value>
   </data>
   <data name="resetToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>Set every atom's Debye–Waller factor
-(thermal-vibration intensity damping) to zero.</value>
+    <value>Set every atom's atomic displacement parameter
+(B or U; damps the intensity by thermal vibration) to zero.</value>
   </data>
   <data name="tabPageBondsPolyhedra.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 26</value>

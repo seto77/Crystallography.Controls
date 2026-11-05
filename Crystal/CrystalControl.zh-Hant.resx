@@ -87,7 +87,7 @@
     <value>原子資訊</value>
   </data>
   <data name="resetToolStripMenuItem.Text" xml:space="preserve">
-    <value>將德拜-沃勒因子設為零</value>
+    <value>將原子位移參數設為 0</value>
   </data>
   <data name="tabPageBondsPolyhedra.Text" xml:space="preserve">
     <value>鍵 &amp; 多面體</value>
@@ -218,7 +218,7 @@
     <value>晶胞常數、對稱性及其他基本資訊</value>
   </data>
   <data name="resetToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>將所有原子的德拜-沃勒因子（因熱
+    <value>將所有原子的原子位移參數 (B 或 U)（因熱
 振動造成的繞射強度衰減）設為零。</value>
   </data>
   <data name="tabPageAtom.ToolTip" xml:space="preserve">

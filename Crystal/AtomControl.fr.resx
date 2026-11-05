@@ -86,7 +86,7 @@ l'erreur</value>
 l'erreur</value>
   </data>
   <data name="tabPageDebyeWaller.Text" xml:space="preserve">
-    <value>Facteur de Debye-Waller</value>
+    <value>Déplacement (B)</value>
   </data>
   <data name="buttonEditIsotopeAbundance.Text" xml:space="preserve">
     <value>Modifier</value>
@@ -203,7 +203,7 @@ dimension (= 2π²·a*_i·a*_j·U_ij). Changer de
 notation convertit les valeurs.</value>
   </data>
   <data name="tabPageDebyeWaller.ToolTip" xml:space="preserve">
-    <value>Onglet de réglage du facteur de Debye-Waller</value>
+    <value>Onglet de réglage des paramètres de déplacement atomique (B ou U)</value>
   </data>
   <data name="comboBoxScatteringFactorElectron.ToolTip" xml:space="preserve">
     <value>Sélectionne l'entrée du facteur de diffusion des électrons
@@ -235,8 +235,8 @@ pour le calcul de diffraction des rayons X de cet atome.</value>
   </data>
   <data name="buttonApplyToSameElement.ToolTip" xml:space="preserve">
     <value>Copie les réglages actuels (apparence sur
-l'onglet Apparence, ou paramètres de Debye–Waller /
-de déplacement sur l'onglet Debye–Waller)
+l'onglet Apparence, ou paramètres de déplacement atomique
+sur l'onglet Déplacement (B))
 vers tous les atomes du même élément.</value>
   </data>
   <data name="buttonAddAtom.ToolTip" xml:space="preserve">
@@ -246,9 +246,9 @@ vers tous les atomes du même élément.</value>
     <value>Remplace l'atome sélectionné par l'atome ci-dessous</value>
   </data>
   <data name="buttonApplyToAllElements.ToolTip" xml:space="preserve">
-    <value>Applique les paramètres de Debye–Waller (déplacement
-atomique) actuels à chaque atome de la
-liste (disponible sur l'onglet Debye–Waller).</value>
+    <value>Applique les paramètres de déplacement atomique
+actuels à chaque atome de la
+liste (disponible sur l'onglet Déplacement (B)).</value>
   </data>
   <data name="buttonAtomUp.ToolTip" xml:space="preserve">
     <value>Monte l'atome sélectionné</value>

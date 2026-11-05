@@ -86,7 +86,7 @@ error</value>
 error</value>
   </data>
   <data name="tabPageDebyeWaller.Text" xml:space="preserve">
-    <value>Factor de Debye-Waller</value>
+    <value>Desplazamiento (B)</value>
   </data>
   <data name="buttonEditIsotopeAbundance.Text" xml:space="preserve">
     <value>Editar</value>
@@ -206,7 +206,7 @@ adimensionales (= 2π²·a*_i·a*_j·U_ij). Al cambiar
 la notación, los valores se convierten.</value>
   </data>
   <data name="tabPageDebyeWaller.ToolTip" xml:space="preserve">
-    <value>Pestaña de configuración del factor de Debye-Waller</value>
+    <value>Pestaña de configuración de los parámetros de desplazamiento atómico (B o U)</value>
   </data>
   <data name="comboBoxScatteringFactorElectron.ToolTip" xml:space="preserve">
     <value>Selecciona la entrada del factor de dispersión de electrones
@@ -238,8 +238,8 @@ para el cálculo de difracción de rayos X de este átomo.</value>
   </data>
   <data name="buttonApplyToSameElement.ToolTip" xml:space="preserve">
     <value>Copia la configuración actual (apariencia en
-la pestaña Apariencia, o parámetros de Debye–Waller /
-desplazamiento en la pestaña Factor de Debye-Waller)
+la pestaña Apariencia, o parámetros de desplazamiento atómico
+en la pestaña Desplazamiento (B))
 a todos los átomos del mismo elemento.</value>
   </data>
   <data name="buttonAddAtom.ToolTip" xml:space="preserve">
@@ -249,9 +249,9 @@ a todos los átomos del mismo elemento.</value>
     <value>Reemplaza el átomo seleccionado por el átomo de abajo</value>
   </data>
   <data name="buttonApplyToAllElements.ToolTip" xml:space="preserve">
-    <value>Aplica los parámetros actuales de Debye–Waller (desplazamiento
-atómico) a todos los átomos de la lista
-(disponible en la pestaña Debye–Waller).</value>
+    <value>Aplica los parámetros actuales de desplazamiento
+atómico a todos los átomos de la lista
+(disponible en la pestaña Desplazamiento (B)).</value>
   </data>
   <data name="buttonAtomUp.ToolTip" xml:space="preserve">
     <value>Sube el átomo seleccionado</value>

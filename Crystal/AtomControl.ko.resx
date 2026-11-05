@@ -86,7 +86,7 @@
 표시</value>
   </data>
   <data name="tabPageDebyeWaller.Text" xml:space="preserve">
-    <value>디바이-월러 인자</value>
+    <value>원자 변위 (B)</value>
   </data>
   <data name="buttonEditIsotopeAbundance.Text" xml:space="preserve">
     <value>편집</value>
@@ -208,7 +208,7 @@ B = 8π²·U이며, 값이 클수록 열 진동이 강함을
 입니다. 표기를 바꾸면 값이 환산됩니다.</value>
   </data>
   <data name="tabPageDebyeWaller.ToolTip" xml:space="preserve">
-    <value>디바이-월러 인자 설정 탭</value>
+    <value>원자 변위 파라미터 (B 또는 U) 설정 탭</value>
   </data>
   <data name="comboBoxScatteringFactorElectron.ToolTip" xml:space="preserve">
     <value>이 원자의 전자 회절/이미지
@@ -240,7 +240,7 @@ B = 8π²·U이며, 값이 클수록 열 진동이 강함을
   </data>
   <data name="buttonApplyToSameElement.ToolTip" xml:space="preserve">
     <value>현재 설정 (외관 탭에서는 외관 설정,
-디바이-월러 인자 탭에서는 디바이-월러/변위
+원자 변위 (B) 탭에서는 원자 변위
 파라미터)을 같은 원소의 모든 원자에
 복사합니다.</value>
   </data>
@@ -251,9 +251,9 @@ B = 8π²·U이며, 값이 클수록 열 진동이 강함을
     <value>선택한 원자를 아래의 원자로 교체합니다</value>
   </data>
   <data name="buttonApplyToAllElements.ToolTip" xml:space="preserve">
-    <value>현재의 디바이-월러 (원자 변위) 파라미터를
+    <value>현재의 원자 변위 파라미터를
 목록의 모든 원자에 적용합니다
-(디바이-월러 인자 탭에서 사용 가능).</value>
+(원자 변위 (B) 탭에서 사용 가능).</value>
   </data>
   <data name="buttonAtomUp.ToolTip" xml:space="preserve">
     <value>선택한 원자를 위로 이동합니다</value>

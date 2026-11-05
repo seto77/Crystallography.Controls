@@ -198,11 +198,11 @@
     <value>原子位置と種類</value>
   </data>
   <data name="resetToolStripMenuItem.Text" xml:space="preserve">
-    <value>デバイワラー因子をゼロにする</value>
+    <value>原子変位パラメータを 0 にする</value>
   </data>
   <data name="resetToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>全原子の Debye-Waller 因子（熱振動によ
-る回折強度の減衰）をゼロに設定します。</value>
+    <value>全原子の原子変位パラメータ (B または U。熱振動によ
+る回折強度の減衰) をゼロに設定します。</value>
   </data>
   <data name="tabPageBondsPolyhedra.Text" xml:space="preserve">
     <value>多面体/結合描画設定</value>
@@ -605,5 +605,8 @@
   </data>
   <data name="buttonSymmetryInfo.Font" type="System.Drawing.Font, System.Drawing">
     <value>Yu Gothic UI, 9.75pt</value>
+  </data>
+  <data name="tabPageLatticePlane.Text" xml:space="preserve">
+    <value>格子面</value>
   </data>
 </root>

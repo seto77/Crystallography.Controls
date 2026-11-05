@@ -113,7 +113,7 @@
 スペクトル、またはグレースケール）。</value>
   </data>
   <data name="label1.ToolTip" xml:space="preserve">
-    <value>極点図に現在描画されている画素値の最大・最小を表示します。</value>
+    <value>極点図に現在描画されているピクセル値の最大・最小を表示します。</value>
   </data>
   <data name="numericBoxMax.ToolTip" xml:space="preserve">
     <value>極点図のカラースケールの上限値。これ以上の値は

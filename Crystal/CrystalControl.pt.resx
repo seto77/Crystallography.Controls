@@ -87,7 +87,7 @@
     <value>Info. de átomos</value>
   </data>
   <data name="resetToolStripMenuItem.Text" xml:space="preserve">
-    <value>Zerar os fatores de Debye-Waller</value>
+    <value>Zerar os parâmetros de deslocamento atômico</value>
   </data>
   <data name="tabPageBondsPolyhedra.Text" xml:space="preserve">
     <value>Ligações &amp; Poliedros</value>
@@ -220,7 +220,7 @@ para o mesmo número de Hermann–Mauguin).</value>
     <value>Constantes de célula, simetria e outras informações básicas</value>
   </data>
   <data name="resetToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>Definir como zero o fator de Debye–Waller de
+    <value>Definir como zero o parâmetro de deslocamento atômico (B ou U) de
 cada átomo (atenuação da intensidade pela vibração térmica).</value>
   </data>
   <data name="tabPageAtom.ToolTip" xml:space="preserve">

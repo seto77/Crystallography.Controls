@@ -387,4 +387,7 @@ s) 模式下可用。
   <data name="colSfxModel.HeaderText" xml:space="preserve">
     <value>模型</value>
   </data>
+  <data name="checkBoxDebyeWaller.Text" xml:space="preserve">
+    <value>原子位移 (B)</value>
+  </data>
 </root>

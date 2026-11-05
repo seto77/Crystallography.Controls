@@ -235,4 +235,13 @@ nm; переключается селектором единиц).</value>
     <value>Текущая единица длины для c (Å или
 nm; переключается селектором единиц).</value>
   </data>
+  <data name="comboBoxCrystalSystem.Items4" xml:space="preserve">
+    <value>тетрагональная</value>
+  </data>
+  <data name="comboBoxCrystalSystem.Items5" xml:space="preserve">
+    <value>тригональная</value>
+  </data>
+  <data name="comboBoxCrystalSystem.Items6" xml:space="preserve">
+    <value>гексагональная</value>
+  </data>
 </root>

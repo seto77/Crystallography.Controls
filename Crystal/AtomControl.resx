@@ -3332,10 +3332,10 @@ dimensionless for the anisotropic β of the B notation.</value>
     <value>1</value>
   </data>
   <data name="tabPageDebyeWaller.Text" xml:space="preserve">
-    <value>Debye-Waller Factor</value>
+    <value>Atomic displacement (B)</value>
   </data>
   <data name="tabPageDebyeWaller.ToolTip" xml:space="preserve">
-    <value>Settings tab for the Debye-Waller factor</value>
+    <value>Settings tab for the atomic displacement parameters (B or U)</value>
   </data>
   <data name="&gt;&gt;tabPageDebyeWaller.Name" xml:space="preserve">
     <value>tabPageDebyeWaller</value>
@@ -4543,9 +4543,9 @@ beside its sphere in the 3D structure view.</value>
   </data>
   <data name="buttonApplyToSameElement.ToolTip" xml:space="preserve">
     <value>Copy the current settings (appearance on
-the Appearance tab, or Debye–Waller /
-displacement parameters on the Debye–Waller
-tab) to all atoms of the same element.</value>
+the Appearance tab, or atomic displacement
+parameters on the Atomic displacement (B) tab)
+to all atoms of the same element.</value>
   </data>
   <data name="buttonApplyToSameElement.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -4683,9 +4683,9 @@ tab) to all atoms of the same element.</value>
     <value>Apply to all elements</value>
   </data>
   <data name="buttonApplyToAllElements.ToolTip" xml:space="preserve">
-    <value>Apply the current Debye–Waller (atomic
-displacement) parameters to every atom in
-the list (available on the Debye–Waller tab).</value>
+    <value>Apply the current atomic displacement
+parameters to every atom in the list
+(available on the Atomic displacement (B) tab).</value>
   </data>
   <data name="buttonApplyToAllElements.Visible" type="System.Boolean, mscorlib">
     <value>False</value>

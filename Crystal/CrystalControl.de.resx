@@ -87,7 +87,7 @@
     <value>Atominfo</value>
   </data>
   <data name="resetToolStripMenuItem.Text" xml:space="preserve">
-    <value>Debye-Waller-Faktoren auf null setzen</value>
+    <value>Atomare Auslenkungsparameter auf null setzen</value>
   </data>
   <data name="tabPageBondsPolyhedra.Text" xml:space="preserve">
     <value>Bindungen &amp; Polyeder</value>
@@ -223,7 +223,7 @@ für dieselbe Hermann–Mauguin-Nummer).</value>
     <value>Gitterkonstanten, Symmetrie und weitere Grundinformationen</value>
   </data>
   <data name="resetToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>Den Debye–Waller-Faktor jedes Atoms
+    <value>Den atomaren Auslenkungsparameter (B oder U) jedes Atoms
 (Dämpfung der Intensität durch thermische Schwingung) auf null setzen.</value>
   </data>
   <data name="tabPageAtom.ToolTip" xml:space="preserve">

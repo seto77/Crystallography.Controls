@@ -104,7 +104,7 @@
 表示</value>
   </data>
   <data name="tabPageDebyeWaller.Text" xml:space="preserve">
-    <value>デバイワラー因子</value>
+    <value>原子変位 (B)</value>
   </data>
   <data name="buttonEditIsotopeAbundance.Text" xml:space="preserve">
     <value>編集</value>
@@ -186,7 +186,7 @@
     <value>多重度</value>
   </data>
   <data name="wyckLetDataGridViewTextBoxColumn.HeaderText" xml:space="preserve">
-    <value>ワイコフ文字</value>
+    <value>ワイコフ記号</value>
   </data>
   <data name="siteSymDataGridViewTextBoxColumn.HeaderText" xml:space="preserve">
     <value>サイト対称性</value>
@@ -228,7 +228,7 @@
 です。表記を切り替えると値を換算します。</value>
   </data>
   <data name="tabPageDebyeWaller.ToolTip" xml:space="preserve">
-    <value>デバイ・ワラー因子の設定タブ</value>
+    <value>原子変位パラメータ (B または U) の設定タブ</value>
   </data>
   <data name="comboBoxScatteringFactorElectron.ToolTip" xml:space="preserve">
     <value>この原子の電子線回折・像シミュレーションに
@@ -247,7 +247,7 @@
   </data>
   <data name="buttonApplyToSameElement.ToolTip" xml:space="preserve">
     <value>現在の設定（Appearance タブでは外観、
-Debye–Waller タブでは原子変位パラメータ）
+原子変位 (B) タブでは原子変位パラメータ）
 を、同じ元素のすべての原子にコピーします。</value>
   </data>
   <data name="buttonAddAtom.ToolTip" xml:space="preserve">
@@ -257,9 +257,9 @@ Debye–Waller タブでは原子変位パラメータ）
     <value>選択された原子を下の原子で置換</value>
   </data>
   <data name="buttonApplyToAllElements.ToolTip" xml:space="preserve">
-    <value>現在のデバイ・ワーラー（原子変位）
-パラメータを、リスト中のすべての原子に
-適用します（Debye–Waller タブで使用）。</value>
+    <value>現在の原子変位パラメータを、
+リスト中のすべての原子に
+適用します（原子変位 (B) タブで使用）。</value>
   </data>
   <data name="buttonAtomUp.ToolTip" xml:space="preserve">
     <value>選択された原子を上に移動</value>
@@ -460,9 +460,9 @@ Biso または Uiso として表示されます。</value>
 組成を選んだ場合のみ有効）。</value>
   </data>
   <data name="checkBoxDetailsDebyeWallerError.ToolTip" xml:space="preserve">
-    <value>Debye–Waller 温度因子(熱振動による回折強度の
-減衰を表す変位パラメータ Biso/Uiso・異方性
-Bij/Uij)の誤差(標準偏差)入力欄を表示します。</value>
+    <value>原子変位パラメータ (熱振動による回折強度の
+減衰を表す Biso/Uiso・異方性 Bij/Uij) の
+誤差(標準偏差)入力欄を表示します。</value>
   </data>
   <data name="comboBoxNeutron.ToolTip" xml:space="preserve">
     <value>中性子の干渉性散乱長を、天然同位体存在比で求め

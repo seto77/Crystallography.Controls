@@ -86,7 +86,7 @@ Erro</value>
 Erro</value>
   </data>
   <data name="tabPageDebyeWaller.Text" xml:space="preserve">
-    <value>Fator de Debye-Waller</value>
+    <value>Deslocamento (B)</value>
   </data>
   <data name="buttonEditIsotopeAbundance.Text" xml:space="preserve">
     <value>Editar</value>
@@ -209,7 +209,7 @@ adimensionais (= 2π²·a*_i·a*_j·U_ij). Ao trocar
 a notação, os valores são convertidos.</value>
   </data>
   <data name="tabPageDebyeWaller.ToolTip" xml:space="preserve">
-    <value>Aba de configurações do fator de Debye-Waller</value>
+    <value>Aba de configurações dos parâmetros de deslocamento atômico (B ou U)</value>
   </data>
   <data name="comboBoxScatteringFactorElectron.ToolTip" xml:space="preserve">
     <value>Seleciona a entrada de fator de espalhamento de elétrons
@@ -241,8 +241,8 @@ para o cálculo de difração de raios X deste átomo.</value>
   </data>
   <data name="buttonApplyToSameElement.ToolTip" xml:space="preserve">
     <value>Copia as configurações atuais (aparência na
-aba Aparência, ou parâmetros de Debye–Waller /
-deslocamento na aba Debye–Waller)
+aba Aparência, ou parâmetros de deslocamento atômico
+na aba Deslocamento (B))
 para todos os átomos do mesmo elemento.</value>
   </data>
   <data name="buttonAddAtom.ToolTip" xml:space="preserve">
@@ -252,9 +252,9 @@ para todos os átomos do mesmo elemento.</value>
     <value>Substitui o átomo selecionado pelo átomo abaixo</value>
   </data>
   <data name="buttonApplyToAllElements.ToolTip" xml:space="preserve">
-    <value>Aplica os parâmetros atuais de Debye–Waller (deslocamento
-atômico) a cada átomo da lista
-(disponível na aba Debye–Waller).</value>
+    <value>Aplica os parâmetros atuais de deslocamento
+atômico a cada átomo da lista
+(disponível na aba Deslocamento (B)).</value>
   </data>
   <data name="buttonAtomUp.ToolTip" xml:space="preserve">
     <value>Move o átomo selecionado para cima</value>

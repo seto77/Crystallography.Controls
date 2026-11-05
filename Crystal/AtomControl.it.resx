@@ -86,7 +86,7 @@ errore</value>
 errore</value>
   </data>
   <data name="tabPageDebyeWaller.Text" xml:space="preserve">
-    <value>Fattore di Debye-Waller</value>
+    <value>Spostamento (B)</value>
   </data>
   <data name="buttonEditIsotopeAbundance.Text" xml:space="preserve">
     <value>Modifica</value>
@@ -206,7 +206,7 @@ adimensionali (= 2π²·a*_i·a*_j·U_ij). Cambiando
 notazione i valori vengono convertiti.</value>
   </data>
   <data name="tabPageDebyeWaller.ToolTip" xml:space="preserve">
-    <value>Scheda delle impostazioni per il fattore di Debye-Waller</value>
+    <value>Scheda delle impostazioni dei parametri di spostamento atomico (B o U)</value>
   </data>
   <data name="comboBoxScatteringFactorElectron.ToolTip" xml:space="preserve">
     <value>Seleziona la voce del fattore di diffusione elettronica
@@ -238,8 +238,8 @@ per il calcolo della diffrazione dei raggi X di questo atomo.</value>
   </data>
   <data name="buttonApplyToSameElement.ToolTip" xml:space="preserve">
     <value>Copia le impostazioni correnti (aspetto nella
-scheda Aspetto, oppure parametri di Debye–Waller /
-spostamento nella scheda Debye–Waller)
+scheda Aspetto, oppure parametri di spostamento atomico
+nella scheda Spostamento (B))
 su tutti gli atomi dello stesso elemento.</value>
   </data>
   <data name="buttonAddAtom.ToolTip" xml:space="preserve">
@@ -249,9 +249,9 @@ su tutti gli atomi dello stesso elemento.</value>
     <value>Sostituisce l'atomo selezionato con l'atomo sottostante</value>
   </data>
   <data name="buttonApplyToAllElements.ToolTip" xml:space="preserve">
-    <value>Applica i parametri di Debye–Waller (spostamento
-atomico) correnti a ogni atomo nell'elenco
-(disponibile nella scheda Debye–Waller).</value>
+    <value>Applica i parametri di spostamento
+atomico correnti a ogni atomo nell'elenco
+(disponibile nella scheda Spostamento (B)).</value>
   </data>
   <data name="buttonAtomUp.ToolTip" xml:space="preserve">
     <value>Sposta in alto l'atomo selezionato</value>

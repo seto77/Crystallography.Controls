@@ -86,7 +86,7 @@ anzeigen</value>
 anzeigen</value>
   </data>
   <data name="tabPageDebyeWaller.Text" xml:space="preserve">
-    <value>Debye-Waller-Faktor</value>
+    <value>Auslenkung (B)</value>
   </data>
   <data name="buttonEditIsotopeAbundance.Text" xml:space="preserve">
     <value>Bearbeiten</value>
@@ -209,7 +209,7 @@ Anisotrope Komponenten sind die dimensionslosen
 der Notation werden die Werte umgerechnet.</value>
   </data>
   <data name="tabPageDebyeWaller.ToolTip" xml:space="preserve">
-    <value>Einstellungs-Registerkarte für den Debye-Waller-Faktor</value>
+    <value>Einstellungs-Registerkarte für die atomaren Auslenkungsparameter (B oder U)</value>
   </data>
   <data name="comboBoxScatteringFactorElectron.ToolTip" xml:space="preserve">
     <value>Wählt den Eintrag für den Elektronen-Streufaktor
@@ -241,8 +241,8 @@ für die Röntgenbeugungsberechnung dieses Atoms verwendet wird.</value>
   </data>
   <data name="buttonApplyToSameElement.ToolTip" xml:space="preserve">
     <value>Kopiert die aktuellen Einstellungen (Darstellung auf
-der Registerkarte Appearance oder Debye-Waller-/
-Auslenkungsparameter auf der Registerkarte Debye-Waller)
+der Registerkarte Appearance oder atomare Auslenkungsparameter
+auf der Registerkarte Auslenkung (B))
 auf alle Atome desselben Elements.</value>
   </data>
   <data name="buttonAddAtom.ToolTip" xml:space="preserve">
@@ -252,9 +252,9 @@ auf alle Atome desselben Elements.</value>
     <value>Ersetzt das ausgewählte Atom durch das untenstehende Atom</value>
   </data>
   <data name="buttonApplyToAllElements.ToolTip" xml:space="preserve">
-    <value>Wendet die aktuellen Debye-Waller-Parameter (atomare
-Auslenkung) auf jedes Atom in der Liste an
-(verfügbar auf der Registerkarte Debye-Waller).</value>
+    <value>Wendet die aktuellen atomaren Auslenkungsparameter
+auf jedes Atom in der Liste an
+(verfügbar auf der Registerkarte Auslenkung (B)).</value>
   </data>
   <data name="buttonAtomUp.ToolTip" xml:space="preserve">
     <value>Verschiebt das ausgewählte Atom nach oben</value>

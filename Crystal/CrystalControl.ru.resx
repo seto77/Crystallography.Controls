@@ -87,7 +87,7 @@
     <value>Об атомах</value>
   </data>
   <data name="resetToolStripMenuItem.Text" xml:space="preserve">
-    <value>Обнулить факторы Дебая–Валлера</value>
+    <value>Обнулить параметры атомного смещения</value>
   </data>
   <data name="tabPageBondsPolyhedra.Text" xml:space="preserve">
     <value>Связи и многогранники</value>
@@ -223,7 +223,7 @@
     <value>Постоянные ячейки, симметрия и другая базовая информация</value>
   </data>
   <data name="resetToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>Обнулить фактор Дебая–Валлера (ослабление интенсивности
+    <value>Обнулить параметр атомного смещения (B или U; ослабление интенсивности
 дифракции от тепловых колебаний) для всех атомов.</value>
   </data>
   <data name="tabPageAtom.ToolTip" xml:space="preserve">

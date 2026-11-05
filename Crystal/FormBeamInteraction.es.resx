@@ -383,4 +383,7 @@ predeterminada y cubre iones además de átomos neutros en Z = 1-98.</value>
   <data name="colSfxModel.HeaderText" xml:space="preserve">
     <value>modelo</value>
   </data>
+  <data name="checkBoxDebyeWaller.Text" xml:space="preserve">
+    <value>Desplazamiento (B)</value>
+  </data>
 </root>
