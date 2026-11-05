@@ -146,7 +146,7 @@
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="buttonCopyClipboard.Text" xml:space="preserve">
-    <value>コピー</value>
+    <value>クリップボードにコピー</value>
   </data>
   <data name="buttonCopyClipboard.ToolTip" xml:space="preserve">
     <value>反射表全体を、タブ区切りテキストとしてクリップボードにコピーします
