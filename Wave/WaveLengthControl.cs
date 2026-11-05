@@ -325,10 +325,19 @@ public partial class WaveLengthControl : UserControlBase
 
             WaveSource = value.Source;
             Energy = value.Energy;
-            XrayWaveSourceLine = value.XrayLine;
-            XrayWaveSourceElementNumber = value.XrayElementNumber;
-            if (WaveSource == Crystallography.WaveSource.Xray && XrayWaveSourceElementNumber == 0)
-                WaveLength = value.WaveLength;
+            //XrayWaveSourceLine = value.XrayLine; // 261105Cl 変更前
+            //XrayWaveSourceElementNumber = value.XrayElementNumber; // 261105Cl 変更前
+            //if (WaveSource == Crystallography.WaveSource.Xray && XrayWaveSourceElementNumber == 0) // 261105Cl 変更前
+            //    WaveLength = value.WaveLength; // 261105Cl 変更前
+            // 261105Cl 変更 (監査 J4): 元素を先に選ぶ。元素を変えると線種の一覧が作り直されて先頭の線 (Kα) が選ばれるので、
+            //  以前は線種を先に入れると、元素が変わったときに保存した線種 (Kβ1 など) が Kα に戻っていた
+            XrayWaveSourceElementNumber = value.XrayElementNumber; // 261105Cl
+            XrayWaveSourceLine = value.XrayLine; // 261105Cl
+            // 261105Cl 変更 (監査 J3): 電子線・中性子でも波長 (nm) を戻す。ReciPro の多結晶回折が保存する .ipa は Energy = 0 で
+            //  Energy の setter が何もしないため、以前は電子線・中性子の波長が復元されず、前の値のままだった。
+            //  波長があればそれを正とする (Energy は線源ごとに keV・meV と単位が違い、保存した側の単位を確かめられない)
+            if ((WaveSource != Crystallography.WaveSource.Xray || XrayWaveSourceElementNumber == 0) && value.WaveLength > 0) // 261105Cl
+                WaveLength = value.WaveLength; // 261105Cl
         }
         get
         {
@@ -425,14 +434,16 @@ public partial class WaveLengthControl : UserControlBase
     {
         if (radioButtonXray.Checked)
         {
-            flowLayoutPanelElement.Visible = true;
+            //flowLayoutPanelElement.Visible = true; // 261105Cl 変更前
+            flowLayoutPanelElement.Visible = monochrome; // 261105Cl 変更 (監査 J17): 白色 (Back-Laue) では元素・線種を出さない (Monochrome の setter と同じ条件)
             numericBoxEnergy.FooterText = "keV";
             comboBoxXRayElement_SelectedIndexChanged(sender, e);
         }
         else
         {
             flowLayoutPanelElement.Visible = false;
-            numericBoxEnergy.Visible = true;
+            //numericBoxEnergy.Visible = true; // 261105Cl 変更前
+            numericBoxEnergy.Visible = monochrome; // 261105Cl 変更 (監査 J17): 白色のときに隠したエネルギー欄を、線源の切り替えで出さない
             numericBoxEnergy.Enabled = true;
             numericBoxWaveLength.Enabled = true;
 
