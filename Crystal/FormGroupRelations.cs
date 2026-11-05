@@ -203,7 +203,8 @@ public partial class FormGroupRelations : FormBase
         //_supers = TSubgroupFinder.GetMinimalTSupergroups(sym.SpaceGroupNumber);
         if (TSubgroupFinder.SupergroupIndexReady)
         {
-            _supers = TSubgroupFinder.GetMinimalTSupergroups(sym.SpaceGroupNumber);
+            //_supers = TSubgroupFinder.GetMinimalTSupergroups(sym.SpaceGroupNumber); // 261105Cl 変更前
+            _supers = ToViewedSetting(TSubgroupFinder.GetMinimalTSupergroups(sym.SpaceGroupNumber), seriesNumber); // 261105Cl 変更 (監査 B14)
             _supersPending = false;
         }
         else
@@ -225,7 +226,8 @@ public partial class FormGroupRelations : FormBase
             //    }
             //}, TaskScheduler.FromCurrentSynchronizationContext());
             // 260708Cl (/simplify): Task.Run + マーシャリング足場を k-超群側と共通の ComputeThenApplyOnUi へ集約。
-            ComputeThenApplyOnUi(() => TSubgroupFinder.GetMinimalTSupergroups(it), result =>
+            //ComputeThenApplyOnUi(() => TSubgroupFinder.GetMinimalTSupergroups(it), result => // 261105Cl 変更前
+            ComputeThenApplyOnUi(() => ToViewedSetting(TSubgroupFinder.GetMinimalTSupergroups(it), seriesNumber), result => // 261105Cl 変更 (監査 B14)
             {
                 _supersPending = false;
                 if (result != null && !IsDisposed && _currentSeries == seriesNumber)
@@ -246,7 +248,8 @@ public partial class FormGroupRelations : FormBase
         // 場合があるため、t-超群索引と同じ「バックグラウンド構築 + 計算中…ノード + 完了時差し替え」方式を踏襲。
         if (KSubgroupFinder.KSupergroupsReady(sym.SpaceGroupNumber))
         {
-            _ksupers = KSubgroupFinder.GetMinimalKSupergroups(sym.SpaceGroupNumber);
+            //_ksupers = KSubgroupFinder.GetMinimalKSupergroups(sym.SpaceGroupNumber); // 261105Cl 変更前
+            _ksupers = ToViewedSetting(KSubgroupFinder.GetMinimalKSupergroups(sym.SpaceGroupNumber), seriesNumber); // 261105Cl 変更 (監査 B14)
             _ksupersPending = false;
         }
         else
@@ -255,7 +258,8 @@ public partial class FormGroupRelations : FormBase
             _ksupersPending = true;
             int itK = sym.SpaceGroupNumber;
             // 260708Cl: t-超群側と同じく BeginInvoke で UI スレッドへ明示マーシャリング (共通足場 ComputeThenApplyOnUi)。
-            ComputeThenApplyOnUi(() => KSubgroupFinder.GetMinimalKSupergroups(itK), result =>
+            //ComputeThenApplyOnUi(() => KSubgroupFinder.GetMinimalKSupergroups(itK), result => // 261105Cl 変更前
+            ComputeThenApplyOnUi(() => ToViewedSetting(KSubgroupFinder.GetMinimalKSupergroups(itK), seriesNumber), result => // 261105Cl 変更 (監査 B14)
             {
                 _ksupersPending = false;
                 if (result != null && !IsDisposed && _currentSeries == seriesNumber)
@@ -359,6 +363,12 @@ public partial class FormGroupRelations : FormBase
             catch (InvalidOperationException) { } // ハンドル破棄との競合は無視
         });
     }
+
+    /// <summary>261105Cl 追加 (監査 B14): 超群の関係 (超群の標準設定の部分群表から逆引きしたもの。子は同定で見つかった設定で、
+    /// 閲覧中の設定とは限らない) の子を、閲覧中の設定 sn に換算する。部分群側 (閲覧中の設定の部分群表) と基準が揃い、
+    /// Matrix タブの P⁻¹・Orbit タブの Wyckoff 文字・図の注記が閲覧中の設定 (P2₁/n、Pbnm など) の軸で出る。</summary>
+    private static GroupRelation[] ToViewedSetting(IEnumerable<GroupRelation> relations, int sn)
+        => [.. relations.Select(r => r.WithChildSetting(sn))];
 
     private void UpdateNavButtons()
     {

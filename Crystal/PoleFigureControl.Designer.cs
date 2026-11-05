@@ -37,16 +37,21 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PoleFigureControl));
             this.radioButtonAxes = new System.Windows.Forms.RadioButton();
             this.radioButtonPlanes = new System.Windows.Forms.RadioButton();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
+            //this.numericUpDown2 = new System.Windows.Forms.NumericUpDown(); // 261105Cl 変更前
+            this.numericUpDown2 = new Crystallography.Controls.NumericBox(); // 261105Cl 変更 (監査 B20): ReciPro 共通の数値入力部品に揃える (名前は resx と外部の参照を保つため据え置き)
+            //this.numericUpDown3 = new System.Windows.Forms.NumericUpDown(); // 261105Cl 変更前
+            this.numericUpDown3 = new Crystallography.Controls.NumericBox(); // 261105Cl 変更 (監査 B20): ReciPro 共通の数値入力部品に揃える (名前は resx と外部の参照を保つため据え置き)
             this.labelV = new System.Windows.Forms.Label();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            //this.numericUpDown1 = new System.Windows.Forms.NumericUpDown(); // 261105Cl 変更前
+            this.numericUpDown1 = new Crystallography.Controls.NumericBox(); // 261105Cl 変更 (監査 B20): ReciPro 共通の数値入力部品に揃える (名前は resx と外部の参照を保つため据え置き)
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.numericUpDownResolution = new System.Windows.Forms.NumericUpDown();
+            //this.numericUpDownResolution = new System.Windows.Forms.NumericUpDown(); // 261105Cl 変更前
+            this.numericUpDownResolution = new Crystallography.Controls.NumericBox(); // 261105Cl 変更 (監査 B20): ReciPro 共通の数値入力部品に揃える (名前は resx と外部の参照を保つため据え置き)
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.numericUpDownFullscale = new System.Windows.Forms.NumericUpDown();
+            //this.numericUpDownFullscale = new System.Windows.Forms.NumericUpDown(); // 261105Cl 変更前
+            this.numericUpDownFullscale = new Crystallography.Controls.NumericBox(); // 261105Cl 変更 (監査 B20): ReciPro 共通の数値入力部品に揃える (名前は resx と外部の参照を保つため据え置き)
             this.label4 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.radioButtonPoleFigure = new System.Windows.Forms.RadioButton();
@@ -63,12 +68,12 @@
             this.labelU = new System.Windows.Forms.Label();
             this.labelW = new System.Windows.Forms.Label();
             this.groupBoxProjectionScheme = new System.Windows.Forms.GroupBox();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            //((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit(); // 261105Cl 削除: NumericBox は ISupportInitialize でない
+            //((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit(); // 261105Cl 削除: NumericBox は ISupportInitialize でない
+            //((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit(); // 261105Cl 削除: NumericBox は ISupportInitialize でない
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownResolution)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownFullscale)).BeginInit();
+            //((System.ComponentModel.ISupportInitialize)(this.numericUpDownResolution)).BeginInit(); // 261105Cl 削除: NumericBox は ISupportInitialize でない
+            //((System.ComponentModel.ISupportInitialize)(this.numericUpDownFullscale)).BeginInit(); // 261105Cl 削除: NumericBox は ISupportInitialize でない
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -96,40 +101,55 @@
             // 
             resources.ApplyResources(this.numericUpDown2, "numericUpDown2");
             this.toolTip.SetToolTip(this.numericUpDown2, resources.GetString("numericUpDown2.ToolTip")); // 260531Cl
-            this.numericUpDown2.Maximum = new decimal(new int[] {
-            20,
-            0,
-            0,
-            0});
-            this.numericUpDown2.Minimum = new decimal(new int[] {
-            20,
-            0,
-            0,
-            -2147483648});
+            //this.numericUpDown2.Maximum = new decimal(new int[] { // 261105Cl 変更前 (NumericUpDown の範囲。以下 NumericBox で同じ値)
+            //20,
+            //0,
+            //0,
+            //0});
+            //this.numericUpDown2.Minimum = new decimal(new int[] {
+            //20,
+            //0,
+            //0,
+            //-2147483648});
+            this.numericUpDown2.DecimalPlaces = 0; // 261105Cl 追加 (以下 NumericBox の設定。範囲 -20〜20 の整数・スピンは旧と同じ)
+            this.numericUpDown2.Maximum = 20D; // 261105Cl
+            this.numericUpDown2.Minimum = -20D; // 261105Cl
+            this.numericUpDown2.ShowUpDown = true; // 261105Cl
+            this.numericUpDown2.UpDown_Increment = 1D; // 261105Cl
+            this.numericUpDown2.ValueTextAlign = System.Windows.Forms.HorizontalAlignment.Center; // 261105Cl (旧 resx の TextAlign=Center)
             this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+            //this.numericUpDown2.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged); // 261105Cl 変更前
+            this.numericUpDown2.ValueChanged += this.numericUpDown1_ValueChanged; // 261105Cl 変更 (NumericBox.ValueChanged は MyEventHandler)
             // 
             // numericUpDown3
             // 
             resources.ApplyResources(this.numericUpDown3, "numericUpDown3");
             this.toolTip.SetToolTip(this.numericUpDown3, resources.GetString("numericUpDown3.ToolTip")); // 260531Cl
-            this.numericUpDown3.Maximum = new decimal(new int[] {
-            20,
-            0,
-            0,
-            0});
-            this.numericUpDown3.Minimum = new decimal(new int[] {
-            20,
-            0,
-            0,
-            -2147483648});
+            //this.numericUpDown3.Maximum = new decimal(new int[] { // 261105Cl 変更前 (NumericUpDown の範囲。以下 NumericBox で同じ値)
+            //20,
+            //0,
+            //0,
+            //0});
+            //this.numericUpDown3.Minimum = new decimal(new int[] {
+            //20,
+            //0,
+            //0,
+            //-2147483648});
+            this.numericUpDown3.DecimalPlaces = 0; // 261105Cl 追加 (以下 NumericBox の設定。範囲 -20〜20 の整数・スピンは旧と同じ)
+            this.numericUpDown3.Maximum = 20D; // 261105Cl
+            this.numericUpDown3.Minimum = -20D; // 261105Cl
+            this.numericUpDown3.ShowUpDown = true; // 261105Cl
+            this.numericUpDown3.UpDown_Increment = 1D; // 261105Cl
+            this.numericUpDown3.ValueTextAlign = System.Windows.Forms.HorizontalAlignment.Center; // 261105Cl (旧 resx の TextAlign=Center)
             this.numericUpDown3.Name = "numericUpDown3";
-            this.numericUpDown3.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDown3.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+            //this.numericUpDown3.Value = new decimal(new int[] { // 261105Cl 変更前
+            //1,
+            //0,
+            //0,
+            //0});
+            this.numericUpDown3.Value = 1D; // 261105Cl 変更
+            //this.numericUpDown3.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged); // 261105Cl 変更前
+            this.numericUpDown3.ValueChanged += this.numericUpDown1_ValueChanged; // 261105Cl 変更 (NumericBox.ValueChanged は MyEventHandler)
             // 
             // labelV
             // 
@@ -141,18 +161,25 @@
             // 
             resources.ApplyResources(this.numericUpDown1, "numericUpDown1");
             this.toolTip.SetToolTip(this.numericUpDown1, resources.GetString("numericUpDown1.ToolTip")); // 260531Cl
-            this.numericUpDown1.Maximum = new decimal(new int[] {
-            20,
-            0,
-            0,
-            0});
-            this.numericUpDown1.Minimum = new decimal(new int[] {
-            20,
-            0,
-            0,
-            -2147483648});
+            //this.numericUpDown1.Maximum = new decimal(new int[] { // 261105Cl 変更前 (NumericUpDown の範囲。以下 NumericBox で同じ値)
+            //20,
+            //0,
+            //0,
+            //0});
+            //this.numericUpDown1.Minimum = new decimal(new int[] {
+            //20,
+            //0,
+            //0,
+            //-2147483648});
+            this.numericUpDown1.DecimalPlaces = 0; // 261105Cl 追加 (以下 NumericBox の設定。範囲 -20〜20 の整数・スピンは旧と同じ)
+            this.numericUpDown1.Maximum = 20D; // 261105Cl
+            this.numericUpDown1.Minimum = -20D; // 261105Cl
+            this.numericUpDown1.ShowUpDown = true; // 261105Cl
+            this.numericUpDown1.UpDown_Increment = 1D; // 261105Cl
+            this.numericUpDown1.ValueTextAlign = System.Windows.Forms.HorizontalAlignment.Center; // 261105Cl (旧 resx の TextAlign=Center)
             this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+            //this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged); // 261105Cl 変更前
+            this.numericUpDown1.ValueChanged += this.numericUpDown1_ValueChanged; // 261105Cl 変更 (NumericBox.ValueChanged は MyEventHandler)
             // 
             // pictureBox
             // 
@@ -173,23 +200,29 @@
             resources.ApplyResources(this.numericUpDownResolution, "numericUpDownResolution");
             this.toolTip.SetToolTip(this.numericUpDownResolution, resources.GetString("numericUpDownResolution.ToolTip")); // 260531Cl
             this.numericUpDownResolution.DecimalPlaces = 2;
-            this.numericUpDownResolution.Maximum = new decimal(new int[] {
-            60,
-            0,
-            0,
-            0});
-            this.numericUpDownResolution.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
+            //this.numericUpDownResolution.Maximum = new decimal(new int[] { // 261105Cl 変更前 (NumericUpDown の範囲 0.01〜60・初期値 3。以下 NumericBox で同じ値)
+            //60,
+            //0,
+            //0,
+            //0});
+            //this.numericUpDownResolution.Minimum = new decimal(new int[] {
+            //1,
+            //0,
+            //0,
+            //131072});
+            this.numericUpDownResolution.Maximum = 60D; // 261105Cl
+            this.numericUpDownResolution.Minimum = 0.01D; // 261105Cl
             this.numericUpDownResolution.Name = "numericUpDownResolution";
-            this.numericUpDownResolution.Value = new decimal(new int[] {
-            3,
-            0,
-            0,
-            0});
-            this.numericUpDownResolution.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+            this.numericUpDownResolution.ShowUpDown = true; // 261105Cl
+            this.numericUpDownResolution.ValueTextAlign = System.Windows.Forms.HorizontalAlignment.Center; // 261105Cl
+            //this.numericUpDownResolution.Value = new decimal(new int[] { // 261105Cl 変更前
+            //3,
+            //0,
+            //0,
+            //0});
+            this.numericUpDownResolution.Value = 3D; // 261105Cl
+            //this.numericUpDownResolution.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged); // 261105Cl 変更前
+            this.numericUpDownResolution.ValueChanged += this.numericUpDown1_ValueChanged; // 261105Cl 変更 (NumericBox.ValueChanged は MyEventHandler)
             this.numericUpDownResolution.Click += new System.EventHandler(this.numericUpDownResolution_Click);
             // 
             // label2
@@ -209,28 +242,35 @@
             resources.ApplyResources(this.numericUpDownFullscale, "numericUpDownFullscale");
             this.toolTip.SetToolTip(this.numericUpDownFullscale, resources.GetString("numericUpDownFullscale.ToolTip")); // 260531Cl
             this.numericUpDownFullscale.DecimalPlaces = 1;
-            this.numericUpDownFullscale.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.numericUpDownFullscale.Maximum = new decimal(new int[] {
-            9,
-            0,
-            0,
-            0});
-            this.numericUpDownFullscale.Minimum = new decimal(new int[] {
-            9,
-            0,
-            0,
-            -2147483648});
+            //this.numericUpDownFullscale.Increment = new decimal(new int[] { // 261105Cl 変更前 (NumericUpDown の刻み 0.1・範囲 -9〜9・初期値 1。以下 NumericBox で同じ値)
+            //1,
+            //0,
+            //0,
+            //65536});
+            //this.numericUpDownFullscale.Maximum = new decimal(new int[] {
+            //9,
+            //0,
+            //0,
+            //0});
+            //this.numericUpDownFullscale.Minimum = new decimal(new int[] {
+            //9,
+            //0,
+            //0,
+            //-2147483648});
+            this.numericUpDownFullscale.Maximum = 9D; // 261105Cl
+            this.numericUpDownFullscale.Minimum = -9D; // 261105Cl
             this.numericUpDownFullscale.Name = "numericUpDownFullscale";
-            this.numericUpDownFullscale.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDownFullscale.ValueChanged += new System.EventHandler(this.numericUpDown4_ValueChanged);
+            this.numericUpDownFullscale.ShowUpDown = true; // 261105Cl
+            this.numericUpDownFullscale.UpDown_Increment = 0.1D; // 261105Cl
+            this.numericUpDownFullscale.ValueTextAlign = System.Windows.Forms.HorizontalAlignment.Center; // 261105Cl
+            //this.numericUpDownFullscale.Value = new decimal(new int[] { // 261105Cl 変更前
+            //1,
+            //0,
+            //0,
+            //0});
+            this.numericUpDownFullscale.Value = 1D; // 261105Cl
+            //this.numericUpDownFullscale.ValueChanged += new System.EventHandler(this.numericUpDown4_ValueChanged); // 261105Cl 変更前
+            this.numericUpDownFullscale.ValueChanged += this.numericUpDown4_ValueChanged; // 261105Cl 変更 (NumericBox.ValueChanged は MyEventHandler)
             // 
             // label4
             // 
@@ -381,12 +421,12 @@
             this.Controls.Add(this.tabControl1);
             this.Name = "PoleFigureControl";
             this.Load += new System.EventHandler(this.PoleFigureControl_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            //((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit(); // 261105Cl 削除
+            //((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit(); // 261105Cl 削除
+            //((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit(); // 261105Cl 削除
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownResolution)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownFullscale)).EndInit();
+            //((System.ComponentModel.ISupportInitialize)(this.numericUpDownResolution)).EndInit(); // 261105Cl 削除
+            //((System.ComponentModel.ISupportInitialize)(this.numericUpDownFullscale)).EndInit(); // 261105Cl 削除
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
@@ -406,16 +446,21 @@
         private System.Windows.Forms.ToolTip toolTip; // (260531Ch)
         private System.Windows.Forms.RadioButton radioButtonAxes;
         private System.Windows.Forms.RadioButton radioButtonPlanes;
-        public System.Windows.Forms.NumericUpDown numericUpDown2;
-        public System.Windows.Forms.NumericUpDown numericUpDown3;
+        //public System.Windows.Forms.NumericUpDown numericUpDown2; // 261105Cl 変更前
+        public Crystallography.Controls.NumericBox numericUpDown2; // 261105Cl 変更 (監査 B20)
+        //public System.Windows.Forms.NumericUpDown numericUpDown3; // 261105Cl 変更前
+        public Crystallography.Controls.NumericBox numericUpDown3; // 261105Cl 変更 (監査 B20)
         private System.Windows.Forms.Label labelV;
-        public System.Windows.Forms.NumericUpDown numericUpDown1;
+        //public System.Windows.Forms.NumericUpDown numericUpDown1; // 261105Cl 変更前
+        public Crystallography.Controls.NumericBox numericUpDown1; // 261105Cl 変更 (監査 B20)
         private System.Windows.Forms.PictureBox pictureBox;
         private System.Windows.Forms.Label label1;
-        public System.Windows.Forms.NumericUpDown numericUpDownResolution;
+        //public System.Windows.Forms.NumericUpDown numericUpDownResolution; // 261105Cl 変更前
+        public Crystallography.Controls.NumericBox numericUpDownResolution; // 261105Cl 変更 (監査 B20)
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        public System.Windows.Forms.NumericUpDown numericUpDownFullscale;
+        //public System.Windows.Forms.NumericUpDown numericUpDownFullscale; // 261105Cl 変更前
+        public Crystallography.Controls.NumericBox numericUpDownFullscale; // 261105Cl 変更 (監査 B20)
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.RadioButton radioButtonPoleFigure;

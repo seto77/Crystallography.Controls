@@ -21,7 +21,8 @@ partial class FormGroupRelations
         panelToolbar = new System.Windows.Forms.Panel();
         labelBreadcrumb = new System.Windows.Forms.Label();
         labelIsoMax = new System.Windows.Forms.Label(); // 260709Cl 追加 (Phase 3): 同型部分群の index 上限
-        numericIsoMax = new System.Windows.Forms.NumericUpDown(); // 260709Cl 追加 (Phase 3)
+        //numericIsoMax = new System.Windows.Forms.NumericUpDown(); // 260709Cl 追加 (Phase 3) // 261105Cl 変更前
+        numericIsoMax = new NumericBox(); // 261105Cl 変更 (監査 B20): ReciPro 共通の数値入力部品に揃える
         buttonHome = new System.Windows.Forms.Button();
         buttonForward = new System.Windows.Forms.Button();
         buttonBack = new System.Windows.Forms.Button();
@@ -45,7 +46,8 @@ partial class FormGroupRelations
         miniTableReflections = new MiniTable();
         panelReflSearch = new System.Windows.Forms.FlowLayoutPanel(); // 260709Cl 追加: 反射探索窓 (|h|,|k|,|l| ≤ n) 調整 UI
         labelReflMax = new System.Windows.Forms.Label(); // 260709Cl 追加
-        numericReflMax = new System.Windows.Forms.NumericUpDown(); // 260709Cl 追加
+        //numericReflMax = new System.Windows.Forms.NumericUpDown(); // 260709Cl 追加 // 261105Cl 変更前
+        numericReflMax = new NumericBox(); // 261105Cl 変更 (監査 B20)
         labelReflInfo = new System.Windows.Forms.Label();
         tabDiagram = new System.Windows.Forms.TabPage();
         pictureBoxGraph = new System.Windows.Forms.PictureBox();
@@ -54,7 +56,7 @@ partial class FormGroupRelations
         tabElements = new System.Windows.Forms.TabPage(); // 260713Cl 追加 (③-2): 対称要素 lost/retained
         pictureBoxElements = new System.Windows.Forms.PictureBox(); // 260713Cl 追加
         panelToolbar.SuspendLayout();
-        ((System.ComponentModel.ISupportInitialize)numericIsoMax).BeginInit(); // 260709Cl 追加
+        //((System.ComponentModel.ISupportInitialize)numericIsoMax).BeginInit(); // 260709Cl 追加 // 261105Cl 削除: NumericBox は ISupportInitialize でない
         panelBanner.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)splitMain).BeginInit();
         splitMain.Panel1.SuspendLayout();
@@ -70,7 +72,7 @@ partial class FormGroupRelations
         tabReflections.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)miniTableReflections).BeginInit();
         panelReflSearch.SuspendLayout(); // 260709Cl 追加
-        ((System.ComponentModel.ISupportInitialize)numericReflMax).BeginInit(); // 260709Cl 追加
+        //((System.ComponentModel.ISupportInitialize)numericReflMax).BeginInit(); // 260709Cl 追加 // 261105Cl 削除: NumericBox は ISupportInitialize でない
         tabDiagram.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBoxGraph).BeginInit();
         tabPointGroups.SuspendLayout(); // 260712Cl 追加
@@ -126,13 +128,20 @@ partial class FormGroupRelations
         //
         numericIsoMax.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
         numericIsoMax.Location = new System.Drawing.Point(832, 5);
-        numericIsoMax.Maximum = new decimal(new int[] { 27, 0, 0, 0 });
-        numericIsoMax.Minimum = new decimal(new int[] { 2, 0, 0, 0 });
+        //numericIsoMax.Maximum = new decimal(new int[] { 27, 0, 0, 0 }); // 261105Cl 変更前 (NumericUpDown。以下 4 行も)
+        //numericIsoMax.Minimum = new decimal(new int[] { 2, 0, 0, 0 });
+        //numericIsoMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+        //numericIsoMax.Value = new decimal(new int[] { 4, 0, 0, 0 });
+        numericIsoMax.DecimalPlaces = 0; // 261105Cl 追加 (以下 NumericBox の設定。範囲 2〜27・初期値 4・スピンは旧と同じ)
+        numericIsoMax.Maximum = 27D; // 261105Cl
+        numericIsoMax.Minimum = 2D; // 261105Cl
         numericIsoMax.Name = "numericIsoMax";
+        numericIsoMax.ShowUpDown = true; // 261105Cl
         numericIsoMax.Size = new System.Drawing.Size(44, 23);
         numericIsoMax.TabIndex = 5;
-        numericIsoMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-        numericIsoMax.Value = new decimal(new int[] { 4, 0, 0, 0 });
+        numericIsoMax.UpDown_Increment = 1D; // 261105Cl
+        numericIsoMax.ValueTextAlign = System.Windows.Forms.HorizontalAlignment.Center; // 261105Cl
+        numericIsoMax.Value = 4D; // 261105Cl
         numericIsoMax.ValueChanged += numericIsoMax_ValueChanged;
         // 
         // buttonHome
@@ -437,13 +446,20 @@ partial class FormGroupRelations
         //
         numericReflMax.Location = new System.Drawing.Point(132, 2);
         numericReflMax.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-        numericReflMax.Maximum = new decimal(new int[] { 8, 0, 0, 0 });
-        numericReflMax.Minimum = new decimal(new int[] { 2, 0, 0, 0 });
+        //numericReflMax.Maximum = new decimal(new int[] { 8, 0, 0, 0 }); // 261105Cl 変更前 (NumericUpDown。以下 3 行も)
+        //numericReflMax.Minimum = new decimal(new int[] { 2, 0, 0, 0 });
+        //numericReflMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+        //numericReflMax.Value = new decimal(new int[] { 4, 0, 0, 0 });
+        numericReflMax.DecimalPlaces = 0; // 261105Cl 追加 (以下 NumericBox の設定。範囲 2〜8・初期値 4・スピンは旧と同じ)
+        numericReflMax.Maximum = 8D; // 261105Cl
+        numericReflMax.Minimum = 2D; // 261105Cl
         numericReflMax.Name = "numericReflMax";
+        numericReflMax.ShowUpDown = true; // 261105Cl
         numericReflMax.Size = new System.Drawing.Size(44, 23);
         numericReflMax.TabIndex = 1;
-        numericReflMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-        numericReflMax.Value = new decimal(new int[] { 4, 0, 0, 0 });
+        numericReflMax.UpDown_Increment = 1D; // 261105Cl
+        numericReflMax.ValueTextAlign = System.Windows.Forms.HorizontalAlignment.Center; // 261105Cl
+        numericReflMax.Value = 4D; // 261105Cl
         numericReflMax.ValueChanged += numericReflMax_ValueChanged;
         //
         // labelReflInfo
@@ -539,7 +555,7 @@ partial class FormGroupRelations
         Text = "Group Relations";
         panelToolbar.ResumeLayout(false);
         panelToolbar.PerformLayout();
-        ((System.ComponentModel.ISupportInitialize)numericIsoMax).EndInit(); // 260709Cl 追加
+        //((System.ComponentModel.ISupportInitialize)numericIsoMax).EndInit(); // 260709Cl 追加 // 261105Cl 削除
         panelBanner.ResumeLayout(false);
         splitMain.Panel1.ResumeLayout(false);
         splitMain.Panel2.ResumeLayout(false);
@@ -557,7 +573,7 @@ partial class FormGroupRelations
         ((System.ComponentModel.ISupportInitialize)miniTableReflections).EndInit();
         panelReflSearch.ResumeLayout(false); // 260709Cl 追加
         panelReflSearch.PerformLayout(); // 260709Cl 追加
-        ((System.ComponentModel.ISupportInitialize)numericReflMax).EndInit(); // 260709Cl 追加
+        //((System.ComponentModel.ISupportInitialize)numericReflMax).EndInit(); // 260709Cl 追加 // 261105Cl 削除
         tabDiagram.ResumeLayout(false);
         ((System.ComponentModel.ISupportInitialize)pictureBoxGraph).EndInit();
         tabPointGroups.ResumeLayout(false); // 260712Cl 追加
@@ -570,7 +586,8 @@ partial class FormGroupRelations
     private System.Windows.Forms.ToolTip toolTip;
     private System.Windows.Forms.Panel panelToolbar;
     private System.Windows.Forms.Label labelIsoMax; // 260709Cl 追加 (Phase 3)
-    private System.Windows.Forms.NumericUpDown numericIsoMax; // 260709Cl 追加 (Phase 3)
+    //private System.Windows.Forms.NumericUpDown numericIsoMax; // 260709Cl 追加 (Phase 3) // 261105Cl 変更前
+    private NumericBox numericIsoMax; // 261105Cl 変更 (監査 B20)
     private System.Windows.Forms.Button buttonBack;
     private System.Windows.Forms.Button buttonForward;
     private System.Windows.Forms.Button buttonHome;
@@ -598,7 +615,8 @@ partial class FormGroupRelations
     private MiniTable miniTableReflections;
     private System.Windows.Forms.FlowLayoutPanel panelReflSearch; // 260709Cl 追加
     private System.Windows.Forms.Label labelReflMax; // 260709Cl 追加
-    private System.Windows.Forms.NumericUpDown numericReflMax; // 260709Cl 追加
+    //private System.Windows.Forms.NumericUpDown numericReflMax; // 260709Cl 追加 // 261105Cl 変更前
+    private NumericBox numericReflMax; // 261105Cl 変更 (監査 B20)
     private System.Windows.Forms.TabPage tabDiagram;
     private System.Windows.Forms.PictureBox pictureBoxGraph;
     private System.Windows.Forms.TabPage tabPointGroups; // 260712Cl 追加 (③-4)

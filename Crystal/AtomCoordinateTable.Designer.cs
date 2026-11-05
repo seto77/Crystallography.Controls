@@ -152,7 +152,8 @@
             numericUpDownWidth.FooterPadding = new System.Windows.Forms.Padding(0, 4, 0, 0);
             numericUpDownWidth.FooterText = "Å";
             numericUpDownWidth.HeaderPadding = new System.Windows.Forms.Padding(0, 4, 0, 0);
-            numericUpDownWidth.HeaderText = "Bar Width"; // 260704Cl 旧 label2 由来の誤字 "Bar Wdth" を修正
+            //numericUpDownWidth.HeaderText = "Bar Width"; // 260704Cl 旧 label2 由来の誤字 "Bar Wdth" を修正 // 261105Cl 変更前
+            numericUpDownWidth.HeaderText = "Half-width"; // 261105Cl 変更 (監査 B18): 値は棒の半幅 (d±w)。各言語は LocalizationData
             numericUpDownWidth.Location = new System.Drawing.Point(214, 0);
             numericUpDownWidth.Margin = new System.Windows.Forms.Padding(4, 0, 0, 0);
             numericUpDownWidth.Maximum = 100D;

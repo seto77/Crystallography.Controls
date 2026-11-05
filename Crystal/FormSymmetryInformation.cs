@@ -680,7 +680,40 @@ public partial class FormSymmetryInformation : FormBase
         // it, ru, zhHans, zhHant, ko で同一のため、各行から位置引数で直接呼ぶ)。
 
         string partner = p.HasEnantiomorph ? $"No. {p.EnantiomorphPartnerNumber}" : "—";
-        string polarVal = p.IsPolar ? $"{yes} ({p.PolarDirectionStr})" : no;
+        //string polarVal = p.IsPolar ? $"{yes} ({p.PolarDirectionStr})" : no; // 261105Cl 変更前: 極性の向きの "any"・"any in (hkl)" が英語のままだった
+        // 261105Cl 変更 (監査 K6): 極性の向き ("[uvw]" / "any" / "any in (hkl)") の英語の部分を訳す
+        string polarDir = p.PolarDirectionStr switch
+        {
+            "any" => Loc("any", "任意", "beliebig", "quelconque", "cualquiera", "qualquer", "qualsiasi", "любое", "任意", "任意", "임의"),
+            var s when s.StartsWith("any in ", StringComparison.Ordinal) => string.Format(Loc("any in {0}", "{0} 面内で任意", "beliebig in {0}", "quelconque dans {0}", "cualquiera en {0}", "qualquer em {0}", "qualsiasi in {0}", "любое в {0}", "{0} 面内任意", "{0} 面內任意", "{0} 면 내 임의"), s[7..]),
+            var s => s,
+        };
+        string polarVal = p.IsPolar ? $"{yes} ({polarDir})" : no; // 261105Cl 変更
+
+        // 261105Cl 追加 (監査 K6): 結晶族・格子系の値 (SymmetryProperties は英語の小文字で返す) を訳す。語は結晶系のコンボ (SymmetryControl) の訳に揃え、
+        //   ja・zh・ko は行名 (結晶族・格子系) が付くので「立方」のように語幹だけにする。欧州の言語は行名の名詞の性に合わせる
+        //   (結晶族 = famille/familia/famiglia/семейство、格子系 = système/sistema/система)。rhombohedral は格子系だけに出る。
+        string Family(string en) => en switch
+        {
+            "triclinic" => Loc("triclinic", "三斜", "triklin", "triclinique", "triclínica", "triclínica", "triclina", "триклинное", "三斜", "三斜", "삼사"),
+            "monoclinic" => Loc("monoclinic", "単斜", "monoklin", "monoclinique", "monoclínica", "monoclínica", "monoclina", "моноклинное", "单斜", "單斜", "단사"),
+            "orthorhombic" => Loc("orthorhombic", "直方", "orthorhombisch", "orthorhombique", "ortorrómbica", "ortorrômbica", "ortorombica", "ромбическое", "正交", "斜方", "사방"),
+            "tetragonal" => Loc("tetragonal", "正方", "tetragonal", "quadratique", "tetragonal", "tetragonal", "tetragonale", "тетрагональное", "四方", "正方", "정방"),
+            "hexagonal" => Loc("hexagonal", "六方", "hexagonal", "hexagonale", "hexagonal", "hexagonal", "esagonale", "гексагональное", "六方", "六方", "육방"),
+            "cubic" => Loc("cubic", "立方", "kubisch", "cubique", "cúbica", "cúbica", "cubica", "кубическое", "立方", "立方", "입방"),
+            _ => en,
+        };
+        string LatticeSystem(string en) => en switch
+        {
+            "triclinic" => Loc("triclinic", "三斜", "triklin", "triclinique", "triclínico", "triclínico", "triclino", "триклинная", "三斜", "三斜", "삼사"),
+            "monoclinic" => Loc("monoclinic", "単斜", "monoklin", "monoclinique", "monoclínico", "monoclínico", "monoclino", "моноклинная", "单斜", "單斜", "단사"),
+            "orthorhombic" => Loc("orthorhombic", "直方", "orthorhombisch", "orthorhombique", "ortorrómbico", "ortorrômbico", "ortorombico", "ромбическая", "正交", "斜方", "사방"),
+            "tetragonal" => Loc("tetragonal", "正方", "tetragonal", "quadratique", "tetragonal", "tetragonal", "tetragonale", "тетрагональная", "四方", "正方", "정방"),
+            "rhombohedral" => Loc("rhombohedral", "菱面体", "rhomboedrisch", "rhomboédrique", "romboédrico", "romboédrico", "romboedrico", "ромбоэдрическая", "菱方", "菱方", "능면체"),
+            "hexagonal" => Loc("hexagonal", "六方", "hexagonal", "hexagonal", "hexagonal", "hexagonal", "esagonale", "гексагональная", "六方", "六方", "육방"),
+            "cubic" => Loc("cubic", "立方", "kubisch", "cubique", "cúbico", "cúbico", "cubico", "кубическая", "立方", "立方", "입방"),
+            _ => en,
+        };
 
         object[][] rows =
         [
@@ -688,11 +721,16 @@ public partial class FormSymmetryInformation : FormBase
             [Loc("Point-group order", "点群の位数", "Ordnung der Punktgruppe", "Ordre du groupe ponctuel", "Orden del grupo puntual", "Ordem do grupo pontual", "Ordine del gruppo puntuale", "Порядок точечной группы", "点群阶数", "點群階數", "점군 위수"), p.PointGroupOrder],
             [Loc("Centrosymmetric", "中心対称", "Zentrosymmetrisch", "Centrosymétrique", "Centrosimétrico", "Centrossimétrico", "Centrosimmetrico", "Центросимметричная", "中心对称", "中心對稱", "중심대칭"), YN(p.IsCentrosymmetric)],
             [Loc("Sohncke (chiral) group", "Sohncke 群 (キラル)", "Sohncke-Gruppe (chiral)", "Groupe de Sohncke (chiral)", "Grupo de Sohncke (quiral)", "Grupo de Sohncke (quiral)", "Gruppo di Sohncke (chirale)", "Группа Зонке (хиральная)", "Sohncke 群 (手性)", "Sohncke 群 (手性)", "손케 군 (카이랄)"), YN(p.IsSohncke)],
-            [Loc("Symmorphic", "Symmorphic", "Symmorph", "Symmorphique", "Simórfico", "Simórfico", "Simmorfico", "Симморфная", "简单型", "簡單型", "심모픽"), YN(p.IsSymmorphic)],
+            //[Loc("Symmorphic", "Symmorphic", "Symmorph", "Symmorphique", "Simórfico", "Simórfico", "Simmorfico", "Симморфная", "简单型", "簡單型", "심모픽"), YN(p.IsSymmorphic)], // 261105Cl 変更前
+            // 261105Cl 変更 (監査 K6): ja は日本結晶学会誌 59 巻 (2017) と IUCr オンライン辞典の「共型空間群」に、広く使われる「シンモルフィック」を添える。
+            //   zh は「点式 (空间群)」(旧「简单型」)。ko は定まった訳語が見つからないので音訳のまま
+            [Loc("Symmorphic", "共型 (シンモルフィック)", "Symmorph", "Symmorphique", "Simórfico", "Simórfico", "Simmorfico", "Симморфная", "点式", "點式", "심모픽"), YN(p.IsSymmorphic)],
             [Loc("Polar", "極性", "Polar", "Polaire", "Polar", "Polar", "Polare", "Полярная", "极性", "極性", "극성"), polarVal],
             [Loc("Enantiomorphic partner", "掌性対の相手", "Enantiomorphes Paar", "Partenaire énantiomorphe", "Pareja enantiomorfa", "Par enantiomorfo", "Coppia enantiomorfa", "Энантиоморфная пара", "对映体伙伴", "對映體夥伴", "거울상 짝"), partner],
-            [Loc("Crystal family", "結晶族", "Kristallfamilie", "Famille cristalline", "Familia cristalina", "Família cristalina", "Famiglia cristallina", "Кристаллическое семейство", "晶族", "晶族", "결정족"), p.CrystalFamilyStr],
-            [Loc("Lattice system", "格子系", "Gittersystem", "Système réticulaire", "Sistema reticular", "Sistema reticular", "Sistema reticolare", "Решёточная система", "格子系", "格子系", "격자계"), p.LatticeSystemStr],
+            //[Loc("Crystal family", "結晶族", "Kristallfamilie", "Famille cristalline", "Familia cristalina", "Família cristalina", "Famiglia cristallina", "Кристаллическое семейство", "晶族", "晶族", "결정족"), p.CrystalFamilyStr], // 261105Cl 変更前 (次の行も。値が英語のままだった)
+            //[Loc("Lattice system", "格子系", "Gittersystem", "Système réticulaire", "Sistema reticular", "Sistema reticular", "Sistema reticolare", "Решёточная система", "格子系", "格子系", "격자계"), p.LatticeSystemStr],
+            [Loc("Crystal family", "結晶族", "Kristallfamilie", "Famille cristalline", "Familia cristalina", "Família cristalina", "Famiglia cristallina", "Кристаллическое семейство", "晶族", "晶族", "결정족"), Family(p.CrystalFamilyStr)], // 261105Cl 変更
+            [Loc("Lattice system", "格子系", "Gittersystem", "Système réticulaire", "Sistema reticular", "Sistema reticular", "Sistema reticolare", "Решёточная система", "格子系", "格子系", "격자계"), LatticeSystem(p.LatticeSystemStr)], // 261105Cl 変更
             [Loc("Bravais type", "ブラベー型", "Bravais-Typ", "Type de Bravais", "Tipo de Bravais", "Tipo de Bravais", "Tipo di Bravais", "Тип Браве", "布拉维型", "布拉維型", "브라베 형"), p.BravaisTypeStr],
             [Loc("Arithmetic crystal class", "算術結晶類", "Arithmetische Kristallklasse", "Classe cristalline arithmétique", "Clase cristalina aritmética", "Classe cristalina aritmética", "Classe cristallina aritmetica", "Арифметический класс", "算术晶类", "算術晶類", "산술 결정류"), p.ArithmeticCrystalClassStr],
             [Loc("Patterson symmetry", "Patterson 対称", "Patterson-Symmetrie", "Symétrie de Patterson", "Simetría de Patterson", "Simetria de Patterson", "Simmetria di Patterson", "Симметрия Паттерсона", "Patterson 对称", "Patterson 對稱", "패터슨 대칭"), p.PattersonSymmetryStr],

@@ -273,7 +273,8 @@ public partial class PoleFigureControl : UserControlBase
             // 計算する面/軸指数と等価な指数を算出
             if (radioButtonPlanes.Checked)
             {
-                var indices = SymmetryStatic.GenerateEquivalentPlanes((x, y, z), sym);
+                //var indices = SymmetryStatic.GenerateEquivalentPlanes((x, y, z), sym); // 261105Cl 変更前: 非中心対称の結晶では (hkl) と (-h-k-l) の片方しか数えず、上半球 (v.Z > 0) だけを描くので下半球側の極が欠けていた
+                var indices = SymmetryStatic.GenerateEquivalentPlanes((x, y, z), sym, addInversionCenter: true); // 261105Cl 変更 (監査 B12): 面の極点図は Friedel 則 (回折で測る極点図と同じ) で対称心を足す。軸 (方向) の極点図は今のまま
                 srcVector = indices.Select(idx =>
                 {
                     var v = crystal.A_Star * idx.H + crystal.B_Star * idx.K + crystal.C_Star * idx.L;
@@ -508,7 +509,8 @@ public partial class PoleFigureControl : UserControlBase
 
     private void numericUpDown1_ValueChanged(object sender, EventArgs e)
     {
-        numericUpDownResolution.Increment = (decimal)Math.Pow(10, Math.Floor(Math.Log10((double)numericUpDownResolution.Value)));
+        //numericUpDownResolution.Increment = (decimal)Math.Pow(10, Math.Floor(Math.Log10((double)numericUpDownResolution.Value))); // 261105Cl 変更前 (NumericUpDown)
+        numericUpDownResolution.UpDown_Increment = Math.Pow(10, Math.Floor(Math.Log10(numericUpDownResolution.Value))); // 261105Cl 変更 (監査 B20): NumericBox の刻み。値の桁に合わせるのは旧と同じ
         Draw(true);
     }
 
