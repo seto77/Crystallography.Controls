@@ -97,11 +97,13 @@ d'une ligne pour afficher ou masquer ce plan.</value>
 (indices de Miller-Bravais h k i l pour les cristaux hexagonaux).</value>
   </data>
   <data name="numericBoxDistance.ToolTip" xml:space="preserve">
-    <value>Décale le plan réticulaire selon sa normale, en fraction
-de la distance interréticulaire (-0,5 à 0,5).</value>
+    <value>Décale les plans réticulaires selon leur normale, en fraction de la
+distance interréticulaire (-0,5 à 0,5) ; une valeur positive les déplace
+vers +g, c'est-à-dire dans le sens de la normale (hkl).</value>
   </data>
   <data name="label6.ToolTip" xml:space="preserve">
-    <value>Décale le plan réticulaire selon sa normale, en fraction
-de la distance interréticulaire (-0,5 à 0,5).</value>
+    <value>Décale les plans réticulaires selon leur normale, en fraction de la
+distance interréticulaire (-0,5 à 0,5) ; une valeur positive les déplace
+vers +g, c'est-à-dire dans le sens de la normale (hkl).</value>
   </data>
 </root>

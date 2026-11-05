@@ -103,11 +103,11 @@
 （六方晶體為米勒-布拉維指數 h k i l）。</value>
   </data>
   <data name="numericBoxDistance.ToolTip" xml:space="preserve">
-    <value>沿晶面法線方向平移晶面，以晶面間距的
-比例 (-0.5 至 0.5) 表示。</value>
+    <value>沿晶面法線方向平移晶面，以晶面間距的比例 (-0.5 至 0.5) 表示；
+正值使其朝 +g 方向（(hkl) 法線的方向）移動。</value>
   </data>
   <data name="label6.ToolTip" xml:space="preserve">
-    <value>沿晶面法線方向平移晶面，以晶面間距的
-比例 (-0.5 至 0.5) 表示。</value>
+    <value>沿晶面法線方向平移晶面，以晶面間距的比例 (-0.5 至 0.5) 表示；
+正值使其朝 +g 方向（(hkl) 法線的方向）移動。</value>
   </data>
 </root>

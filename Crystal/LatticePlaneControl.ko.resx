@@ -103,11 +103,13 @@
 (육방정계 결정에서는 밀러–브라베 지수 h k i l).</value>
   </data>
   <data name="numericBoxDistance.ToolTip" xml:space="preserve">
-    <value>격자면을 법선 방향으로 이동시키는 양을
-면간 거리에 대한 비율 (-0.5 ~ 0.5)로 지정합니다.</value>
+    <value>격자면을 법선 방향으로 이동시키는 양을 면간 거리에 대한
+비율 (-0.5 ~ 0.5)로 지정합니다. 양의 값은 +g 방향
+((hkl) 법선 방향)으로 이동시킵니다.</value>
   </data>
   <data name="label6.ToolTip" xml:space="preserve">
-    <value>격자면을 법선 방향으로 이동시키는 양을
-면간 거리에 대한 비율 (-0.5 ~ 0.5)로 지정합니다.</value>
+    <value>격자면을 법선 방향으로 이동시키는 양을 면간 거리에 대한
+비율 (-0.5 ~ 0.5)로 지정합니다. 양의 값은 +g 방향
+((hkl) 법선 방향)으로 이동시킵니다.</value>
   </data>
 </root>

@@ -336,14 +336,14 @@
   </data>
   <data name="numericBoxMaximumDistanceFromOrigin.ToolTip" xml:space="preserve">
     <value>If the drawing range is not closed by crystal planes,
-limit it by this distance from the origin.</value>
+limit it by this distance from the projection center.</value>
   </data>
   <metadata name="toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>381, 17</value>
   </metadata>
   <data name="numericBoxMaximumDistanceFromOrigin.ToolTip1" xml:space="preserve">
     <value>If the drawing range is not closed by crystal planes,
-limit it by this distance from the origin.</value>
+limit it by this distance from the projection center.</value>
   </data>
   <data name="&gt;&gt;numericBoxMaximumDistanceFromOrigin.Name" xml:space="preserve">
     <value>numericBoxMaximumDistanceFromOrigin</value>
@@ -586,12 +586,14 @@ limit it by this distance from the origin.</value>
     <value>1</value>
   </data>
   <data name="numericBoxTranslation.ToolTip" xml:space="preserve">
-    <value>Shift the bounding plane along its normal by this
-distance (Å); positive moves it away from the origin.</value>
+    <value>Shift the region bounded by the planes by this distance (Å)
+along the normal of the specified (hkl); positive values move
+it toward +g, i.e. in the direction of the (hkl) normal.</value>
   </data>
   <data name="numericBoxTranslation.ToolTip1" xml:space="preserve">
-    <value>Shift the bounding plane along its normal by this
-distance (Å); positive moves it away from the origin.</value>
+    <value>Shift the region bounded by the planes by this distance (Å)
+along the normal of the specified (hkl); positive values move
+it toward +g, i.e. in the direction of the (hkl) normal.</value>
   </data>
   <data name="&gt;&gt;numericBoxTranslation.Name" xml:space="preserve">
     <value>numericBoxTranslation</value>
@@ -624,7 +626,7 @@ distance (Å); positive moves it away from the origin.</value>
     <value>90</value>
   </data>
   <data name="label6.Text" xml:space="preserve">
-    <value>Distance from origin</value>
+    <value>Distance from proj. center</value>
   </data>
   <data name="&gt;&gt;label6.Name" xml:space="preserve">
     <value>label6</value>
@@ -1038,23 +1040,23 @@ checkbox to enable/disable a plane, or select
 a row to load it into the editor above.</value>
   </data>
   <data name="numericBoxDistance.ToolTip" xml:space="preserve">
-    <value>Distance from the origin to the bounding plane,
+    <value>Distance from the projection center to the bounding plane,
 entered directly in angstroms (Å); kept in sync
 with the d-spacing multiple on the left.</value>
   </data>
   <data name="numericBoxDistanceD.ToolTip" xml:space="preserve">
-    <value>Distance from the origin to the bounding plane as a
+    <value>Distance from the projection center to the bounding plane as a
 multiple of the (hkl) interplanar spacing d; kept
 in sync with the absolute Å value on the right.</value>
   </data>
   <data name="label3.ToolTip" xml:space="preserve">
-    <value>Shift the bounding plane along its normal by this
-distance (Å); positive moves it away from the origin.</value>
+    <value>Shift the region bounded by the planes by this distance (Å)
+along the normal of the specified (hkl); positive values move
+it toward +g, i.e. in the direction of the (hkl) normal.</value>
   </data>
   <data name="label6.ToolTip" xml:space="preserve">
-    <value>Distance from the crystal origin to the
-bounding plane, set as a multiple of the
-d-spacing (left) or directly in Å (right).</value>
+    <value>Distance from the projection center to the bounding plane,
+set as a multiple of the d-spacing (left) or directly in Å (right).</value>
   </data>
   <data name="indexControl1.ToolTip" xml:space="preserve">
     <value>Miller indices (h k l) of the bounding

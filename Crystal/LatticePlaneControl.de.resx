@@ -103,11 +103,13 @@ Kontrollkästchen einer Zeile, um die Anzeige dieser Ebene umzuschalten.</value>
 (Miller-Bravais h k i l bei hexagonalen Kristallen).</value>
   </data>
   <data name="numericBoxDistance.ToolTip" xml:space="preserve">
-    <value>Verschiebt die Netzebene entlang ihrer Normalen, als
-Bruchteil des Netzebenenabstands (-0,5 bis 0,5).</value>
+    <value>Verschiebt die Netzebenen entlang ihrer Normalen, als Bruchteil
+des Netzebenenabstands (-0,5 bis 0,5); positive Werte bewegen sie
+in Richtung +g, d. h. in Richtung der (hkl)-Normalen.</value>
   </data>
   <data name="label6.ToolTip" xml:space="preserve">
-    <value>Verschiebt die Netzebene entlang ihrer Normalen, als
-Bruchteil des Netzebenenabstands (-0,5 bis 0,5).</value>
+    <value>Verschiebt die Netzebenen entlang ihrer Normalen, als Bruchteil
+des Netzebenenabstands (-0,5 bis 0,5); positive Werte bewegen sie
+in Richtung +g, d. h. in Richtung der (hkl)-Normalen.</value>
   </data>
 </root>

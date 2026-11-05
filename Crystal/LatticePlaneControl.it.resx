@@ -103,11 +103,13 @@ riga per attivare o disattivare la visualizzazione di quel piano.</value>
 (indici di Miller-Bravais h k i l per i cristalli esagonali).</value>
   </data>
   <data name="numericBoxDistance.ToolTip" xml:space="preserve">
-    <value>Sposta il piano reticolare lungo la sua normale, come
-frazione della distanza interplanare (da -0.5 a 0.5).</value>
+    <value>Sposta i piani reticolari lungo la loro normale, come frazione della
+distanza interplanare (da -0.5 a 0.5); valori positivi li spostano
+verso +g, cioè nel verso della normale (hkl).</value>
   </data>
   <data name="label6.ToolTip" xml:space="preserve">
-    <value>Sposta il piano reticolare lungo la sua normale, come
-frazione della distanza interplanare (da -0.5 a 0.5).</value>
+    <value>Sposta i piani reticolari lungo la loro normale, come frazione della
+distanza interplanare (da -0.5 a 0.5); valori positivi li spostano
+verso +g, cioè nel verso della normale (hkl).</value>
   </data>
 </root>

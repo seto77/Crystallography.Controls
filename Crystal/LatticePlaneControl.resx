@@ -674,11 +674,13 @@ checkbox to toggle whether that plane is shown.</value>
 (Miller-Bravais h k i l for hexagonal crystals).</value>
   </data>
   <data name="numericBoxDistance.ToolTip" xml:space="preserve">
-    <value>Shift the lattice plane along its normal, as a
-fraction of the interplanar spacing (-0.5 to 0.5).</value>
+    <value>Shift the lattice planes along their normal, as a fraction of the
+interplanar spacing (-0.5 to 0.5); positive values move them
+toward +g, i.e. in the direction of the (hkl) normal.</value>
   </data>
   <data name="label6.ToolTip" xml:space="preserve">
-    <value>Shift the lattice plane along its normal, as a
-fraction of the interplanar spacing (-0.5 to 0.5).</value>
+    <value>Shift the lattice planes along their normal, as a fraction of the
+interplanar spacing (-0.5 to 0.5); positive values move them
+toward +g, i.e. in the direction of the (hkl) normal.</value>
   </data>
 </root>

@@ -97,11 +97,13 @@ una fila para alternar si ese plano se muestra.</value>
 (índices de Miller-Bravais h k i l para cristales hexagonales).</value>
   </data>
   <data name="numericBoxDistance.ToolTip" xml:space="preserve">
-    <value>Desplaza el plano reticular a lo largo de su normal, como
-fracción de la distancia interplanar (-0,5 a 0,5).</value>
+    <value>Desplaza los planos reticulares a lo largo de su normal, como fracción
+de la distancia interplanar (-0,5 a 0,5); un valor positivo los mueve
+hacia +g, es decir, en el sentido de la normal (hkl).</value>
   </data>
   <data name="label6.ToolTip" xml:space="preserve">
-    <value>Desplaza el plano reticular a lo largo de su normal, como
-fracción de la distancia interplanar (-0,5 a 0,5).</value>
+    <value>Desplaza los planos reticulares a lo largo de su normal, como fracción
+de la distancia interplanar (-0,5 a 0,5); un valor positivo los mueve
+hacia +g, es decir, en el sentido de la normal (hkl).</value>
   </data>
 </root>

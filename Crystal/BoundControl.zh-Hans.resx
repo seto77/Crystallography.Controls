@@ -90,18 +90,18 @@
     <value>等效晶面</value>
   </data>
   <data name="label6.Text" xml:space="preserve">
-    <value>距原点距离</value>
+    <value>距投影中心距离</value>
   </data>
   <data name="colorControl.HeaderText" xml:space="preserve">
     <value>颜色</value>
   </data>
   <data name="numericBoxMaximumDistanceFromOrigin.ToolTip" xml:space="preserve">
     <value>如果绘制范围未被晶面封闭，
-则以此距原点的距离对其加以限制。</value>
+则以此距投影中心的距离对其加以限制。</value>
   </data>
   <data name="numericBoxMaximumDistanceFromOrigin.ToolTip1" xml:space="preserve">
     <value>如果绘制范围未被晶面封闭，
-则以此距原点的距离对其加以限制。</value>
+则以此距投影中心的距离对其加以限制。</value>
   </data>
   <data name="buttonChangeBond.ToolTip" xml:space="preserve">
     <value>替换所选的边界面</value>
@@ -116,16 +116,16 @@
     <value>包括对称等效的面</value>
   </data>
   <data name="numericBoxTranslation.ToolTip" xml:space="preserve">
-    <value>沿法线方向将边界面平移此
-距离（Å）；正值使其远离原点。</value>
+    <value>将边界面围成的区域沿所指定 (hkl) 的法线平移此距离（Å）；
+正值使其朝 +g 方向（(hkl) 法线的方向）移动。</value>
   </data>
   <data name="numericBoxTranslation.ToolTip1" xml:space="preserve">
-    <value>沿法线方向将边界面平移此
-距离（Å）；正值使其远离原点。</value>
+    <value>将边界面围成的区域沿所指定 (hkl) 的法线平移此距离（Å）；
+正值使其朝 +g 方向（(hkl) 法线的方向）移动。</value>
   </data>
   <data name="label3.ToolTip" xml:space="preserve">
-    <value>沿法线方向将边界面平移此
-距离（Å）；正值使其远离原点。</value>
+    <value>将边界面围成的区域沿所指定 (hkl) 的法线平移此距离（Å）；
+正值使其朝 +g 方向（(hkl) 法线的方向）移动。</value>
   </data>
   <data name="buttonAddBond.ToolTip" xml:space="preserve">
     <value>根据当前的指数、距离和颜色设置，
@@ -141,17 +141,17 @@
 行将其载入上方的编辑栏。</value>
   </data>
   <data name="numericBoxDistance.ToolTip" xml:space="preserve">
-    <value>从原点到边界面的距离，直接以埃
+    <value>从投影中心到边界面的距离，直接以埃
 （Å）为单位输入；与左侧的晶面
 间距倍数保持同步。</value>
   </data>
   <data name="numericBoxDistanceD.ToolTip" xml:space="preserve">
-    <value>从原点到边界面的距离，以该(hkl)
+    <value>从投影中心到边界面的距离，以该(hkl)
 晶面间距d的倍数表示；与右侧的
 绝对距离（Å）值保持同步。</value>
   </data>
   <data name="label6.ToolTip" xml:space="preserve">
-    <value>从晶体原点到边界面的距离，
+    <value>从投影中心到边界面的距离，
 以晶面间距的倍数（左侧）或
 直接以Å（右侧）设置。</value>
   </data>

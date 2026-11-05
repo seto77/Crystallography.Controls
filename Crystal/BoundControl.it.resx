@@ -90,18 +90,18 @@
     <value>Piani equivalenti</value>
   </data>
   <data name="label6.Text" xml:space="preserve">
-    <value>Distanza dall'origine</value>
+    <value>Distanza dal centro di proiez.</value>
   </data>
   <data name="colorControl.HeaderText" xml:space="preserve">
     <value>Colore</value>
   </data>
   <data name="numericBoxMaximumDistanceFromOrigin.ToolTip" xml:space="preserve">
     <value>Se l'intervallo di disegno non è chiuso da piani cristallini,
-limitalo con questa distanza dall'origine.</value>
+limitalo con questa distanza dal centro di proiezione.</value>
   </data>
   <data name="numericBoxMaximumDistanceFromOrigin.ToolTip1" xml:space="preserve">
     <value>Se l'intervallo di disegno non è chiuso da piani cristallini,
-limitalo con questa distanza dall'origine.</value>
+limitalo con questa distanza dal centro di proiezione.</value>
   </data>
   <data name="buttonChangeBond.ToolTip" xml:space="preserve">
     <value>Sostituisci il piano di delimitazione selezionato</value>
@@ -116,16 +116,19 @@ limitalo con questa distanza dall'origine.</value>
     <value>Includi i piani equivalenti per simmetria</value>
   </data>
   <data name="numericBoxTranslation.ToolTip" xml:space="preserve">
-    <value>Trasla il piano di delimitazione lungo la sua normale di questa
-distanza (Å); valori positivi lo allontanano dall'origine.</value>
+    <value>Trasla la regione delimitata dai piani di questa distanza (Å)
+lungo la normale del (hkl) indicato; valori positivi la spostano
+verso +g, cioè nel verso della normale (hkl).</value>
   </data>
   <data name="numericBoxTranslation.ToolTip1" xml:space="preserve">
-    <value>Trasla il piano di delimitazione lungo la sua normale di questa
-distanza (Å); valori positivi lo allontanano dall'origine.</value>
+    <value>Trasla la regione delimitata dai piani di questa distanza (Å)
+lungo la normale del (hkl) indicato; valori positivi la spostano
+verso +g, cioè nel verso della normale (hkl).</value>
   </data>
   <data name="label3.ToolTip" xml:space="preserve">
-    <value>Trasla il piano di delimitazione lungo la sua normale di questa
-distanza (Å); valori positivi lo allontanano dall'origine.</value>
+    <value>Trasla la regione delimitata dai piani di questa distanza (Å)
+lungo la normale del (hkl) indicato; valori positivi la spostano
+verso +g, cioè nel verso della normale (hkl).</value>
   </data>
   <data name="buttonAddBond.ToolTip" xml:space="preserve">
     <value>Aggiungi un nuovo piano di delimitazione all'elenco dalle
@@ -141,17 +144,17 @@ casella per abilitare/disabilitare un piano, oppure seleziona
 una riga per caricarla nell'editor sopra.</value>
   </data>
   <data name="numericBoxDistance.ToolTip" xml:space="preserve">
-    <value>Distanza dall'origine al piano di delimitazione,
+    <value>Distanza dal centro di proiezione al piano di delimitazione,
 inserita direttamente in angstrom (Å); mantenuta sincronizzata
 con il multiplo della distanza interplanare a sinistra.</value>
   </data>
   <data name="numericBoxDistanceD.ToolTip" xml:space="preserve">
-    <value>Distanza dall'origine al piano di delimitazione come
+    <value>Distanza dal centro di proiezione al piano di delimitazione come
 multiplo della distanza interplanare (hkl) d; mantenuta
 sincronizzata con il valore assoluto in Å a destra.</value>
   </data>
   <data name="label6.ToolTip" xml:space="preserve">
-    <value>Distanza dall'origine del cristallo al
+    <value>Distanza dal centro di proiezione al
 piano di delimitazione, impostata come multiplo della
 distanza interplanare (sinistra) o direttamente in Å (destra).</value>
   </data>
