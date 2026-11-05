@@ -190,13 +190,19 @@ public partial class SearchCrystalControl : UserControlBase
                 var cry = table.Get(i);
 
                 //名前
-                if (flag && prm.Name != "" && !cry.name.Contains(prm.Name, StringComparison.CurrentCultureIgnoreCase))
+                //if (flag && prm.Name != "" && !cry.name.Contains(prm.Name, StringComparison.CurrentCultureIgnoreCase)) // 261105Cl 変更前
+                // 261105Cl 変更 (監査 J21): 名前・文献が null の結晶 (Crystal.Journal は既定で null) で例外にしない。
+                //  以前は Parallel.For の中の例外で検索が途中で止まり、残りの行が「当たらない」扱いのまま結果に出ていた
+                if (flag && prm.Name != "" && !(cry.name ?? "").Contains(prm.Name, StringComparison.CurrentCultureIgnoreCase)) // 261105Cl
                     flag = false;
 
                 //Reference
-                if (flag && prm.Reference != "" && !(cry.jour.Contains(prm.Reference, StringComparison.CurrentCultureIgnoreCase) ||
-                cry.auth.Contains(prm.Reference, StringComparison.CurrentCultureIgnoreCase) ||
-                cry.sect.Contains(prm.Reference, StringComparison.CurrentCultureIgnoreCase)))
+                //if (flag && prm.Reference != "" && !(cry.jour.Contains(prm.Reference, StringComparison.CurrentCultureIgnoreCase) || // 261105Cl 変更前
+                //cry.auth.Contains(prm.Reference, StringComparison.CurrentCultureIgnoreCase) || // 261105Cl 変更前
+                //cry.sect.Contains(prm.Reference, StringComparison.CurrentCultureIgnoreCase))) // 261105Cl 変更前
+                if (flag && prm.Reference != "" && !((cry.jour ?? "").Contains(prm.Reference, StringComparison.CurrentCultureIgnoreCase) || // 261105Cl
+                (cry.auth ?? "").Contains(prm.Reference, StringComparison.CurrentCultureIgnoreCase) || // 261105Cl
+                (cry.sect ?? "").Contains(prm.Reference, StringComparison.CurrentCultureIgnoreCase))) // 261105Cl
                     flag = false;
 
                 //結晶系
@@ -206,12 +212,16 @@ public partial class SearchCrystalControl : UserControlBase
                 //元素
                 if (flag && checkBoxSearchElements.Checked)
                 {
-                    var elements = cry.atoms.Select(a => a.AtomNo).Distinct().ToArray();
+                    //var elements = cry.atoms.Select(a => a.AtomNo).Distinct().ToArray(); // 261105Cl 変更前
+                    // 261105Cl 変更 (監査 J23): AtomNo 255 は重水素 D (Crystal2.GetCrystal で H + 同位体に戻す約束)。周期表のボタンは H (1) なので H として比べる。
+                    //  以前は重水素化した結晶が「H を含む」に当たらず、「H を除く」でも除かれなかった。atoms が null の行でも例外にしない (J21)
+                    var elements = (cry.atoms ?? []).Select(a => a.AtomNo == 255 ? (byte)1 : a.AtomNo).Distinct().ToArray(); // 261105Cl
                     if (prm.Excludes.Length != 0 && elements.Any(e => prm.Excludes.Contains(e)))
                         flag = false;
                     if (flag && prm.Includes.Length != 0 && !prm.Includes.All(e => elements.Contains(e)))
                         flag = false;
-                    if (flag && cry.atoms.Count == 0)
+                    //if (flag && cry.atoms.Count == 0) // 261105Cl 変更前
+                    if (flag && elements.Length == 0) // 261105Cl
                         flag = false;
                 }
 
@@ -340,6 +350,16 @@ public partial class SearchCrystalControl : UserControlBase
 
     private void backgroundWorkerSearch_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
     {
+        // 261105Cl 追加 (監査 J21): DoWork が例外で止まったときは、途中までの flags で絞り込まない (以前は未判定の行が黙って「当たらない」扱いになり、結果の一部だけが出ていた)。
+        //  絞り込みは前のまま、バインディングをつなぎ直して、失敗したことを状態欄に出す (他の進捗の文と同じく英語)
+        if (e.Error != null)
+        {
+            CrystalDatabaseControl.Resume();
+            Enabled = true;
+            ProgressChanged?.Invoke(sender, 1.0, $"Search failed: {(e.Error is AggregateException ae && ae.InnerException != null ? ae.InnerException.Message : e.Error.Message)}");
+            return;
+        }
+
         //最終処理
         var flagCount = flags.Count(f => f);
 
