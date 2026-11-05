@@ -205,7 +205,10 @@ public partial class CrystalControl : UserControlBase
 
         crystal = new Crystal(
             symmetryControl.CellConstants, symmetryControl.CellConstantsErr,
-            SymmetrySeriesNumber, textBoxName.Text, colorControl.Color, rot, atomControl.GetAll(),
+            //SymmetrySeriesNumber, textBoxName.Text, colorControl.Color, rot, atomControl.GetAll(), // 261105Cl 変更前
+            // 261105Cl 変更: 原子表の原子 (= 結晶リストの元の結晶の原子のことがある) を複製して渡す。新しい結晶のコンストラクタが原子の
+            // 温度因子に新しい格子を設定する (Crystal.SyncDsfCell) ので、共有したままだと Replace 前でも元の結晶の係数が変わる
+            SymmetrySeriesNumber, textBoxName.Text, colorControl.Color, rot, [.. atomControl.GetAll().Select(a => (Atoms)a.Clone())],
             (textBoxMemo.Text, textBoxAuthor.Text, textBoxJournal.Text, textBoxTitle.Text),
             bondControl.GetAll(), boundControl.GetAll(), latticePlaneControl.GetAll(), eosControl.EOScondition);
 
@@ -660,11 +663,22 @@ public partial class CrystalControl : UserControlBase
         GenerateFromInterface();
         crystal.SymmetrySeriesNumber = 1;
 
+        // 261105Cl 追加: 温度因子の異方性テンソルを、各等価位置を作った対称操作と超構造の倍率で変換する (β' = M β Mᵀ、M = diag(1/u, 1/v, 1/w)·R)。
+        // 以前は代表原子の Dsf をそのまま (同じオブジェクトを共有して) 全等価位置に配っていたため、P1 展開・超構造で異方性の DW が誤っていた
+        var oldCell = crystal.CellValue;
+        var newCell = (crystal.A * _u, crystal.B * _v, crystal.C * _w, crystal.Alpha, crystal.Beta, crystal.Gamma);
         var temp_atoms = new List<Atoms>();
         foreach (var atoms in Crystal.Atoms)
         {
             int n = 0;
             foreach (var atom in atoms.Atom)
+            {
+                // 対称操作の線形部 R (列 = R e_i)。位置は R x + t で作られている (構造因子の計算と同じ規約。tools/AdpCheck transform で確認)
+                var m = new double[3, 3];
+                (double X, double Y, double Z)[] cols = [atom.Operation.ApplyMatrix(1, 0, 0), atom.Operation.ApplyMatrix(0, 1, 0), atom.Operation.ApplyMatrix(0, 0, 1)];
+                for (int j = 0; j < 3; j++)
+                    (m[0, j], m[1, j], m[2, j]) = (cols[j].X / _u, cols[j].Y / _v, cols[j].Z / _w);
+
                 for (double u = 0; u < _u; u++)
                     for (double v = 0; v < _v; v++)
                         for (double w = 0; w < _w; w++)
@@ -675,10 +689,12 @@ public partial class CrystalControl : UserControlBase
                                 1,
                                 new Vector3DBase((atom.X + u) / _u, (atom.Y + v) / _v, (atom.Z + w) / _w),
                                 new Vector3DBase(atoms.X_err / _u, atoms.Y_err / _v, atoms.Z_err / _w),
-                                atoms.Occ, atoms.Occ_err, atoms.Dsf, atoms.Material,
+                                //atoms.Occ, atoms.Occ_err, atoms.Dsf, atoms.Material, // 261105Cl 変更前
+                                atoms.Occ, atoms.Occ_err, atoms.Dsf?.Transform(m, oldCell, newCell), atoms.Material, // 261105Cl 変更: 変換した温度因子 (原子ごとに別のオブジェクト)
                                 atoms.Radius, atoms.GLEnabled, atoms.ShowLabel));
                             n++;
                         }
+            }
         }
         crystal.A *= _u;
         crystal.B *= _v;
@@ -733,6 +749,12 @@ public partial class CrystalControl : UserControlBase
             cry.Alpha = Vector3D.AngleBetVectors(B, C);
             cry.Beta = Vector3D.AngleBetVectors(C, A);
             cry.Gamma = Vector3D.AngleBetVectors(A, B);
+            // 261105Cl 追加: 温度因子の異方性テンソルも、原子座標と同じ軸の取り替えで変換する
+            transformDsf(cry, linearPartOf(p =>
+            {
+                var q = exchangeAtomPositionMonoclinic(p.X, p.Y, p.Z, srcExtra, false);
+                return exchangeAtomPositionMonoclinic(q.X, q.Y, q.Z, dstExtra, true);
+            }), Crystal.CellValue);
             crystal = cry;
         }
 
@@ -754,6 +776,12 @@ public partial class CrystalControl : UserControlBase
             }
             (cry.A, cry.B, cry.C) = exchangeOrtho(cry.A, cry.B, cry.C, src.Setting, false, true);
             (cry.A, cry.B, cry.C) = exchangeOrtho(cry.A, cry.B, cry.C, dst.Setting, true, true);
+            // 261105Cl 追加: 温度因子の異方性テンソルも、原子座標と同じ軸の入れ替えで変換する (原点の移動は並進なので影響しない)
+            transformDsf(cry, linearPartOf(p =>
+            {
+                var q = exchangeOrtho(p.X, p.Y, p.Z, src.Setting);
+                return exchangeOrtho(q.X, q.Y, q.Z, dst.Setting, true);
+            }), Crystal.CellValue);
             crystal = cry;
         }
 
@@ -774,27 +802,58 @@ public partial class CrystalControl : UserControlBase
             cry.SetAxis();
 
             Vector3DBase srcA = cry.A_Axis, srcB = cry.B_Axis, srcC = cry.C_Axis, dstA, dstB, dstC;
+            // 261105Cl 変更: 座標の変換を関数にして、温度因子のテンソルの変換 (線形部) にも使う
+            Func<(double X, double Y, double Z), (double X, double Y, double Z)> f;
             if (srcExtra == "H")
             {
-                foreach (var a in cry.Atoms)
-                    (a.X, a.Y, a.Z) = (a.X + a.Z, -a.X + a.Y + a.Z, a.Y + a.Z);
-                (dstA, dstB, dstC) = ((2 * srcA + srcB + srcC) / 3, (-srcA + srcB + srcC) / 3, (-srcA - srcB + srcC) / 3);
+                //foreach (var a in cry.Atoms) // 261105Cl 変更前 (3 行)
+                //    (a.X, a.Y, a.Z) = (a.X + a.Z, -a.X + a.Y + a.Z, a.Y + a.Z);
+                //(dstA, dstB, dstC) = ((2 * srcA + srcB + srcC) / 3, (-srcA + srcB + srcC) / 3, (-srcA - srcB + srcC) / 3);
+                // 261105Cl 変更: 六方軸 → 菱面体軸 (obverse) の式の誤りを直す。逆変換 a_H = a_R − b_R, b_H = b_R − c_R, c_H = a_R + b_R + c_R から
+                // z_R = −y_H + z_H、c_R = (−a_H − 2b_H + c_H)/3 (以前は z_R = y_H + z_H、c_R = (−a_H − b_H + c_H)/3 で、y≠0 の原子と c・α・β が誤っていた)。
+                // 下の R → H の式 (逆向き) とこれで互いに逆になる
+                f = p => (p.X + p.Z, -p.X + p.Y + p.Z, -p.Y + p.Z);
+                (dstA, dstB, dstC) = ((2 * srcA + srcB + srcC) / 3, (-srcA + srcB + srcC) / 3, (-srcA - 2 * srcB + srcC) / 3);
             }
             else
             {
-                foreach (var a in cry.Atoms)
-                    (a.X, a.Y, a.Z) = ((2 * a.X - a.Y - a.Z) / 3, (a.X + a.Y - 2 * a.Z) / 3, (a.X + a.Y + a.Z) / 3);
+                //foreach (var a in cry.Atoms) // 261105Cl 変更前 (2 行)
+                //    (a.X, a.Y, a.Z) = ((2 * a.X - a.Y - a.Z) / 3, (a.X + a.Y - 2 * a.Z) / 3, (a.X + a.Y + a.Z) / 3);
+                f = p => ((2 * p.X - p.Y - p.Z) / 3, (p.X + p.Y - 2 * p.Z) / 3, (p.X + p.Y + p.Z) / 3);
                 (dstA, dstB, dstC) = (srcA - srcB, srcB - srcC, srcA + srcB + srcC);
             }
+            foreach (var a in cry.Atoms) // 261105Cl 追加
+                (a.X, a.Y, a.Z) = f((a.X, a.Y, a.Z));
             cry.A = dstA.Length; cry.B = dstB.Length; cry.C = dstC.Length;
             cry.Alpha = Vector3DBase.AngleBetVectors(dstB, dstC);
             cry.Beta = Vector3DBase.AngleBetVectors(dstC, dstA);
             cry.Gamma = Vector3DBase.AngleBetVectors(dstA, dstB);
+            transformDsf(cry, linearPartOf(f), Crystal.CellValue); // 261105Cl 追加: 温度因子の異方性テンソルも同じ軸の取り替えで変換する
             crystal = cry;
         }
 
         SetToInterface(true);
         GenerateFromInterface();
+    }
+
+    /// <summary>261105Cl 追加: 分率座標の変換 f (アフィン) の線形部 M を返す (列 j = f(e_j) − f(0))。原点の移動 (並進) は打ち消される</summary>
+    private static double[,] linearPartOf(Func<(double X, double Y, double Z), (double X, double Y, double Z)> f)
+    {
+        var o = f((0, 0, 0));
+        (double X, double Y, double Z)[] cols = [f((1, 0, 0)), f((0, 1, 0)), f((0, 0, 1))];
+        var m = new double[3, 3];
+        for (int j = 0; j < 3; j++)
+            (m[0, j], m[1, j], m[2, j]) = (cols[j].X - o.X, cols[j].Y - o.Y, cols[j].Z - o.Z);
+        return m;
+    }
+
+    /// <summary>261105Cl 追加: 軸の取り替えに合わせて、全原子の温度因子の異方性テンソルを変換する (β' = M β Mᵀ)。
+    /// cry の格子は変換後の値に設定済みであること。oldCell は変換前の格子 (Deep.Copy 後の Dsf は格子を持たないので明示する)</summary>
+    private static void transformDsf(Crystal cry, double[,] m, (double A, double B, double C, double Alpha, double Beta, double Gamma) oldCell)
+    {
+        foreach (var a in cry.Atoms)
+            if (a.Dsf != null)
+                a.Dsf = a.Dsf.Transform(m, oldCell, cry.CellValue);
     }
 
     private const double one4th = 1.0 / 4.0, one8th = 1.0 / 8.0, three8th = 3.0 / 8.0;

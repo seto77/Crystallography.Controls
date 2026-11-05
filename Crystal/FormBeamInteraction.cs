@@ -628,7 +628,9 @@ public partial class FormBeamInteraction : FormBase
             int sub = electron ? a.SubNumberElectron : a.SubNumberXray;
             if (z <= 0 || !seen.Add((z, sub))) continue;
             var name = string.IsNullOrEmpty(a.ElementName) ? AtomStatic.AtomicName(z) : a.ElementName;
-            list.Add(new ScatElement(name, z, sub, a.Dsf?.Biso ?? 0, scatPalette[ci++ % scatPalette.Length]));
+            //list.Add(new ScatElement(name, z, sub, a.Dsf?.Biso ?? 0, scatPalette[ci++ % scatPalette.Length])); // 261105Cl 変更前
+            // 261105Cl 変更: 異方性の原子は等価な等方 B (Hamilton) を使う。Biso は Iso の値なので、異方性だけ入力した原子では 0 だった
+            list.Add(new ScatElement(name, z, sub, a.Dsf?.BisoEffective ?? 0, scatPalette[ci++ % scatPalette.Length]));
         }
         return [.. list];
     }
