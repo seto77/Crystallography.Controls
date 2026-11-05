@@ -111,7 +111,7 @@
     <value>Interazione del fascio</value>
   </data>
   <data name="symmetryInformationToolStripMenuItem.Text" xml:space="preserve">
-    <value>Informazioni sulla simmetria</value>
+    <value>Informazioni di simmetria</value>
   </data>
   <data name="importCrystalFromCIFAMCToolStripMenuItem.Text" xml:space="preserve">
     <value>Importa da CIF o AMC...</value>

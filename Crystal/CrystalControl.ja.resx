@@ -365,7 +365,7 @@
     <value>ビーム相互作用</value>
   </data>
   <data name="symmetryInformationToolStripMenuItem.Text" xml:space="preserve">
-    <value>対称性詳細</value>
+    <value>対称性情報</value>
   </data>
   <data name="importCrystalFromCIFAMCToolStripMenuItem.Text" xml:space="preserve">
     <value>CIFファイル又はAMCファイルから読み込み</value>
@@ -413,7 +413,7 @@
     <value>ビーム相互作用データを別ウィンドウで開く</value>
   </data>
   <data name="buttonSymmetryInfo.Text" xml:space="preserve">
-    <value>対称性詳細</value>
+    <value>対称性情報</value>
   </data>
   <data name="buttonSymmetryInfo.ToolTip" xml:space="preserve">
     <value>対称性の詳細情報を別ウィンドウで開く</value>

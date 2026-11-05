@@ -114,7 +114,7 @@
     <value>Взаимодействие пучка</value>
   </data>
   <data name="symmetryInformationToolStripMenuItem.Text" xml:space="preserve">
-    <value>Информация о симметрии</value>
+    <value>Сведения о симметрии</value>
   </data>
   <data name="importCrystalFromCIFAMCToolStripMenuItem.Text" xml:space="preserve">
     <value>Импорт из CIF или AMC...</value>

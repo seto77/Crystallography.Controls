@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel; // 260717Cl 追加: 属性の冗長な完全修飾を除去するため
 using System.Diagnostics;
 using System.Drawing;                  //260604Cl 追加: タイトルバー右寄せのテキスト計測用
+using System.Linq;                     //261105Cl 追加: ShowToolTips で Application.OpenForms を配列に写すため
 using System.Runtime.InteropServices;  //260604Cl 追加: WM_GETTITLEBARINFOEX 取得用
 using System.Windows.Forms;
 
@@ -47,6 +48,37 @@ public partial class FormBase : Form
     //260604Cl 追加: タイトルに F1 ヘルプ案内を付けるか。出したくない派生フォーム (CommonDialog 等) は override で false にする。
     protected virtual bool ShowHelpSuffix => true;
 
+    // 261105Cl 追加 (作者の決定 A20): アプリ全体でツールチップを出すか。ReciPro の主窓「Show Tooltips」がこれを切り替える。
+    //  各フォーム・部品が Designer で作った ToolTip (components に登録したもの) の Active をこの値に揃える。
+    //  変えた瞬間に開いている窓 (隠れているものも含む) へ反映し、後から開く窓は OnLoad、後から作る部品は UserControlBase.OnLoad で揃える。
+    //  既定は true (表示)。設定しないアプリ (PDIndexer・IPAnalyzer・CSManager) では何もしない (true の間は走査もしない)
+    /// <summary>アプリ全体でツールチップを表示するか (既定 true)。変更は開いている全フォームへ即座に反映される。</summary>
+    public static bool ShowToolTips
+    {
+        get => showToolTips;
+        set
+        {
+            if (showToolTips == value) return;
+            showToolTips = value;
+            foreach (var form in Application.OpenForms.Cast<Form>().ToArray())
+                ApplyShowToolTips(form);
+        }
+    }
+    private static bool showToolTips = true; // 261105Cl 追加
+
+    /// <summary>261105Cl 追加: root 以下の全コントロール (フォーム・部品) が持つ ToolTip の Active を <see cref="ShowToolTips"/> に揃える。</summary>
+    internal static void ApplyShowToolTips(Control root)
+    {
+        try
+        {
+            foreach (var tt in UserControlBase.enumContainerToolTips(root))
+                tt.Active = showToolTips;
+            foreach (Control c in root.Controls)
+                ApplyShowToolTips(c);
+        }
+        catch { /* ツールチップの切り替えの失敗で UI を落とさない */ }
+    }
+
     protected FormBase()
     {
         InitializeComponent();
@@ -80,6 +112,7 @@ public partial class FormBase : Form
             // (net10 実測: Standard/System は無視、Flat/Popup は反映)。SteelBlue 等のアクション色を維持するため Popup へ切替。
             //try { if (Application.IsDarkModeEnabled) ApplyDarkModeButtonFix(this); } catch { /* 失敗しても Load を止めない */ } //260731Cl 変更前 (DataGridView 対応で改名)
             try { if (Application.IsDarkModeEnabled) ApplyDarkModeControlFix(this); } catch { /* 失敗しても Load を止めない */ }
+            if (!showToolTips) ApplyShowToolTips(this); // 261105Cl 追加 (作者の決定 A20): 「Show Tooltips」を外した後に開く窓にも効かせる
         }
     }
 

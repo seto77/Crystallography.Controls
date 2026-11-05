@@ -64,7 +64,12 @@ public partial class UserControlBase : UserControl
     {
         // 260621Cl: base.OnLoad が投げてもコード側多言語化は確実に走らせる (finally)。例外は呼び出し側へ伝播。
         try { base.OnLoad(e); }
-        finally { try { CodeLocalizer.Apply(this); } catch { /* 多言語化失敗で Load を止めない */ } }
+        //finally { try { CodeLocalizer.Apply(this); } catch { /* 多言語化失敗で Load を止めない */ } } // 261105Cl 変更前
+        finally
+        {
+            try { CodeLocalizer.Apply(this); } catch { /* 多言語化失敗で Load を止めない */ }
+            if (!FormBase.ShowToolTips) FormBase.ApplyShowToolTips(this); // 261105Cl 追加 (作者の決定 A20): 「Show Tooltips」を外した後に作る部品にも効かせる
+        }
     }
 
     /// <summary>260531Cl 追加: ハンドル生成後、親の標準 ToolTip からこのコントロール宛のチップを読み取り内部子へ反映する。</summary>
@@ -130,7 +135,8 @@ public partial class UserControlBase : UserControl
     }
 
     /// <summary>host の型から designer 生成の components (IContainer) を取り出し、登録された ToolTip を列挙する。260531Cl 追加</summary>
-    private static IEnumerable<ToolTip> enumContainerToolTips(Control host)
+    //private static IEnumerable<ToolTip> enumContainerToolTips(Control host) // 261105Cl 変更前
+    internal static IEnumerable<ToolTip> enumContainerToolTips(Control host) // 261105Cl 変更: FormBase.ApplyShowToolTips からも使うため internal に
     {
         FieldInfo fi = null;
         for (var t = host.GetType(); fi == null && t != null && t != typeof(object); t = t.BaseType)
