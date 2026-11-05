@@ -63,13 +63,13 @@
     <value>Elementos</value>
   </data>
   <data name="buttonPeriodicTable.Text" xml:space="preserve">
-    <value>Tabela Periódica</value>
+    <value>Tabela periódica</value>
   </data>
   <data name="checkBoxSearchReference.Text" xml:space="preserve">
     <value>Referência</value>
   </data>
   <data name="checkBoxSearchCrystalSystem.Text" xml:space="preserve">
-    <value>Sistema Cristalino</value>
+    <value>Sistema cristalino</value>
   </data>
   <data name="checkBoxSearchCellParameter.Text" xml:space="preserve">
     <value>Parâm. célula</value>

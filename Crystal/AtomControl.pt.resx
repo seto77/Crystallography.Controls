@@ -70,7 +70,7 @@
   </data>
   <data name="checkBoxDetailAtomicPositionError.Text" xml:space="preserve">
     <value>Mostrar
-Erro</value>
+erro</value>
   </data>
   <data name="label7.Text" xml:space="preserve">
     <value>Deslocar coordenadas de todos os átomos por:</value>
@@ -83,7 +83,7 @@ Erro</value>
   </data>
   <data name="checkBoxDetailsDebyeWallerError.Text" xml:space="preserve">
     <value>Mostrar
-Erro</value>
+erro</value>
   </data>
   <data name="tabPageDebyeWaller.Text" xml:space="preserve">
     <value>Deslocamento (B)</value>

@@ -72,7 +72,7 @@
     <value>Compr. de onda</value>
   </data>
   <data name="radioButtonNeutron.Text" xml:space="preserve">
-    <value>Nêutron</value>
+    <value>Nêutrons</value>
   </data>
   <data name="comboBoxXRayElement.ToolTip" xml:space="preserve">
     <value>Selecione um elemento (1:H a 98:Cf) que emite raios X característicos.
