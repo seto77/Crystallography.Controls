@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;      //261106Cl 追加: ApplyShowToolTips の HashSet
 using System.ComponentModel; // 260717Cl 追加: 属性の冗長な完全修飾を除去するため
 using System.Diagnostics;
 using System.Drawing;                  //260604Cl 追加: タイトルバー右寄せのテキスト計測用
 using System.Linq;                     //261105Cl 追加: ShowToolTips で Application.OpenForms を配列に写すため
+using System.Runtime.CompilerServices; //261106Cl 追加: ConditionalWeakTable (ShowToolTips で止めた ToolStrip などを覚える)
 using System.Runtime.InteropServices;  //260604Cl 追加: WM_GETTITLEBARINFOEX 取得用
 using System.Windows.Forms;
 
@@ -66,15 +68,60 @@ public partial class FormBase : Form
     }
     private static bool showToolTips = true; // 261105Cl 追加
 
-    /// <summary>261105Cl 追加: root 以下の全コントロール (フォーム・部品) が持つ ToolTip の Active を <see cref="ShowToolTips"/> に揃える。</summary>
-    internal static void ApplyShowToolTips(Control root)
+    /// <summary>261106Cl 追加 (作者の決定 C9): <see cref="ShowToolTips"/> = false で表示を止めたツールバー・メニュー (ToolStrip.ShowItemToolTips)・
+    /// 表 (DataGridView.ShowCellToolTips)・タブ (TabControl.ShowToolTips)。表示に戻すときは、ここにあるもの (= もともと表示していたもの) だけを true に戻す
+    /// (もともと false だったもの、例えば既定で false の MenuStrip・StatusStrip を true にしない)。弱参照なので、破棄された部品は残らない</summary>
+    private static readonly ConditionalWeakTable<Control, object> toolTipsTurnedOff = new();
+    private static readonly object toolTipsTurnedOffMark = new(); // 261106Cl 追加: 上の表の値 (中身は使わない)
+
+    //internal static void ApplyShowToolTips(Control root) // 261106Cl 変更前のシグネチャ
+    /// <summary>261105Cl 追加: root 以下の全コントロール (フォーム・部品) が持つ ToolTip の Active を <see cref="ShowToolTips"/> に揃える。
+    /// 261106Cl 変更 (作者の決定 C9): ToolTip 部品のほか、ツールバー・メニュー・ステータスバー・コンテキストメニュー (ToolStrip 系の ShowItemToolTips。
+    /// メニュー項目の下のドロップダウンも)、表 (DataGridView.ShowCellToolTips)、タブ (TabControl.ShowToolTips) にも効かせる。
+    /// コンテキストメニューは designer の components に登録したものと、各コントロールの ContextMenuStrip を見る。
+    /// <paramref name="visited"/> は同じ部品を二度たどらないための集合 (最初の呼び出しでは省略)</summary>
+    internal static void ApplyShowToolTips(Control root, HashSet<Control> visited = null)
     {
+        visited ??= []; // 261106Cl 追加
+        if (root == null || !visited.Add(root)) return; // 261106Cl 追加 (コンテキストメニューは複数の部品から指されることがある)
         try
         {
-            foreach (var tt in UserControlBase.enumContainerToolTips(root))
-                tt.Active = showToolTips;
+            //foreach (var tt in UserControlBase.enumContainerToolTips(root)) // 261106Cl 変更前
+            //    tt.Active = showToolTips;
+            // 261106Cl 変更: components に登録したコンテキストメニューもたどる
+            foreach (var comp in UserControlBase.enumContainerComponents(root))
+                if (comp is ToolTip tt)
+                    tt.Active = showToolTips;
+                else if (comp is ToolStrip menu)
+                    ApplyShowToolTips(menu, visited);
+
+            // 261106Cl 追加: ツールバー・メニュー・ステータスバー・ドロップダウン (項目の ToolTipText)。下のドロップダウンは HasDropDown のものだけ (DropDown を読むと作られてしまう)
+            if (root is ToolStrip strip)
+            {
+                if (!showToolTips && strip.ShowItemToolTips) { strip.ShowItemToolTips = false; toolTipsTurnedOff.AddOrUpdate(strip, toolTipsTurnedOffMark); }
+                else if (showToolTips && toolTipsTurnedOff.Remove(strip)) strip.ShowItemToolTips = true;
+                foreach (ToolStripItem item in strip.Items)
+                    if (item is ToolStripDropDownItem { HasDropDown: true } dropDownItem)
+                        ApplyShowToolTips(dropDownItem.DropDown, visited);
+            }
+            // 261106Cl 追加: 表のセル・列見出しのツールチップ
+            else if (root is DataGridView grid)
+            {
+                if (!showToolTips && grid.ShowCellToolTips) { grid.ShowCellToolTips = false; toolTipsTurnedOff.AddOrUpdate(grid, toolTipsTurnedOffMark); }
+                else if (showToolTips && toolTipsTurnedOff.Remove(grid)) grid.ShowCellToolTips = true;
+            }
+            // 261106Cl 追加: タブの見出しのツールチップ (TabPage.ToolTipText。CrystalControl のタブなど)
+            else if (root is TabControl tab)
+            {
+                if (!showToolTips && tab.ShowToolTips) { tab.ShowToolTips = false; toolTipsTurnedOff.AddOrUpdate(tab, toolTipsTurnedOffMark); }
+                else if (showToolTips && toolTipsTurnedOff.Remove(tab)) tab.ShowToolTips = true;
+            }
+
+            if (root.ContextMenuStrip != null) ApplyShowToolTips(root.ContextMenuStrip, visited); // 261106Cl 追加: 右クリックメニュー
+
             foreach (Control c in root.Controls)
-                ApplyShowToolTips(c);
+                //ApplyShowToolTips(c); // 261106Cl 変更前
+                ApplyShowToolTips(c, visited); // 261106Cl 変更
         }
         catch { /* ツールチップの切り替えの失敗で UI を落とさない */ }
     }

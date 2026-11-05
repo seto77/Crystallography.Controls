@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq; // 261106Cl 追加: enumContainerToolTips の OfType
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -137,13 +138,26 @@ public partial class UserControlBase : UserControl
     /// <summary>host の型から designer 生成の components (IContainer) を取り出し、登録された ToolTip を列挙する。260531Cl 追加</summary>
     //private static IEnumerable<ToolTip> enumContainerToolTips(Control host) // 261105Cl 変更前
     internal static IEnumerable<ToolTip> enumContainerToolTips(Control host) // 261105Cl 変更: FormBase.ApplyShowToolTips からも使うため internal に
+    //{ // 261106Cl 変更前 (本体は下の enumContainerComponents へ移した)
+    //    FieldInfo fi = null;
+    //    for (var t = host.GetType(); fi == null && t != null && t != typeof(object); t = t.BaseType)
+    //        fi = t.GetField("components", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+    //    if (fi != null && fi.GetValue(host) is IContainer cont)
+    //        foreach (Component comp in cont.Components)
+    //            if (comp is ToolTip tt) yield return tt;
+    //}
+        => enumContainerComponents(host).OfType<ToolTip>(); // 261106Cl 変更
+
+    /// <summary>261106Cl 追加 (作者の決定 C9): host の型から designer 生成の components (IContainer) を取り出し、登録された部品をすべて列挙する
+    /// (ToolTip のほか、FormBase.ApplyShowToolTips がコンテキストメニュー (ContextMenuStrip) を見つけるのに使う)。</summary>
+    internal static IEnumerable<Component> enumContainerComponents(Control host)
     {
         FieldInfo fi = null;
         for (var t = host.GetType(); fi == null && t != null && t != typeof(object); t = t.BaseType)
             fi = t.GetField("components", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
         if (fi != null && fi.GetValue(host) is IContainer cont)
             foreach (Component comp in cont.Components)
-                if (comp is ToolTip tt) yield return tt;
+                yield return comp;
     }
 
     #endregion

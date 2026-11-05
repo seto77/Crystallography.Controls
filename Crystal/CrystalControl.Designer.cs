@@ -851,7 +851,8 @@
             numericBoxHill.SkipEventDuringInput = false;
             numericBoxHill.SmartIncrement = true;
             toolTip.SetToolTip(numericBoxHill, resources.GetString("numericBoxHill.ToolTip"));
-            numericBoxHill.Value = 1D;
+            //numericBoxHill.Value = 1D; // 261106Cl 変更前
+            numericBoxHill.Value = 0.5D; // 261106Cl 変更 (作者の決定 C6): 新しい結晶の Hill 係数の既定 (0.5 = Hill 平均) に合わせる
             // 
             // label117
             // 

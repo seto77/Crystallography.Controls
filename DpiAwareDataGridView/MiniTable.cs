@@ -782,6 +782,9 @@ public class MiniTable : DpiAwareDataGridView
         copyCellItem.Enabled = copyCellPlainItem.Enabled = hasCell;
         copyRowItem.Enabled = copyRowPlainItem.Enabled = hasRow;
         copyTableItem.Enabled = copyTablePlainItem.Enabled = copyTableTabularItem.Enabled = copyTableImageItem.Enabled = hasRows;
+        // 261106Cl 追加 (作者の決定 C9): このメニューはコードで作って直接開く (designer の components にもコントロールの ContextMenuStrip にも無い) ので、
+        //  FormBase.ShowToolTips の走査では見つからない。開くたびに合わせる (作るときは常に true なので、表示に戻すと true に戻る)
+        copyMenu.ShowItemToolTips = FormBase.ShowToolTips;
 
         // セル系 2 項目のツールチップ末尾に、実際にコピーされる内容のプレビューを付ける
         // (生ソースと展開後を開いたまま見比べられる。Selectable=false で選択表示がない表の対象確認も兼ねる)。

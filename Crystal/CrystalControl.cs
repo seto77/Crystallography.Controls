@@ -234,6 +234,10 @@ public partial class CrystalControl : UserControlBase
         //crystal.ElasticStiffness = elasticityControl1.Stiffness.ToArray(); // 261105Cl 変更前
         // 261105Cl 変更: コンプライアンスで入力中に逆行列が無い (独立な定数が欠けている) と Stiffness が null で例外になっていた。そのときは 0 (未設定) にする
         crystal.ElasticStiffness = (elasticityControl1.Stiffness ?? new DenseMatrix(6, 6)).ToArray();
+        // 261106Cl 追加 (作者の決定 C8-3): コンプライアンスで入力・表示しているときは、その値も結晶に持たせる (全部 0 なら持たない)。
+        // 逆行列が無いと剛性は全部 0 になり、以前は入力した値が失われていた。持たせた値は計算にも使い (PolyCrystal)、次の SetToInterface で欄に戻す
+        crystal.ElasticCompliance = elasticityControl1.Mode == Elasticity.Mode.Compliance && elasticityControl1.Compliance is { } compliance && compliance.Enumerate().Any(v => v != 0)
+            ? compliance.ToArray() : null;
         crystal.ElementValences = [.. valences]; // 261025Cl 追加 (上の valences を複製して持たせる)
 
         crystal.AngleResolution = (double)numericUpDownAngleResolution.Value;
@@ -331,7 +335,19 @@ public partial class CrystalControl : UserControlBase
         // 261105Cl 追加 (監査 B1): 弾性定数の欄に結晶系を渡す (以前は渡しておらず、ずっと三斜晶扱いで拘束が働かなかった)。
         // 欄は値を変えずに入力の可否と注記だけを更新し、拘束は利用者が値を編集したときに掛ける (保存済みの値を黙って 0 にしない)
         elasticityControl1.SymmetrySeriesNumber = crystal.SymmetrySeriesNumber;
-        elasticityControl1.Stiffness = DenseMatrix.OfArray(crystal.ElasticStiffness);
+        //elasticityControl1.Stiffness = DenseMatrix.OfArray(crystal.ElasticStiffness); // 261106Cl 変更前: 毎回剛性の表示に戻していた
+        // 261106Cl 変更 (作者の決定 C8-2・C8-3): 剛性/コンプライアンスの表示の選択を保つ (結晶を作り直すたび・結晶を選び直すたびに剛性の表示に戻っていた)。
+        //  ・コンプライアンスの表示中: 結晶が持つコンプライアンス (入力した値) か、無ければ剛性の逆行列を出す。剛性が全部 0 なら 0 のコンプライアンス
+        //  ・剛性の表示中でも、結晶が逆行列の無いコンプライアンスだけを持つ (剛性が全部 0) ときは、その値を見せるためコンプライアンスの表示にする
+        //  ・剛性に逆行列が無く (0 でない) コンプライアンスで表せないときは、従来どおり剛性の表示にする
+        var stiffness = DenseMatrix.OfArray(crystal.ElasticStiffness);
+        var stiffnessInverse = stiffness.TryInverse();
+        if (crystal.ElasticCompliance is { } storedCompliance && (elasticityControl1.Mode == Elasticity.Mode.Compliance || stiffnessInverse == null))
+            elasticityControl1.Compliance = DenseMatrix.OfArray(storedCompliance);
+        else if (elasticityControl1.Mode == Elasticity.Mode.Compliance && (stiffnessInverse != null || stiffness.Enumerate().All(v => v == 0)))
+            elasticityControl1.Compliance = stiffnessInverse ?? new DenseMatrix(6, 6);
+        else
+            elasticityControl1.Stiffness = stiffness;
 
         numericUpDownAngleResolution.Value = Math.Min((decimal)crystal.AngleResolution, numericUpDownAngleResolution.Maximum);
         numericUpDownAngleSubDivision.Value = crystal.SubDivision;
@@ -1060,12 +1076,21 @@ public partial class CrystalControl : UserControlBase
 
     //private void buttonStressSet_Click(object sender, EventArgs e) => GenerateFromInterface(); // 261105Cl 変更前
     /// <summary>261105Cl 変更: 歪み・応力・Hill 係数を結晶に入れたあと、応力が歪みに効かない場合 (弾性定数が未設定で剛性行列の逆行列が無い・Hill 係数が 0) に知らせる。
-    /// 計算は止めない (弾性定数が無いとき応力からの歪みは 0。<see cref="Elasticity.GetStrainTriclinic"/>)</summary>
+    /// 計算は止めない (弾性定数が無いとき応力からの歪みは 0。<see cref="Elasticity.GetStrainTriclinic"/>)。
+    /// 261106Cl 変更 (作者の決定 C6: Hill 係数の既定を 0.5 に): 使われる歪みは h × (応力から計算した歪み) + (1 − h) × (入力した歪み)。
+    /// 入力した応力・歪みの一方が使われない (h = 0 の応力、h = 1 の歪み) か、一方だけを入れて h 倍・(1 − h) 倍に縮む (0 &lt; h &lt; 1。既定の 0.5 で半分) ときにも知らせる。
+    /// 両方を入れて 0 &lt; h &lt; 1 なら意図した Hill の混合なので知らせない</summary>
     private void buttonStressSet_Click(object sender, EventArgs e)
     {
         GenerateFromInterface();
-        if (crystal?.Stress == null || crystal.Stress.IsZero()) return;
-        if (DenseMatrix.OfArray(crystal.ElasticStiffness).TryInverse() == null)
+        //if (crystal?.Stress == null || crystal.Stress.IsZero()) return; // 261106Cl 変更前
+        //if (DenseMatrix.OfArray(crystal.ElasticStiffness).TryInverse() == null)
+        // 261106Cl 変更: 歪みだけを入れた場合も見る。弾性定数はコンプライアンスで入れた値 (Crystal.ElasticCompliance) があれば設定済みとみなす
+        if (crystal == null) return;
+        bool hasStress = crystal.Stress != null && !crystal.Stress.IsZero(), hasStrain = crystal.Strain != null && !crystal.Strain.IsZero();
+        double h = crystal.HillCoefficient;
+        string hText = h.ToString("0.###"), restText = (1 - h).ToString("0.###"); // 261106Cl 追加: メッセージに出す h と 1 − h
+        if (hasStress && h != 0 && crystal.ElasticCompliance == null && DenseMatrix.OfArray(crystal.ElasticStiffness).TryInverse() == null)
             MessageBox.Show(Crystallography.Localization.Loc(
                 en: "The elastic constants are not set (the stiffness matrix cannot be inverted), so the stress is not converted to strain: the strain from the stress is 0 until they are entered.",
                 ja: "弾性定数が未設定 (剛性行列の逆行列がない) のため、応力を歪みに換算できません。弾性定数を入れるまで、応力による歪みは 0 です。",
@@ -1079,7 +1104,8 @@ public partial class CrystalControl : UserControlBase
                 zhHant: "彈性常數未設定 (勁度矩陣不可逆)，因此無法將應力換算為應變：在輸入彈性常數之前，由應力產生的應變為 0。",
                 ko: "탄성 상수가 설정되지 않아 (강성 행렬의 역행렬이 없음) 응력을 변형으로 환산할 수 없습니다. 탄성 상수를 입력할 때까지 응력에 의한 변형은 0입니다."),
                 Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        else if (crystal.HillCoefficient == 0)
+        //else if (crystal.HillCoefficient == 0) // 261106Cl 変更前
+        else if (hasStress && h == 0) // 261106Cl 変更
             MessageBox.Show(Crystallography.Localization.Loc(
                 en: "The Hill coefficient is 0, so the stress is not used (only the imposed strain is). Set it to 1 to use the strain from the stress.",
                 ja: "Hill 係数が 0 のため、応力は使われません (入力した歪みだけが使われます)。応力からの歪みを使うには 1 にしてください。",
@@ -1092,6 +1118,51 @@ public partial class CrystalControl : UserControlBase
                 zhHans: "Hill 系数为 0，因此不使用应力 (只使用输入的应变)。要使用由应力得到的应变，请设为 1。",
                 zhHant: "Hill 係數為 0，因此不使用應力 (只使用輸入的應變)。要使用由應力得到的應變，請設為 1。",
                 ko: "Hill 계수가 0이므로 응력은 사용되지 않습니다 (입력한 변형만 사용됩니다). 응력으로부터의 변형을 사용하려면 1로 설정하십시오."),
+                Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+        // 261106Cl 追加: h = 1 では入力した歪みが使われない
+        else if (hasStrain && h == 1)
+            MessageBox.Show(Crystallography.Localization.Loc(
+                en: "The Hill coefficient is 1, so the entered strain is not used (only the strain from the stress is). Set it to 0 to use the entered strain.",
+                ja: "Hill 係数が 1 のため、入力した歪みは使われません (応力から計算した歪みだけが使われます)。入力した歪みを使うには 0 にしてください。",
+                de: "Der Hill-Koeffizient ist 1, daher wird die vorgegebene Dehnung nicht verwendet (nur die Dehnung aus der Spannung). Setzen Sie ihn auf 0, um die vorgegebene Dehnung zu verwenden.",
+                fr: "Le coefficient de Hill vaut 1 ; la déformation imposée n'est donc pas utilisée (seule la déformation issue de la contrainte l'est). Mettez-le à 0 pour utiliser la déformation imposée.",
+                es: "El coeficiente de Hill es 1, por lo que la deformación impuesta no se usa (solo la deformación obtenida de la tensión). Póngalo en 0 para usar la deformación impuesta.",
+                pt: "O coeficiente de Hill é 1, por isso a deformação imposta não é usada (apenas a deformação obtida da tensão). Defina-o como 0 para usar a deformação imposta.",
+                it: "Il coefficiente di Hill è 1, quindi la deformazione imposta non viene usata (solo la deformazione ricavata dallo sforzo). Impostalo a 0 per usare la deformazione imposta.",
+                ru: "Коэффициент Хилла равен 1, поэтому заданная деформация не используется (только деформация от напряжения). Установите 0, чтобы использовать заданную деформацию.",
+                zhHans: "Hill 系数为 1，因此不使用输入的应变 (只使用由应力得到的应变)。要使用输入的应变，请设为 0。",
+                zhHant: "Hill 係數為 1，因此不使用輸入的應變 (只使用由應力得到的應變)。要使用輸入的應變，請設為 0。",
+                ko: "Hill 계수가 1이므로 입력한 변형은 사용되지 않습니다 (응력으로부터의 변형만 사용됩니다). 입력한 변형을 사용하려면 0으로 설정하십시오."),
+                Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+        // 261106Cl 追加: 応力だけを入れたとき、応力からの歪みは h 倍になる (既定の 0.5 で半分。入力した歪み 0 と混ぜるため)
+        else if (hasStress && !hasStrain && h != 1)
+            MessageBox.Show(Crystallography.Localization.Loc(
+                en: $"Only the stress is entered, so the strain used is {hText} × the strain from the stress (Hill coefficient {hText}; the entered strain is 0). To use the stress alone (Reuss model), set the Hill coefficient to 1. For the Hill average, also enter the strain of the Voigt model.",
+                ja: $"応力だけが入力されているため、使われる歪みは応力から計算した歪みの {hText} 倍です (Hill 係数 {hText}、入力した歪みは 0)。応力だけを使う (Reuss モデル) には Hill 係数を 1 に、Hill 平均にするには Voigt モデルの歪みも入力してください。",
+                de: $"Es ist nur die Spannung eingegeben, daher ist die verwendete Dehnung {hText} × die Dehnung aus der Spannung (Hill-Koeffizient {hText}; die vorgegebene Dehnung ist 0). Um nur die Spannung zu verwenden (Reuss-Modell), setzen Sie den Hill-Koeffizienten auf 1. Für das Hill-Mittel geben Sie auch die Dehnung des Voigt-Modells ein.",
+                fr: $"Seule la contrainte est saisie ; la déformation utilisée vaut donc {hText} × la déformation issue de la contrainte (coefficient de Hill {hText} ; la déformation imposée est 0). Pour utiliser la contrainte seule (modèle de Reuss), mettez le coefficient de Hill à 1. Pour la moyenne de Hill, saisissez aussi la déformation du modèle de Voigt.",
+                es: $"Solo se ha introducido la tensión, por lo que la deformación usada es {hText} × la deformación obtenida de la tensión (coeficiente de Hill {hText}; la deformación impuesta es 0). Para usar solo la tensión (modelo de Reuss), ponga el coeficiente de Hill en 1. Para el promedio de Hill, introduzca también la deformación del modelo de Voigt.",
+                pt: $"Apenas a tensão foi introduzida, por isso a deformação usada é {hText} × a deformação obtida da tensão (coeficiente de Hill {hText}; a deformação imposta é 0). Para usar apenas a tensão (modelo de Reuss), defina o coeficiente de Hill como 1. Para a média de Hill, introduza também a deformação do modelo de Voigt.",
+                it: $"È inserito solo lo sforzo, quindi la deformazione usata è {hText} × la deformazione ricavata dallo sforzo (coefficiente di Hill {hText}; la deformazione imposta è 0). Per usare solo lo sforzo (modello di Reuss), imposta il coefficiente di Hill a 1. Per la media di Hill, inserisci anche la deformazione del modello di Voigt.",
+                ru: $"Задано только напряжение, поэтому используемая деформация равна {hText} × деформация от напряжения (коэффициент Хилла {hText}; заданная деформация равна 0). Чтобы использовать только напряжение (модель Ройсса), установите коэффициент Хилла 1. Для среднего по Хиллу задайте также деформацию модели Фойгта.",
+                zhHans: $"只输入了应力，因此使用的应变是由应力得到的应变的 {hText} 倍 (Hill 系数 {hText}，输入的应变为 0)。若只使用应力 (Reuss 模型)，请将 Hill 系数设为 1；若要 Hill 平均，请同时输入 Voigt 模型的应变。",
+                zhHant: $"只輸入了應力，因此使用的應變是由應力得到的應變的 {hText} 倍 (Hill 係數 {hText}，輸入的應變為 0)。若只使用應力 (Reuss 模型)，請將 Hill 係數設為 1；若要 Hill 平均，請同時輸入 Voigt 模型的應變。",
+                ko: $"응력만 입력되어 있으므로 사용되는 변형은 응력으로부터의 변형의 {hText}배입니다 (Hill 계수 {hText}, 입력한 변형은 0). 응력만 사용하려면 (Reuss 모델) Hill 계수를 1로, Hill 평균을 사용하려면 Voigt 모델의 변형도 입력하십시오."),
+                Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+        // 261106Cl 追加: 歪みだけを入れたとき、入力した歪みは (1 − h) 倍になる (既定の 0.5 で半分。応力からの歪み 0 と混ぜるため)
+        else if (hasStrain && !hasStress && h != 0)
+            MessageBox.Show(Crystallography.Localization.Loc(
+                en: $"Only the strain is entered, so the strain used is {restText} × the entered strain (1 − Hill coefficient {hText}; the stress is 0). To use the entered strain alone (Voigt model), set the Hill coefficient to 0. For the Hill average, also enter the stress of the Reuss model.",
+                ja: $"歪みだけが入力されているため、使われる歪みは入力した歪みの {restText} 倍です (1 − Hill 係数 {hText}、応力は 0)。入力した歪みだけを使う (Voigt モデル) には Hill 係数を 0 に、Hill 平均にするには Reuss モデルの応力も入力してください。",
+                de: $"Es ist nur die Dehnung eingegeben, daher ist die verwendete Dehnung {restText} × die vorgegebene Dehnung (1 − Hill-Koeffizient {hText}; die Spannung ist 0). Um nur die vorgegebene Dehnung zu verwenden (Voigt-Modell), setzen Sie den Hill-Koeffizienten auf 0. Für das Hill-Mittel geben Sie auch die Spannung des Reuss-Modells ein.",
+                fr: $"Seule la déformation est saisie ; la déformation utilisée vaut donc {restText} × la déformation imposée (1 − coefficient de Hill {hText} ; la contrainte est 0). Pour utiliser la déformation imposée seule (modèle de Voigt), mettez le coefficient de Hill à 0. Pour la moyenne de Hill, saisissez aussi la contrainte du modèle de Reuss.",
+                es: $"Solo se ha introducido la deformación, por lo que la deformación usada es {restText} × la deformación impuesta (1 − coeficiente de Hill {hText}; la tensión es 0). Para usar solo la deformación impuesta (modelo de Voigt), ponga el coeficiente de Hill en 0. Para el promedio de Hill, introduzca también la tensión del modelo de Reuss.",
+                pt: $"Apenas a deformação foi introduzida, por isso a deformação usada é {restText} × a deformação imposta (1 − coeficiente de Hill {hText}; a tensão é 0). Para usar apenas a deformação imposta (modelo de Voigt), defina o coeficiente de Hill como 0. Para a média de Hill, introduza também a tensão do modelo de Reuss.",
+                it: $"È inserita solo la deformazione, quindi la deformazione usata è {restText} × la deformazione imposta (1 − coefficiente di Hill {hText}; lo sforzo è 0). Per usare solo la deformazione imposta (modello di Voigt), imposta il coefficiente di Hill a 0. Per la media di Hill, inserisci anche lo sforzo del modello di Reuss.",
+                ru: $"Задана только деформация, поэтому используемая деформация равна {restText} × заданная деформация (1 − коэффициент Хилла {hText}; напряжение равно 0). Чтобы использовать только заданную деформацию (модель Фойгта), установите коэффициент Хилла 0. Для среднего по Хиллу задайте также напряжение модели Ройсса.",
+                zhHans: $"只输入了应变，因此使用的应变是输入应变的 {restText} 倍 (1 − Hill 系数 {hText}，应力为 0)。若只使用输入的应变 (Voigt 模型)，请将 Hill 系数设为 0；若要 Hill 平均，请同时输入 Reuss 模型的应力。",
+                zhHant: $"只輸入了應變，因此使用的應變是輸入應變的 {restText} 倍 (1 − Hill 係數 {hText}，應力為 0)。若只使用輸入的應變 (Voigt 模型)，請將 Hill 係數設為 0；若要 Hill 平均，請同時輸入 Reuss 模型的應力。",
+                ko: $"변형만 입력되어 있으므로 사용되는 변형은 입력한 변형의 {restText}배입니다 (1 − Hill 계수 {hText}, 응력은 0). 입력한 변형만 사용하려면 (Voigt 모델) Hill 계수를 0으로, Hill 평균을 사용하려면 Reuss 모델의 응력도 입력하십시오."),
                 Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
     }
 
