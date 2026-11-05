@@ -354,6 +354,15 @@ public partial class CrystalControl : UserControlBase
     /// <summary>1 nm³ = 1000 Å³。Crystal.Volume の単位は nm³ なので、体積表示・数密度・単位胞質量の換算はすべてこれ 1 つで決まる</summary>
     private const double Ang3PerNm3 = 1000.0;
 
+    /// <summary>格子定数の欄の Å/nm ラジオ (symmetryControl.LengthUnit) の get/set。261105Cl 追加:
+    /// 配置先のアプリが長さの表示単位をこの切り替えに揃えるため (ReciPro の回折シミュレータのスポットのラベルの d など)。
+    /// Designer には書き出さない (symmetryControl 側が既定値 Å を持つ)</summary>
+    [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] // 261105Cl 追加
+    public LengthUnitEnum LengthUnit { get => symmetryControl.LengthUnit; set => symmetryControl.LengthUnit = value; } // 261105Cl 追加
+
+    /// <summary>格子定数の欄の Å/nm が切り替わったときに発生する。261105Cl 追加 (配置先のアプリが単位付きの表示を描き直すため)</summary>
+    public event EventHandler LengthUnitChanged; // 261105Cl 追加
+
     /// <summary>Crystal.Volume (nm³) を現在の表示単位へ換算する係数 (symmetryControl の Å/nm ラジオに従う)</summary>
     private double volumeScale => symmetryControl.LengthUnit == LengthUnitEnum.Angstrom ? Ang3PerNm3 : 1.0;
     //private bool angstromUnit => symmetryControl.LengthUnit == LengthUnitEnum.Angstrom;         // 260730Cl 削除: 参照 2 箇所のみだったので volumeScale へ畳んだ
@@ -398,6 +407,7 @@ public partial class CrystalControl : UserControlBase
             }
         }
         finally { flowLayoutPanelCellProperties.ResumeLayout(true); }
+        LengthUnitChanged?.Invoke(this, EventArgs.Empty); // 261105Cl 追加: 配置先へ知らせる (コンストラクタからの初期化の呼び出しでは購読者がまだいない)
     }
     #endregion
 
