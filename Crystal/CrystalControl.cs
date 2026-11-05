@@ -630,8 +630,18 @@ public partial class CrystalControl : UserControlBase
             // 「先頭1バイト=Crystal2.ID + Brotli圧縮MemoryPack」の byte[] を期待しているため、
             // CSManager の送信側 (FormMain.cs) と同じ形式へ統一。
             //Clipboard.SetDataObject(Crystal2.FromCrystal(crystal), true, 3, 10);
-            Clipboard.SetDataObject(MemoryPackEx.Serialize(Crystal2.ID, Crystal2.FromCrystal(crystal)), true, 3, 10);
+        //Clipboard.SetDataObject(MemoryPackEx.Serialize(Crystal2.ID, Crystal2.FromCrystal(crystal)), true, 3, 10); // 261105Cl 変更前
+        {
+            // 261105Cl 変更 (監査 #23): 送った内容を覚えておき、受け側 (ReciPro の WndProc) が自分の送信を受け取って編集中の結晶を
+            // 送信用の Crystal2 (表示・EOS などを持たない) から作り直したものに置き換えないようにする。クリップボードの形式は変えない
+            var bytes = MemoryPackEx.Serialize(Crystal2.ID, Crystal2.FromCrystal(crystal));
+            LastSentToClipboard = bytes;
+            Clipboard.SetDataObject(bytes, true, 3, 10);
+        }
     }
+
+    /// <summary>261105Cl 追加 (監査 #23): このプロセスが「他のソフトへ送る」で最後にクリップボードに置いた内容</summary>
+    public static byte[] LastSentToClipboard { get; private set; }
 
     private void resetToolStripMenuItem_Click(object sender, EventArgs e)
     {
