@@ -197,12 +197,16 @@
   <data name="radioButtonDebyeWallerTypeU.ToolTip" xml:space="preserve">
     <value>对原子位移（温度）参数采用 U 表示法——
 即热振动引起的均方原子位移
-（Å²）；B = 8π²·U。</value>
+（Å²）；B = 8π²·U。
+切换表示法时数值会自动换算。</value>
   </data>
   <data name="radioButtonDebyeWallerTypeB.ToolTip" xml:space="preserve">
     <value>对原子位移（温度）参数采用 B 表示法；
 B = 8π²·U，其中数值
-越大表示热振动越强。</value>
+越大表示热振动越强。
+各向异性分量为无量纲的 β_ij
+（= 2π²·a*_i·a*_j·U_ij）。切换表示法时
+数值会自动换算。</value>
   </data>
   <data name="tabPageDebyeWaller.ToolTip" xml:space="preserve">
     <value>德拜-沃勒因子的设置选项卡</value>
@@ -414,63 +418,63 @@ B = 8π²·U，其中数值
   </data>
   <data name="labelDimension.ToolTip" xml:space="preserve">
     <value>位移参数的当前单位：U（及各向同性B）
-为Å²；各向异性B为
-"None"（无量纲）。</value>
+为Å²；B 表示法的各向异性 β
+为无量纲。</value>
   </data>
   <data name="numericBoxB11.ToolTip" xml:space="preserve">
     <value>各向异性原子位移参数，11分量
-（Å²）——描述该原子依赖方向的
+（U：Å²，β：无量纲）——描述该原子依赖方向的
 热振动；按所选记法显示为
-B11或U11。</value>
+β11或U11。</value>
   </data>
   <data name="numericBoxB11err.ToolTip" xml:space="preserve">
     <value>各向异性位移参数11分量的
-标准偏差（误差，Å²）。</value>
+标准偏差（误差，U：Å²，β：无量纲）。</value>
   </data>
   <data name="numericBoxB12.ToolTip" xml:space="preserve">
     <value>各向异性原子位移参数，12分量
-（Å²）——依赖方向的热振动；
-按所选记法显示为B12或U12。</value>
+（U：Å²，β：无量纲）——依赖方向的热振动；
+按所选记法显示为β12或U12。</value>
   </data>
   <data name="numericBoxB12err.ToolTip" xml:space="preserve">
     <value>各向异性位移参数12分量的
-标准偏差（误差，Å²）。</value>
+标准偏差（误差，U：Å²，β：无量纲）。</value>
   </data>
   <data name="numericBoxB13.ToolTip" xml:space="preserve">
     <value>各向异性原子位移参数，13分量
-（Å²）——依赖方向的热振动；
-按所选记法显示为B13或U13。</value>
+（U：Å²，β：无量纲）——依赖方向的热振动；
+按所选记法显示为β13或U13。</value>
   </data>
   <data name="numericBoxB13err.ToolTip" xml:space="preserve">
     <value>各向异性位移参数13分量的
-标准偏差（误差，Å²）。</value>
+标准偏差（误差，U：Å²，β：无量纲）。</value>
   </data>
   <data name="numericBoxB22.ToolTip" xml:space="preserve">
     <value>各向异性原子位移参数，22分量
-（Å²）——依赖方向的热振动；
-按所选记法显示为B22或U22。</value>
+（U：Å²，β：无量纲）——依赖方向的热振动；
+按所选记法显示为β22或U22。</value>
   </data>
   <data name="numericBoxB22err.ToolTip" xml:space="preserve">
     <value>各向异性位移参数22分量的
-标准偏差（误差，Å²）。</value>
+标准偏差（误差，U：Å²，β：无量纲）。</value>
   </data>
   <data name="numericBoxB23.ToolTip" xml:space="preserve">
     <value>各向异性原子位移参数，23分量
-（Å²）——依赖方向的热振动；
-按所选记法显示为B23或U23。</value>
+（U：Å²，β：无量纲）——依赖方向的热振动；
+按所选记法显示为β23或U23。</value>
   </data>
   <data name="numericBoxB23err.ToolTip" xml:space="preserve">
     <value>各向异性位移参数23分量的
-标准偏差（误差，Å²）。</value>
+标准偏差（误差，U：Å²，β：无量纲）。</value>
   </data>
   <data name="numericBoxB33.ToolTip" xml:space="preserve">
     <value>各向异性原子位移参数，33分量
-（Å²）——依赖方向的热振动；
-按所选记法显示为B33或U33。</value>
+（U：Å²，β：无量纲）——依赖方向的热振动；
+按所选记法显示为β33或U33。</value>
   </data>
   <data name="numericBoxB33err.ToolTip" xml:space="preserve">
     <value>各向异性位移参数33分量的
-标准偏差（误差，Å²）。</value>
+标准偏差（误差，U：Å²，β：无量纲）。</value>
   </data>
   <data name="numericBoxBiso.ToolTip" xml:space="preserve">
     <value>各向同性原子位移参数

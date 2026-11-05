@@ -194,12 +194,16 @@ dall'atomo (0 = vuoto, 1 = completamente occupato).</value>
   <data name="radioButtonDebyeWallerTypeU.ToolTip" xml:space="preserve">
     <value>Usa la notazione U per il parametro di spostamento
 atomico (temperatura) — lo spostamento atomico quadratico
-medio (Å²) dovuto alla vibrazione termica; B = 8π²·U.</value>
+medio (Å²) dovuto alla vibrazione termica; B = 8π²·U.
+Cambiando notazione i valori vengono convertiti.</value>
   </data>
   <data name="radioButtonDebyeWallerTypeB.ToolTip" xml:space="preserve">
     <value>Usa la notazione B per il parametro di spostamento
 atomico (temperatura); B = 8π²·U, dove
-valori maggiori indicano una vibrazione termica più intensa.</value>
+valori maggiori indicano una vibrazione termica più intensa.
+Le componenti anisotrope sono i β_ij
+adimensionali (= 2π²·a*_i·a*_j·U_ij). Cambiando
+notazione i valori vengono convertiti.</value>
   </data>
   <data name="tabPageDebyeWaller.ToolTip" xml:space="preserve">
     <value>Scheda delle impostazioni per il fattore di Debye-Waller</value>
@@ -414,62 +418,62 @@ che descrive una vibrazione termica uguale in tutte le direzioni).</value>
   <data name="labelDimension.ToolTip" xml:space="preserve">
     <value>Unità corrente del parametro di
 spostamento: Å² per U (e B isotropo);
-"None" (adimensionale) per B anisotropo.</value>
+adimensionale per i β anisotropi della notazione B.</value>
   </data>
   <data name="numericBoxB11.ToolTip" xml:space="preserve">
     <value>Parametro di spostamento atomico anisotropo,
-componente 11 (Å²) — descrive la vibrazione
+componente 11 (U: Å²; β: adimensionale) — descrive la vibrazione
 termica dipendente dalla direzione di questo
-atomo; mostrato come B11 o U11 secondo la notazione scelta.</value>
+atomo; mostrato come β11 o U11 secondo la notazione scelta.</value>
   </data>
   <data name="numericBoxB11err.ToolTip" xml:space="preserve">
     <value>Deviazione standard (errore) della componente 11
-del parametro di spostamento anisotropo (Å²).</value>
+del parametro di spostamento anisotropo (U: Å²; β: adimensionale).</value>
   </data>
   <data name="numericBoxB12.ToolTip" xml:space="preserve">
     <value>Parametro di spostamento atomico anisotropo, componente
-12 (Å²) — vibrazione termica dipendente dalla direzione;
-mostrato come B12 o U12 secondo la notazione scelta.</value>
+12 (U: Å²; β: adimensionale) — vibrazione termica dipendente dalla direzione;
+mostrato come β12 o U12 secondo la notazione scelta.</value>
   </data>
   <data name="numericBoxB12err.ToolTip" xml:space="preserve">
     <value>Deviazione standard (errore) della componente 12
-del parametro di spostamento anisotropo (Å²).</value>
+del parametro di spostamento anisotropo (U: Å²; β: adimensionale).</value>
   </data>
   <data name="numericBoxB13.ToolTip" xml:space="preserve">
     <value>Parametro di spostamento atomico anisotropo, componente
-13 (Å²) — vibrazione termica dipendente dalla direzione;
-mostrato come B13 o U13 secondo la notazione scelta.</value>
+13 (U: Å²; β: adimensionale) — vibrazione termica dipendente dalla direzione;
+mostrato come β13 o U13 secondo la notazione scelta.</value>
   </data>
   <data name="numericBoxB13err.ToolTip" xml:space="preserve">
     <value>Deviazione standard (errore) della componente 13
-del parametro di spostamento anisotropo (Å²).</value>
+del parametro di spostamento anisotropo (U: Å²; β: adimensionale).</value>
   </data>
   <data name="numericBoxB22.ToolTip" xml:space="preserve">
     <value>Parametro di spostamento atomico anisotropo, componente
-22 (Å²) — vibrazione termica dipendente dalla direzione;
-mostrato come B22 o U22 secondo la notazione scelta.</value>
+22 (U: Å²; β: adimensionale) — vibrazione termica dipendente dalla direzione;
+mostrato come β22 o U22 secondo la notazione scelta.</value>
   </data>
   <data name="numericBoxB22err.ToolTip" xml:space="preserve">
     <value>Deviazione standard (errore) della componente 22
-del parametro di spostamento anisotropo (Å²).</value>
+del parametro di spostamento anisotropo (U: Å²; β: adimensionale).</value>
   </data>
   <data name="numericBoxB23.ToolTip" xml:space="preserve">
     <value>Parametro di spostamento atomico anisotropo, componente
-23 (Å²) — vibrazione termica dipendente dalla direzione;
-mostrato come B23 o U23 secondo la notazione scelta.</value>
+23 (U: Å²; β: adimensionale) — vibrazione termica dipendente dalla direzione;
+mostrato come β23 o U23 secondo la notazione scelta.</value>
   </data>
   <data name="numericBoxB23err.ToolTip" xml:space="preserve">
     <value>Deviazione standard (errore) della componente 23
-del parametro di spostamento anisotropo (Å²).</value>
+del parametro di spostamento anisotropo (U: Å²; β: adimensionale).</value>
   </data>
   <data name="numericBoxB33.ToolTip" xml:space="preserve">
     <value>Parametro di spostamento atomico anisotropo, componente
-33 (Å²) — vibrazione termica dipendente dalla direzione;
-mostrato come B33 o U33 secondo la notazione scelta.</value>
+33 (U: Å²; β: adimensionale) — vibrazione termica dipendente dalla direzione;
+mostrato come β33 o U33 secondo la notazione scelta.</value>
   </data>
   <data name="numericBoxB33err.ToolTip" xml:space="preserve">
     <value>Deviazione standard (errore) della componente 33
-del parametro di spostamento anisotropo (Å²).</value>
+del parametro di spostamento anisotropo (U: Å²; β: adimensionale).</value>
   </data>
   <data name="numericBoxBiso.ToolTip" xml:space="preserve">
     <value>Parametro di spostamento atomico isotropo

@@ -218,11 +218,14 @@
   <data name="radioButtonDebyeWallerTypeU.ToolTip" xml:space="preserve">
     <value>原子変位（温度）パラメータを U 表記で扱い
 ます。U は熱振動による平均二乗原子変位
-（Å²）で、B = 8π²×U の関係があります。</value>
+（Å²）で、B = 8π²×U の関係があります。
+表記を切り替えると値を換算します。</value>
   </data>
   <data name="radioButtonDebyeWallerTypeB.ToolTip" xml:space="preserve">
     <value>原子変位（温度）パラメータを B 表記で扱います。B =
-8π²×U で、値が大きいほど熱振動が大きいことを表します。</value>
+8π²×U で、値が大きいほど熱振動が大きいことを表します。
+異方性の成分は無次元の β_ij（= 2π²·a*_i·a*_j·U_ij）
+です。表記を切り替えると値を換算します。</value>
   </data>
   <data name="tabPageDebyeWaller.ToolTip" xml:space="preserve">
     <value>デバイ・ワラー因子の設定タブ</value>
@@ -373,55 +376,55 @@ Debye–Waller タブでは原子変位パラメータ）
   </data>
   <data name="labelDimension.ToolTip" xml:space="preserve">
     <value>現在の変位パラメータの単位を示します：U（および
-等方性 B）は Å²、異方性 B は無次元（None）です。</value>
+等方性 B）は Å²、B 表記の異方性 β は無次元です。</value>
   </data>
   <data name="numericBoxB11.ToolTip" xml:space="preserve">
-    <value>異方性原子変位パラメータの 11 成分（Å²）。原子の
+    <value>異方性原子変位パラメータの 11 成分（U: Å²、β: 無次元）。原子の
 方向依存の熱振動の大きさを表します。表記設定によ
-り B11 または U11 として表示されます。</value>
+り β11 または U11 として表示されます。</value>
   </data>
   <data name="numericBoxB11err.ToolTip" xml:space="preserve">
-    <value>異方性変位パラメータ 11 成分の標準偏差（誤差, Å²）です。</value>
+    <value>異方性変位パラメータ 11 成分の標準偏差（誤差, U: Å²、β: 無次元）です。</value>
   </data>
   <data name="numericBoxB12.ToolTip" xml:space="preserve">
-    <value>異方性原子変位パラメータの 12 成分（Å²）。
+    <value>異方性原子変位パラメータの 12 成分（U: Å²、β: 無次元）。
 方向依存の熱振動を表します。表記設定によ
-り B12 または U12 として表示されます。</value>
+り β12 または U12 として表示されます。</value>
   </data>
   <data name="numericBoxB12err.ToolTip" xml:space="preserve">
-    <value>異方性変位パラメータ 12 成分の標準偏差（誤差, Å²）です。</value>
+    <value>異方性変位パラメータ 12 成分の標準偏差（誤差, U: Å²、β: 無次元）です。</value>
   </data>
   <data name="numericBoxB13.ToolTip" xml:space="preserve">
-    <value>異方性原子変位パラメータの 13 成分（Å²）。
+    <value>異方性原子変位パラメータの 13 成分（U: Å²、β: 無次元）。
 方向依存の熱振動を表します。表記設定によ
-り B13 または U13 として表示されます。</value>
+り β13 または U13 として表示されます。</value>
   </data>
   <data name="numericBoxB13err.ToolTip" xml:space="preserve">
-    <value>異方性変位パラメータ 13 成分の標準偏差（誤差, Å²）です。</value>
+    <value>異方性変位パラメータ 13 成分の標準偏差（誤差, U: Å²、β: 無次元）です。</value>
   </data>
   <data name="numericBoxB22.ToolTip" xml:space="preserve">
-    <value>異方性原子変位パラメータの 22 成分（Å²）。
+    <value>異方性原子変位パラメータの 22 成分（U: Å²、β: 無次元）。
 方向依存の熱振動を表します。表記設定によ
-り B22 または U22 として表示されます。</value>
+り β22 または U22 として表示されます。</value>
   </data>
   <data name="numericBoxB22err.ToolTip" xml:space="preserve">
-    <value>異方性変位パラメータ 22 成分の標準偏差（誤差, Å²）です。</value>
+    <value>異方性変位パラメータ 22 成分の標準偏差（誤差, U: Å²、β: 無次元）です。</value>
   </data>
   <data name="numericBoxB23.ToolTip" xml:space="preserve">
-    <value>異方性原子変位パラメータの 23 成分（Å²）。
+    <value>異方性原子変位パラメータの 23 成分（U: Å²、β: 無次元）。
 方向依存の熱振動を表します。表記設定によ
-り B23 または U23 として表示されます。</value>
+り β23 または U23 として表示されます。</value>
   </data>
   <data name="numericBoxB23err.ToolTip" xml:space="preserve">
-    <value>異方性変位パラメータ 23 成分の標準偏差（誤差, Å²）です。</value>
+    <value>異方性変位パラメータ 23 成分の標準偏差（誤差, U: Å²、β: 無次元）です。</value>
   </data>
   <data name="numericBoxB33.ToolTip" xml:space="preserve">
-    <value>異方性原子変位パラメータの 33 成分（Å²）。
+    <value>異方性原子変位パラメータの 33 成分（U: Å²、β: 無次元）。
 方向依存の熱振動を表します。表記設定によ
-り B33 または U33 として表示されます。</value>
+り β33 または U33 として表示されます。</value>
   </data>
   <data name="numericBoxB33err.ToolTip" xml:space="preserve">
-    <value>異方性変位パラメータ 33 成分の標準偏差（誤差, Å²）です。</value>
+    <value>異方性変位パラメータ 33 成分の標準偏差（誤差, U: Å²、β: 無次元）です。</value>
   </data>
   <data name="numericBoxBiso.ToolTip" xml:space="preserve">
     <value>等方性原子変位パラメータ Biso/Uiso（Å²）。全方向に

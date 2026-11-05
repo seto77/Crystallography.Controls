@@ -2216,7 +2216,7 @@ all atoms with "Apply custom shift".</value>
     <value>0, 4, 0, 0</value>
   </data>
   <data name="numericBoxB11.HeaderText" xml:space="preserve">
-    <value>B11</value>
+    <value>β11</value>
   </data>
   <data name="numericBoxB11.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -2238,9 +2238,9 @@ all atoms with "Apply custom shift".</value>
   </data>
   <data name="numericBoxB11.ToolTip" xml:space="preserve">
     <value>Anisotropic atomic displacement parameter,
-component 11 (Å²) — describes the
+component 11 (U: Å²; β: dimensionless) — describes the
 direction-dependent thermal vibration of this
-atom; shown as B11 or U11 per the chosen notation.</value>
+atom; shown as β11 or U11 per the chosen notation.</value>
   </data>
   <data name="&gt;&gt;numericBoxB11.Name" xml:space="preserve">
     <value>numericBoxB11</value>
@@ -2289,7 +2289,7 @@ atom; shown as B11 or U11 per the chosen notation.</value>
   </data>
   <data name="numericBoxB11err.ToolTip" xml:space="preserve">
     <value>Standard deviation (error) of the 11 component
-of the anisotropic displacement parameter (Å²).</value>
+of the anisotropic displacement parameter (U: Å²; β: dimensionless).</value>
   </data>
   <data name="numericBoxB11err.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -2319,7 +2319,7 @@ of the anisotropic displacement parameter (Å²).</value>
     <value>0, 4, 0, 0</value>
   </data>
   <data name="numericBoxB12.HeaderText" xml:space="preserve">
-    <value>B12</value>
+    <value>β12</value>
   </data>
   <data name="numericBoxB12.Location" type="System.Drawing.Point, System.Drawing">
     <value>136, 0</value>
@@ -2341,8 +2341,8 @@ of the anisotropic displacement parameter (Å²).</value>
   </data>
   <data name="numericBoxB12.ToolTip" xml:space="preserve">
     <value>Anisotropic atomic displacement parameter, component
-12 (Å²) — direction-dependent thermal vibration;
-shown as B12 or U12 per the chosen notation.</value>
+12 (U: Å²; β: dimensionless) — direction-dependent thermal vibration;
+shown as β12 or U12 per the chosen notation.</value>
   </data>
   <data name="&gt;&gt;numericBoxB12.Name" xml:space="preserve">
     <value>numericBoxB12</value>
@@ -2391,7 +2391,7 @@ shown as B12 or U12 per the chosen notation.</value>
   </data>
   <data name="numericBoxB12err.ToolTip" xml:space="preserve">
     <value>Standard deviation (error) of the 12 component
-of the anisotropic displacement parameter (Å²).</value>
+of the anisotropic displacement parameter (U: Å²; β: dimensionless).</value>
   </data>
   <data name="numericBoxB12err.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -2421,7 +2421,7 @@ of the anisotropic displacement parameter (Å²).</value>
     <value>0, 4, 0, 0</value>
   </data>
   <data name="numericBoxB13.HeaderText" xml:space="preserve">
-    <value>B13</value>
+    <value>β13</value>
   </data>
   <data name="numericBoxB13.Location" type="System.Drawing.Point, System.Drawing">
     <value>272, 0</value>
@@ -2443,8 +2443,8 @@ of the anisotropic displacement parameter (Å²).</value>
   </data>
   <data name="numericBoxB13.ToolTip" xml:space="preserve">
     <value>Anisotropic atomic displacement parameter, component
-13 (Å²) — direction-dependent thermal vibration;
-shown as B13 or U13 per the chosen notation.</value>
+13 (U: Å²; β: dimensionless) — direction-dependent thermal vibration;
+shown as β13 or U13 per the chosen notation.</value>
   </data>
   <data name="&gt;&gt;numericBoxB13.Name" xml:space="preserve">
     <value>numericBoxB13</value>
@@ -2493,7 +2493,7 @@ shown as B13 or U13 per the chosen notation.</value>
   </data>
   <data name="numericBoxB13err.ToolTip" xml:space="preserve">
     <value>Standard deviation (error) of the 13 component
-of the anisotropic displacement parameter (Å²).</value>
+of the anisotropic displacement parameter (U: Å²; β: dimensionless).</value>
   </data>
   <data name="numericBoxB13err.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -2553,7 +2553,7 @@ of the anisotropic displacement parameter (Å²).</value>
     <value>0, 4, 0, 0</value>
   </data>
   <data name="numericBoxB22.HeaderText" xml:space="preserve">
-    <value>B22</value>
+    <value>β22</value>
   </data>
   <data name="numericBoxB22.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -2575,8 +2575,8 @@ of the anisotropic displacement parameter (Å²).</value>
   </data>
   <data name="numericBoxB22.ToolTip" xml:space="preserve">
     <value>Anisotropic atomic displacement parameter, component
-22 (Å²) — direction-dependent thermal vibration;
-shown as B22 or U22 per the chosen notation.</value>
+22 (U: Å²; β: dimensionless) — direction-dependent thermal vibration;
+shown as β22 or U22 per the chosen notation.</value>
   </data>
   <data name="&gt;&gt;numericBoxB22.Name" xml:space="preserve">
     <value>numericBoxB22</value>
@@ -2625,7 +2625,7 @@ shown as B22 or U22 per the chosen notation.</value>
   </data>
   <data name="numericBoxB22err.ToolTip" xml:space="preserve">
     <value>Standard deviation (error) of the 22 component
-of the anisotropic displacement parameter (Å²).</value>
+of the anisotropic displacement parameter (U: Å²; β: dimensionless).</value>
   </data>
   <data name="numericBoxB22err.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -2655,7 +2655,7 @@ of the anisotropic displacement parameter (Å²).</value>
     <value>0, 4, 0, 0</value>
   </data>
   <data name="numericBoxB23.HeaderText" xml:space="preserve">
-    <value>B23</value>
+    <value>β23</value>
   </data>
   <data name="numericBoxB23.Location" type="System.Drawing.Point, System.Drawing">
     <value>136, 0</value>
@@ -2677,8 +2677,8 @@ of the anisotropic displacement parameter (Å²).</value>
   </data>
   <data name="numericBoxB23.ToolTip" xml:space="preserve">
     <value>Anisotropic atomic displacement parameter, component
-23 (Å²) — direction-dependent thermal vibration;
-shown as B23 or U23 per the chosen notation.</value>
+23 (U: Å²; β: dimensionless) — direction-dependent thermal vibration;
+shown as β23 or U23 per the chosen notation.</value>
   </data>
   <data name="&gt;&gt;numericBoxB23.Name" xml:space="preserve">
     <value>numericBoxB23</value>
@@ -2727,7 +2727,7 @@ shown as B23 or U23 per the chosen notation.</value>
   </data>
   <data name="numericBoxB23err.ToolTip" xml:space="preserve">
     <value>Standard deviation (error) of the 23 component
-of the anisotropic displacement parameter (Å²).</value>
+of the anisotropic displacement parameter (U: Å²; β: dimensionless).</value>
   </data>
   <data name="numericBoxB23err.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -2757,7 +2757,7 @@ of the anisotropic displacement parameter (Å²).</value>
     <value>0, 4, 0, 0</value>
   </data>
   <data name="numericBoxB33.HeaderText" xml:space="preserve">
-    <value>B33</value>
+    <value>β33</value>
   </data>
   <data name="numericBoxB33.Location" type="System.Drawing.Point, System.Drawing">
     <value>272, 0</value>
@@ -2779,8 +2779,8 @@ of the anisotropic displacement parameter (Å²).</value>
   </data>
   <data name="numericBoxB33.ToolTip" xml:space="preserve">
     <value>Anisotropic atomic displacement parameter, component
-33 (Å²) — direction-dependent thermal vibration;
-shown as B33 or U33 per the chosen notation.</value>
+33 (U: Å²; β: dimensionless) — direction-dependent thermal vibration;
+shown as β33 or U33 per the chosen notation.</value>
   </data>
   <data name="&gt;&gt;numericBoxB33.Name" xml:space="preserve">
     <value>numericBoxB33</value>
@@ -2829,7 +2829,7 @@ shown as B33 or U33 per the chosen notation.</value>
   </data>
   <data name="numericBoxB33err.ToolTip" xml:space="preserve">
     <value>Standard deviation (error) of the 33 component
-of the anisotropic displacement parameter (Å²).</value>
+of the anisotropic displacement parameter (U: Å²; β: dimensionless).</value>
   </data>
   <data name="numericBoxB33err.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -3023,7 +3023,8 @@ intensity from thermal atomic vibration.</value>
   <data name="radioButtonDebyeWallerTypeU.ToolTip" xml:space="preserve">
     <value>Use U notation for the atomic displacement
 (temperature) parameter — the mean-square atomic
-displacement (Å²) from thermal vibration; B = 8π²·U.</value>
+displacement (Å²) from thermal vibration; B = 8π²·U.
+Switching the notation converts the values.</value>
   </data>
   <data name="&gt;&gt;radioButtonDebyeWallerTypeU.Name" xml:space="preserve">
     <value>radioButtonDebyeWallerTypeU</value>
@@ -3064,7 +3065,10 @@ displacement (Å²) from thermal vibration; B = 8π²·U.</value>
   <data name="radioButtonDebyeWallerTypeB.ToolTip" xml:space="preserve">
     <value>Use B notation for the atomic displacement
 (temperature) parameter; B = 8π²·U, where
-larger values mean stronger thermal vibration.</value>
+larger values mean stronger thermal vibration.
+Anisotropic components are the dimensionless
+β_ij (= 2π²·a*_i·a*_j·U_ij). Switching the
+notation converts the values.</value>
   </data>
   <data name="&gt;&gt;radioButtonDebyeWallerTypeB.Name" xml:space="preserve">
     <value>radioButtonDebyeWallerTypeB</value>
@@ -3266,12 +3270,12 @@ isotropic B), dimensionless for anisotropic B.</value>
     <value>308</value>
   </data>
   <data name="labelDimension.Text" xml:space="preserve">
-    <value>None</value>
+    <value>Å²</value>
   </data>
   <data name="labelDimension.ToolTip" xml:space="preserve">
     <value>Current unit of the displacement
 parameter: Å² for U (and isotropic B);
-"None" (dimensionless) for anisotropic B.</value>
+dimensionless for the anisotropic β of the B notation.</value>
   </data>
   <data name="&gt;&gt;labelDimension.Name" xml:space="preserve">
     <value>labelDimension</value>

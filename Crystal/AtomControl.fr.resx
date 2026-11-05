@@ -191,12 +191,16 @@ Le format fractionnaire (par ex. 3/4) est accepté.</value>
   <data name="radioButtonDebyeWallerTypeU.ToolTip" xml:space="preserve">
     <value>Utilise la notation U pour le paramètre de déplacement
 atomique (température) — le déplacement atomique quadratique moyen
-(Å²) dû à l'agitation thermique ; B = 8π²·U.</value>
+(Å²) dû à l'agitation thermique ; B = 8π²·U.
+Changer de notation convertit les valeurs.</value>
   </data>
   <data name="radioButtonDebyeWallerTypeB.ToolTip" xml:space="preserve">
     <value>Utilise la notation B pour le paramètre de déplacement
 atomique (température) ; B = 8π²·U, où des valeurs plus
-grandes indiquent une agitation thermique plus forte.</value>
+grandes indiquent une agitation thermique plus forte.
+Les composantes anisotropes sont les β_ij sans
+dimension (= 2π²·a*_i·a*_j·U_ij). Changer de
+notation convertit les valeurs.</value>
   </data>
   <data name="tabPageDebyeWaller.ToolTip" xml:space="preserve">
     <value>Onglet de réglage du facteur de Debye-Waller</value>
@@ -411,62 +415,62 @@ décrivant une vibration thermique égale dans toutes les directions).</value>
   <data name="labelDimension.ToolTip" xml:space="preserve">
     <value>Unité actuelle du paramètre de
 déplacement : Å² pour U (et B isotrope) ;
-« None » (sans dimension) pour B anisotrope.</value>
+sans dimension pour les β anisotropes de la notation B.</value>
   </data>
   <data name="numericBoxB11.ToolTip" xml:space="preserve">
     <value>Paramètre de déplacement atomique anisotrope,
-composante 11 (Å²) — décrit la vibration
+composante 11 (U : Å² ; β : sans dimension) — décrit la vibration
 thermique dépendant de la direction de cet atome ;
-affiché en B11 ou U11 selon la notation choisie.</value>
+affiché en β11 ou U11 selon la notation choisie.</value>
   </data>
   <data name="numericBoxB11err.ToolTip" xml:space="preserve">
     <value>Écart-type (erreur) de la composante 11
-du paramètre de déplacement anisotrope (Å²).</value>
+du paramètre de déplacement anisotrope (U : Å² ; β : sans dimension).</value>
   </data>
   <data name="numericBoxB12.ToolTip" xml:space="preserve">
     <value>Paramètre de déplacement atomique anisotrope, composante
-12 (Å²) — vibration thermique dépendant de la direction ;
-affiché en B12 ou U12 selon la notation choisie.</value>
+12 (U : Å² ; β : sans dimension) — vibration thermique dépendant de la direction ;
+affiché en β12 ou U12 selon la notation choisie.</value>
   </data>
   <data name="numericBoxB12err.ToolTip" xml:space="preserve">
     <value>Écart-type (erreur) de la composante 12
-du paramètre de déplacement anisotrope (Å²).</value>
+du paramètre de déplacement anisotrope (U : Å² ; β : sans dimension).</value>
   </data>
   <data name="numericBoxB13.ToolTip" xml:space="preserve">
     <value>Paramètre de déplacement atomique anisotrope, composante
-13 (Å²) — vibration thermique dépendant de la direction ;
-affiché en B13 ou U13 selon la notation choisie.</value>
+13 (U : Å² ; β : sans dimension) — vibration thermique dépendant de la direction ;
+affiché en β13 ou U13 selon la notation choisie.</value>
   </data>
   <data name="numericBoxB13err.ToolTip" xml:space="preserve">
     <value>Écart-type (erreur) de la composante 13
-du paramètre de déplacement anisotrope (Å²).</value>
+du paramètre de déplacement anisotrope (U : Å² ; β : sans dimension).</value>
   </data>
   <data name="numericBoxB22.ToolTip" xml:space="preserve">
     <value>Paramètre de déplacement atomique anisotrope, composante
-22 (Å²) — vibration thermique dépendant de la direction ;
-affiché en B22 ou U22 selon la notation choisie.</value>
+22 (U : Å² ; β : sans dimension) — vibration thermique dépendant de la direction ;
+affiché en β22 ou U22 selon la notation choisie.</value>
   </data>
   <data name="numericBoxB22err.ToolTip" xml:space="preserve">
     <value>Écart-type (erreur) de la composante 22
-du paramètre de déplacement anisotrope (Å²).</value>
+du paramètre de déplacement anisotrope (U : Å² ; β : sans dimension).</value>
   </data>
   <data name="numericBoxB23.ToolTip" xml:space="preserve">
     <value>Paramètre de déplacement atomique anisotrope, composante
-23 (Å²) — vibration thermique dépendant de la direction ;
-affiché en B23 ou U23 selon la notation choisie.</value>
+23 (U : Å² ; β : sans dimension) — vibration thermique dépendant de la direction ;
+affiché en β23 ou U23 selon la notation choisie.</value>
   </data>
   <data name="numericBoxB23err.ToolTip" xml:space="preserve">
     <value>Écart-type (erreur) de la composante 23
-du paramètre de déplacement anisotrope (Å²).</value>
+du paramètre de déplacement anisotrope (U : Å² ; β : sans dimension).</value>
   </data>
   <data name="numericBoxB33.ToolTip" xml:space="preserve">
     <value>Paramètre de déplacement atomique anisotrope, composante
-33 (Å²) — vibration thermique dépendant de la direction ;
-affiché en B33 ou U33 selon la notation choisie.</value>
+33 (U : Å² ; β : sans dimension) — vibration thermique dépendant de la direction ;
+affiché en β33 ou U33 selon la notation choisie.</value>
   </data>
   <data name="numericBoxB33err.ToolTip" xml:space="preserve">
     <value>Écart-type (erreur) de la composante 33
-du paramètre de déplacement anisotrope (Å²).</value>
+du paramètre de déplacement anisotrope (U : Å² ; β : sans dimension).</value>
   </data>
   <data name="numericBoxBiso.ToolTip" xml:space="preserve">
     <value>Paramètre de déplacement atomique isotrope

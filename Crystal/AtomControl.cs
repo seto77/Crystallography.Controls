@@ -222,21 +222,44 @@ public partial class AtomControl : UserControlBase
     {
         flowLayoutPanelAniso1.Visible = flowLayoutPanelAniso2.Visible = !radioButtonIsotoropy.Checked;
         flowLayoutPanelIso.Visible = radioButtonIsotoropy.Checked;
-        labelDimension.Text = radioButtonDebyeWallerTypeB.Checked && radioButtonAnisotropy.Checked ? "None" : "Å²";
+        //labelDimension.Text = radioButtonDebyeWallerTypeB.Checked && radioButtonAnisotropy.Checked ? "None" : "Å²"; // 261105Cl 変更前
+        labelDimension.Text = DimensionText(); // 261105Cl 変更
     }
 
     private void radioButtonDebyeWallerTypeU_CheckedChanged(object sender, EventArgs e)
     {
+        // 261105Cl 追加: 表記を切り替えたら、表示中の値と誤差を同じ物理量のまま新しい表記へ換算する。以前は見出しだけが変わり、
+        // そのまま Change すると B の値が U として (またはその逆に) 使われていた。等方は B = 8π²U (Å²)、異方性は U_ij (Å²) ⇔ β_ij (無次元) = 2π² a*_i a*_j U_ij。
+        // SetToInterface の中 (これから原子の値を入れ直す) では換算しない。この CheckedChanged は U 側にだけ配線されているので、切替 1 回につき 1 回呼ばれる
+        if (!settingInterface && Crystal != null)
+            SetDsfToInterface(GetDsfFromInterface(!radioButtonDebyeWallerTypeU.Checked), radioButtonDebyeWallerTypeU.Checked);
+
         var prefix = radioButtonDebyeWallerTypeU.Checked ? "U" : "B";
         numericBoxBiso.HeaderText = $"{prefix}iso";
-        numericBoxB11.HeaderText = $"{prefix}11";
-        numericBoxB22.HeaderText = $"{prefix}22";
-        numericBoxB33.HeaderText = $"{prefix}33";
-        numericBoxB12.HeaderText = $"{prefix}12";
-        numericBoxB23.HeaderText = $"{prefix}23";
-        numericBoxB13.HeaderText = $"{prefix}13";
-        labelDimension.Text = radioButtonDebyeWallerTypeB.Checked && radioButtonAnisotropy.Checked ? "None" : "Å²";
+        //numericBoxB11.HeaderText = $"{prefix}11"; // 261105Cl 変更前 (6 行)
+        //numericBoxB22.HeaderText = $"{prefix}22";
+        //numericBoxB33.HeaderText = $"{prefix}33";
+        //numericBoxB12.HeaderText = $"{prefix}12";
+        //numericBoxB23.HeaderText = $"{prefix}23";
+        //numericBoxB13.HeaderText = $"{prefix}13";
+        // 261105Cl 変更: B 表記の異方性の 6 成分は無次元の β_ij (AMCSD の B(i,j) と同じ。β_ij = ¼ a*_i a*_j B_ij) なので、見出しを β にする
+        var anisoPrefix = radioButtonDebyeWallerTypeU.Checked ? "U" : "β";
+        numericBoxB11.HeaderText = $"{anisoPrefix}11";
+        numericBoxB22.HeaderText = $"{anisoPrefix}22";
+        numericBoxB33.HeaderText = $"{anisoPrefix}33";
+        numericBoxB12.HeaderText = $"{anisoPrefix}12";
+        numericBoxB23.HeaderText = $"{anisoPrefix}23";
+        numericBoxB13.HeaderText = $"{anisoPrefix}13";
+        //labelDimension.Text = radioButtonDebyeWallerTypeB.Checked && radioButtonAnisotropy.Checked ? "None" : "Å²"; // 261105Cl 変更前
+        labelDimension.Text = DimensionText(); // 261105Cl 変更
     }
+
+    /// <summary>261105Cl 追加: 単位の表示。B 表記の異方性 (β) は無次元。以前の "None" は単位が無いのか値が無いのか紛らわしかった</summary>
+    private string DimensionText() => radioButtonDebyeWallerTypeB.Checked && radioButtonAnisotropy.Checked
+        ? (System.Globalization.CultureInfo.CurrentUICulture.Name == "ja" ? "無次元" : "dimensionless") : "Å²";
+
+    /// <summary>261105Cl 追加: SetToInterface の実行中は true (B/U の切替で値を換算しない)</summary>
+    private bool settingInterface = false;
 
     private void comboBoxAtom_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -370,25 +393,28 @@ public partial class AtomControl : UserControlBase
         Z = atoms.Z; ZErr = atoms.Z_err;
         Occ = atoms.Occ; OccErr = atoms.Occ_err;
 
+        settingInterface = true; // 261105Cl 追加: 次の UseTypeU の代入で値を換算しない (値はこの後に入れる)
         UseIsotropy = atoms.Dsf.UseIso;
         UseTypeU = atoms.Dsf.OriginalType == DiffuseScatteringFactor.Type.U;
+        settingInterface = false; // 261105Cl 追加
 
-        var d = atoms.Dsf;
-        Iso = (UseTypeU ? d.Uiso : d.Biso) * 100;
-        Aniso11 = UseTypeU ? d.U11 * 100 : d.B11;
-        Aniso12 = UseTypeU ? d.U12 * 100 : d.B12;
-        Aniso13 = UseTypeU ? d.U31 * 100 : d.B31;
-        Aniso22 = UseTypeU ? d.U22 * 100 : d.B22;
-        Aniso23 = UseTypeU ? d.U23 * 100 : d.B23;
-        Aniso33 = UseTypeU ? d.U33 * 100 : d.B33;
-
-        IsoErr = (UseTypeU ? d.Uiso_err : d.Biso_err) * 100;
-        Aniso11Err = UseTypeU ? d.U11_err * 100 : d.B11_err;
-        Aniso12Err = UseTypeU ? d.U12_err * 100 : d.B12_err;
-        Aniso13Err = UseTypeU ? d.U31_err * 100 : d.B31_err;
-        Aniso22Err = UseTypeU ? d.U22_err * 100 : d.B22_err;
-        Aniso23Err = UseTypeU ? d.U23_err * 100 : d.B23_err;
-        Aniso33Err = UseTypeU ? d.U33_err * 100 : d.B33_err;
+        //var d = atoms.Dsf; // 261105Cl 変更前 (17 行。SetDsfToInterface へ移した。B/U の切替の換算でも使う)
+        //Iso = (UseTypeU ? d.Uiso : d.Biso) * 100;
+        //Aniso11 = UseTypeU ? d.U11 * 100 : d.B11;
+        //Aniso12 = UseTypeU ? d.U12 * 100 : d.B12;
+        //Aniso13 = UseTypeU ? d.U31 * 100 : d.B31;
+        //Aniso22 = UseTypeU ? d.U22 * 100 : d.B22;
+        //Aniso23 = UseTypeU ? d.U23 * 100 : d.B23;
+        //Aniso33 = UseTypeU ? d.U33 * 100 : d.B33;
+        //
+        //IsoErr = (UseTypeU ? d.Uiso_err : d.Biso_err) * 100;
+        //Aniso11Err = UseTypeU ? d.U11_err * 100 : d.B11_err;
+        //Aniso12Err = UseTypeU ? d.U12_err * 100 : d.B12_err;
+        //Aniso13Err = UseTypeU ? d.U31_err * 100 : d.B31_err;
+        //Aniso22Err = UseTypeU ? d.U22_err * 100 : d.B22_err;
+        //Aniso23Err = UseTypeU ? d.U23_err * 100 : d.B23_err;
+        //Aniso33Err = UseTypeU ? d.U33_err * 100 : d.B33_err;
+        SetDsfToInterface(atoms.Dsf, UseTypeU); // 261105Cl 変更
 
         Ambient = atoms.Ambient;
         Diffusion = atoms.Diffusion;
@@ -402,18 +428,54 @@ public partial class AtomControl : UserControlBase
         ShowLabel = atoms.ShowLabel;
     }
 
-    private Atoms GetFromInterface()
+    /// <summary>261105Cl 追加 (SetToInterface から移した): 温度因子を画面へ。typeU なら U (Å²)、でなければ等方は B (Å²)・異方性は β (無次元)</summary>
+    private void SetDsfToInterface(DiffuseScatteringFactor d, bool typeU)
     {
-        double[] aniso = UseTypeU
+        Iso = (typeU ? d.Uiso : d.Biso) * 100;
+        Aniso11 = typeU ? d.U11 * 100 : d.B11;
+        Aniso12 = typeU ? d.U12 * 100 : d.B12;
+        Aniso13 = typeU ? d.U31 * 100 : d.B31;
+        Aniso22 = typeU ? d.U22 * 100 : d.B22;
+        Aniso23 = typeU ? d.U23 * 100 : d.B23;
+        Aniso33 = typeU ? d.U33 * 100 : d.B33;
+
+        IsoErr = (typeU ? d.Uiso_err : d.Biso_err) * 100;
+        Aniso11Err = typeU ? d.U11_err * 100 : d.B11_err;
+        Aniso12Err = typeU ? d.U12_err * 100 : d.B12_err;
+        Aniso13Err = typeU ? d.U31_err * 100 : d.B31_err;
+        Aniso22Err = typeU ? d.U22_err * 100 : d.B22_err;
+        Aniso23Err = typeU ? d.U23_err * 100 : d.B23_err;
+        Aniso33Err = typeU ? d.U33_err * 100 : d.B33_err;
+    }
+
+    /// <summary>261105Cl 追加 (GetFromInterface から移した): 画面の温度因子を、typeU の表記で書かれた値として読む</summary>
+    private DiffuseScatteringFactor GetDsfFromInterface(bool typeU)
+    {
+        double[] aniso = typeU
             ? [Aniso11 / 100, Aniso22 / 100, Aniso33 / 100, Aniso12 / 100, Aniso23 / 100, Aniso13 / 100]
             : [Aniso11, Aniso22, Aniso33, Aniso12, Aniso23, Aniso13];
 
-        double[] anisoErr = UseTypeU
+        double[] anisoErr = typeU
             ? [Aniso11Err / 100, Aniso22Err / 100, Aniso33Err / 100, Aniso12Err / 100, Aniso23Err / 100, Aniso13Err / 100]
             : [Aniso11Err, Aniso22Err, Aniso33Err, Aniso12Err, Aniso23Err, Aniso13Err];
 
-        var dsf = new DiffuseScatteringFactor(UseTypeU ? DiffuseScatteringFactor.Type.U : DiffuseScatteringFactor.Type.B,
+        return new DiffuseScatteringFactor(typeU ? DiffuseScatteringFactor.Type.U : DiffuseScatteringFactor.Type.B,
             UseIsotropy, Iso / 100, IsoErr / 100, aniso, anisoErr, Crystal.CellValue);
+    }
+
+    private Atoms GetFromInterface()
+    {
+        //double[] aniso = UseTypeU // 261105Cl 変更前 (10 行。GetDsfFromInterface へ移した)
+        //    ? [Aniso11 / 100, Aniso22 / 100, Aniso33 / 100, Aniso12 / 100, Aniso23 / 100, Aniso13 / 100]
+        //    : [Aniso11, Aniso22, Aniso33, Aniso12, Aniso23, Aniso13];
+        //
+        //double[] anisoErr = UseTypeU
+        //    ? [Aniso11Err / 100, Aniso22Err / 100, Aniso33Err / 100, Aniso12Err / 100, Aniso23Err / 100, Aniso13Err / 100]
+        //    : [Aniso11Err, Aniso22Err, Aniso33Err, Aniso12Err, Aniso23Err, Aniso13Err];
+        //
+        //var dsf = new DiffuseScatteringFactor(UseTypeU ? DiffuseScatteringFactor.Type.U : DiffuseScatteringFactor.Type.B,
+        //    UseIsotropy, Iso / 100, IsoErr / 100, aniso, anisoErr, Crystal.CellValue);
+        var dsf = GetDsfFromInterface(UseTypeU); // 261105Cl 変更
         var material = new Material(AtomColor.ToArgb(), (Ambient, Diffusion, Specular, Shininess, Emission), Alpha);
 
         return new Atoms(Label, AtomNo, AtomSubNoXray, AtomSubNoElectron, IsotopicComposition,
