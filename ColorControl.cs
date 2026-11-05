@@ -169,10 +169,15 @@ public partial class ColorControl : UserControlBase
             AllowFullOpen = true,
             AnyColor = true,
             SolidColorOnly = false,
-            ShowHelp = true
+            //ShowHelp = true // 261105Cl 変更前
+            ShowHelp = false // 261105Cl 変更 (監査 J24): ヘルプのボタンは HelpRequest を誰も受けておらず、押しても何も起きなかった
         };
-        colorDialog.ShowDialog();
-        pictureBox.BackColor = colorDialog.Color;
+        //colorDialog.ShowDialog(); // 261105Cl 変更前
+        //pictureBox.BackColor = colorDialog.Color; // 261105Cl 変更前
+        // 261105Cl 変更 (監査 J24): OK のときだけ色を変え、アルファ値は元の色のものを残す (ColorDialog はアルファを扱わず不透明の色を返す)。
+        //  以前は Cancel でも代入していたので、半透明の色はダイアログを開いて閉じるだけで不透明になった
+        if (colorDialog.ShowDialog() == DialogResult.OK) // 261105Cl
+            pictureBox.BackColor = Color.FromArgb(pictureBox.BackColor.A, colorDialog.Color); // 261105Cl
     }
 
     private void pictureBox_BackColorChanged(object sender, EventArgs e)
