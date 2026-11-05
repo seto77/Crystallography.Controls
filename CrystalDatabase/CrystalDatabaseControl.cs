@@ -715,7 +715,11 @@ public partial class CrystalDatabaseControl : UserControlBase
     #region 選択結晶が変更されたとき 
     private void bindingSource_CurrentChanged(object sender, EventArgs e)
     {
-        CrystalChanged?.Invoke(sender, e);
+        //CrystalChanged?.Invoke(sender, e); // 261105Cl 変更前
+        // 261105Cl 変更 (監査 J2): 検索の結果が 0 件になって選択行が無くなったときは通知しない。
+        //  以前は Crystal (= null) を受け取った ReciPro・PDIndexer が編集中の結晶を null にし、表示は前の結晶のまま、回転などで例外になった (CSManager は受け側で null を無視していた)
+        if (bindingSource.Current != null)
+            CrystalChanged?.Invoke(sender, e);
     }
 
     public void RecalculateDensityAndFormula()
