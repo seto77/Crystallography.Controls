@@ -532,6 +532,7 @@ public partial class AtomControl : UserControlBase
         var pos = bindingSource.Position;
         if (pos < 0) return;
         var atoms = GetFromInterface();
+        atoms.GLEnabled = table.Get(pos).GLEnabled; // 261105Cl 追加: 表示/非表示 (表の左端のチェック) は画面下部に欄が無いので、置換前の行から引き継ぐ (GetFromInterface は常に true で作るため、隠した原子が Change で再表示されていた)
         Replace(atoms, pos);
         extra?.Invoke(atoms, pos);
         bindingSource.Position = pos;
