@@ -105,12 +105,12 @@
 夾角（單位：°）；自動計算（唯讀）。</value>
   </data>
   <data name="numericBoxAnglePlaneAxis1.ToolTip" xml:space="preserve">
-    <value>晶面 1 (h₁k₁l₁) 與軸 1 (u₁v₁w₁) 之間的
-夾角（單位：°）；自動計算（唯讀）。</value>
+    <value>晶面 1 (h₁k₁l₁) 的法線與軸 1 (u₁v₁w₁) 之間的
+夾角（單位：°；軸位於晶面內時為 90°）；自動計算（唯讀）。</value>
   </data>
   <data name="numericBoxAnglePlaneAxis2.ToolTip" xml:space="preserve">
-    <value>晶面 2 (h₂k₂l₂) 與軸 2 (u₂v₂w₂) 之間的
-夾角（單位：°）；自動計算（唯讀）。</value>
+    <value>晶面 2 (h₂k₂l₂) 的法線與軸 2 (u₂v₂w₂) 之間的
+夾角（單位：°；軸位於晶面內時為 90°）；自動計算（唯讀）。</value>
   </data>
   <data name="numericBoxAnglePlanes.ToolTip" xml:space="preserve">
     <value>晶面 1 (h₁k₁l₁) 與晶面 2 (h₂k₂l₂) 之間的

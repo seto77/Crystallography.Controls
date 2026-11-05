@@ -107,12 +107,14 @@ coordonnées fractionnaires (lecture seule).</value>
 2 (u₂v₂w₂) ; calculé automatiquement (lecture seule).</value>
   </data>
   <data name="numericBoxAnglePlaneAxis1.ToolTip" xml:space="preserve">
-    <value>Angle (en degrés) entre le plan 1 (h₁k₁l₁) et
-l'axe 1 (u₁v₁w₁) ; calculé automatiquement (lecture seule).</value>
+    <value>Angle (en degrés) entre la normale au plan 1 (h₁k₁l₁) et
+l'axe 1 (u₁v₁w₁) ; 90° lorsque l'axe est contenu dans le plan.
+Calculé automatiquement (lecture seule).</value>
   </data>
   <data name="numericBoxAnglePlaneAxis2.ToolTip" xml:space="preserve">
-    <value>Angle (en degrés) entre le plan 2 (h₂k₂l₂) et
-l'axe 2 (u₂v₂w₂) ; calculé automatiquement (lecture seule).</value>
+    <value>Angle (en degrés) entre la normale au plan 2 (h₂k₂l₂) et
+l'axe 2 (u₂v₂w₂) ; 90° lorsque l'axe est contenu dans le plan.
+Calculé automatiquement (lecture seule).</value>
   </data>
   <data name="numericBoxAnglePlanes.ToolTip" xml:space="preserve">
     <value>Angle (en degrés) entre le plan 1 (h₁k₁l₁) et

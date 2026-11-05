@@ -106,12 +106,12 @@
 (단위 °). 자동 계산되는 읽기 전용 값입니다.</value>
   </data>
   <data name="numericBoxAnglePlaneAxis1.ToolTip" xml:space="preserve">
-    <value>면 1 (h₁k₁l₁)과 축 1 (u₁v₁w₁) 사이의 각도
-(단위 °). 자동 계산되는 읽기 전용 값입니다.</value>
+    <value>면 1 (h₁k₁l₁)의 법선과 축 1 (u₁v₁w₁) 사이의 각도
+(단위 °, 축이 면 안에 있으면 90°). 자동 계산되는 읽기 전용 값입니다.</value>
   </data>
   <data name="numericBoxAnglePlaneAxis2.ToolTip" xml:space="preserve">
-    <value>면 2 (h₂k₂l₂)와 축 2 (u₂v₂w₂) 사이의 각도
-(단위 °). 자동 계산되는 읽기 전용 값입니다.</value>
+    <value>면 2 (h₂k₂l₂)의 법선과 축 2 (u₂v₂w₂) 사이의 각도
+(단위 °, 축이 면 안에 있으면 90°). 자동 계산되는 읽기 전용 값입니다.</value>
   </data>
   <data name="numericBoxAnglePlanes.ToolTip" xml:space="preserve">
     <value>면 1 (h₁k₁l₁)과 면 2 (h₂k₂l₂) 사이의 각도

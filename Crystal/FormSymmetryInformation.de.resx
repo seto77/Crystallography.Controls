@@ -107,12 +107,14 @@ Koordinaten an (schreibgeschützt).</value>
 2 (u₂v₂w₂); automatisch berechnet (schreibgeschützt).</value>
   </data>
   <data name="numericBoxAnglePlaneAxis1.ToolTip" xml:space="preserve">
-    <value>Winkel (in Grad) zwischen Ebene 1 (h₁k₁l₁) und
-Achse 1 (u₁v₁w₁); automatisch berechnet (schreibgeschützt).</value>
+    <value>Winkel (in Grad) zwischen der Normalen von Ebene 1 (h₁k₁l₁)
+und Achse 1 (u₁v₁w₁); 90°, wenn die Achse in der Ebene liegt.
+Automatisch berechnet (schreibgeschützt).</value>
   </data>
   <data name="numericBoxAnglePlaneAxis2.ToolTip" xml:space="preserve">
-    <value>Winkel (in Grad) zwischen Ebene 2 (h₂k₂l₂) und
-Achse 2 (u₂v₂w₂); automatisch berechnet (schreibgeschützt).</value>
+    <value>Winkel (in Grad) zwischen der Normalen von Ebene 2 (h₂k₂l₂)
+und Achse 2 (u₂v₂w₂); 90°, wenn die Achse in der Ebene liegt.
+Automatisch berechnet (schreibgeschützt).</value>
   </data>
   <data name="numericBoxAnglePlanes.ToolTip" xml:space="preserve">
     <value>Winkel (in Grad) zwischen Ebene 1 (h₁k₁l₁) und

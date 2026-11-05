@@ -107,12 +107,14 @@ coordenadas fracionárias (somente leitura).</value>
 2 (u₂v₂w₂); calculado automaticamente (somente leitura).</value>
   </data>
   <data name="numericBoxAnglePlaneAxis1.ToolTip" xml:space="preserve">
-    <value>Ângulo (em graus) entre o plano 1 (h₁k₁l₁) e o
-eixo 1 (u₁v₁w₁); calculado automaticamente (somente leitura).</value>
+    <value>Ângulo (em graus) entre a normal do plano 1 (h₁k₁l₁) e o
+eixo 1 (u₁v₁w₁); 90° quando o eixo está contido no plano.
+Calculado automaticamente (somente leitura).</value>
   </data>
   <data name="numericBoxAnglePlaneAxis2.ToolTip" xml:space="preserve">
-    <value>Ângulo (em graus) entre o plano 2 (h₂k₂l₂) e o
-eixo 2 (u₂v₂w₂); calculado automaticamente (somente leitura).</value>
+    <value>Ângulo (em graus) entre a normal do plano 2 (h₂k₂l₂) e o
+eixo 2 (u₂v₂w₂); 90° quando o eixo está contido no plano.
+Calculado automaticamente (somente leitura).</value>
   </data>
   <data name="numericBoxAnglePlanes.ToolTip" xml:space="preserve">
     <value>Ângulo (em graus) entre o plano 1 (h₁k₁l₁) e o

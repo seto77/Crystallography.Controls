@@ -151,12 +151,12 @@ hkl 反射が許容/消滅するかを示します。</value>
 (単位: °)。自動計算の読み取り専用です。</value>
   </data>
   <data name="numericBoxAnglePlaneAxis1.ToolTip" xml:space="preserve">
-    <value>面1 (h₁k₁l₁) と軸1 (u₁v₁w₁) のなす角度
-(単位: °)。自動計算の読み取り専用です。</value>
+    <value>面1 (h₁k₁l₁) の法線と軸1 (u₁v₁w₁) のなす角度
+(単位: °。軸が面内にあるとき 90°)。自動計算の読み取り専用です。</value>
   </data>
   <data name="numericBoxAnglePlaneAxis2.ToolTip" xml:space="preserve">
-    <value>面2 (h₂k₂l₂) と軸2 (u₂v₂w₂) のなす角度
-(単位: °)。自動計算の読み取り専用です。</value>
+    <value>面2 (h₂k₂l₂) の法線と軸2 (u₂v₂w₂) のなす角度
+(単位: °。軸が面内にあるとき 90°)。自動計算の読み取り専用です。</value>
   </data>
   <data name="numericBoxAnglePlanes.ToolTip" xml:space="preserve">
     <value>面1 (h₁k₁l₁) と面2 (h₂k₂l₂) のなす角度

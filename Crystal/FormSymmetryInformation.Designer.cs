@@ -405,7 +405,7 @@
             label40.Name = "label40";
             label40.Size = new System.Drawing.Size(176, 32);
             label40.TabIndex = 6;
-            label40.Text = "The axis normal to both planes";
+            label40.Text = "The axis parallel to both planes"; // 261105Cl 変更 (旧 "The axis normal to both planes")
             toolTip.SetToolTip(label40, resources.GetString("label40.ToolTip"));
             // 
             // indexControlAxis2
@@ -567,7 +567,7 @@
             label42.Name = "label42";
             label42.Size = new System.Drawing.Size(175, 32);
             label42.TabIndex = 6;
-            label42.Text = "The plane normal to both axes";
+            label42.Text = "The plane containing both axes"; // 261105Cl 変更 (旧 "The plane normal to both axes")
             toolTip.SetToolTip(label42, resources.GetString("label42.ToolTip"));
             // 
             // miniTableWyckoff

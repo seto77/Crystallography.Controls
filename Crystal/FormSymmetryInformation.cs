@@ -87,8 +87,12 @@ public partial class FormSymmetryInformation : FormBase
         buttonGroupRelations.Text = Loc(en: "Group Relations...", ja: "群の関係...", de: "Gruppenrelationen...", fr: "Relations de groupe...", es: "Relaciones de grupo...", pt: "Relações de grupo...", it: "Relazioni di gruppo...", ru: "Групповые отношения...", zhHans: "群关系...", zhHant: "群關係...", ko: "군 관계...");
 
         // --- Geometrics タブ: 計算結果ラベル ---
-        label40.Text = Loc(en: "The axis normal to both planes", ja: "両面に垂直な軸", de: "Achse senkrecht zu beiden Ebenen", fr: "L'axe normal aux deux plans", es: "Eje normal a ambos planos", pt: "O eixo normal a ambos os planos", it: "L'asse normale a entrambi i piani", ru: "Ось ⊥ обеим плоскостям", zhHans: "同时垂直于两晶面的晶轴", zhHant: "垂直於兩晶面的晶軸", ko: "두 면에 수직인 축");
-        label42.Text = Loc(en: "The plane normal to both axes", ja: "両軸に垂直な面", de: "Ebene senkrecht zu beiden Achsen", fr: "Le plan normal aux deux axes", es: "Plano normal a ambos ejes", pt: "O plano normal a ambos os eixos", it: "Il piano normale a entrambi gli assi", ru: "Плоскость ⊥ обеим осям", zhHans: "同时垂直于两晶轴的晶面", zhHant: "垂直於兩晶軸的晶面", ko: "두 축에 수직인 면");
+        //label40.Text = Loc(en: "The axis normal to both planes", ja: "両面に垂直な軸", de: "Achse senkrecht zu beiden Ebenen", fr: "L'axe normal aux deux plans", es: "Eje normal a ambos planos", pt: "O eixo normal a ambos os planos", it: "L'asse normale a entrambi i piani", ru: "Ось ⊥ обеим плоскостям", zhHans: "同时垂直于两晶面的晶轴", zhHant: "垂直於兩晶面的晶軸", ko: "두 면에 수직인 축"); // 261105Cl 変更前
+        //label42.Text = Loc(en: "The plane normal to both axes", ja: "両軸に垂直な面", de: "Ebene senkrecht zu beiden Achsen", fr: "Le plan normal aux deux axes", es: "Plano normal a ambos ejes", pt: "O plano normal a ambos os eixos", it: "Il piano normale a entrambi gli assi", ru: "Плоскость ⊥ обеим осям", zhHans: "同时垂直于两晶轴的晶面", zhHant: "垂直於兩晶軸的晶面", ko: "두 축에 수직인 면"); // 261105Cl 変更前
+        // 261105Cl 変更: 晶帯軸 [uvw] = 両面の法線の外積は「両面に平行な (両面に含まれる)」方向、(hkl) = 両軸の外積は「両軸を含む」面。
+        // 以前の「両面に垂直な軸」「両軸に垂直な面」は結晶学的に逆 (ツールチップは正しかった)
+        label40.Text = Loc(en: "The axis parallel to both planes", ja: "両面に平行な軸", de: "Achse parallel zu beiden Ebenen", fr: "L'axe parallèle aux deux plans", es: "Eje paralelo a ambos planos", pt: "O eixo paralelo a ambos os planos", it: "L'asse parallelo a entrambi i piani", ru: "Ось ∥ обеим плоскостям", zhHans: "同时平行于两晶面的晶轴", zhHant: "平行於兩晶面的晶軸", ko: "두 면에 평행한 축"); // 261105Cl 変更
+        label42.Text = Loc(en: "The plane containing both axes", ja: "両軸を含む面", de: "Ebene, die beide Achsen enthält", fr: "Le plan contenant les deux axes", es: "Plano que contiene ambos ejes", pt: "O plano que contém ambos os eixos", it: "Il piano contenente entrambi gli assi", ru: "Плоскость, содержащая обе оси", zhHans: "同时包含两晶轴的晶面", zhHant: "包含兩晶軸的晶面", ko: "두 축을 포함하는 면"); // 261105Cl 変更
 
         // --- Wyckoff タブ: 旧 DataGridView 列見出し (Mult./Site Sym. は AtomControl の出荷済み訳に一致) ---
         // 260706Ch: Wyckoff タブは miniTableWyckoff (MiniTable.SetColumns、下記 SetupExtraTables 内) へ移行し、
@@ -542,7 +546,10 @@ public partial class FormSymmetryInformation : FormBase
             "C" => ["-", "-", "-", CoordinateToLatex("(0,0,0)+"), CoordinateToLatex("(1/2,1/2,0)+"), "", ""], // 260706Ch
             "F" => ["-", "-", "-", CoordinateToLatex("(0,0,0)+"), CoordinateToLatex("(0,1/2,1/2)+"), CoordinateToLatex("(1/2,0,1/2)+"), CoordinateToLatex("(1/2,1/2,0)+")], // 260706Ch
             "I" => ["-", "-", "-", CoordinateToLatex("(0,0,0)+"), CoordinateToLatex("(1/2,1/2,1/2)+"), "", ""], // 260706Ch
-            "H" => ["-", "-", "-", CoordinateToLatex("(0,0,0)+"), CoordinateToLatex("(1/3,2/3,2/3)+"), CoordinateToLatex("(2/3,1/3,1/3)+"), ""], // 260706Ch
+            //"H" => ["-", "-", "-", CoordinateToLatex("(0,0,0)+"), CoordinateToLatex("(1/3,2/3,2/3)+"), CoordinateToLatex("(2/3,1/3,1/3)+"), ""], // 260706Ch // 261105Cl 変更前: LatticeTypeStr に "H" は無く、R 群は "R" なので六方軸の 7 群で中心化の行が出ず、多重度と座標の数が合わなかった
+            // 261105Cl 変更: R 群の六方軸 (obverse。消滅則 −h+k+l=3n と同じ) は 3 つの中心化並進。菱面体軸は単純格子なので P と同じ行
+            "R" when Crystal.Symmetry.SpaceGroupHMStr.Contains("Hex") => ["-", "-", "-", CoordinateToLatex("(0,0,0)+"), CoordinateToLatex("(2/3,1/3,1/3)+"), CoordinateToLatex("(1/3,2/3,2/3)+"), ""], // 261105Cl 追加
+            "R" => ["-", "-", "-", CoordinateToLatex("(0,0,0)+"), "", "", ""], // 261105Cl 追加
             _ => null
         };
         if (centeringRow != null)

@@ -233,12 +233,14 @@ symmetry and fractional coordinates (read-only).</value>
 2 (u₂v₂w₂); computed automatically (read-only).</value>
   </data>
   <data name="numericBoxAnglePlaneAxis1.ToolTip" xml:space="preserve">
-    <value>Angle (in degrees) between plane 1 (h₁k₁l₁) and
-axis 1 (u₁v₁w₁); computed automatically (read-only).</value>
+    <value>Angle (in degrees) between the normal of plane 1 (h₁k₁l₁)
+and axis 1 (u₁v₁w₁); 90° when the axis lies in the plane.
+Computed automatically (read-only).</value>
   </data>
   <data name="numericBoxAnglePlaneAxis2.ToolTip" xml:space="preserve">
-    <value>Angle (in degrees) between plane 2 (h₂k₂l₂) and
-axis 2 (u₂v₂w₂); computed automatically (read-only).</value>
+    <value>Angle (in degrees) between the normal of plane 2 (h₂k₂l₂)
+and axis 2 (u₂v₂w₂); 90° when the axis lies in the plane.
+Computed automatically (read-only).</value>
   </data>
   <data name="numericBoxAnglePlanes.ToolTip" xml:space="preserve">
     <value>Angle (in degrees) between plane 1 (h₁k₁l₁) and
