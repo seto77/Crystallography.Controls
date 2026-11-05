@@ -437,7 +437,10 @@ public partial class PoleFigureControl : UserControlBase
                 {
                     AddTrigonalUpper();
                     AddNegations(0, 3);
-                    if (sym.SpaceGroupHallStr.Contains('"')) // 3m1 の場合
+                    //if (sym.SpaceGroupHallStr.Contains('"')) // 3m1 の場合 // 261105Cl 変更前: 鏡映の向きが 3m1 と 31m で入れ替わっていた
+                    // 261105Cl 変更: Hall 記号に " がある 321/3m1/-3m1 型は 2 回軸が a 軸方向 (鏡映 ⊥ a 軸)。ReciPro の直交座標は b ∥ y (a は x から −30°。Crystal.SetAxis)
+                    // なので、その鏡映は y 反転 (x, −y, z) の組 (下の else)。x 反転 (−x, y, z) の組 (鏡映 ⊥ [210]) は " の無い 312/31m/-31m 型
+                    if (!sym.SpaceGroupHallStr.Contains('"')) // 261105Cl 変更: 31m の場合
                     {
                         vec.Add(new Vector3DBase(-x, +y, +z));
                         vec.Add(new Vector3DBase(-(-x - sqrt3 * y) / 2, (sqrt3 * x - y) / 2, +z));
