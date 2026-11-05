@@ -196,7 +196,7 @@ pour que deux atomes soient considérés comme liés.</value>
 pour que deux atomes soient considérés comme liés.</value>
   </data>
   <data name="numericBoxEdgeWidth.ToolTip" xml:space="preserve">
-    <value>Largeur de trait des arêtes du polyèdre.</value>
+    <value>Largeur de trait des arêtes du polyèdre, en pixels (1–5).</value>
   </data>
   <data name="numericBoxPolyhedronAlpha.ToolTip" xml:space="preserve">
     <value>Opacité des faces du polyèdre (0

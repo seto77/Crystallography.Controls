@@ -196,7 +196,7 @@
 при котором два атома считаются связанными.</value>
   </data>
   <data name="numericBoxEdgeWidth.ToolTip" xml:space="preserve">
-    <value>Ширина линии рёбер многогранника.</value>
+    <value>Ширина линии рёбер многогранника, в пикселях (1–5).</value>
   </data>
   <data name="numericBoxPolyhedronAlpha.ToolTip" xml:space="preserve">
     <value>Непрозрачность граней многогранника (0

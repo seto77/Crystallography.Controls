@@ -685,7 +685,7 @@ polyhedron, and enable the edge-width setting.</value>
     <value>5</value>
   </data>
   <data name="numericBoxEdgeWidth.ToolTip" xml:space="preserve">
-    <value>Line width of the polyhedron edges.</value>
+    <value>Line width of the polyhedron edges, in pixels (1–5).</value>
   </data>
   <data name="&gt;&gt;numericBoxEdgeWidth.Name" xml:space="preserve">
     <value>numericBoxEdgeWidth</value>

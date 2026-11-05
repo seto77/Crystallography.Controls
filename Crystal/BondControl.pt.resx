@@ -196,7 +196,7 @@ para que dois átomos sejam tratados como ligados.</value>
 para que dois átomos sejam tratados como ligados.</value>
   </data>
   <data name="numericBoxEdgeWidth.ToolTip" xml:space="preserve">
-    <value>Largura da linha das arestas do poliedro.</value>
+    <value>Largura da linha das arestas do poliedro, em pixels (1–5).</value>
   </data>
   <data name="numericBoxPolyhedronAlpha.ToolTip" xml:space="preserve">
     <value>Opacidade das faces do poliedro (0

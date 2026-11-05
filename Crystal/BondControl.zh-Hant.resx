@@ -191,7 +191,7 @@ Show 欄。</value>
     <value>兩原子被視為成鍵的原子間距離下限（以 Å 為單位）。</value>
   </data>
   <data name="numericBoxEdgeWidth.ToolTip" xml:space="preserve">
-    <value>多面體稜邊的線寬。</value>
+    <value>多面體稜邊的線寬，以像素為單位（1–5）。</value>
   </data>
   <data name="numericBoxPolyhedronAlpha.ToolTip" xml:space="preserve">
     <value>多面體面的不透明度（0 = 完全

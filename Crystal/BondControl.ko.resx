@@ -196,7 +196,7 @@
 원자 간 거리(Å)입니다.</value>
   </data>
   <data name="numericBoxEdgeWidth.ToolTip" xml:space="preserve">
-    <value>다면체 모서리의 선 너비입니다.</value>
+    <value>다면체 모서리의 선 너비(픽셀 단위, 1–5)입니다.</value>
   </data>
   <data name="numericBoxPolyhedronAlpha.ToolTip" xml:space="preserve">
     <value>다면체 면의 불투명도입니다(0

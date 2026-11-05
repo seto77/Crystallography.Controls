@@ -196,7 +196,7 @@ damit zwei Atome als gebunden behandelt werden.</value>
 damit zwei Atome als gebunden behandelt werden.</value>
   </data>
   <data name="numericBoxEdgeWidth.ToolTip" xml:space="preserve">
-    <value>Linienbreite der Polyederkanten.</value>
+    <value>Linienbreite der Polyederkanten, in Pixeln (1–5).</value>
   </data>
   <data name="numericBoxPolyhedronAlpha.ToolTip" xml:space="preserve">
     <value>Deckkraft der Polyederflächen (0

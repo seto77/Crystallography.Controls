@@ -216,7 +216,7 @@
     <value>線幅</value>
   </data>
   <data name="numericBoxEdgeWidth.ToolTip" xml:space="preserve">
-    <value>配位多面体の稜線（エッジ）の線幅を設定します。</value>
+    <value>配位多面体の稜線（エッジ）の線幅をピクセル単位 (1〜5) で設定します。</value>
   </data>
   <data name="numericBoxBondRadius.HeaderText" xml:space="preserve">
     <value>半径</value>

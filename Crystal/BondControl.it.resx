@@ -196,7 +196,7 @@ perché due atomi siano trattati come legati.</value>
 perché due atomi siano trattati come legati.</value>
   </data>
   <data name="numericBoxEdgeWidth.ToolTip" xml:space="preserve">
-    <value>Larghezza della linea degli spigoli del poliedro.</value>
+    <value>Larghezza della linea degli spigoli del poliedro, in pixel (1–5).</value>
   </data>
   <data name="numericBoxPolyhedronAlpha.ToolTip" xml:space="preserve">
     <value>Opacità delle facce del poliedro (0

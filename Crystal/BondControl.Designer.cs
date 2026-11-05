@@ -231,10 +231,13 @@
             // numericBoxEdgeWidth
             // 
             numericBoxEdgeWidth.BackColor = System.Drawing.SystemColors.Control;
-            numericBoxEdgeWidth.DecimalPlaces = 1;
+            //numericBoxEdgeWidth.DecimalPlaces = 1; // 261105Cl 変更前
+            numericBoxEdgeWidth.DecimalPlaces = 0; // 261105Cl 変更 (監査 H4): 稜線の太さを画素 (px) の整数で (単位胞の Edge width と同じ 1〜5)
             resources.ApplyResources(numericBoxEdgeWidth, "numericBoxEdgeWidth");
-            numericBoxEdgeWidth.Maximum = 1D;
-            numericBoxEdgeWidth.Minimum = 0D;
+            //numericBoxEdgeWidth.Maximum = 1D; // 261105Cl 変更前 (2 行): 0〜1 は GL の線幅 (px) として意味を成さなかった
+            //numericBoxEdgeWidth.Minimum = 0D;
+            numericBoxEdgeWidth.Maximum = 5D; // 261105Cl 変更
+            numericBoxEdgeWidth.Minimum = 1D; // 261105Cl 変更 (0 = 稜線なしは設けない。稜線の有無は「Show Edges」で切り替える)
             numericBoxEdgeWidth.Name = "numericBoxEdgeWidth";
             numericBoxEdgeWidth.RadianValue = 0.012217304763960306D;
             numericBoxEdgeWidth.ShowUpDown = true;
@@ -242,8 +245,10 @@
             numericBoxEdgeWidth.SmartIncrement = true;
             numericBoxEdgeWidth.ThousandsSeparator = true;
             toolTip.SetToolTip(numericBoxEdgeWidth, resources.GetString("numericBoxEdgeWidth.ToolTip"));
-            numericBoxEdgeWidth.UpDown_Increment = 0.1D;
-            numericBoxEdgeWidth.Value = 0.7D;
+            //numericBoxEdgeWidth.UpDown_Increment = 0.1D; // 261105Cl 変更前 (2 行)
+            //numericBoxEdgeWidth.Value = 0.7D;
+            numericBoxEdgeWidth.UpDown_Increment = 1D; // 261105Cl 変更
+            numericBoxEdgeWidth.Value = 1D; // 261105Cl 変更 (従来の実際の描画と同じ 1 px)
             numericBoxEdgeWidth.ValueBoxWidth = 40;
             numericBoxEdgeWidth.ValueFontSize = 9F;
             // 

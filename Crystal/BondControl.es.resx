@@ -196,7 +196,7 @@ para que dos átomos se consideren enlazados.</value>
 para que dos átomos se consideren enlazados.</value>
   </data>
   <data name="numericBoxEdgeWidth.ToolTip" xml:space="preserve">
-    <value>Anchura de línea de las aristas del poliedro.</value>
+    <value>Anchura de línea de las aristas del poliedro, en píxeles (1–5).</value>
   </data>
   <data name="numericBoxPolyhedronAlpha.ToolTip" xml:space="preserve">
     <value>Opacidad de las caras del poliedro (0

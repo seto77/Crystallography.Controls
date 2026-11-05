@@ -88,7 +88,8 @@ public partial class BondInputControl : UserControlBase
         colorControlPolyhedron.Color = Color.FromArgb(b.ArgbPolyhedron);
 
         checkBoxShowEdges.Checked = b.ShowEdges;
-        numericBoxEdgeWidth.Value = b.EdgeLineWidth;
+        //numericBoxEdgeWidth.Value = b.EdgeLineWidth; // 261105Cl 変更前
+        numericBoxEdgeWidth.Value = Math.Clamp(b.EdgeLineWidth, 1, 5); // 261105Cl 変更 (監査 H4): 稜線の太さは 1〜5 px。旧版の値 (0〜1、「Like Vesta」は 0) は 1 px と読む (描画も同じ規則)
         colorControlEdges.Color = Color.FromArgb(b.ArgbEdge);
     }
     #endregion

@@ -196,7 +196,7 @@
 最小原子间距离（以Å为单位）。</value>
   </data>
   <data name="numericBoxEdgeWidth.ToolTip" xml:space="preserve">
-    <value>多面体棱边的线宽。</value>
+    <value>多面体棱边的线宽，单位像素（1–5）。</value>
   </data>
   <data name="numericBoxPolyhedronAlpha.ToolTip" xml:space="preserve">
     <value>多面体面的不透明度（0
