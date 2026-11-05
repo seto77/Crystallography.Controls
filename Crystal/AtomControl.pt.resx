@@ -558,4 +558,7 @@ ou uma composição isotópica personalizada.</value>
   <data name="showEquivalentAtomPositionsToolStripMenuItem.Text" xml:space="preserve">
     <value>Mostrar posições equivalentes do átomo</value>
   </data>
+  <data name="tabPageElementAndPosition.Text" xml:space="preserve">
+    <value>Elemento e posição</value>
+  </data>
 </root>

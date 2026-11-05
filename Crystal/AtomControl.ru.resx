@@ -558,4 +558,7 @@ isotope abundance» включает кнопку Edit, позволяя
   <data name="showEquivalentAtomPositionsToolStripMenuItem.Text" xml:space="preserve">
     <value>Показать эквивалентные позиции атома</value>
   </data>
+  <data name="tabPageElementAndPosition.Text" xml:space="preserve">
+    <value>Элемент и позиция</value>
+  </data>
 </root>

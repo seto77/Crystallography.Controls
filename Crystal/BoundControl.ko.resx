@@ -75,7 +75,7 @@
     <value>추가</value>
   </data>
   <data name="numericBoxMaximumDistanceFromOrigin.HeaderText" xml:space="preserve">
-    <value>원점으로부터 최대 거리</value>
+    <value>최대 거리 (투영 중심)</value>
   </data>
   <data name="buttonChangeBond.Text" xml:space="preserve">
     <value>교체</value>
@@ -143,21 +143,30 @@
   <data name="numericBoxDistance.ToolTip" xml:space="preserve">
     <value>투영 중심에서 경계면까지의 거리로, 옹스트롬(Å)
 단위로 직접 입력합니다. 왼쪽의 면간 거리
-배수와 연동됩니다.</value>
+배수와 연동됩니다.
+각 경계면은 투영 중심의 +g 쪽(해당 (hkl) 법선 방향)에
+놓이며, 투영 중심을 포함하는 쪽이 그려집니다.</value>
   </data>
   <data name="numericBoxDistanceD.ToolTip" xml:space="preserve">
     <value>투영 중심에서 경계면까지의 거리로, (hkl) 면간 거리 d의
 배수로 입력합니다. 오른쪽의 절대 거리(Å) 값과
-연동됩니다.</value>
+연동됩니다.
+각 경계면은 투영 중심의 +g 쪽(해당 (hkl) 법선 방향)에
+놓이며, 투영 중심을 포함하는 쪽이 그려집니다.</value>
   </data>
   <data name="label6.ToolTip" xml:space="preserve">
     <value>투영 중심에서 경계면까지의 거리입니다. 면간
 거리의 배수(왼쪽) 또는 Å 단위 직접 입력
-(오른쪽)으로 설정합니다.</value>
+(오른쪽)으로 설정합니다.
+각 경계면은 투영 중심의 +g 쪽(해당 (hkl) 법선 방향)에
+놓이며, 투영 중심을 포함하는 쪽이 그려집니다.</value>
   </data>
   <data name="indexControl1.ToolTip" xml:space="preserve">
     <value>경계면 법선의 밀러 지수(h k l)입니다.
 결정을 절단하는 면의 방향을
 결정합니다.</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>평행 이동량</value>
   </data>
 </root>

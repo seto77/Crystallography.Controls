@@ -580,7 +580,7 @@ crystal structure is taken from.</value>
     <value>90</value>
   </data>
   <data name="numericBoxMolarVolume.ToolTip" xml:space="preserve">
-    <value>Molar Volume in cm³/mol</value>
+    <value>Molar volume in cm³/mol</value>
   </data>
   <data name="&gt;&gt;numericBoxMolarVolume.Name" xml:space="preserve">
     <value>numericBoxMolarVolume</value>
@@ -634,7 +634,7 @@ crystal structure is taken from.</value>
     <value>90</value>
   </data>
   <data name="numericBoxMolarMass.ToolTip" xml:space="preserve">
-    <value>Molar Mass in g/mol</value>
+    <value>Molar mass in g/mol</value>
   </data>
   <data name="&gt;&gt;numericBoxMolarMass.Name" xml:space="preserve">
     <value>numericBoxMolarMass</value>
@@ -844,7 +844,7 @@ crystal structure is taken from.</value>
     <value>90</value>
   </data>
   <data name="numericBoxMeanAtomicWeight.ToolTip" xml:space="preserve">
-    <value>Number-weighted mean atomic weight (per atom):  A = Σ(n_i·A_i) / Σ n_i   (differs from Molar Mass, which is per formula unit)</value>
+    <value>Number-weighted mean atomic weight (per atom):  A = Σ(n_i·A_i) / Σ n_i   (differs from the molar mass, which is per formula unit)</value>
   </data>
   <data name="&gt;&gt;numericBoxMeanAtomicWeight.Name" xml:space="preserve">
     <value>numericBoxMeanAtomicWeight</value>
@@ -2565,10 +2565,11 @@ and Hill coefficient to the crystal.</value>
     <value>13</value>
   </data>
   <data name="numericBoxHill.ToolTip" xml:space="preserve">
-    <value>Hill averaging coefficient that blends the Voigt
-(uniform-strain) and Reuss (uniform-stress) models:
-0 uses the imposed strain only, 1 uses the strain
-derived from the applied stress (dimensionless).</value>
+    <value>Hill averaging coefficient (dimensionless) that blends the
+Voigt (uniform-strain) and Reuss (uniform-stress) models:
+0 uses the imposed strain only, 1 uses the strain derived
+from the applied stress, and 0.5 (default) gives the Hill
+average (the mean of the Voigt and Reuss models).</value>
   </data>
   <data name="&gt;&gt;numericBoxHill.Name" xml:space="preserve">
     <value>numericBoxHill</value>
@@ -2607,10 +2608,11 @@ derived from the applied stress (dimensionless).</value>
     <value>Hill coefficient</value>
   </data>
   <data name="label117.ToolTip" xml:space="preserve">
-    <value>Hill averaging coefficient that blends the Voigt
-(uniform-strain) and Reuss (uniform-stress) models:
-0 uses the imposed strain only, 1 uses the strain
-derived from the applied stress (dimensionless).</value>
+    <value>Hill averaging coefficient (dimensionless) that blends the
+Voigt (uniform-strain) and Reuss (uniform-stress) models:
+0 uses the imposed strain only, 1 uses the strain derived
+from the applied stress, and 0.5 (default) gives the Hill
+average (the mean of the Voigt and Reuss models).</value>
   </data>
   <data name="&gt;&gt;label117.Name" xml:space="preserve">
     <value>label117</value>

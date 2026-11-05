@@ -361,22 +361,28 @@ dans le modèle de Voigt (sans dimension).</value>
 coefficient de Hill saisis au cristal.</value>
   </data>
   <data name="numericBoxHill.ToolTip" xml:space="preserve">
-    <value>Coefficient de moyennage de Hill qui combine les modèles de Voigt
-(déformation uniforme) et de Reuss (contrainte uniforme) :
-0 utilise uniquement la déformation imposée, 1 utilise la déformation
-dérivée de la contrainte appliquée (sans dimension).</value>
+    <value>Coefficient de moyennage de Hill (sans dimension) qui combine
+les modèles de Voigt (déformation uniforme) et de Reuss
+(contrainte uniforme) : 0 utilise uniquement la déformation
+imposée, 1 uniquement la déformation dérivée de la contrainte
+appliquée ; 0,5 (par défaut) donne la moyenne de Hill
+(moyenne des modèles de Voigt et de Reuss).</value>
   </data>
   <data name="numericBoxHill.ToolTip1" xml:space="preserve">
-    <value>Coefficient de moyennage de Hill qui combine les modèles de Voigt
-(déformation uniforme) et de Reuss (contrainte uniforme) :
-0 utilise uniquement la déformation imposée, 1 utilise la déformation
-dérivée de la contrainte appliquée (sans dimension).</value>
+    <value>Coefficient de moyennage de Hill (sans dimension) qui combine
+les modèles de Voigt (déformation uniforme) et de Reuss
+(contrainte uniforme) : 0 utilise uniquement la déformation
+imposée, 1 uniquement la déformation dérivée de la contrainte
+appliquée ; 0,5 (par défaut) donne la moyenne de Hill
+(moyenne des modèles de Voigt et de Reuss).</value>
   </data>
   <data name="label117.ToolTip" xml:space="preserve">
-    <value>Coefficient de moyennage de Hill qui combine les modèles de Voigt
-(déformation uniforme) et de Reuss (contrainte uniforme) :
-0 utilise uniquement la déformation imposée, 1 utilise la déformation
-dérivée de la contrainte appliquée (sans dimension).</value>
+    <value>Coefficient de moyennage de Hill (sans dimension) qui combine
+les modèles de Voigt (déformation uniforme) et de Reuss
+(contrainte uniforme) : 0 utilise uniquement la déformation
+imposée, 1 uniquement la déformation dérivée de la contrainte
+appliquée ; 0,5 (par défaut) donne la moyenne de Hill
+(moyenne des modèles de Voigt et de Reuss).</value>
   </data>
   <data name="label109.ToolTip" xml:space="preserve">
     <value>Tenseur de contrainte appliqué pour le modèle de Reuss (contrainte

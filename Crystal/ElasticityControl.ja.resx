@@ -236,7 +236,7 @@ Sij。剪断対角成分で、六方/三方系では (c11-c12)/2 (コンプラ�
 立方系では c44 に自動設定されます。単位はGPa/GPa^-1。</value>
   </data>
   <data name="radioButtonCompliance.ToolTip" xml:space="preserve">
-    <value>6x6行列を弾性コンプライアンス定数 Sij(ひずみ = S
+    <value>6x6行列を弾性コンプライアンス定数 Sij(歪み = S
 × 応力、スティフネステンソル C の逆、単位GPa^-1)と
 して解釈します。スティフネス行列 C はその逆行列と
 して保持されます。スティフネス選択とは排他です。</value>

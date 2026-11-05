@@ -364,22 +364,28 @@ im Voigt-Modell verwendet wird (dimensionslos).</value>
 und den Hill-Koeffizienten auf den Kristall anwenden.</value>
   </data>
   <data name="numericBoxHill.ToolTip" xml:space="preserve">
-    <value>Hill-Mittelungskoeffizient, der das Voigt-
-(gleichförmige Verzerrung) und das Reuss-Modell (gleichförmige Spannung) mischt:
-0 verwendet nur die auferlegte Verzerrung, 1 verwendet die aus
-der angelegten Spannung abgeleitete Verzerrung (dimensionslos).</value>
+    <value>Hill-Mittelungskoeffizient (dimensionslos), der das Voigt-
+(gleichförmige Verzerrung) und das Reuss-Modell
+(gleichförmige Spannung) mischt: 0 verwendet nur die
+auferlegte Verzerrung, 1 nur die aus der angelegten
+Spannung abgeleitete Verzerrung; 0,5 (Standard) ergibt
+das Hill-Mittel (Mittelwert von Voigt und Reuss).</value>
   </data>
   <data name="numericBoxHill.ToolTip1" xml:space="preserve">
-    <value>Hill-Mittelungskoeffizient, der das Voigt-
-(gleichförmige Verzerrung) und das Reuss-Modell (gleichförmige Spannung) mischt:
-0 verwendet nur die auferlegte Verzerrung, 1 verwendet die aus
-der angelegten Spannung abgeleitete Verzerrung (dimensionslos).</value>
+    <value>Hill-Mittelungskoeffizient (dimensionslos), der das Voigt-
+(gleichförmige Verzerrung) und das Reuss-Modell
+(gleichförmige Spannung) mischt: 0 verwendet nur die
+auferlegte Verzerrung, 1 nur die aus der angelegten
+Spannung abgeleitete Verzerrung; 0,5 (Standard) ergibt
+das Hill-Mittel (Mittelwert von Voigt und Reuss).</value>
   </data>
   <data name="label117.ToolTip" xml:space="preserve">
-    <value>Hill-Mittelungskoeffizient, der das Voigt-
-(gleichförmige Verzerrung) und das Reuss-Modell (gleichförmige Spannung) mischt:
-0 verwendet nur die auferlegte Verzerrung, 1 verwendet die aus
-der angelegten Spannung abgeleitete Verzerrung (dimensionslos).</value>
+    <value>Hill-Mittelungskoeffizient (dimensionslos), der das Voigt-
+(gleichförmige Verzerrung) und das Reuss-Modell
+(gleichförmige Spannung) mischt: 0 verwendet nur die
+auferlegte Verzerrung, 1 nur die aus der angelegten
+Spannung abgeleitete Verzerrung; 0,5 (Standard) ergibt
+das Hill-Mittel (Mittelwert von Voigt und Reuss).</value>
   </data>
   <data name="label109.ToolTip" xml:space="preserve">
     <value>Angelegter Spannungstensor für das Reuss-Modell (gleichförmige Spannung);

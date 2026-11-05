@@ -536,4 +536,7 @@ U（及等向性 B）為 Å²，異向性 B 為無因次。</value>
   <data name="showEquivalentAtomPositionsToolStripMenuItem.Text" xml:space="preserve">
     <value>顯示等效原子位置</value>
   </data>
+  <data name="tabPageElementAndPosition.Text" xml:space="preserve">
+    <value>元素與位置</value>
+  </data>
 </root>

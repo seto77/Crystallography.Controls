@@ -75,7 +75,7 @@
     <value>Hinzufügen</value>
   </data>
   <data name="numericBoxMaximumDistanceFromOrigin.HeaderText" xml:space="preserve">
-    <value>Max. Abstand vom Ursprung</value>
+    <value>Max. Abst. (Proj.-Zentr.)</value>
   </data>
   <data name="buttonChangeBond.Text" xml:space="preserve">
     <value>Ersetzen</value>
@@ -146,21 +146,33 @@ eine Zeile, um sie in den Editor oben zu laden.</value>
   <data name="numericBoxDistance.ToolTip" xml:space="preserve">
     <value>Abstand vom Projektionszentrum zur Begrenzungsebene,
 direkt in Ångström (Å) eingegeben; wird mit
-dem Vielfachen des d-Werts links synchron gehalten.</value>
+dem Vielfachen des d-Werts links synchron gehalten.
+Jede Ebene liegt auf der +g-Seite des Projektionszentrums
+(in Richtung ihrer (hkl)-Normalen); gezeichnet wird die Seite,
+die das Zentrum enthält.</value>
   </data>
   <data name="numericBoxDistanceD.ToolTip" xml:space="preserve">
     <value>Abstand vom Projektionszentrum zur Begrenzungsebene als
 Vielfaches des (hkl)-Netzebenenabstands d; wird
-mit dem absoluten Å-Wert rechts synchron gehalten.</value>
+mit dem absoluten Å-Wert rechts synchron gehalten.
+Jede Ebene liegt auf der +g-Seite des Projektionszentrums
+(in Richtung ihrer (hkl)-Normalen); gezeichnet wird die Seite,
+die das Zentrum enthält.</value>
   </data>
   <data name="label6.ToolTip" xml:space="preserve">
     <value>Abstand vom Projektionszentrum zur
 Begrenzungsebene, festgelegt als Vielfaches des
-d-Werts (links) oder direkt in Å (rechts).</value>
+d-Werts (links) oder direkt in Å (rechts).
+Jede Ebene liegt auf der +g-Seite des Projektionszentrums
+(in Richtung ihrer (hkl)-Normalen); gezeichnet wird die Seite,
+die das Zentrum enthält.</value>
   </data>
   <data name="indexControl1.ToolTip" xml:space="preserve">
     <value>Millersche Indizes (h k l) der Normalen der
 Begrenzungsebene; definiert die Orientierung
 der Ebene, die den Kristall schneidet.</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>Verschiebung</value>
   </data>
 </root>

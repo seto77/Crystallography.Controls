@@ -1585,7 +1585,7 @@ cubic); enables the crystal-system selector.</value>
   </data>
   <data name="checkBoxSearchElements.ToolTip" xml:space="preserve">
     <value>Filter by constituent elements; shows the
-Periodic Table button used to specify
+'Periodic table' button used to specify
 which elements to include or exclude.</value>
   </data>
   <data name="checkBoxSearchName.ToolTip" xml:space="preserve">

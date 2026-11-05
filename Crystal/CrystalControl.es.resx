@@ -358,22 +358,25 @@ en el modelo de Voigt (adimensional).</value>
 y el coeficiente de Hill introducidos.</value>
   </data>
   <data name="numericBoxHill.ToolTip" xml:space="preserve">
-    <value>Coeficiente de promediado de Hill que combina los modelos de Voigt
-(deformación uniforme) y Reuss (esfuerzo uniforme):
-0 usa solo la deformación impuesta, 1 usa la deformación
-derivada del esfuerzo aplicado (adimensional).</value>
+    <value>Coeficiente de promediado de Hill (adimensional) que combina
+los modelos de Voigt (deformación uniforme) y Reuss (esfuerzo
+uniforme): 0 usa solo la deformación impuesta, 1 solo la
+derivada del esfuerzo aplicado; 0,5 (predeterminado) da el
+promedio de Hill (la media de los modelos de Voigt y Reuss).</value>
   </data>
   <data name="numericBoxHill.ToolTip1" xml:space="preserve">
-    <value>Coeficiente de promediado de Hill que combina los modelos de Voigt
-(deformación uniforme) y Reuss (esfuerzo uniforme):
-0 usa solo la deformación impuesta, 1 usa la deformación
-derivada del esfuerzo aplicado (adimensional).</value>
+    <value>Coeficiente de promediado de Hill (adimensional) que combina
+los modelos de Voigt (deformación uniforme) y Reuss (esfuerzo
+uniforme): 0 usa solo la deformación impuesta, 1 solo la
+derivada del esfuerzo aplicado; 0,5 (predeterminado) da el
+promedio de Hill (la media de los modelos de Voigt y Reuss).</value>
   </data>
   <data name="label117.ToolTip" xml:space="preserve">
-    <value>Coeficiente de promediado de Hill que combina los modelos de Voigt
-(deformación uniforme) y Reuss (esfuerzo uniforme):
-0 usa solo la deformación impuesta, 1 usa la deformación
-derivada del esfuerzo aplicado (adimensional).</value>
+    <value>Coeficiente de promediado de Hill (adimensional) que combina
+los modelos de Voigt (deformación uniforme) y Reuss (esfuerzo
+uniforme): 0 usa solo la deformación impuesta, 1 solo la
+derivada del esfuerzo aplicado; 0,5 (predeterminado) da el
+promedio de Hill (la media de los modelos de Voigt y Reuss).</value>
   </data>
   <data name="label109.ToolTip" xml:space="preserve">
     <value>Tensor de esfuerzos aplicado para el modelo de Reuss (esfuerzo uniforme);

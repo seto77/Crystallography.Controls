@@ -334,18 +334,21 @@
   </data>
   <data name="numericBoxHill.ToolTip" xml:space="preserve">
     <value>混合 Voigt（均勻應變）與 Reuss（均勻應力）
-模型的 Hill 平均係數：0 僅使用施加的應變，
-1 僅使用由施加應力導出的應變（無因次）。</value>
+模型的 Hill 平均係數（無因次）：0 僅使用施加的應變，
+1 僅使用由施加應力導出的應變；0.5（預設）為
+Hill 平均（Voigt 與 Reuss 模型的平均）。</value>
   </data>
   <data name="numericBoxHill.ToolTip1" xml:space="preserve">
     <value>混合 Voigt（均勻應變）與 Reuss（均勻應力）
-模型的 Hill 平均係數：0 僅使用施加的應變，
-1 僅使用由施加應力導出的應變（無因次）。</value>
+模型的 Hill 平均係數（無因次）：0 僅使用施加的應變，
+1 僅使用由施加應力導出的應變；0.5（預設）為
+Hill 平均（Voigt 與 Reuss 模型的平均）。</value>
   </data>
   <data name="label117.ToolTip" xml:space="preserve">
     <value>混合 Voigt（均勻應變）與 Reuss（均勻應力）
-模型的 Hill 平均係數：0 僅使用施加的應變，
-1 僅使用由施加應力導出的應變（無因次）。</value>
+模型的 Hill 平均係數（無因次）：0 僅使用施加的應變，
+1 僅使用由施加應力導出的應變；0.5（預設）為
+Hill 平均（Voigt 與 Reuss 模型的平均）。</value>
   </data>
   <data name="label109.ToolTip" xml:space="preserve">
     <value>Reuss（均勻應力）模型的施加應力張量；

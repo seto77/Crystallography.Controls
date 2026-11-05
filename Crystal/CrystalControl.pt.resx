@@ -361,22 +361,25 @@ no modelo de Voigt (adimensional).</value>
 coeficiente de Hill inseridos ao cristal.</value>
   </data>
   <data name="numericBoxHill.ToolTip" xml:space="preserve">
-    <value>Coeficiente de média de Hill que combina os modelos de Voigt
-(deformação uniforme) e Reuss (tensão uniforme):
-0 usa apenas a deformação imposta, 1 usa a deformação
-derivada da tensão aplicada (adimensional).</value>
+    <value>Coeficiente de média de Hill (adimensional) que combina os
+modelos de Voigt (deformação uniforme) e Reuss (tensão
+uniforme): 0 usa apenas a deformação imposta, 1 apenas a
+derivada da tensão aplicada; 0,5 (padrão) dá a média de
+Hill (a média dos modelos de Voigt e Reuss).</value>
   </data>
   <data name="numericBoxHill.ToolTip1" xml:space="preserve">
-    <value>Coeficiente de média de Hill que combina os modelos de Voigt
-(deformação uniforme) e Reuss (tensão uniforme):
-0 usa apenas a deformação imposta, 1 usa a deformação
-derivada da tensão aplicada (adimensional).</value>
+    <value>Coeficiente de média de Hill (adimensional) que combina os
+modelos de Voigt (deformação uniforme) e Reuss (tensão
+uniforme): 0 usa apenas a deformação imposta, 1 apenas a
+derivada da tensão aplicada; 0,5 (padrão) dá a média de
+Hill (a média dos modelos de Voigt e Reuss).</value>
   </data>
   <data name="label117.ToolTip" xml:space="preserve">
-    <value>Coeficiente de média de Hill que combina os modelos de Voigt
-(deformação uniforme) e Reuss (tensão uniforme):
-0 usa apenas a deformação imposta, 1 usa a deformação
-derivada da tensão aplicada (adimensional).</value>
+    <value>Coeficiente de média de Hill (adimensional) que combina os
+modelos de Voigt (deformação uniforme) e Reuss (tensão
+uniforme): 0 usa apenas a deformação imposta, 1 apenas a
+derivada da tensão aplicada; 0,5 (padrão) dá a média de
+Hill (a média dos modelos de Voigt e Reuss).</value>
   </data>
   <data name="label109.ToolTip" xml:space="preserve">
     <value>Tensor de tensão aplicado para o modelo de Reuss (tensão uniforme);

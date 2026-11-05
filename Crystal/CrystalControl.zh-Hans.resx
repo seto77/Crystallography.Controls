@@ -362,22 +362,25 @@
 系数应用于晶体。</value>
   </data>
   <data name="numericBoxHill.ToolTip" xml:space="preserve">
-    <value>Hill平均系数，用于混合Voigt
+    <value>Hill平均系数（无量纲），用于混合Voigt
 （均匀应变）模型和Reuss（均匀应力）模型：
-0仅使用施加的应变，1使用由施加应力
-导出的应变（无量纲）。</value>
+0仅使用施加的应变，1仅使用由施加应力
+导出的应变；0.5（默认）为Hill平均
+（Voigt与Reuss模型的平均）。</value>
   </data>
   <data name="numericBoxHill.ToolTip1" xml:space="preserve">
-    <value>Hill平均系数，用于混合Voigt
+    <value>Hill平均系数（无量纲），用于混合Voigt
 （均匀应变）模型和Reuss（均匀应力）模型：
-0仅使用施加的应变，1使用由施加应力
-导出的应变（无量纲）。</value>
+0仅使用施加的应变，1仅使用由施加应力
+导出的应变；0.5（默认）为Hill平均
+（Voigt与Reuss模型的平均）。</value>
   </data>
   <data name="label117.ToolTip" xml:space="preserve">
-    <value>Hill平均系数，用于混合Voigt
+    <value>Hill平均系数（无量纲），用于混合Voigt
 （均匀应变）模型和Reuss（均匀应力）模型：
-0仅使用施加的应变，1使用由施加应力
-导出的应变（无量纲）。</value>
+0仅使用施加的应变，1仅使用由施加应力
+导出的应变；0.5（默认）为Hill平均
+（Voigt与Reuss模型的平均）。</value>
   </data>
   <data name="label109.ToolTip" xml:space="preserve">
     <value>Reuss（均匀应力）模型所用的施加应力

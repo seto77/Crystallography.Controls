@@ -555,4 +555,7 @@ neutronica usa l'abbondanza isotopica naturale
   <data name="showEquivalentAtomPositionsToolStripMenuItem.Text" xml:space="preserve">
     <value>Mostra posizioni atomiche equivalenti</value>
   </data>
+  <data name="tabPageElementAndPosition.Text" xml:space="preserve">
+    <value>Elemento e posizione</value>
+  </data>
 </root>

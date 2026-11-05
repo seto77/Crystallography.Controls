@@ -361,22 +361,25 @@ nel modello di Voigt (adimensionale).</value>
 e il coefficiente di Hill inseriti.</value>
   </data>
   <data name="numericBoxHill.ToolTip" xml:space="preserve">
-    <value>Coefficiente di media di Hill che combina i modelli di Voigt
-(deformazione uniforme) e Reuss (sforzo uniforme):
-0 usa solo la deformazione imposta, 1 usa la deformazione
-derivata dallo sforzo applicato (adimensionale).</value>
+    <value>Coefficiente di media di Hill (adimensionale) che combina i
+modelli di Voigt (deformazione uniforme) e Reuss (sforzo
+uniforme): 0 usa solo la deformazione imposta, 1 solo quella
+derivata dallo sforzo applicato; 0,5 (predefinito) dà la
+media di Hill (media dei modelli di Voigt e Reuss).</value>
   </data>
   <data name="numericBoxHill.ToolTip1" xml:space="preserve">
-    <value>Coefficiente di media di Hill che combina i modelli di Voigt
-(deformazione uniforme) e Reuss (sforzo uniforme):
-0 usa solo la deformazione imposta, 1 usa la deformazione
-derivata dallo sforzo applicato (adimensionale).</value>
+    <value>Coefficiente di media di Hill (adimensionale) che combina i
+modelli di Voigt (deformazione uniforme) e Reuss (sforzo
+uniforme): 0 usa solo la deformazione imposta, 1 solo quella
+derivata dallo sforzo applicato; 0,5 (predefinito) dà la
+media di Hill (media dei modelli di Voigt e Reuss).</value>
   </data>
   <data name="label117.ToolTip" xml:space="preserve">
-    <value>Coefficiente di media di Hill che combina i modelli di Voigt
-(deformazione uniforme) e Reuss (sforzo uniforme):
-0 usa solo la deformazione imposta, 1 usa la deformazione
-derivata dallo sforzo applicato (adimensionale).</value>
+    <value>Coefficiente di media di Hill (adimensionale) che combina i
+modelli di Voigt (deformazione uniforme) e Reuss (sforzo
+uniforme): 0 usa solo la deformazione imposta, 1 solo quella
+derivata dallo sforzo applicato; 0,5 (predefinito) dà la
+media di Hill (media dei modelli di Voigt e Reuss).</value>
   </data>
   <data name="label109.ToolTip" xml:space="preserve">
     <value>Tensore degli sforzi applicato per il modello di Reuss (sforzo uniforme);

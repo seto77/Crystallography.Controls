@@ -137,7 +137,7 @@
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="numericBoxMaximumDistanceFromOrigin.HeaderText" xml:space="preserve">
-    <value>原点からの最大距離</value>
+    <value>最大距離 (投影中心)</value>
   </data>
   <data name="numericBoxMaximumDistanceFromOrigin.ToolTip" xml:space="preserve">
     <value>結晶面によって描画範囲が閉じていない場合、
@@ -184,7 +184,9 @@
   </data>
   <data name="label6.ToolTip" xml:space="preserve">
     <value>投影中心から境界面までの距離。d 間隔の倍数 (左)
-または Å の直接入力 (右) で設定します。</value>
+または Å の直接入力 (右) で設定します。
+各面は投影中心から +g の側 (その (hkl) の法線の向き) に置かれ、
+投影中心を含む側が描かれます。</value>
   </data>
   <data name="label1.ToolTip" xml:space="preserve">
     <value />
@@ -213,11 +215,15 @@
   </data>
   <data name="numericBoxDistanceD.ToolTip1" xml:space="preserve">
     <value>投影中心から境界面までの距離を、その (hkl) 面間隔 d の
-倍数で入力します。右の絶対距離 (Å) と連動します。</value>
+倍数で入力します。右の絶対距離 (Å) と連動します。
+各面は投影中心から +g の側 (その (hkl) の法線の向き) に置かれ、
+投影中心を含む側が描かれます。</value>
   </data>
   <data name="numericBoxDistance.ToolTip1" xml:space="preserve">
     <value>投影中心から境界面までの距離をオングストローム (Å)
-で直接入力します。左の d 間隔倍数と連動します。</value>
+で直接入力します。左の d 間隔倍数と連動します。
+各面は投影中心から +g の側 (その (hkl) の法線の向き) に置かれ、
+投影中心を含む側が描かれます。</value>
   </data>
   <data name="panel2.ToolTip" xml:space="preserve">
     <value />
@@ -247,11 +253,15 @@
   </data>
   <data name="numericBoxDistance.ToolTip" xml:space="preserve">
     <value>投影中心から境界面までの距離をオングストローム (Å)
-で直接入力します。左の d 間隔倍数と連動します。</value>
+で直接入力します。左の d 間隔倍数と連動します。
+各面は投影中心から +g の側 (その (hkl) の法線の向き) に置かれ、
+投影中心を含む側が描かれます。</value>
   </data>
   <data name="numericBoxDistanceD.ToolTip" xml:space="preserve">
     <value>投影中心から境界面までの距離を、その (hkl) 面間隔 d の
-倍数で入力します。右の絶対距離 (Å) と連動します。</value>
+倍数で入力します。右の絶対距離 (Å) と連動します。
+各面は投影中心から +g の側 (その (hkl) の法線の向き) に置かれ、
+投影中心を含む側が描かれます。</value>
   </data>
   <data name="indexControl1.ToolTip" xml:space="preserve">
     <value>境界面の法線のミラー指数 (h k l) を入力し

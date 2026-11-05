@@ -2180,7 +2180,7 @@ all atoms with "Apply custom shift".</value>
     <value>4</value>
   </data>
   <data name="tabPageOriginShift.Text" xml:space="preserve">
-    <value>Origin Shift</value>
+    <value>Origin shift</value>
   </data>
   <data name="&gt;&gt;tabPageOriginShift.Name" xml:space="preserve">
     <value>tabPageOriginShift</value>

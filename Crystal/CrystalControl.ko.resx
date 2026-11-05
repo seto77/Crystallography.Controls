@@ -364,21 +364,24 @@
   </data>
   <data name="numericBoxHill.ToolTip" xml:space="preserve">
     <value>Voigt(균일 변형) 모델과 Reuss(균일 응력) 모델을
-혼합하는 Hill 평균 계수입니다. 0은 부과된 변형만,
-1은 적용된 응력으로부터 유도한 변형만 사용합니다
-(무차원).</value>
+혼합하는 Hill 평균 계수입니다(무차원). 0은 부과된
+변형만, 1은 적용된 응력으로부터 유도한 변형만
+사용하며, 0.5(기본값)는 Hill 평균(Voigt와 Reuss
+모델의 평균)입니다.</value>
   </data>
   <data name="numericBoxHill.ToolTip1" xml:space="preserve">
     <value>Voigt(균일 변형) 모델과 Reuss(균일 응력) 모델을
-혼합하는 Hill 평균 계수입니다. 0은 부과된 변형만,
-1은 적용된 응력으로부터 유도한 변형만 사용합니다
-(무차원).</value>
+혼합하는 Hill 평균 계수입니다(무차원). 0은 부과된
+변형만, 1은 적용된 응력으로부터 유도한 변형만
+사용하며, 0.5(기본값)는 Hill 평균(Voigt와 Reuss
+모델의 평균)입니다.</value>
   </data>
   <data name="label117.ToolTip" xml:space="preserve">
     <value>Voigt(균일 변형) 모델과 Reuss(균일 응력) 모델을
-혼합하는 Hill 평균 계수입니다. 0은 부과된 변형만,
-1은 적용된 응력으로부터 유도한 변형만 사용합니다
-(무차원).</value>
+혼합하는 Hill 평균 계수입니다(무차원). 0은 부과된
+변형만, 1은 적용된 응력으로부터 유도한 변형만
+사용하며, 0.5(기본값)는 Hill 평균(Voigt와 Reuss
+모델의 평균)입니다.</value>
   </data>
   <data name="label109.ToolTip" xml:space="preserve">
     <value>Reuss(균일 응력) 모델에 적용하는 응력 텐서입니다.

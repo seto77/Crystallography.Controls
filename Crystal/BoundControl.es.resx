@@ -72,7 +72,7 @@
     <value>Añadir</value>
   </data>
   <data name="numericBoxMaximumDistanceFromOrigin.HeaderText" xml:space="preserve">
-    <value>Distancia máx. al origen</value>
+    <value>Dist. máx. (centro proy.)</value>
   </data>
   <data name="buttonChangeBond.Text" xml:space="preserve">
     <value>Reemplazar</value>
@@ -140,21 +140,33 @@ una fila para cargarla en el editor de arriba.</value>
   <data name="numericBoxDistance.ToolTip" xml:space="preserve">
     <value>Distancia desde el centro de proyección hasta el plano delimitador,
 introducida directamente en ángstroms (Å); se mantiene sincronizada
-con el múltiplo de la distancia interplanar de la izquierda.</value>
+con el múltiplo de la distancia interplanar de la izquierda.
+Cada plano se sitúa en el lado +g del centro de proyección
+(en el sentido de su normal (hkl)); se dibuja el lado que
+contiene el centro.</value>
   </data>
   <data name="numericBoxDistanceD.ToolTip" xml:space="preserve">
     <value>Distancia desde el centro de proyección hasta el plano delimitador como
 múltiplo de la distancia interplanar (hkl) d; se mantiene
-sincronizada con el valor absoluto en Å de la derecha.</value>
+sincronizada con el valor absoluto en Å de la derecha.
+Cada plano se sitúa en el lado +g del centro de proyección
+(en el sentido de su normal (hkl)); se dibuja el lado que
+contiene el centro.</value>
   </data>
   <data name="label6.ToolTip" xml:space="preserve">
     <value>Distancia desde el centro de proyección hasta el
 plano delimitador, fijada como múltiplo de la
-distancia interplanar (izquierda) o directamente en Å (derecha).</value>
+distancia interplanar (izquierda) o directamente en Å (derecha).
+Cada plano se sitúa en el lado +g del centro de proyección
+(en el sentido de su normal (hkl)); se dibuja el lado que
+contiene el centro.</value>
   </data>
   <data name="indexControl1.ToolTip" xml:space="preserve">
     <value>Índices de Miller (h k l) de la normal del plano
 delimitador; define la orientación
 del plano que recorta el cristal.</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>Traslación</value>
   </data>
 </root>

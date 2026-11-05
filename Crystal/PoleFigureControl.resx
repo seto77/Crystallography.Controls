@@ -965,7 +965,7 @@ axes). The index boxes are labeled u, v, w
 and symmetry-equivalent axes are included.</value>
   </data>
   <data name="radioButtonInversePoleFigure.ToolTip" xml:space="preserve">
-    <value>Inverse Pole Figure (IPF): plot, in the crystal
+    <value>Inverse pole figure (IPF): plot, in the crystal
 reference frame, the distribution of a fixed
 sample direction (x, y, z), showing which
 crystal directions align with that sample axis.</value>
@@ -976,7 +976,7 @@ normals. The index boxes are labeled h, k, l
 and symmetry-equivalent planes are included.</value>
   </data>
   <data name="radioButtonPoleFigure.ToolTip" xml:space="preserve">
-    <value>Pole Figure: plot, in the sample reference frame,
+    <value>Pole figure: plot, in the sample reference frame,
 the distribution of the poles of the chosen crystal
 direction or plane (set by the Axes/Planes option).</value>
   </data>

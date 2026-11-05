@@ -311,7 +311,7 @@
     <value>0, 4, 0, 0</value>
   </data>
   <data name="numericBoxMaximumDistanceFromOrigin.HeaderText" xml:space="preserve">
-    <value>Max distance from origin</value>
+    <value>Max dist. (proj. center)</value>
   </data>
   <data name="numericBoxMaximumDistanceFromOrigin.Location" type="System.Drawing.Point, System.Drawing">
     <value>150, 1</value>
@@ -1042,12 +1042,16 @@ a row to load it into the editor above.</value>
   <data name="numericBoxDistance.ToolTip" xml:space="preserve">
     <value>Distance from the projection center to the bounding plane,
 entered directly in angstroms (Å); kept in sync
-with the d-spacing multiple on the left.</value>
+with the d-spacing multiple on the left.
+Each plane lies on the +g side of the projection center
+(along its (hkl) normal); the side containing the center is drawn.</value>
   </data>
   <data name="numericBoxDistanceD.ToolTip" xml:space="preserve">
     <value>Distance from the projection center to the bounding plane as a
 multiple of the (hkl) interplanar spacing d; kept
-in sync with the absolute Å value on the right.</value>
+in sync with the absolute Å value on the right.
+Each plane lies on the +g side of the projection center
+(along its (hkl) normal); the side containing the center is drawn.</value>
   </data>
   <data name="label3.ToolTip" xml:space="preserve">
     <value>Shift the region bounded by the planes by this distance (Å)
@@ -1056,7 +1060,9 @@ it toward +g, i.e. in the direction of the (hkl) normal.</value>
   </data>
   <data name="label6.ToolTip" xml:space="preserve">
     <value>Distance from the projection center to the bounding plane,
-set as a multiple of the d-spacing (left) or directly in Å (right).</value>
+set as a multiple of the d-spacing (left) or directly in Å (right).
+Each plane lies on the +g side of the projection center
+(along its (hkl) normal); the side containing the center is drawn.</value>
   </data>
   <data name="indexControl1.ToolTip" xml:space="preserve">
     <value>Miller indices (h k l) of the bounding

@@ -277,14 +277,16 @@
     <value>入力した歪み・応力・Hill 係数を結晶に適用します。</value>
   </data>
   <data name="numericBoxHill.ToolTip" xml:space="preserve">
-    <value>Voigt(均一歪み)モデルと Reuss(均一応力)モデルを
-混合する Hill 係数。0 で入力歪みのみ、1 で応力か
-ら計算した歪みのみを使用します（無次元）。</value>
+    <value>Voigt（均一歪み）モデルと Reuss（均一応力）モデルを
+混合する Hill 係数（無次元）。0 で入力歪みのみ、1 で
+応力から計算した歪みのみを使用します。0.5（既定）で
+Hill 平均（Voigt と Reuss の平均）になります。</value>
   </data>
   <data name="label117.ToolTip" xml:space="preserve">
-    <value>Voigt（均一歪み）モデルと Reuss（均一応力）モデル
-を混合する Hill 係数。0 で入力歪みのみ、1 で
-応力から計算した歪みのみを使用します（無次元）。</value>
+    <value>Voigt（均一歪み）モデルと Reuss（均一応力）モデルを
+混合する Hill 係数（無次元）。0 で入力歪みのみ、1 で
+応力から計算した歪みのみを使用します。0.5（既定）で
+Hill 平均（Voigt と Reuss の平均）になります。</value>
   </data>
   <data name="label109.ToolTip" xml:space="preserve">
     <value>Reuss（均一応力）モデルで与える応力テンソル。
@@ -379,7 +381,7 @@
     <value>読み込み時の格子定数に戻す</value>
   </data>
   <data name="strainControlToolStripMenuItem.Text" xml:space="preserve">
-    <value>格子ひずみ (invisible)</value>
+    <value>格子歪み (invisible)</value>
   </data>
   <data name="detailsOfTheChemicalCompositionToolStripMenuItem.Text" xml:space="preserve">
     <value>化学組成の詳細</value>

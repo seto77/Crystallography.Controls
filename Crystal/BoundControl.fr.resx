@@ -72,7 +72,7 @@
     <value>Ajouter</value>
   </data>
   <data name="numericBoxMaximumDistanceFromOrigin.HeaderText" xml:space="preserve">
-    <value>Distance max. à l'origine</value>
+    <value>Dist. max (centre proj.)</value>
   </data>
   <data name="buttonChangeBond.Text" xml:space="preserve">
     <value>Remplacer</value>
@@ -143,21 +143,33 @@ une ligne pour le charger dans l'éditeur ci-dessus.</value>
   <data name="numericBoxDistance.ToolTip" xml:space="preserve">
     <value>Distance du centre de projection au plan de délimitation,
 saisie directement en angströms (Å) ; maintenue synchronisée
-avec le multiple de la distance interréticulaire à gauche.</value>
+avec le multiple de la distance interréticulaire à gauche.
+Chaque plan est placé du côté +g du centre de projection
+(dans le sens de sa normale (hkl)) ; le côté contenant le
+centre est dessiné.</value>
   </data>
   <data name="numericBoxDistanceD.ToolTip" xml:space="preserve">
     <value>Distance du centre de projection au plan de délimitation comme
 multiple de la distance interréticulaire (hkl) d ; maintenue
-synchronisée avec la valeur absolue en Å à droite.</value>
+synchronisée avec la valeur absolue en Å à droite.
+Chaque plan est placé du côté +g du centre de projection
+(dans le sens de sa normale (hkl)) ; le côté contenant le
+centre est dessiné.</value>
   </data>
   <data name="label6.ToolTip" xml:space="preserve">
     <value>Distance du centre de projection au plan de
 délimitation, définie comme multiple de la distance
-interréticulaire (gauche) ou directement en Å (droite).</value>
+interréticulaire (gauche) ou directement en Å (droite).
+Chaque plan est placé du côté +g du centre de projection
+(dans le sens de sa normale (hkl)) ; le côté contenant le
+centre est dessiné.</value>
   </data>
   <data name="indexControl1.ToolTip" xml:space="preserve">
     <value>Indices de Miller (h k l) de la normale du
 plan de délimitation ; définit l'orientation
 du plan qui découpe le cristal.</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>Translation</value>
   </data>
 </root>

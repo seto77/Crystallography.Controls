@@ -75,7 +75,7 @@
     <value>Aggiungi</value>
   </data>
   <data name="numericBoxMaximumDistanceFromOrigin.HeaderText" xml:space="preserve">
-    <value>Distanza max dall'origine</value>
+    <value>Dist. max (c. proiez.)</value>
   </data>
   <data name="buttonChangeBond.Text" xml:space="preserve">
     <value>Sostituisci</value>
@@ -146,21 +146,33 @@ una riga per caricarla nell'editor sopra.</value>
   <data name="numericBoxDistance.ToolTip" xml:space="preserve">
     <value>Distanza dal centro di proiezione al piano di delimitazione,
 inserita direttamente in angstrom (Å); mantenuta sincronizzata
-con il multiplo della distanza interplanare a sinistra.</value>
+con il multiplo della distanza interplanare a sinistra.
+Ogni piano si trova dal lato +g del centro di proiezione (nel
+verso della sua normale (hkl)); viene disegnato il lato che
+contiene il centro.</value>
   </data>
   <data name="numericBoxDistanceD.ToolTip" xml:space="preserve">
     <value>Distanza dal centro di proiezione al piano di delimitazione come
 multiplo della distanza interplanare (hkl) d; mantenuta
-sincronizzata con il valore assoluto in Å a destra.</value>
+sincronizzata con il valore assoluto in Å a destra.
+Ogni piano si trova dal lato +g del centro di proiezione (nel
+verso della sua normale (hkl)); viene disegnato il lato che
+contiene il centro.</value>
   </data>
   <data name="label6.ToolTip" xml:space="preserve">
     <value>Distanza dal centro di proiezione al
 piano di delimitazione, impostata come multiplo della
-distanza interplanare (sinistra) o direttamente in Å (destra).</value>
+distanza interplanare (sinistra) o direttamente in Å (destra).
+Ogni piano si trova dal lato +g del centro di proiezione (nel
+verso della sua normale (hkl)); viene disegnato il lato che
+contiene il centro.</value>
   </data>
   <data name="indexControl1.ToolTip" xml:space="preserve">
     <value>Indici di Miller (h k l) della normale al
 piano di delimitazione; definisce l'orientazione
 del piano che taglia il cristallo.</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>Traslazione</value>
   </data>
 </root>

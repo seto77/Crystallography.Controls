@@ -75,7 +75,7 @@
     <value>添加</value>
   </data>
   <data name="numericBoxMaximumDistanceFromOrigin.HeaderText" xml:space="preserve">
-    <value>距原点最大距离</value>
+    <value>最大距离 (投影中心)</value>
   </data>
   <data name="buttonChangeBond.Text" xml:space="preserve">
     <value>替换</value>
@@ -143,20 +143,29 @@
   <data name="numericBoxDistance.ToolTip" xml:space="preserve">
     <value>从投影中心到边界面的距离，直接以埃
 （Å）为单位输入；与左侧的晶面
-间距倍数保持同步。</value>
+间距倍数保持同步。
+各边界面位于投影中心的 +g 一侧（沿其 (hkl) 法线方向），
+绘制包含投影中心的一侧。</value>
   </data>
   <data name="numericBoxDistanceD.ToolTip" xml:space="preserve">
     <value>从投影中心到边界面的距离，以该(hkl)
 晶面间距d的倍数表示；与右侧的
-绝对距离（Å）值保持同步。</value>
+绝对距离（Å）值保持同步。
+各边界面位于投影中心的 +g 一侧（沿其 (hkl) 法线方向），
+绘制包含投影中心的一侧。</value>
   </data>
   <data name="label6.ToolTip" xml:space="preserve">
     <value>从投影中心到边界面的距离，
 以晶面间距的倍数（左侧）或
-直接以Å（右侧）设置。</value>
+直接以Å（右侧）设置。
+各边界面位于投影中心的 +g 一侧（沿其 (hkl) 法线方向），
+绘制包含投影中心的一侧。</value>
   </data>
   <data name="indexControl1.ToolTip" xml:space="preserve">
     <value>边界面法线的米勒指数(h k l)；
 确定裁剪晶体的面的取向。</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>平移量</value>
   </data>
 </root>

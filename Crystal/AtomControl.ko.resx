@@ -557,4 +557,7 @@ B 또는 U(B = 8π²·U 관계).</value>
   <data name="showEquivalentAtomPositionsToolStripMenuItem.Text" xml:space="preserve">
     <value>등가 원자 위치 표시</value>
   </data>
+  <data name="tabPageElementAndPosition.Text" xml:space="preserve">
+    <value>원소와 위치</value>
+  </data>
 </root>

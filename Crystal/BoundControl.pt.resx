@@ -75,7 +75,7 @@
     <value>Adicionar</value>
   </data>
   <data name="numericBoxMaximumDistanceFromOrigin.HeaderText" xml:space="preserve">
-    <value>Distância máx. da origem</value>
+    <value>Dist. máx. (centro proj.)</value>
   </data>
   <data name="buttonChangeBond.Text" xml:space="preserve">
     <value>Substituir</value>
@@ -146,21 +146,30 @@ uma linha para carregá-la no editor acima.</value>
   <data name="numericBoxDistance.ToolTip" xml:space="preserve">
     <value>Distância do centro de projeção ao plano delimitador,
 inserida diretamente em angstroms (Å); mantida em sincronia
-com o múltiplo da distância interplanar à esquerda.</value>
+com o múltiplo da distância interplanar à esquerda.
+Cada plano fica no lado +g do centro de projeção (no sentido
+da sua normal (hkl)); é desenhado o lado que contém o centro.</value>
   </data>
   <data name="numericBoxDistanceD.ToolTip" xml:space="preserve">
     <value>Distância do centro de projeção ao plano delimitador como um
 múltiplo da distância interplanar (hkl) d; mantida
-em sincronia com o valor absoluto em Å à direita.</value>
+em sincronia com o valor absoluto em Å à direita.
+Cada plano fica no lado +g do centro de projeção (no sentido
+da sua normal (hkl)); é desenhado o lado que contém o centro.</value>
   </data>
   <data name="label6.ToolTip" xml:space="preserve">
     <value>Distância do centro de projeção ao
 plano delimitador, definida como um múltiplo da
-distância interplanar (esquerda) ou diretamente em Å (direita).</value>
+distância interplanar (esquerda) ou diretamente em Å (direita).
+Cada plano fica no lado +g do centro de projeção (no sentido
+da sua normal (hkl)); é desenhado o lado que contém o centro.</value>
   </data>
   <data name="indexControl1.ToolTip" xml:space="preserve">
     <value>Índices de Miller (h k l) da normal do
 plano delimitador; define a orientação
 do plano que corta o cristal.</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>Translação</value>
   </data>
 </root>

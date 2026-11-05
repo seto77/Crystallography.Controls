@@ -558,4 +558,7 @@ benutzerdefinierte Isotopenzusammensetzung verwendet.</value>
   <data name="showEquivalentAtomPositionsToolStripMenuItem.Text" xml:space="preserve">
     <value>Äquivalente Atompositionen anzeigen</value>
   </data>
+  <data name="tabPageElementAndPosition.Text" xml:space="preserve">
+    <value>Element und Position</value>
+  </data>
 </root>

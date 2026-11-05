@@ -596,7 +596,7 @@ gray scale (bright and dark swapped).</value>
     <value>Dust &amp;&amp; scratches</value>
   </data>
   <data name="checkBoxDustScratches.ToolTip" xml:space="preserve">
-    <value>Apply a Dust &amp; Scratches filter that removes
+    <value>Apply a 'Dust &amp; scratches' filter that removes
 small spots and scratch-like artifacts by
 replacing pixels that deviate from their
 neighbors (set Radius and Threshold).</value>
@@ -647,7 +647,7 @@ neighbors (set Radius and Threshold).</value>
     <value>43</value>
   </data>
   <data name="numericBoxDustScratchesRadius.ToolTip" xml:space="preserve">
-    <value>Set the Dust &amp; Scratches filter radius in
+    <value>Set the 'Dust &amp; scratches' filter radius in
 pixels (0-5). A larger radius removes larger
 spots/scratches but blurs more detail.</value>
   </data>
@@ -697,7 +697,7 @@ spots/scratches but blurs more detail.</value>
     <value>43</value>
   </data>
   <data name="numericBoxDustScratchesThreshold.ToolTip" xml:space="preserve">
-    <value>Set the Dust &amp; Scratches threshold (0-10).
+    <value>Set the 'Dust &amp; scratches' threshold (0-10).
 Only pixels differing from their neighbors
 by more than this are treated as defects
 and replaced; a lower value removes more.</value>
@@ -1544,8 +1544,8 @@ of the image; updates as you zoom or pan.</value>
   </data>
   <data name="toolStripStatusLabel1.ToolTipText" xml:space="preserve">
     <value>Status bar showing processing messages,
-such as the elapsed time of the Dust &amp;
-Scratches and Gaussian Blur filters.</value>
+such as the elapsed time of the 'Dust &amp;
+scratches' and 'Gaussian blur' filters.</value>
   </data>
   <data name="statusStrip1.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 561</value>
