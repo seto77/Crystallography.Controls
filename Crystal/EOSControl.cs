@@ -95,6 +95,11 @@ public partial class EOSControl : UserControlBase
         numericBoxEOS_Kp0.Value = ec.Kp0;
         numericBoxEOS_Kpp0.Value = ec.Kpp0;
         numericBoxEOS_KpInfinity.Value = ec.KpInfinity;
+        // 261105Cl 追加: 3 次 Vinet の η・β・ψ も画面へ戻す。以前は戻さなかったので、結晶を選び直すと前の結晶 (または既定) の値が残り、
+        // 次の編集 (parameters_Changed → crystal.EOSCondition = EOScondition) でその値が結晶に書き込まれて元の値が消えた
+        numericBox3rdVinetIta.Value = ec.Vinet3rd_Ita; // 261105Cl 追加
+        numericBox3rdVinetBeta.Value = ec.Vinet3rd_Beta; // 261105Cl 追加
+        numericBox3rdVinetPsi.Value = ec.Vinet3rd_Psi; // 261105Cl 追加
         numericBoxEOS_Q.Value = ec.Q;
         numericBoxEOS_T0.Value = ec.T0;
         numericBoxEOS_Theta0.Value = ec.Theta0;
@@ -118,8 +123,16 @@ public partial class EOSControl : UserControlBase
 
         textBoxEOS_Note.Text = ec.Note;
         numericBoxTemperature.Value = ec.Temperature;
-        CalculatePressure();
-        SkipEvent = false;
+        //CalculatePressure(); // 261105Cl 変更前: SkipEvent = true のまま呼ぶので即 return し、読み込み・体積の変更の後も P と V₀ (cm³/mol) が古いままだった
+        //SkipEvent = false;
+        // 261105Cl 変更: 式に応じた欄の表示 (parameters_Changed と同じ) を合わせ、SkipEvent を戻してから圧力を計算する。
+        // 以前は欄の表示を変えなかったので、BM4 の K''₀・Keane の K'∞・3 次 Vinet の η・β・ψ の欄が出ないままだった
+        numericBox3rdVinetBeta.Visible = numericBox3rdVinetIta.Visible = numericBox3rdVinetPsi.Visible = radioButtonEOS_Vinet3rd.Checked; // 261105Cl 追加
+        numericBoxEOS_Kp0.Visible = !radioButtonEOS_Vinet3rd.Checked; // 261105Cl 追加
+        numericBoxEOS_KpInfinity.Visible = radioButtonEOS_Keane.Checked; // 261105Cl 追加
+        numericBoxEOS_Kpp0.Visible = radioButtonEOS_FourthBirchMunaghan.Checked; // 261105Cl 追加
+        SkipEvent = false; // 261105Cl 変更
+        CalculatePressure(); // 261105Cl 変更
     }
 
     public void CalculatePressure()
@@ -161,6 +174,9 @@ public partial class EOSControl : UserControlBase
         if (!numericBoxEOS_V0perMol.ReadOnly)
             numericBoxEOS_V0perCell.Value = numericBoxEOS_V0perMol.Value / 6.0221367 * 10 * crystal.ChemicalFormulaZ;
         SkipEvent = false;
+        // 261105Cl 追加: V₀ (Å³/cell) の書き換えは SkipEvent 中で parameters_Changed が走らないので、ここで EOS に反映して圧力を計算し直す
+        // (このハンドラ自体も以前は ValueChanged に配線されておらず、V₀ (cm³/mol) を編集しても何も起きなかった。配線は Designer.cs)
+        parameters_Changed(sender, e); // 261105Cl 追加
     }
 
     private void parameters_Changed(object sender, EventArgs e)

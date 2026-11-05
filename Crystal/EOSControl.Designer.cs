@@ -580,6 +580,7 @@
             this.numericBoxEOS_V0perMol.ValueFont = new System.Drawing.Font("Segoe UI", 9F);
             this.numericBoxEOS_V0perMol.Value = 300D;
             this.numericBoxEOS_V0perMol.Click2 += new Crystallography.Controls.NumericBox.MyEventHandler(this.numericBoxEOS_V0perMol_Click2);
+            this.numericBoxEOS_V0perMol.ValueChanged += new Crystallography.Controls.NumericBox.MyEventHandler(this.numericBoxEOS_V0perMol_ValueChanged); // 261105Cl 追加: ハンドラはあったが未配線で、V₀ (cm³/mol) を編集しても反映されなかった
             // 
             // numericBoxEOS_K0
             // 
