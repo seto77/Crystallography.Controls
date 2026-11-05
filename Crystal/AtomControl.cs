@@ -365,13 +365,17 @@ public partial class AtomControl : UserControlBase
     public void Replace(Atoms atoms, int i) { table.Replace(atoms, i); ItemsChanged?.Invoke(this, EventArgs.Empty); }
     public void Clear() { table.Rows.Clear(); ItemsChanged?.Invoke(this, EventArgs.Empty); }
 
-    /// <summary>指定した空間群番号に従って全ての原子情報を再設定</summary>
+    /// <summary>指定した空間群番号に従って全ての原子情報を再設定。
+    /// 261105Cl 変更 (監査 A11): 引数の空間群を使い、表の原子は複製してから設定し直す。以前は引数を無視して今の結晶の空間群 (SymmetrySeriesNumber) を掛けていた。
+    /// 表の原子は結晶リストの元の結晶の原子と同じオブジェクトなので、複製せずに引数の空間群を掛けると Replace 前でも元の結晶が書き換わる (監査 #22)</summary>
     public void ResetSymmetry(int symmetrySeriesNumber)
     {
         for (int i = 0; i < table.Rows.Count; i++)
         {
-            var a = table.Get(i);
-            a.ResetSymmetry(SymmetrySeriesNumber);
+            //var a = table.Get(i); // 261105Cl 変更前 (2 行)
+            //a.ResetSymmetry(SymmetrySeriesNumber);
+            var a = (Atoms)table.Get(i).Clone(); // 261105Cl 変更
+            a.ResetSymmetry(symmetrySeriesNumber); // 261105Cl 変更
             table.Replace(a, i);
         }
         ItemsChanged?.Invoke(this, EventArgs.Empty);
