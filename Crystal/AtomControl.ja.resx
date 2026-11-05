@@ -128,7 +128,7 @@
     <value>環境</value>
   </data>
   <data name="label37.Text" xml:space="preserve">
-    <value>透明度</value>
+    <value>不透明度</value>
   </data>
   <data name="label38.Text" xml:space="preserve">
     <value>反射</value>
@@ -140,7 +140,7 @@
     <value>放射</value>
   </data>
   <data name="label36.Text" xml:space="preserve">
-    <value>表面粗さ</value>
+    <value>光沢度</value>
   </data>
   <data name="numericBoxAtomRadius.HeaderText" xml:space="preserve">
     <value>半径</value>
@@ -347,7 +347,7 @@ Debye–Waller タブでは原子変位パラメータ）
   </data>
   <data name="numericBoxSpecular.ToolTip" xml:space="preserve">
     <value>原子球の鏡面反射係数（0〜1）。表面の光沢ハイライト
-の強さを設定します（Shininess と併用）。</value>
+の強さを設定します（光沢度と併用）。</value>
   </data>
   <data name="numericBoxXerr.ToolTip" xml:space="preserve">
     <value>a軸分率座標の標準不確かさ（±誤差）を設定します。</value>
@@ -493,7 +493,7 @@ Bij/Uij)の誤差(標準偏差)入力欄を表示します。</value>
   </data>
   <data name="label38.ToolTip" xml:space="preserve">
     <value>原子球の鏡面反射係数（0〜1）。表面の光沢ハイライト
-の強さを設定します（Shininess と併用）。</value>
+の強さを設定します（光沢度と併用）。</value>
   </data>
   <data name="label13.ToolTip" xml:space="preserve">
     <value>原子変位モデルを選びます：等方性（1 つの値）か

@@ -140,4 +140,7 @@ Database) のデータを読み込み、結晶一覧に表示します。</value
     <value>現在のレコード番号を表示します。番号を
 入力するとその結晶へ移動します。</value>
   </data>
+  <data name="textBox1.Text" xml:space="preserve">
+    <value>このデータベースのデータを用いて論文を発表する場合は、以下の文献、または対応するウェブページに記載の文献を引用してください。AMCSD: Downs &amp; Hall-Wallace (2003) American Mineralogist 88, 247-250. COD: https://wiki.crystallography.net/cod/citing/</value>
+  </data>
 </root>

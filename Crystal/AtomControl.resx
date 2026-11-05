@@ -3881,7 +3881,7 @@ sphere, independent of light direction.</value>
     <value>88</value>
   </data>
   <data name="label11.Text" xml:space="preserve">
-    <value>Diffusion</value>
+    <value>Diffuse</value>
   </data>
   <data name="label11.ToolTip" xml:space="preserve">
     <value>Diffuse reflection coefficient (0–1): matte

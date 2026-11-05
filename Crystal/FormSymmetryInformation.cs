@@ -73,6 +73,8 @@ public partial class FormSymmetryInformation : FormBase
     /// </summary>
     private void LocalizeLabels()
     {
+        // 261105Cl 追加 (監査 K5): 窓の題が全言語で英語 "Symmetry Information" だった。開くメニュー (CrystalControl.symmetryInformationToolStripMenuItem) の各言語の名前に揃える
+        Text = Loc(en: "Symmetry Information", ja: "対称性詳細", de: "Symmetrieinformation", fr: "Informations de symétrie", es: "Información de simetría", pt: "Informação de simetria", it: "Informazioni sulla simmetria", ru: "Информация о симметрии", zhHans: "对称性信息", zhHant: "對稱性資訊", ko: "대칭 정보"); // 261105Cl
         // --- 共通ボタン / タブ見出し ---
         buttonCopyElements.Text = buttonCopyPositions.Text =
             Loc(en: "Copy", ja: "コピー", de: "Kopieren", fr: "Copier", es: "Copiar", pt: "Copiar", it: "Copia", ru: "Копировать", zhHans: "复制", zhHant: "複製", ko: "복사");

@@ -213,7 +213,7 @@
             toolStripTextBoxMimimum});
             toolStripMenuItem2.Name = "toolStripMenuItem2";
             toolStripMenuItem2.Size = new System.Drawing.Size(184, 22);
-            toolStripMenuItem2.Text = "      Mimimum";
+            toolStripMenuItem2.Text = "      Minimum"; // 261105Cl 誤字を修正 (旧 "      Mimimum")
             // 
             // toolStripTextBoxMimimum
             // 
@@ -234,7 +234,7 @@
             allowMouseContlolToolStripMenuItem.CheckOnClick = true;
             allowMouseContlolToolStripMenuItem.Name = "allowMouseContlolToolStripMenuItem";
             allowMouseContlolToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
-            allowMouseContlolToolStripMenuItem.Text = "Allow Mouse Contlol";
+            allowMouseContlolToolStripMenuItem.Text = "Allow Mouse Control"; // 261105Cl 誤字を修正 (旧 "Allow Mouse Contlol")
             allowMouseContlolToolStripMenuItem.CheckedChanged += new System.EventHandler(allowMouseContlolToolStripMenuItem_CheckedChanged);
             // 
             // toolStripMenuItem3

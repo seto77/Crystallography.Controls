@@ -316,7 +316,7 @@
             toolStripMenuItemScaleLineX.CheckState = System.Windows.Forms.CheckState.Checked;
             toolStripMenuItemScaleLineX.Name = "toolStripMenuItemScaleLineX";
             toolStripMenuItemScaleLineX.Size = new System.Drawing.Size(126, 22);
-            toolStripMenuItemScaleLineX.Text = "Scale Line";
+            toolStripMenuItemScaleLineX.Text = "Gridlines"; // 261105Cl 変更 (旧 "Scale Line"。実際はグリッド線)
             toolStripMenuItemScaleLineX.ToolTipText = "Show or hide the vertical gridlines\r\ndrawn at the X-axis tick marks.";
             toolStripMenuItemScaleLineX.Click += toolStripMenuItemScaleLineX_Click;
             // 
@@ -326,7 +326,7 @@
             toolStripMenuItemScaleLineY.CheckState = System.Windows.Forms.CheckState.Checked;
             toolStripMenuItemScaleLineY.Name = "toolStripMenuItemScaleLineY";
             toolStripMenuItemScaleLineY.Size = new System.Drawing.Size(126, 22);
-            toolStripMenuItemScaleLineY.Text = "Scale Line";
+            toolStripMenuItemScaleLineY.Text = "Gridlines"; // 261105Cl 変更 (旧 "Scale Line"。実際はグリッド線)
             toolStripMenuItemScaleLineY.ToolTipText = "Show or hide the horizontal gridlines\r\ndrawn at the Y-axis tick marks.";
             toolStripMenuItemScaleLineY.Click += toolStripMenuItemScaleLineY_Click;
             // 

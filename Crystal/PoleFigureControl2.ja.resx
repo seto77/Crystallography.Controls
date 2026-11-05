@@ -143,4 +143,10 @@
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Yu Gothic UI, 9.75pt</value>
   </data>
+  <data name="numericBoxResolution.HeaderText" xml:space="preserve">
+    <value>分解能</value>
+  </data>
+  <data name="label9.Text" xml:space="preserve">
+    <value>色</value>
+  </data>
 </root>

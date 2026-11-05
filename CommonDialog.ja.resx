@@ -148,4 +148,13 @@
   <data name="buttonOK.Font" type="System.Drawing.Font, System.Drawing">
     <value>Yu Gothic UI, 9pt</value>
   </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>計算中...</value>
+  </data>
+  <data name="labelSoftwareAndVersion.Text" xml:space="preserve">
+    <value>ソフトウェアとバージョン</value>
+  </data>
+  <data name="buttonNext.Text" xml:space="preserve">
+    <value>次へ</value>
+  </data>
 </root>

@@ -137,7 +137,7 @@
 単位波長間隔あたりの入射中性子数が一定です。</value>
   </data>
   <data name="radioButtonCustomWhite.Text" xml:space="preserve">
-    <value>カスタム色</value>
+    <value>カスタム白色</value>
   </data>
   <data name="groupBoxColor.Text" xml:space="preserve">
     <value>単色/白色</value>

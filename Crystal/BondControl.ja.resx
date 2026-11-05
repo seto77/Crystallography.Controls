@@ -197,7 +197,7 @@
     <value>配位多面体の頂点原子（配位する原子）を表示します。</value>
   </data>
   <data name="numericBoxPolyhedronAlpha.HeaderText" xml:space="preserve">
-    <value>透明度</value>
+    <value>不透明度</value>
   </data>
   <data name="numericBoxPolyhedronAlpha.ToolTip" xml:space="preserve">
     <value>配位多面体の面の不透明度を設定します（0=透明〜1=不透明）。</value>
@@ -225,7 +225,7 @@
     <value>結合を表す円柱の半径を Å 単位で設定します。</value>
   </data>
   <data name="numericBoxBondAlpha.HeaderText" xml:space="preserve">
-    <value>透明度</value>
+    <value>不透明度</value>
   </data>
   <data name="numericBoxBondAlpha.ToolTip" xml:space="preserve">
     <value>結合（円柱）の不透明度を設定します（0=透明〜1=不透明）。</value>
