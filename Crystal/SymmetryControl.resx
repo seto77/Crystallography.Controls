@@ -299,7 +299,7 @@ c; existing values are rescaled automatically.</value>
     <value>0</value>
   </data>
   <data name="checkBoxShowError.Text" xml:space="preserve">
-    <value>Show Errors</value>
+    <value>Show errors</value>
   </data>
   <data name="checkBoxShowError.ToolTip" xml:space="preserve">
     <value>Show or hide the ± error (estimated standard
@@ -1582,7 +1582,7 @@ crystal system, point group and space group above.</value>
     <value>1</value>
   </data>
   <data name="label19.Text" xml:space="preserve">
-    <value>Crystal System</value>
+    <value>Crystal system</value>
   </data>
   <data name="label19.ToolTip" xml:space="preserve">
     <value>Select the crystal system (triclinic … cubic);
@@ -1720,7 +1720,7 @@ this sets which cell constants are independent.</value>
     <value>1</value>
   </data>
   <data name="label20.Text" xml:space="preserve">
-    <value>Space Group</value>
+    <value>Space group</value>
   </data>
   <data name="label20.ToolTip" xml:space="preserve">
     <value>Select the space group (number : Hermann–Mauguin (HM)
@@ -1795,7 +1795,7 @@ filters the available space groups.</value>
     <value>1</value>
   </data>
   <data name="label21.Text" xml:space="preserve">
-    <value>Point Group</value>
+    <value>Point group</value>
   </data>
   <data name="label21.ToolTip" xml:space="preserve">
     <value>Select the crystallographic point group

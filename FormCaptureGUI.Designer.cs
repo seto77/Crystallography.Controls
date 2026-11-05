@@ -79,7 +79,8 @@ partial class FormCaptureGUI
         toolTip.SetToolTip(buttonSelectAll, resources.GetString("buttonSelectAll.ToolTip")); // 260531Cl
         buttonSelectAll.Size = new System.Drawing.Size(80, 26);
         buttonSelectAll.TabIndex = 0;
-        buttonSelectAll.Text = "Select All";
+        //buttonSelectAll.Text = "Select All"; // 261105Cl 変更前
+        buttonSelectAll.Text = "Select all"; // 261105Cl 変更 (作者決定 K5: 英語の表示を sentence case に)
         buttonSelectAll.Click += buttonSelectAll_Click;
         //
         // buttonDeselectAll
@@ -89,7 +90,8 @@ partial class FormCaptureGUI
         toolTip.SetToolTip(buttonDeselectAll, resources.GetString("buttonDeselectAll.ToolTip")); // 260531Cl
         buttonDeselectAll.Size = new System.Drawing.Size(85, 26);
         buttonDeselectAll.TabIndex = 1;
-        buttonDeselectAll.Text = "Deselect All";
+        //buttonDeselectAll.Text = "Deselect All"; // 261105Cl 変更前
+        buttonDeselectAll.Text = "Deselect all"; // 261105Cl 変更 (作者決定 K5: 英語の表示を sentence case に)
         buttonDeselectAll.Click += buttonDeselectAll_Click;
         //
         // buttonRefresh

@@ -68,7 +68,8 @@
             this.toolTip.SetToolTip(this.buttonCheckAll, resources.GetString("buttonCheckAll.ToolTip")); // 260531Cl
             this.buttonCheckAll.Size = new System.Drawing.Size(120, 23);
             this.buttonCheckAll.TabIndex = 2;
-            this.buttonCheckAll.Text = "Check All Items";
+            //this.buttonCheckAll.Text = "Check All Items"; // 261105Cl 変更前
+            this.buttonCheckAll.Text = "Check all items"; // 261105Cl 変更 (作者決定 K5: 英語の表示を sentence case に)
             this.buttonCheckAll.UseVisualStyleBackColor = true;
             this.buttonCheckAll.Click += new System.EventHandler(this.buttonCheckAll_Click);
             // 
@@ -79,7 +80,8 @@
             this.toolTip.SetToolTip(this.buttonUnchekAll, resources.GetString("buttonUnchekAll.ToolTip")); // 260531Cl
             this.buttonUnchekAll.Size = new System.Drawing.Size(120, 23);
             this.buttonUnchekAll.TabIndex = 2;
-            this.buttonUnchekAll.Text = "Uncheck All Items";
+            //this.buttonUnchekAll.Text = "Uncheck All Items"; // 261105Cl 変更前
+            this.buttonUnchekAll.Text = "Uncheck all items"; // 261105Cl 変更 (作者決定 K5: 英語の表示を sentence case に)
             this.buttonUnchekAll.UseVisualStyleBackColor = true;
             this.buttonUnchekAll.Click += new System.EventHandler(this.buttonUncheckAll_Click);
             // 

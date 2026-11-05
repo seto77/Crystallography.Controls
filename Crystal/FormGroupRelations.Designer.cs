@@ -360,7 +360,8 @@ partial class FormGroupRelations
         tabDomains.Padding = new System.Windows.Forms.Padding(3);
         tabDomains.Size = new System.Drawing.Size(568, 434);
         tabDomains.TabIndex = 2;
-        tabDomains.Text = "Domains & Twins";
+        //tabDomains.Text = "Domains & Twins"; // 261105Cl 変更前
+        tabDomains.Text = "Domains & twins"; // 261105Cl 変更 (作者決定 K5: 英語の表示を sentence case に)
         tabDomains.UseVisualStyleBackColor = true;
         // 
         // miniTableTwins

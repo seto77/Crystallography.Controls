@@ -293,7 +293,8 @@
             // 
             toolStripMenuItemLogScaleX.Name = "toolStripMenuItemLogScaleX";
             toolStripMenuItemLogScaleX.Size = new System.Drawing.Size(126, 22);
-            toolStripMenuItemLogScaleX.Text = "Log Scale";
+            //toolStripMenuItemLogScaleX.Text = "Log Scale"; // 261105Cl 変更前
+            toolStripMenuItemLogScaleX.Text = "Log scale"; // 261105Cl 変更 (作者決定 K5: 英語の表示を sentence case に)
             toolStripMenuItemLogScaleX.ToolTipText = "Toggle the X axis between linear\r\nand base-10 logarithmic scale.";
             toolStripMenuItemLogScaleX.Click += toolStripMenuItemLogScaleX_Click;
             // 
@@ -301,7 +302,8 @@
             // 
             toolStripMenuItemLogScaleY.Name = "toolStripMenuItemLogScaleY";
             toolStripMenuItemLogScaleY.Size = new System.Drawing.Size(126, 22);
-            toolStripMenuItemLogScaleY.Text = "Log Scale";
+            //toolStripMenuItemLogScaleY.Text = "Log Scale"; // 261105Cl 変更前
+            toolStripMenuItemLogScaleY.Text = "Log scale"; // 261105Cl 変更 (作者決定 K5: 英語の表示を sentence case に)
             toolStripMenuItemLogScaleY.ToolTipText = "Toggle the Y axis between linear\r\nand base-10 logarithmic scale.";
             toolStripMenuItemLogScaleY.Click += toolStripMenuItemLogScaleY_Click;
             // 

@@ -364,7 +364,7 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="tabPage1.Text" xml:space="preserve">
-    <value>Pole Figure</value>
+    <value>Pole figure</value>
   </data>
   <data name="label9.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -565,7 +565,7 @@
     <value>No</value>
   </data>
   <data name="comboBoxScale.Items1" xml:space="preserve">
-    <value>Log Scale</value>
+    <value>Log scale</value>
   </data>
   <data name="numericUpDown3.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
@@ -643,7 +643,7 @@
     <value>165, 84</value>
   </data>
   <data name="comboBoxScale.Items" xml:space="preserve">
-    <value>Linear Scale</value>
+    <value>Linear scale</value>
   </data>
   <data name="radioButtonInversePoleFigure.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -784,7 +784,7 @@
     <value>46</value>
   </data>
   <data name="comboBoxColor.Items" xml:space="preserve">
-    <value>Cold-Warm scale</value>
+    <value>Cold-warm scale</value>
   </data>
   <data name="&gt;&gt;radioButtonInversePoleFigure.Name" xml:space="preserve">
     <value>radioButtonInversePoleFigure</value>

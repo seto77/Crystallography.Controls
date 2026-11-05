@@ -852,7 +852,7 @@ shown in the atom list and as the 3D label.</value>
   </data>
   <data name="checkBoxDetailAtomicPositionError.Text" xml:space="preserve">
     <value>Show
-Error</value>
+error</value>
   </data>
   <data name="checkBoxDetailAtomicPositionError.ToolTip" xml:space="preserve">
     <value>Show or hide the error (standard-deviation)
@@ -1331,7 +1331,7 @@ the fractional c-axis coordinate.</value>
     <value>0</value>
   </data>
   <data name="tabPageElementAndPosition.Text" xml:space="preserve">
-    <value>Element &amp; Position</value>
+    <value>Element &amp; position</value>
   </data>
   <data name="&gt;&gt;tabPageElementAndPosition.Name" xml:space="preserve">
     <value>tabPageElementAndPosition</value>
@@ -2923,7 +2923,7 @@ of the anisotropic displacement parameter (U: Å²; β: dimensionless).</value>
   </data>
   <data name="checkBoxDetailsDebyeWallerError.Text" xml:space="preserve">
     <value>Show
-Error</value>
+error</value>
   </data>
   <data name="checkBoxDetailsDebyeWallerError.ToolTip" xml:space="preserve">
     <value>Show the uncertainty (standard-deviation) input
@@ -3702,7 +3702,7 @@ diffraction / image simulation of this atom.</value>
     <value>2</value>
   </data>
   <data name="tabPageScatteringFactor.Text" xml:space="preserve">
-    <value>Scattering Factor</value>
+    <value>Scattering factor</value>
   </data>
   <data name="&gt;&gt;tabPageScatteringFactor.Name" xml:space="preserve">
     <value>tabPageScatteringFactor</value>
@@ -4406,7 +4406,7 @@ atom's sphere in the 3D structure view.</value>
     <value>89</value>
   </data>
   <data name="checkBoxShowLabel.Text" xml:space="preserve">
-    <value>Show Labels</value>
+    <value>Show labels</value>
   </data>
   <data name="checkBoxShowLabel.ToolTip" xml:space="preserve">
     <value>Toggle drawing of this atom's label text
@@ -4539,7 +4539,7 @@ beside its sphere in the 3D structure view.</value>
     <value>2</value>
   </data>
   <data name="buttonApplyToSameElement.Text" xml:space="preserve">
-    <value>Apply to Same Element</value>
+    <value>Apply to same element</value>
   </data>
   <data name="buttonApplyToSameElement.ToolTip" xml:space="preserve">
     <value>Copy the current settings (appearance on
@@ -4907,7 +4907,7 @@ parameters to every atom in the list
     <value>72</value>
   </data>
   <data name="siteSymDataGridViewTextBoxColumn.HeaderText" xml:space="preserve">
-    <value>Site Sym.</value>
+    <value>Site sym.</value>
   </data>
   <data name="siteSymDataGridViewTextBoxColumn.Width" type="System.Int32, mscorlib">
     <value>68</value>

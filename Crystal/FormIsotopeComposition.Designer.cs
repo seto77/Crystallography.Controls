@@ -72,7 +72,8 @@
             dataGridViewCellStyle1.NullValue = null;
             this.ColumnAtomicWeight.DefaultCellStyle = dataGridViewCellStyle1;
             //this.ColumnAtomicWeight.HeaderText = "Atomic Weight"; // 261105Cl 変更前
-            this.ColumnAtomicWeight.HeaderText = "Mass Number"; // 261105Cl 変更 (監査 A23): 列の値は同位体の質量数。実行時の表示は LocalizationData の 11 言語訳
+            //this.ColumnAtomicWeight.HeaderText = "Mass Number"; // 261105Cl 変更 (監査 A23): 列の値は同位体の質量数。実行時の表示は LocalizationData の 11 言語訳 // 261105Cl 変更前
+            this.ColumnAtomicWeight.HeaderText = "Mass number"; // 261105Cl 変更 (監査 A23): 列の値は同位体の質量数。実行時の表示は LocalizationData の 11 言語訳 // 261105Cl 変更 (作者決定 K5: 英語の表示を sentence case に)
             this.ColumnAtomicWeight.Name = "ColumnAtomicWeight";
             this.ColumnAtomicWeight.ReadOnly = true;
             this.ColumnAtomicWeight.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -83,7 +84,8 @@
             dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             dataGridViewCellStyle2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ColumnNaturalAbundance.DefaultCellStyle = dataGridViewCellStyle2;
-            this.ColumnNaturalAbundance.HeaderText = "Natural Abundance (%)";
+            //this.ColumnNaturalAbundance.HeaderText = "Natural Abundance (%)"; // 261105Cl 変更前
+            this.ColumnNaturalAbundance.HeaderText = "Natural abundance (%)"; // 261105Cl 変更 (作者決定 K5: 英語の表示を sentence case に)
             this.ColumnNaturalAbundance.Name = "ColumnNaturalAbundance";
             this.ColumnNaturalAbundance.ReadOnly = true;
             this.ColumnNaturalAbundance.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -91,7 +93,8 @@
             // 
             // ColumnCustomAbundance
             // 
-            this.ColumnCustomAbundance.HeaderText = "Custom Abundance (%)";
+            //this.ColumnCustomAbundance.HeaderText = "Custom Abundance (%)"; // 261105Cl 変更前
+            this.ColumnCustomAbundance.HeaderText = "Custom abundance (%)"; // 261105Cl 変更 (作者決定 K5: 英語の表示を sentence case に)
             this.ColumnCustomAbundance.Name = "ColumnCustomAbundance";
             this.ColumnCustomAbundance.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.ColumnCustomAbundance.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;

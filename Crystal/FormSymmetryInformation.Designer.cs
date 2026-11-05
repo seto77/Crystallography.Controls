@@ -656,7 +656,8 @@
             label.Name = "label";
             label.Size = new System.Drawing.Size(87, 15);
             label.TabIndex = 1;
-            label.Text = "Crystal System:";
+            //label.Text = "Crystal System:"; // 261105Cl 変更前
+            label.Text = "Crystal system:"; // 261105Cl 変更 (作者決定 K5: 英語の表示を sentence case に)
             label.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             toolTip.SetToolTip(label, resources.GetString("label.ToolTip"));
             // 
@@ -999,7 +1000,8 @@
             tabPageGeometrics.Padding = new System.Windows.Forms.Padding(3);
             tabPageGeometrics.Size = new System.Drawing.Size(677, 160);
             tabPageGeometrics.TabIndex = 3;
-            tabPageGeometrics.Text = "Geometrics Calculation";
+            //tabPageGeometrics.Text = "Geometrics Calculation"; // 261105Cl 変更前
+            tabPageGeometrics.Text = "Geometrics calculation"; // 261105Cl 変更 (作者決定 K5: 英語の表示を sentence case に)
             // 
             // flowLayoutPanel8
             // 
@@ -1092,7 +1094,8 @@
             tabPageWyckoff.Name = "tabPageWyckoff";
             tabPageWyckoff.Size = new System.Drawing.Size(677, 160);
             tabPageWyckoff.TabIndex = 2;
-            tabPageWyckoff.Text = "Wyckoff Positions";
+            //tabPageWyckoff.Text = "Wyckoff Positions"; // 261105Cl 変更前
+            tabPageWyckoff.Text = "Wyckoff positions"; // 261105Cl 変更 (作者決定 K5: 英語の表示を sentence case に)
             // 
             // tabPageConditions
             // 
@@ -1228,7 +1231,8 @@
             groupBoxSpaceGroup.Size = new System.Drawing.Size(328, 95);
             groupBoxSpaceGroup.TabIndex = 5;
             groupBoxSpaceGroup.TabStop = false;
-            groupBoxSpaceGroup.Text = "Space Group";
+            //groupBoxSpaceGroup.Text = "Space Group"; // 261105Cl 変更前
+            groupBoxSpaceGroup.Text = "Space group"; // 261105Cl 変更 (作者決定 K5: 英語の表示を sentence case に)
             // 
             // labelLaTexSG_Hall
             // 
@@ -1297,7 +1301,8 @@
             groupBoxPointGroup.Size = new System.Drawing.Size(328, 46);
             groupBoxPointGroup.TabIndex = 4;
             groupBoxPointGroup.TabStop = false;
-            groupBoxPointGroup.Text = "Point Group";
+            //groupBoxPointGroup.Text = "Point Group"; // 261105Cl 変更前
+            groupBoxPointGroup.Text = "Point group"; // 261105Cl 変更 (作者決定 K5: 英語の表示を sentence case に)
             // 
             // labelLaTexPG_HM
             // 
@@ -1412,7 +1417,8 @@
             buttonGroupRelations.Name = "buttonGroupRelations";
             buttonGroupRelations.Size = new System.Drawing.Size(126, 29);
             buttonGroupRelations.TabIndex = 8;
-            buttonGroupRelations.Text = "Group Relations...";
+            //buttonGroupRelations.Text = "Group Relations..."; // 261105Cl 変更前
+            buttonGroupRelations.Text = "Group relations..."; // 261105Cl 変更 (作者決定 K5: 英語の表示を sentence case に)
             buttonGroupRelations.UseVisualStyleBackColor = true;
             buttonGroupRelations.Click += buttonGroupRelations_Click;
             // 

@@ -590,7 +590,7 @@ You can paste it straight into Excel or a text editor.</value>
     <value>8</value>
   </data>
   <data name="checkBoxBragBrentano.Text" xml:space="preserve">
-    <value>Powder Diffraction Intensities (Bragg-Brentano Optics)</value>
+    <value>Powder diffraction intensities (Bragg-Brentano optics)</value>
   </data>
   <data name="checkBoxBragBrentano.ToolTip" xml:space="preserve">
     <value>Show intensities as they would appear in a normal powder X-ray diffractometer
@@ -1325,7 +1325,7 @@ Range 0.001-1; a value below 1 produces fractional indices.</value>
     <value>0, 4, 0, 0</value>
   </data>
   <data name="numericBoxCutoffD.HeaderText" xml:space="preserve">
-    <value>d-Spacing Cutoff &gt;</value>
+    <value>d-spacing cutoff &gt;</value>
   </data>
   <data name="numericBoxCutoffD.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -2479,7 +2479,7 @@ above 36 keV).</value>
     <value>2</value>
   </data>
   <data name="tabPageAttenuations.Text" xml:space="preserve">
-    <value>Attenuations &amp;&amp; Transport</value>
+    <value>Attenuations &amp;&amp; transport</value>
   </data>
   <data name="&gt;&gt;tabPageAttenuations.Name" xml:space="preserve">
     <value>tabPageAttenuations</value>

@@ -169,7 +169,8 @@
             thousandsSeparatorToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             thousandsSeparatorToolStripMenuItem.Name = "thousandsSeparatorToolStripMenuItem";
             thousandsSeparatorToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
-            thousandsSeparatorToolStripMenuItem.Text = "Thousands Separator";
+            //thousandsSeparatorToolStripMenuItem.Text = "Thousands Separator"; // 261105Cl 変更前
+            thousandsSeparatorToolStripMenuItem.Text = "Thousands separator"; // 261105Cl 変更 (作者決定 K5: 英語の表示を sentence case に)
             thousandsSeparatorToolStripMenuItem.CheckedChanged += new System.EventHandler(thousandsSeparatorToolStripMenuItem_CheckedChanged);
             // 
             // toolStripSeparator1
@@ -234,7 +235,8 @@
             allowMouseContlolToolStripMenuItem.CheckOnClick = true;
             allowMouseContlolToolStripMenuItem.Name = "allowMouseContlolToolStripMenuItem";
             allowMouseContlolToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
-            allowMouseContlolToolStripMenuItem.Text = "Allow Mouse Control"; // 261105Cl 誤字を修正 (旧 "Allow Mouse Contlol")
+            //allowMouseContlolToolStripMenuItem.Text = "Allow Mouse Control"; // 261105Cl 誤字を修正 (旧 "Allow Mouse Contlol") // 261105Cl 変更前
+            allowMouseContlolToolStripMenuItem.Text = "Allow mouse control"; // 261105Cl 誤字を修正 (旧 "Allow Mouse Contlol") // 261105Cl 変更 (作者決定 K5: 英語の表示を sentence case に)
             allowMouseContlolToolStripMenuItem.CheckedChanged += new System.EventHandler(allowMouseContlolToolStripMenuItem_CheckedChanged);
             // 
             // toolStripMenuItem3
@@ -244,7 +246,8 @@
             toolStripMenuItem3.Enabled = false;
             toolStripMenuItem3.Name = "toolStripMenuItem3";
             toolStripMenuItem3.Size = new System.Drawing.Size(184, 22);
-            toolStripMenuItem3.Text = "      Mouse Speed";
+            //toolStripMenuItem3.Text = "      Mouse Speed"; // 261105Cl 変更前
+            toolStripMenuItem3.Text = "      Mouse speed"; // 261105Cl 変更 (作者決定 K5: 英語の表示を sentence case に)
             // 
             // toolStripTextBoxMouseSpeed
             // 

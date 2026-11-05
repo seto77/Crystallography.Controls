@@ -250,7 +250,7 @@
     <value>65</value>
   </data>
   <data name="buttonPeriodicTable.Text" xml:space="preserve">
-    <value>Periodic Table</value>
+    <value>Periodic table</value>
   </data>
   <data name="buttonPeriodicTable.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -355,7 +355,7 @@
     <value>64</value>
   </data>
   <data name="checkBoxSearchCrystalSystem.Text" xml:space="preserve">
-    <value>Crystal System</value>
+    <value>Crystal system</value>
   </data>
   <data name="&gt;&gt;checkBoxSearchCrystalSystem.Name" xml:space="preserve">
     <value>checkBoxSearchCrystalSystem</value>
@@ -448,7 +448,7 @@
     <value>64</value>
   </data>
   <data name="checkBoxSearchCellParameter.Text" xml:space="preserve">
-    <value>Cell Params</value>
+    <value>Cell params</value>
   </data>
   <data name="&gt;&gt;checkBoxSearchCellParameter.Name" xml:space="preserve">
     <value>checkBoxSearchCellParameter</value>

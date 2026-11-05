@@ -911,7 +911,8 @@ namespace Crystallography.Controls
             // 261026Cl 変更: 2 行にする (作者指示 ja「原子数\n/単位胞」、en「Atoms\n/Cell」)。261026Cl 全言語を 2 行にした
             //labelValenceAtoms.Text = Loc(en: "Atoms\n/Cell", ja: "原子数\n/単位胞", de: "Atome / Zelle", fr: "Atomes / maille", es: "Átomos / celda", pt: "Átomos / célula", it: "Atomi / cella", ru: "Атомов в ячейке", zhHans: "晶胞中原子数", zhHant: "晶胞中原子數", ko: "단위 세포 내 원자 수"); // 261026Cl 変更前 (多言語対応: 11 言語にそろえ、訳語を統一。作者指示)
             labelValenceAtoms.Text = Loc( // 261026Cl 変更: 2 行の見出し (作者指示 ja「原子数\n/単位胞」、en「Atoms\n/Cell」) を全言語に
-                en: "Atoms\n/Cell",
+                //en: "Atoms\n/Cell", // 261105Cl 変更前
+                en: "Atoms\n/cell", // 261105Cl 変更 (作者決定 K5: 英語の表示を sentence case に)
                 ja: "原子数\n/単位胞",
                 de: "Atome\n/Zelle",
                 fr: "Atomes\n/maille",

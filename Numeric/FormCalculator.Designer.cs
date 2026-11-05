@@ -177,7 +177,8 @@
             this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "FormCalculator";
-            this.Text = "Easy Calculator";
+            //this.Text = "Easy Calculator"; // 261105Cl 変更前
+            this.Text = "Easy calculator"; // 261105Cl 変更 (作者決定 K5: 英語の表示を sentence case に)
             this.Load += new System.EventHandler(this.FormCalculator_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

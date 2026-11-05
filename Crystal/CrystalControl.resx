@@ -352,7 +352,7 @@ crystal structure is taken from.</value>
     <value>4</value>
   </data>
   <data name="tabPageBasicInfo.Text" xml:space="preserve">
-    <value>Basic Info.</value>
+    <value>Basic info.</value>
   </data>
   <data name="tabPageBasicInfo.ToolTip" xml:space="preserve">
     <value>Cell constants, symmetry, and other basic information</value>
@@ -448,7 +448,7 @@ crystal structure is taken from.</value>
     <value>0, 4, 0, 0</value>
   </data>
   <data name="numericBoxVolume.HeaderText" xml:space="preserve">
-    <value>Cell Volume</value>
+    <value>Cell volume</value>
   </data>
   <data name="numericBoxVolume.Location" type="System.Drawing.Point, System.Drawing">
     <value>8, 4</value>
@@ -502,7 +502,7 @@ crystal structure is taken from.</value>
     <value>0, 4, 0, 0</value>
   </data>
   <data name="numericBoxCellMass.HeaderText" xml:space="preserve">
-    <value>Cell Mass</value>
+    <value>Cell mass</value>
   </data>
   <data name="numericBoxCellMass.Location" type="System.Drawing.Point, System.Drawing">
     <value>169, 4</value>
@@ -556,7 +556,7 @@ crystal structure is taken from.</value>
     <value>0, 4, 0, 0</value>
   </data>
   <data name="numericBoxMolarVolume.HeaderText" xml:space="preserve">
-    <value>Molar Volume</value>
+    <value>Molar volume</value>
   </data>
   <data name="numericBoxMolarVolume.Location" type="System.Drawing.Point, System.Drawing">
     <value>8, 29</value>
@@ -610,7 +610,7 @@ crystal structure is taken from.</value>
     <value>0, 4, 0, 0</value>
   </data>
   <data name="numericBoxMolarMass.HeaderText" xml:space="preserve">
-    <value>Molar Mass</value>
+    <value>Molar mass</value>
   </data>
   <data name="numericBoxMolarMass.Location" type="System.Drawing.Point, System.Drawing">
     <value>211, 29</value>
@@ -1140,7 +1140,7 @@ for the same Hermann–Mauguin number).</value>
     <value>0</value>
   </data>
   <data name="tabPageAtom.Text" xml:space="preserve">
-    <value>Atom Info.</value>
+    <value>Atom info.</value>
   </data>
   <data name="tabPageAtom.ToolTip" xml:space="preserve">
     <value>Atom positions and species</value>
@@ -1291,7 +1291,7 @@ for the same Hermann–Mauguin number).</value>
     <value>3</value>
   </data>
   <data name="tabPageBondsPolyhedra.Text" xml:space="preserve">
-    <value>Bonds &amp; Polyhedra</value>
+    <value>Bonds &amp; polyhedra</value>
   </data>
   <data name="&gt;&gt;tabPageBondsPolyhedra.Name" xml:space="preserve">
     <value>tabPageBondsPolyhedra</value>
@@ -1616,7 +1616,7 @@ of this crystal structure appeared.</value>
     <value>7</value>
   </data>
   <data name="tabPageStrainStress.Text" xml:space="preserve">
-    <value>Strain / Stress</value>
+    <value>Strain / stress</value>
   </data>
   <data name="&gt;&gt;tabPageStrainStress.Name" xml:space="preserve">
     <value>tabPageStrainStress</value>
@@ -2822,7 +2822,7 @@ on the detector, z along the beam.</value>
     <value>8</value>
   </data>
   <data name="tabPagePolycrystalline.Text" xml:space="preserve">
-    <value>Polycrystalline Property</value>
+    <value>Polycrystalline property</value>
   </data>
   <data name="&gt;&gt;tabPagePolycrystalline.Name" xml:space="preserve">
     <value>tabPagePolycrystalline</value>
@@ -2903,7 +2903,7 @@ on the detector, z along the beam.</value>
     <value>146</value>
   </data>
   <data name="buttonGenerateRandomOrientations.Text" xml:space="preserve">
-    <value>Random Rotations</value>
+    <value>Random rotations</value>
   </data>
   <data name="buttonGenerateRandomOrientations.ToolTip" xml:space="preserve">
     <value>Generate a set of randomly oriented crystallites
@@ -2943,7 +2943,7 @@ and display them in the pole figure.</value>
     <value>137</value>
   </data>
   <data name="label5.Text" xml:space="preserve">
-    <value>Angle Resolution</value>
+    <value>Angle resolution</value>
   </data>
   <data name="label5.ToolTip" xml:space="preserve">
     <value>Angular grid resolution (0.5-45 deg) for the
@@ -3261,7 +3261,7 @@ broadening) and the diffraction volume weighting.</value>
     <value>10</value>
   </data>
   <data name="tabPageLatticePlane.Text" xml:space="preserve">
-    <value>Lattice Plane</value>
+    <value>Lattice plane</value>
   </data>
   <data name="&gt;&gt;tabPageLatticePlane.Name" xml:space="preserve">
     <value>tabPageLatticePlane</value>
@@ -3583,7 +3583,7 @@ with editable valences.</value>
     <value>262, 22</value>
   </data>
   <data name="strainControlToolStripMenuItem.Text" xml:space="preserve">
-    <value>Strain Control</value>
+    <value>Strain control</value>
   </data>
   <data name="strainControlToolStripMenuItem.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -3592,7 +3592,7 @@ with editable valences.</value>
     <value>262, 22</value>
   </data>
   <data name="convertToP1SymmetryToolStripMenuItem.Text" xml:space="preserve">
-    <value>Convert to P1 Space Group</value>
+    <value>Convert to P1 space group</value>
   </data>
   <data name="convertToSuperstructureToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>262, 22</value>

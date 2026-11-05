@@ -1926,7 +1926,8 @@ public partial class FormGroupRelations : FormBase
     /// <summary>260713Cl 追加 (K2): タイル描画できない胞拡大 (斜交/非直交投影/c 軸方向=視線方向の拡大) の注記。
     /// 260713Cl: 左右分割に伴い注記を描く矩形 (対称要素側) を受け取るよう変更。</summary>
     private void DrawElementsEnlargedNote(Graphics g, RectangleF area) => DrawElementsCenteredNote(g, area, Loc(
-        en: "This cell-enlarging relation is not shown as a symmetry-element overlay: its cell change is oblique/non-orthogonal, or it enlarges the cell along the viewing axis (c), where the lost symmetry cannot be drawn without ambiguity. The lost lattice symmetry is on the Domains & Twins and New reflections tabs.",
+        //en: "This cell-enlarging relation is not shown as a symmetry-element overlay: its cell change is oblique/non-orthogonal, or it enlarges the cell along the viewing axis (c), where the lost symmetry cannot be drawn without ambiguity. The lost lattice symmetry is on the Domains & Twins and New reflections tabs.", // 261105Cl 変更前
+        en: "This cell-enlarging relation is not shown as a symmetry-element overlay: its cell change is oblique/non-orthogonal, or it enlarges the cell along the viewing axis (c), where the lost symmetry cannot be drawn without ambiguity. The lost lattice symmetry is on the Domains & twins and New reflections tabs.", // 261105Cl 変更 (作者決定 K5: タブの名前を sentence case にしたのに合わせる)
         ja: "この胞拡大関係は対称要素の重ね描きでは表示しません: 胞の変化が斜交/非直交か、視線方向 (c 軸) に胞を拡大しており、失われる対称を曖昧さなく描けないためです。失われる格子対称は Domains & Twins / New reflections タブをご覧ください。",
         de: "Diese zellvergrößernde Relation wird nicht als Symmetrieelement-Überlagerung gezeigt: Die Zelländerung ist schiefwinklig/nicht orthogonal, oder sie vergrößert die Zelle entlang der Blickachse (c), wo die verlorene Symmetrie nicht eindeutig darstellbar ist. Die verlorene Gittersymmetrie steht auf den Registerkarten Domänen & Zwillinge und Neue Reflexe.",
         fr: "Cette relation qui agrandit la maille n'est pas montrée comme superposition d'éléments de symétrie : le changement de maille est oblique/non orthogonal, ou elle agrandit la maille selon l'axe de visée (c), où la symétrie perdue ne peut être tracée sans ambiguïté. La symétrie de réseau perdue est sur les onglets Domaines & Macles et Nouvelles réflexions.",
@@ -2010,12 +2011,14 @@ public partial class FormGroupRelations : FormBase
 
     private void LocalizeLabels()
     {
-        Text = Loc(en: "Group Relations", ja: "群の関係", de: "Gruppenrelationen", fr: "Relations de groupe", es: "Relaciones de grupo", pt: "Relações de grupo", it: "Relazioni di gruppo", ru: "Групповые отношения", zhHans: "群关系", zhHant: "群關係", ko: "군 관계");
+        //Text = Loc(en: "Group Relations", ja: "群の関係", de: "Gruppenrelationen", fr: "Relations de groupe", es: "Relaciones de grupo", pt: "Relações de grupo", it: "Relazioni di gruppo", ru: "Групповые отношения", zhHans: "群关系", zhHant: "群關係", ko: "군 관계"); // 261105Cl 変更前
+        Text = Loc(en: "Group relations", ja: "群の関係", de: "Gruppenrelationen", fr: "Relations de groupe", es: "Relaciones de grupo", pt: "Relações de grupo", it: "Relazioni di gruppo", ru: "Групповые отношения", zhHans: "群关系", zhHant: "群關係", ko: "군 관계"); // 261105Cl 変更 (作者決定 K5: 英語の表示を sentence case に)
         buttonBack.Text = "←"; buttonForward.Text = "→";
         buttonHome.Text = "⌂ " + Loc(en: "Home", ja: "現結晶", de: "Start", fr: "Accueil", es: "Inicio", pt: "Início", it: "Home", ru: "Домой", zhHans: "当前", zhHant: "目前", ko: "현재");
         tabMatrix.Text = Loc(en: "Matrix", ja: "変換行列", de: "Matrix", fr: "Matrice", es: "Matriz", pt: "Matriz", it: "Matrice", ru: "Матрица", zhHans: "变换矩阵", zhHant: "變換矩陣", ko: "변환 행렬");
         tabOrbit.Text = Loc(en: "Orbit splitting", ja: "軌道分裂", de: "Bahnaufspaltung", fr: "Éclatement d'orbite", es: "División de órbita", pt: "Divisão de órbita", it: "Suddivisione orbita", ru: "Расщепление орбит", zhHans: "轨道分裂", zhHant: "軌道分裂", ko: "궤도 분열");
-        tabDomains.Text = Loc(en: "Domains & Twins", ja: "ドメイン・双晶", de: "Domänen & Zwillinge", fr: "Domaines & Macles", es: "Dominios y maclas", pt: "Domínios e geminações", it: "Domini e geminazioni", ru: "Домены и двойники", zhHans: "畴与双晶", zhHant: "疇與雙晶", ko: "도메인·쌍정");
+        //tabDomains.Text = Loc(en: "Domains & Twins", ja: "ドメイン・双晶", de: "Domänen & Zwillinge", fr: "Domaines & Macles", es: "Dominios y maclas", pt: "Domínios e geminações", it: "Domini e geminazioni", ru: "Домены и двойники", zhHans: "畴与双晶", zhHant: "疇與雙晶", ko: "도메인·쌍정"); // 261105Cl 変更前
+        tabDomains.Text = Loc(en: "Domains & twins", ja: "ドメイン・双晶", de: "Domänen & Zwillinge", fr: "Domaines & Macles", es: "Dominios y maclas", pt: "Domínios e geminações", it: "Domini e geminazioni", ru: "Домены и двойники", zhHans: "畴与双晶", zhHant: "疇與雙晶", ko: "도메인·쌍정"); // 261105Cl 変更 (作者決定 K5: 英語の表示を sentence case に)
         // 260705Cl 修正: ja/zh/ko が「超構造 (superstructure)」を含意していたが、t-部分群は格子周期を変えないため
         // 不正確 (codex レビューで指摘)。他言語 (New reflections 等) と揃う中立表現へ。
         //tabReflections.Text = Loc(en: "New reflections", ja: "超構造反射", de: "Neue Reflexe", fr: "Nouvelles réflexions", es: "Nuevas reflexiones", pt: "Novas reflexões", it: "Nuove riflessioni", ru: "Новые отражения", zhHans: "超结构反射", zhHant: "超結構反射", ko: "초구조 반사");
@@ -2025,7 +2028,8 @@ public partial class FormGroupRelations : FormBase
         tabPointGroups.Text = Loc(en: "Point groups", ja: "点群", de: "Punktgruppen", fr: "Groupes ponctuels", es: "Grupos puntuales", pt: "Grupos pontuais", it: "Gruppi puntuali", ru: "Точечные группы", zhHans: "点群", zhHant: "點群", ko: "점군");
         // 260713Cl 追加 (③-2): 対称要素 lost/retained タブ
         // 260713Cl: 一般位置図を右に併記したため Elements → Elements & Positions へ改称。
-        tabElements.Text = Loc(en: "Elements & Positions", ja: "対称要素・一般位置", de: "Elemente & Lagen", fr: "Éléments et positions", es: "Elementos y posiciones", pt: "Elementos e posições", it: "Elementi e posizioni", ru: "Элементы и позиции", zhHans: "对称要素与一般位置", zhHant: "對稱要素與一般位置", ko: "대칭 요소·일반 위치");
+        //tabElements.Text = Loc(en: "Elements & Positions", ja: "対称要素・一般位置", de: "Elemente & Lagen", fr: "Éléments et positions", es: "Elementos y posiciones", pt: "Elementos e posições", it: "Elementi e posizioni", ru: "Элементы и позиции", zhHans: "对称要素与一般位置", zhHant: "對稱要素與一般位置", ko: "대칭 요소·일반 위치"); // 261105Cl 変更前
+        tabElements.Text = Loc(en: "Elements & positions", ja: "対称要素・一般位置", de: "Elemente & Lagen", fr: "Éléments et positions", es: "Elementos y posiciones", pt: "Elementos e posições", it: "Elementi e posizioni", ru: "Элементы и позиции", zhHans: "对称要素与一般位置", zhHant: "對稱要素與一般位置", ko: "대칭 요소·일반 위치"); // 261105Cl 変更 (作者決定 K5: 英語の表示を sentence case に)
         // 260716Cl: 右パネルの説明を副軌道色分け → retained/lost 2 色 (代表点の軌道に残る点=黒 / 消失する点=黄) へ更新。
         toolTip.SetToolTip(pictureBoxElements, Loc(
             en: "Left: overlays the parent's symmetry-element diagram (ITA style) for the selected subgroup relation — the unit cell is blue, elements retained in the subgroup are black, elements lost are yellow. Where a lost element sits on a retained one (e.g. a 4-fold degrading to a 2-fold) only the retained (black) element is drawn. Right: the parent's general positions — points that remain in the subgroup's orbit of the representative point are black, points lost from that orbit are yellow.",

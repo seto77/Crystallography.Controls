@@ -57,7 +57,8 @@
             this.toolTip.SetToolTip(this.label2, resources.GetString("label2.ToolTip")); // 260531Cl
             this.label2.Size = new System.Drawing.Size(94, 15);
             this.label2.TabIndex = 1;
-            this.label2.Text = "Decimal Places";
+            //this.label2.Text = "Decimal Places"; // 261105Cl 変更前
+            this.label2.Text = "Decimal places"; // 261105Cl 変更 (作者決定 K5: 英語の表示を sentence case に)
             // 
             // buttonOK
             // 
@@ -130,7 +131,8 @@
             this.MinimizeBox = false;
             this.Name = "FormNumericUpdownControl";
             this.ShowIcon = false;
-            this.Text = "NumericUpdown Control";
+            //this.Text = "NumericUpdown Control"; // 261105Cl 変更前
+            this.Text = "NumericUpdown control"; // 261105Cl 変更 (作者決定 K5: 英語の表示を sentence case に)
             this.Load += new System.EventHandler(this.FormNumericUpdownControl_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

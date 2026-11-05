@@ -338,7 +338,7 @@ raw pixel value under the cursor.</value>
     <value>Gray</value>
   </data>
   <data name="comboBoxScale2.Items1" xml:space="preserve">
-    <value>Cold-Warm</value>
+    <value>Cold-warm</value>
   </data>
   <data name="comboBoxScale2.Items2" xml:space="preserve">
     <value>Spectrum</value>
@@ -593,7 +593,7 @@ gray scale (bright and dark swapped).</value>
     <value>40</value>
   </data>
   <data name="checkBoxDustScratches.Text" xml:space="preserve">
-    <value>Dust &amp;&amp; Scratches</value>
+    <value>Dust &amp;&amp; scratches</value>
   </data>
   <data name="checkBoxDustScratches.ToolTip" xml:space="preserve">
     <value>Apply a Dust &amp; Scratches filter that removes
@@ -736,7 +736,7 @@ and replaced; a lower value removes more.</value>
     <value>40</value>
   </data>
   <data name="checkBoxGaussianBlur.Text" xml:space="preserve">
-    <value>Gaussian Blur</value>
+    <value>Gaussian blur</value>
   </data>
   <data name="checkBoxGaussianBlur.ToolTip" xml:space="preserve">
     <value>Apply a Gaussian blur that smooths the image with a

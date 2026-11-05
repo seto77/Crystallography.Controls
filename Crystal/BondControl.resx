@@ -143,7 +143,7 @@
     <value>0</value>
   </data>
   <data name="checkBoxShowPolyhedron.Text" xml:space="preserve">
-    <value>Show Polyhedron</value>
+    <value>Show polyhedron</value>
   </data>
   <metadata name="toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>381, 17</value>
@@ -346,7 +346,7 @@ center (the coordinating central atom).</value>
     <value>0</value>
   </data>
   <data name="label39.Text" xml:space="preserve">
-    <value>Bonding Atoms</value>
+    <value>Bonding atoms</value>
   </data>
   <data name="label39.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
@@ -432,7 +432,7 @@ vertex) that form the bond/polyhedron.</value>
     <value>0</value>
   </data>
   <data name="checkBoxShowInnerBonds.Text" xml:space="preserve">
-    <value>Show Inner Bonds</value>
+    <value>Show inner bonds</value>
   </data>
   <data name="checkBoxShowInnerBonds.ToolTip" xml:space="preserve">
     <value>Show the inner bonds (center-to-vertex
@@ -469,7 +469,7 @@ bonds) inside the coordination polyhedron.</value>
     <value>1</value>
   </data>
   <data name="checkBoxShowCenterAtom.Text" xml:space="preserve">
-    <value>Show Center Atom</value>
+    <value>Show center atom</value>
   </data>
   <data name="checkBoxShowCenterAtom.ToolTip" xml:space="preserve">
     <value>Show the central atom of the coordination polyhedron.</value>
@@ -505,7 +505,7 @@ bonds) inside the coordination polyhedron.</value>
     <value>2</value>
   </data>
   <data name="checkBoxShowVertexAtoms.Text" xml:space="preserve">
-    <value>Show Vertex Atoms</value>
+    <value>Show vertex atoms</value>
   </data>
   <data name="checkBoxShowVertexAtoms.ToolTip" xml:space="preserve">
     <value>Show the vertex atoms (coordinated ligand
@@ -630,7 +630,7 @@ atoms) of the coordination polyhedron.</value>
     <value>4</value>
   </data>
   <data name="checkBoxShowEdges.Text" xml:space="preserve">
-    <value>Show Edges</value>
+    <value>Show edges</value>
   </data>
   <data name="checkBoxShowEdges.ToolTip" xml:space="preserve">
     <value>Show the edges (wireframe) of the coordination
@@ -1213,7 +1213,7 @@ for two atoms to be treated as bonded.</value>
     <value>0</value>
   </data>
   <data name="checkBoxShowBonds.Text" xml:space="preserve">
-    <value>Show Bonds</value>
+    <value>Show bonds</value>
   </data>
   <data name="checkBoxShowBonds.ToolTip" xml:space="preserve">
     <value>Show the bonds as cylinders, and enable the bond settings.</value>

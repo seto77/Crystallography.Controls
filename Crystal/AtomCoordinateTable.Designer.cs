@@ -81,7 +81,8 @@
             label1.Name = "label1";
             label1.Size = new System.Drawing.Size(80, 17);
             label1.TabIndex = 1;
-            label1.Text = "Target Atom";
+            //label1.Text = "Target Atom"; // 261105Cl 変更前
+            label1.Text = "Target atom"; // 261105Cl 変更 (作者決定 K5: 英語の表示を sentence case に)
             toolTip.SetToolTip(label1, resources.GetString("label1.ToolTip"));
             // 
             // dataGridView
@@ -116,7 +117,8 @@
             // atomLabelDataGridViewTextBoxColumn
             // 
             atomLabelDataGridViewTextBoxColumn.DataPropertyName = "Atom Label";
-            atomLabelDataGridViewTextBoxColumn.HeaderText = "Atom Label";
+            //atomLabelDataGridViewTextBoxColumn.HeaderText = "Atom Label"; // 261105Cl 変更前
+            atomLabelDataGridViewTextBoxColumn.HeaderText = "Atom label"; // 261105Cl 変更 (作者決定 K5: 英語の表示を sentence case に)
             atomLabelDataGridViewTextBoxColumn.Name = "atomLabelDataGridViewTextBoxColumn";
             atomLabelDataGridViewTextBoxColumn.ReadOnly = true;
             // 

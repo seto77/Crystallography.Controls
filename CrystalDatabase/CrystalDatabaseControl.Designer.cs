@@ -236,7 +236,8 @@
             // crystalSystemDataGridViewTextBoxColumn
             // 
             crystalSystemDataGridViewTextBoxColumn.DataPropertyName = "CrystalSystem";
-            crystalSystemDataGridViewTextBoxColumn.HeaderText = "Crystal System";
+            //crystalSystemDataGridViewTextBoxColumn.HeaderText = "Crystal System"; // 261105Cl 変更前
+            crystalSystemDataGridViewTextBoxColumn.HeaderText = "Crystal system"; // 261105Cl 変更 (作者決定 K5: 英語の表示を sentence case に)
             crystalSystemDataGridViewTextBoxColumn.Name = "crystalSystemDataGridViewTextBoxColumn";
             crystalSystemDataGridViewTextBoxColumn.ReadOnly = true;
             crystalSystemDataGridViewTextBoxColumn.Width = 115;
@@ -244,7 +245,8 @@
             // pointGroupDataGridViewTextBoxColumn
             // 
             pointGroupDataGridViewTextBoxColumn.DataPropertyName = "PointGroup";
-            pointGroupDataGridViewTextBoxColumn.HeaderText = "Point Group";
+            //pointGroupDataGridViewTextBoxColumn.HeaderText = "Point Group"; // 261105Cl 変更前
+            pointGroupDataGridViewTextBoxColumn.HeaderText = "Point group"; // 261105Cl 変更 (作者決定 K5: 英語の表示を sentence case に)
             pointGroupDataGridViewTextBoxColumn.Name = "pointGroupDataGridViewTextBoxColumn";
             pointGroupDataGridViewTextBoxColumn.ReadOnly = true;
             pointGroupDataGridViewTextBoxColumn.Width = 105;
@@ -252,7 +254,8 @@
             // spaceGroupDataGridViewTextBoxColumn
             // 
             spaceGroupDataGridViewTextBoxColumn.DataPropertyName = "SpaceGroup";
-            spaceGroupDataGridViewTextBoxColumn.HeaderText = "Space Group";
+            //spaceGroupDataGridViewTextBoxColumn.HeaderText = "Space Group"; // 261105Cl 変更前
+            spaceGroupDataGridViewTextBoxColumn.HeaderText = "Space group"; // 261105Cl 変更 (作者決定 K5: 英語の表示を sentence case に)
             spaceGroupDataGridViewTextBoxColumn.Name = "spaceGroupDataGridViewTextBoxColumn";
             spaceGroupDataGridViewTextBoxColumn.ReadOnly = true;
             spaceGroupDataGridViewTextBoxColumn.Width = 110;

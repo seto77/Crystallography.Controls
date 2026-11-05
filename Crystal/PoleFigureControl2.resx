@@ -208,7 +208,7 @@ cold-to-warm spectrum or a grayscale gradient.</value>
     <value>Segoe UI, 9.75pt</value>
   </data>
   <data name="comboBoxColor.Items" xml:space="preserve">
-    <value>Cold-Warm scale</value>
+    <value>Cold-warm scale</value>
   </data>
   <data name="comboBoxColor.Items1" xml:space="preserve">
     <value>Gray scale</value>

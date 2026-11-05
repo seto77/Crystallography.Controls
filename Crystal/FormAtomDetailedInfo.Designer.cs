@@ -110,7 +110,8 @@
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "FormAtomDetailedInfo";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = "Atom Positions";
+            //this.Text = "Atom Positions"; // 261105Cl 変更前
+            this.Text = "Atom positions"; // 261105Cl 変更 (作者決定 K5: 英語の表示を sentence case に)
             this.Load += new System.EventHandler(this.FormAtomDetailedInfo_Load);
             this.panelHeader.ResumeLayout(false); // 260628Ch
             this.ResumeLayout(false);

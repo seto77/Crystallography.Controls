@@ -542,7 +542,8 @@
             this.Controls.Add(this.groupBoxStrain);
             this.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.Name = "FormStrain";
-            this.Text = "Strain Control";
+            //this.Text = "Strain Control"; // 261105Cl 変更前
+            this.Text = "Strain control"; // 261105Cl 変更 (作者決定 K5: 英語の表示を sentence case に)
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormStrain_FormClosing);
             this.Load += new System.EventHandler(this.FormStrain_Load);
             this.VisibleChanged += new System.EventHandler(this.FormStrain_VisibleChanged);

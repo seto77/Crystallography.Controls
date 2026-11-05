@@ -193,7 +193,8 @@
             this.toolTip.SetToolTip(this.checkBoxKeepAspect, resources.GetString("checkBoxKeepAspect.ToolTip")); // 260531Cl
             this.checkBoxKeepAspect.Size = new System.Drawing.Size(166, 27);
             this.checkBoxKeepAspect.TabIndex = 3;
-            this.checkBoxKeepAspect.Text = "Keep Aspect Ratio";
+            //this.checkBoxKeepAspect.Text = "Keep Aspect Ratio"; // 261105Cl 変更前
+            this.checkBoxKeepAspect.Text = "Keep aspect ratio"; // 261105Cl 変更 (作者決定 K5: 英語の表示を sentence case に)
             this.checkBoxKeepAspect.UseVisualStyleBackColor = true;
             // 
             // FormResolution
@@ -219,7 +220,8 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormResolution";
-            this.Text = "Image Size";
+            //this.Text = "Image Size"; // 261105Cl 変更前
+            this.Text = "Image size"; // 261105Cl 変更 (作者決定 K5: 英語の表示を sentence case に)
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownWidth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHeight)).EndInit();
             this.ResumeLayout(false);
