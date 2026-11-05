@@ -194,14 +194,14 @@ GPa^-1（柔度）。</value>
   <data name="numericBox25.ToolTip" xml:space="preserve">
     <value>设置 c25 弹性常数（Voigt 记法）：
 视所选模式为刚度 Cij 或柔度 Sij。
-正-剪切耦合的非对角项（在三方 3/-3
+正-剪切耦合的非对角项（在三方系
 中被设为 -c15）。单位 GPa（刚度）
 或 GPa^-1（柔度）。</value>
   </data>
   <data name="label15.ToolTip" xml:space="preserve">
     <value>设置 c25 弹性常数（Voigt 记法）：
 视所选模式为刚度 Cij 或柔度 Sij。
-正-剪切耦合的非对角项（在三方 3/-3
+正-剪切耦合的非对角项（在三方系
 中被设为 -c15）。单位 GPa（刚度）
 或 GPa^-1（柔度）。</value>
   </data>
@@ -308,15 +308,15 @@ GPa^-1（柔度）。</value>
   <data name="numericBox46.ToolTip" xml:space="preserve">
     <value>设置 c46 弹性常数（Voigt 记法）：
 视所选模式为刚度 Cij 或柔度 Sij。
-剪切-剪切耦合的非对角项（在三方 3/-3
-中被设为 -c15）。单位 GPa（刚度）
+剪切-剪切耦合的非对角项（在三方系
+中被设为 -c15，柔度为 -2·s15）。单位 GPa（刚度）
 或 GPa^-1（柔度）。</value>
   </data>
   <data name="label10.ToolTip" xml:space="preserve">
     <value>设置 c46 弹性常数（Voigt 记法）：
 视所选模式为刚度 Cij 或柔度 Sij。
-剪切-剪切耦合的非对角项（在三方 3/-3
-中被设为 -c15）。单位 GPa（刚度）
+剪切-剪切耦合的非对角项（在三方系
+中被设为 -c15，柔度为 -2·s15）。单位 GPa（刚度）
 或 GPa^-1（柔度）。</value>
   </data>
   <data name="numericBox55.ToolTip" xml:space="preserve">
@@ -339,21 +339,21 @@ GPa^-1（柔度）。</value>
     <value>设置 c56 弹性常数（Voigt 记法）：
 视所选模式为刚度 Cij 或柔度 Sij。
 剪切-剪切耦合的非对角项（在三方系
-中被设为 c14）。单位 GPa（刚度）
+中被设为 c14，柔度为 2·s14）。单位 GPa（刚度）
 或 GPa^-1（柔度）。</value>
   </data>
   <data name="label8.ToolTip" xml:space="preserve">
     <value>设置 c56 弹性常数（Voigt 记法）：
 视所选模式为刚度 Cij 或柔度 Sij。
 剪切-剪切耦合的非对角项（在三方系
-中被设为 c14）。单位 GPa（刚度）
+中被设为 c14，柔度为 2·s14）。单位 GPa（刚度）
 或 GPa^-1（柔度）。</value>
   </data>
   <data name="numericBox66.ToolTip" xml:space="preserve">
     <value>设置 c66 弹性常数（Voigt 记法）：
 视所选模式为刚度 Cij 或柔度 Sij。
 剪切对角项；在六方/三方系中它为
-(c11-c12)/2，在立方系中等于 c44。
+(c11-c12)/2（柔度为 2(s11-s12)），在立方系中等于 c44。
 单位 GPa（刚度）或
 GPa^-1（柔度）。</value>
   </data>
@@ -361,7 +361,7 @@ GPa^-1（柔度）。</value>
     <value>设置 c66 弹性常数（Voigt 记法）：
 视所选模式为刚度 Cij 或柔度 Sij。
 剪切对角项；在六方/三方系中它为
-(c11-c12)/2，在立方系中等于 c44。
+(c11-c12)/2（柔度为 2(s11-s12)），在立方系中等于 c44。
 单位 GPa（刚度）或
 GPa^-1（柔度）。</value>
   </data>
@@ -378,5 +378,14 @@ GPa^-1（柔度）。</value>
 单位 GPa。柔度矩阵 S 以其逆矩阵
 形式保留。
 与“弹性柔度常数”互斥。</value>
+  </data>
+  <data name="labelConstraint.ToolTip" xml:space="preserve">
+    <value>对弹性常数施加的对称性约束（晶体的劳厄群），采用 ReciPro 的
+直角坐标：x ∥ a*，z ∥ c，y = z × x（六方、三方晶体中 y ∥ b）。
+灰色的常数为 0 或由其他常数决定，在编辑某个常数时填入；
+读入的值在此之前保持原样。三方 32、3m、-3m 的二次轴沿 x
+（312、31m、-31m：c14 型）或沿 y（321、3m1、-3m1、R32、R3m、
+R-3m：c15 型）。对 c15 型使用 x ∥ a（IEEE）的文献值时，把文献的
+c14 填入 c15（其他不变）。菱面体轴不施加约束。</value>
   </data>
 </root>

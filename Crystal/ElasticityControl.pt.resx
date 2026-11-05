@@ -195,14 +195,14 @@ Unidade GPa (rigidez) ou GPa^-1 (compliância).</value>
     <value>Define a constante elástica c25 (notação de Voigt):
 rigidez Cij ou compliância Sij conforme o
 modo selecionado. Termo de acoplamento normal-cisalhamento
-fora da diagonal (no trigonal 3/-3 é definido como -c15). Unidade
+fora da diagonal (no trigonal é definido como -c15). Unidade
 GPa (rigidez) ou GPa^-1 (compliância).</value>
   </data>
   <data name="label15.ToolTip" xml:space="preserve">
     <value>Define a constante elástica c25 (notação de Voigt):
 rigidez Cij ou compliância Sij conforme o
 modo selecionado. Termo de acoplamento normal-cisalhamento
-fora da diagonal (no trigonal 3/-3 é definido como -c15). Unidade
+fora da diagonal (no trigonal é definido como -c15). Unidade
 GPa (rigidez) ou GPa^-1 (compliância).</value>
   </data>
   <data name="numericBox26.ToolTip" xml:space="preserve">
@@ -309,14 +309,14 @@ GPa (rigidez) ou GPa^-1 (compliância).</value>
     <value>Define a constante elástica c46 (notação de Voigt):
 rigidez Cij ou compliância Sij conforme o
 modo selecionado. Termo de acoplamento cisalhamento-cisalhamento
-fora da diagonal (no trigonal 3/-3 é definido como -c15). Unidade
+fora da diagonal (trigonal: -c15; compliância: -2·s15). Unidade
 GPa (rigidez) ou GPa^-1 (compliância).</value>
   </data>
   <data name="label10.ToolTip" xml:space="preserve">
     <value>Define a constante elástica c46 (notação de Voigt):
 rigidez Cij ou compliância Sij conforme o
 modo selecionado. Termo de acoplamento cisalhamento-cisalhamento
-fora da diagonal (no trigonal 3/-3 é definido como -c15). Unidade
+fora da diagonal (trigonal: -c15; compliância: -2·s15). Unidade
 GPa (rigidez) ou GPa^-1 (compliância).</value>
   </data>
   <data name="numericBox55.ToolTip" xml:space="preserve">
@@ -339,14 +339,14 @@ derivado de c44 e desativado. Unidade GPa
     <value>Define a constante elástica c56 (notação de Voigt):
 rigidez Cij ou compliância Sij conforme
 o modo selecionado. Termo de acoplamento cisalhamento-cisalhamento
-fora da diagonal (no trigonal é definido como c14).
+fora da diagonal (trigonal: c14; compliância: 2·s14).
 Unidade GPa (rigidez) ou GPa^-1 (compliância).</value>
   </data>
   <data name="label8.ToolTip" xml:space="preserve">
     <value>Define a constante elástica c56 (notação de Voigt):
 rigidez Cij ou compliância Sij conforme
 o modo selecionado. Termo de acoplamento cisalhamento-cisalhamento
-fora da diagonal (no trigonal é definido como c14).
+fora da diagonal (trigonal: c14; compliância: 2·s14).
 Unidade GPa (rigidez) ou GPa^-1 (compliância).</value>
   </data>
   <data name="numericBox66.ToolTip" xml:space="preserve">
@@ -354,7 +354,7 @@ Unidade GPa (rigidez) ou GPa^-1 (compliância).</value>
 de Voigt): rigidez Cij ou compliância Sij
 conforme o modo selecionado. Termo diagonal
 de cisalhamento; em hexagonal/trigonal é
-(c11-c12)/2 e no cúbico é igual a c44. Unidade
+(c11-c12)/2 (compliância: 2(s11-s12)) e no cúbico é igual a c44. Unidade
 GPa (rigidez) ou GPa^-1 (compliância).</value>
   </data>
   <data name="label11.ToolTip" xml:space="preserve">
@@ -362,7 +362,7 @@ GPa (rigidez) ou GPa^-1 (compliância).</value>
 de Voigt): rigidez Cij ou compliância Sij
 conforme o modo selecionado. Termo diagonal
 de cisalhamento; em hexagonal/trigonal é
-(c11-c12)/2 e no cúbico é igual a c44. Unidade
+(c11-c12)/2 (compliância: 2(s11-s12)) e no cúbico é igual a c44. Unidade
 GPa (rigidez) ou GPa^-1 (compliância).</value>
   </data>
   <data name="radioButtonCompliance.ToolTip" xml:space="preserve">
@@ -378,5 +378,18 @@ elástica Cij (tensão = C x deformação), isto é, o
 tensor de rigidez em GPa. A matriz de compliância
 S é mantida como sua inversa. Mutuamente exclusiva
 com 'Elastic compliance constant'.</value>
+  </data>
+  <data name="labelConstraint.ToolTip" xml:space="preserve">
+    <value>Restrição de simetria sobre as constantes elásticas (classe de
+Laue do cristal) nos eixos cartesianos do ReciPro: x ∥ a*, z ∥ c,
+y = z × x (y ∥ b em cristais hexagonais e trigonais). As
+constantes em cinza valem 0 ou decorrem das outras e são
+preenchidas ao editar uma constante; os valores carregados são
+mantidos como estão até lá. Em trigonal 32, 3m e -3m o eixo
+binário está ao longo de x (312, 31m, -31m: tipo c14) ou de y
+(321, 3m1, -3m1, R32, R3m, R-3m: tipo c15). Para o tipo c15,
+introduza como c15 o c14 de valores da literatura dados com
+x ∥ a (IEEE) (os demais não mudam). Com eixos romboédricos não
+se aplica nenhuma restrição.</value>
   </data>
 </root>

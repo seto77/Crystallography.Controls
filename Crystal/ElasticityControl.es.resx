@@ -195,14 +195,14 @@ Unidad GPa (rigidez) o GPa^-1 (compliancia).</value>
     <value>Define la constante elástica c25 (notación de Voigt):
 rigidez Cij o compliancia Sij según el
 modo seleccionado. Término no diagonal de acoplamiento normal-cizalla
-(en el trigonal 3/-3 se fija a -c15). Unidad
+(en el trigonal se fija a -c15). Unidad
 GPa (rigidez) o GPa^-1 (compliancia).</value>
   </data>
   <data name="label15.ToolTip" xml:space="preserve">
     <value>Define la constante elástica c25 (notación de Voigt):
 rigidez Cij o compliancia Sij según el
 modo seleccionado. Término no diagonal de acoplamiento normal-cizalla
-(en el trigonal 3/-3 se fija a -c15). Unidad
+(en el trigonal se fija a -c15). Unidad
 GPa (rigidez) o GPa^-1 (compliancia).</value>
   </data>
   <data name="numericBox26.ToolTip" xml:space="preserve">
@@ -309,14 +309,14 @@ GPa (rigidez) o GPa^-1 (compliancia).</value>
     <value>Define la constante elástica c46 (notación de Voigt):
 rigidez Cij o compliancia Sij según el
 modo seleccionado. Término no diagonal de acoplamiento cizalla-cizalla
-(en el trigonal 3/-3 se fija a -c15). Unidad
+(trigonal: -c15; compliancia: -2·s15). Unidad
 GPa (rigidez) o GPa^-1 (compliancia).</value>
   </data>
   <data name="label10.ToolTip" xml:space="preserve">
     <value>Define la constante elástica c46 (notación de Voigt):
 rigidez Cij o compliancia Sij según el
 modo seleccionado. Término no diagonal de acoplamiento cizalla-cizalla
-(en el trigonal 3/-3 se fija a -c15). Unidad
+(trigonal: -c15; compliancia: -2·s15). Unidad
 GPa (rigidez) o GPa^-1 (compliancia).</value>
   </data>
   <data name="numericBox55.ToolTip" xml:space="preserve">
@@ -339,14 +339,14 @@ deriva de c44 y se deshabilita. Unidad GPa
     <value>Define la constante elástica c56 (notación de Voigt):
 rigidez Cij o compliancia Sij según
 el modo seleccionado. Término no diagonal de acoplamiento cizalla-cizalla
-(en el trigonal se fija a c14).
+(trigonal: c14; compliancia: 2·s14).
 Unidad GPa (rigidez) o GPa^-1 (compliancia).</value>
   </data>
   <data name="label8.ToolTip" xml:space="preserve">
     <value>Define la constante elástica c56 (notación de Voigt):
 rigidez Cij o compliancia Sij según
 el modo seleccionado. Término no diagonal de acoplamiento cizalla-cizalla
-(en el trigonal se fija a c14).
+(trigonal: c14; compliancia: 2·s14).
 Unidad GPa (rigidez) o GPa^-1 (compliancia).</value>
   </data>
   <data name="numericBox66.ToolTip" xml:space="preserve">
@@ -354,7 +354,7 @@ Unidad GPa (rigidez) o GPa^-1 (compliancia).</value>
 de Voigt): rigidez Cij o compliancia Sij
 según el modo seleccionado. Término diagonal
 de cizalla; en hexagonal/trigonal es
-(c11-c12)/2 y en el cúbico iguala a c44. Unidad
+(c11-c12)/2 (compliancia: 2(s11-s12)) y en el cúbico iguala a c44. Unidad
 GPa (rigidez) o GPa^-1 (compliancia).</value>
   </data>
   <data name="label11.ToolTip" xml:space="preserve">
@@ -362,7 +362,7 @@ GPa (rigidez) o GPa^-1 (compliancia).</value>
 de Voigt): rigidez Cij o compliancia Sij
 según el modo seleccionado. Término diagonal
 de cizalla; en hexagonal/trigonal es
-(c11-c12)/2 y en el cúbico iguala a c44. Unidad
+(c11-c12)/2 (compliancia: 2(s11-s12)) y en el cúbico iguala a c44. Unidad
 GPa (rigidez) o GPa^-1 (compliancia).</value>
   </data>
   <data name="radioButtonCompliance.ToolTip" xml:space="preserve">
@@ -378,5 +378,18 @@ elástica Cij (tensión = C x deformación), es decir, el
 tensor de rigidez en GPa. La matriz de compliancia
 S se conserva como su inversa. Mutuamente excluyente
 con 'Elastic compliance constant'.</value>
+  </data>
+  <data name="labelConstraint.ToolTip" xml:space="preserve">
+    <value>Restricción de simetría sobre las constantes elásticas (clase de
+Laue del cristal) en los ejes cartesianos de ReciPro: x ∥ a*,
+z ∥ c, y = z × x (y ∥ b en cristales hexagonales y trigonales).
+Las constantes en gris valen 0 o se deducen de las demás y se
+rellenan al editar una constante; los valores cargados se
+conservan tal cual hasta entonces. En trigonal 32, 3m y -3m el
+eje binario va según x (312, 31m, -31m: tipo c14) o según y
+(321, 3m1, -3m1, R32, R3m, R-3m: tipo c15). Para el tipo c15,
+introduzca como c15 el c14 de los valores bibliográficos dados
+con x ∥ a (IEEE) (los demás no cambian). Con ejes romboédricos
+no se aplica ninguna restricción.</value>
   </data>
 </root>

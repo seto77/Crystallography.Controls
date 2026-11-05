@@ -235,27 +235,27 @@
   </data>
   <data name="numericBoxStress33.ToolTip" xml:space="preserve">
     <value>Reuss 模型所用施加應力張量的正向應力分量
-σ33（沿 c 軸），單位與彈性常數相同（GPa）。</value>
+σ33（沿樣品 z 軸），單位與彈性常數相同（GPa）。</value>
   </data>
   <data name="numericBoxStress33.ToolTip1" xml:space="preserve">
     <value>Reuss 模型所用施加應力張量的法線應力分量
-σ33（沿 c 軸），單位與彈性常數相同（GPa）。</value>
+σ33（沿樣品 z 軸），單位與彈性常數相同（GPa）。</value>
   </data>
   <data name="numericBoxStress22.ToolTip" xml:space="preserve">
     <value>Reuss 模型所用施加應力張量的正向應力分量
-σ22（沿 b 軸），單位與彈性常數相同（GPa）。</value>
+σ22（沿樣品 y 軸），單位與彈性常數相同（GPa）。</value>
   </data>
   <data name="numericBoxStress22.ToolTip1" xml:space="preserve">
     <value>Reuss 模型所用施加應力張量的法線應力分量
-σ22（沿 b 軸），單位與彈性常數相同（GPa）。</value>
+σ22（沿樣品 y 軸），單位與彈性常數相同（GPa）。</value>
   </data>
   <data name="numericBoxStress11.ToolTip" xml:space="preserve">
     <value>Reuss 模型所用施加應力張量的正向應力分量
-σ11（沿 a 軸），單位與彈性常數相同（GPa）。</value>
+σ11（沿樣品 x 軸），單位與彈性常數相同（GPa）。</value>
   </data>
   <data name="numericBoxStress11.ToolTip1" xml:space="preserve">
     <value>Reuss 模型所用施加應力張量的法線應力分量
-σ11（沿 a 軸），單位與彈性常數相同（GPa）。</value>
+σ11（沿樣品 x 軸），單位與彈性常數相同（GPa）。</value>
   </data>
   <data name="numericBoxStress23.ToolTip" xml:space="preserve">
     <value>Reuss 模型所用施加應力張量的剪應力
@@ -283,27 +283,27 @@
   </data>
   <data name="numericBoxStrain33.ToolTip" xml:space="preserve">
     <value>Voigt 模型所用施加晶格應變張量的
-正向應變分量 ε33（沿 c 軸，無因次）。</value>
+正向應變分量 ε33（沿樣品 z 軸，無因次）。</value>
   </data>
   <data name="numericBoxStrain33.ToolTip1" xml:space="preserve">
     <value>Voigt 模型所用施加晶格應變張量的
-法線應變分量 ε33（沿 c 軸，無因次）。</value>
+法線應變分量 ε33（沿樣品 z 軸，無因次）。</value>
   </data>
   <data name="numericBoxStrain11.ToolTip" xml:space="preserve">
     <value>Voigt 模型所用施加晶格應變張量的
-正向應變分量 ε11（沿 a 軸，無因次）。</value>
+正向應變分量 ε11（沿樣品 x 軸，無因次）。</value>
   </data>
   <data name="numericBoxStrain11.ToolTip1" xml:space="preserve">
     <value>Voigt 模型所用施加晶格應變張量的
-法線應變分量 ε11（沿 a 軸，無因次）。</value>
+法線應變分量 ε11（沿樣品 x 軸，無因次）。</value>
   </data>
   <data name="numericBoxStrain22.ToolTip" xml:space="preserve">
     <value>Voigt 模型所用施加晶格應變張量的
-正向應變分量 ε22（沿 b 軸，無因次）。</value>
+正向應變分量 ε22（沿樣品 y 軸，無因次）。</value>
   </data>
   <data name="numericBoxStrain22.ToolTip1" xml:space="preserve">
     <value>Voigt 模型所用施加晶格應變張量的
-法線應變分量 ε22（沿 b 軸，無因次）。</value>
+法線應變分量 ε22（沿樣品 y 軸，無因次）。</value>
   </data>
   <data name="numericBoxStrain12.ToolTip" xml:space="preserve">
     <value>Voigt 模型所用施加晶格應變張量
@@ -349,11 +349,15 @@
   </data>
   <data name="label109.ToolTip" xml:space="preserve">
     <value>Reuss（均勻應力）模型的施加應力張量；
-輸入六個獨立分量（GPa）。</value>
+輸入六個獨立分量（GPa）。
+分量採用樣品座標：x 為偵測器上向右，y 為向上，
+z 沿射束方向。</value>
   </data>
   <data name="label102.ToolTip" xml:space="preserve">
     <value>Voigt（均勻應變）模型的施加晶格應變
-張量；輸入六個獨立分量（無因次）。</value>
+張量；輸入六個獨立分量（無因次）。
+分量採用樣品座標：x 為偵測器上向右，y 為向上，
+z 沿射束方向。</value>
   </data>
   <data name="buttonGenerateRandomOrientations.ToolTip" xml:space="preserve">
     <value>生成一組隨機取向的晶粒，並在極圖中顯示。</value>

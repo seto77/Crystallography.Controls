@@ -195,14 +195,14 @@ Unité GPa (rigidité) ou GPa^-1 (souplesse).</value>
     <value>Définit la constante élastique c25 (notation de Voigt) :
 rigidité Cij ou souplesse Sij selon le
 mode sélectionné. Terme hors-diagonale de couplage normale-cisaillement
-(en trigonal 3/-3 il vaut -c15). Unité
+(en trigonal il vaut -c15). Unité
 GPa (rigidité) ou GPa^-1 (souplesse).</value>
   </data>
   <data name="label15.ToolTip" xml:space="preserve">
     <value>Définit la constante élastique c25 (notation de Voigt) :
 rigidité Cij ou souplesse Sij selon le
 mode sélectionné. Terme hors-diagonale de couplage normale-cisaillement
-(en trigonal 3/-3 il vaut -c15). Unité
+(en trigonal il vaut -c15). Unité
 GPa (rigidité) ou GPa^-1 (souplesse).</value>
   </data>
   <data name="numericBox26.ToolTip" xml:space="preserve">
@@ -309,14 +309,14 @@ GPa (rigidité) ou GPa^-1 (souplesse).</value>
     <value>Définit la constante élastique c46 (notation de Voigt) :
 rigidité Cij ou souplesse Sij selon le
 mode sélectionné. Terme hors-diagonale de couplage cisaillement-cisaillement
-(en trigonal 3/-3 il vaut -c15). Unité
+(trigonal : -c15 ; souplesse : -2·s15). Unité
 GPa (rigidité) ou GPa^-1 (souplesse).</value>
   </data>
   <data name="label10.ToolTip" xml:space="preserve">
     <value>Définit la constante élastique c46 (notation de Voigt) :
 rigidité Cij ou souplesse Sij selon le
 mode sélectionné. Terme hors-diagonale de couplage cisaillement-cisaillement
-(en trigonal 3/-3 il vaut -c15). Unité
+(trigonal : -c15 ; souplesse : -2·s15). Unité
 GPa (rigidité) ou GPa^-1 (souplesse).</value>
   </data>
   <data name="numericBox55.ToolTip" xml:space="preserve">
@@ -339,14 +339,14 @@ dérivé de c44 et désactivé. Unité GPa
     <value>Définit la constante élastique c56 (notation de Voigt) :
 rigidité Cij ou souplesse Sij selon
 le mode sélectionné. Terme hors-diagonale de couplage cisaillement-cisaillement
-(en trigonal il vaut c14).
+(trigonal : c14 ; souplesse : 2·s14).
 Unité GPa (rigidité) ou GPa^-1 (souplesse).</value>
   </data>
   <data name="label8.ToolTip" xml:space="preserve">
     <value>Définit la constante élastique c56 (notation de Voigt) :
 rigidité Cij ou souplesse Sij selon
 le mode sélectionné. Terme hors-diagonale de couplage cisaillement-cisaillement
-(en trigonal il vaut c14).
+(trigonal : c14 ; souplesse : 2·s14).
 Unité GPa (rigidité) ou GPa^-1 (souplesse).</value>
   </data>
   <data name="numericBox66.ToolTip" xml:space="preserve">
@@ -354,7 +354,7 @@ Unité GPa (rigidité) ou GPa^-1 (souplesse).</value>
 Voigt) : rigidité Cij ou souplesse Sij
 selon le mode sélectionné. Terme diagonal
 de cisaillement ; en hexagonal/trigonal il vaut
-(c11-c12)/2 et en cubique il égale c44. Unité
+(c11-c12)/2 (souplesse : 2(s11-s12)) et en cubique il égale c44. Unité
 GPa (rigidité) ou GPa^-1 (souplesse).</value>
   </data>
   <data name="label11.ToolTip" xml:space="preserve">
@@ -362,7 +362,7 @@ GPa (rigidité) ou GPa^-1 (souplesse).</value>
 Voigt) : rigidité Cij ou souplesse Sij
 selon le mode sélectionné. Terme diagonal
 de cisaillement ; en hexagonal/trigonal il vaut
-(c11-c12)/2 et en cubique il égale c44. Unité
+(c11-c12)/2 (souplesse : 2(s11-s12)) et en cubique il égale c44. Unité
 GPa (rigidité) ou GPa^-1 (souplesse).</value>
   </data>
   <data name="radioButtonCompliance.ToolTip" xml:space="preserve">
@@ -378,5 +378,18 @@ avec « Elastic stiffness constant ».</value>
 tenseur de rigidité en GPa. La matrice de souplesse
 S est conservée sous forme de son inverse. Mutuellement exclusif
 avec « Elastic compliance constant ».</value>
+  </data>
+  <data name="labelConstraint.ToolTip" xml:space="preserve">
+    <value>Contrainte de symétrie sur les constantes élastiques (classe de
+Laue du cristal) dans les axes cartésiens de ReciPro : x ∥ a*,
+z ∥ c, y = z × x (y ∥ b pour les cristaux hexagonaux et trigonaux).
+Les constantes grisées valent 0 ou découlent des autres et sont
+remplies lorsque vous modifiez une constante ; les valeurs chargées
+sont conservées telles quelles jusque-là. En trigonal 32, 3m et
+-3m, l'axe 2 est selon x (312, 31m, -31m : type c14) ou selon y
+(321, 3m1, -3m1, R32, R3m, R-3m : type c15). Pour le type c15,
+saisissez comme c15 le c14 des valeurs de la littérature données
+avec x ∥ a (IEEE) (les autres sont inchangées). Aucune contrainte
+n'est appliquée avec des axes rhomboédriques.</value>
   </data>
 </root>

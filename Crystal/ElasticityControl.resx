@@ -187,7 +187,7 @@ Unit GPa (stiffness) or GPa^-1 (compliance).</value>
     <value>Set the c25 elastic constant (Voigt notation):
 stiffness Cij or compliance Sij depending on the
 selected mode. Off-diagonal normal-shear coupling
-term (in trigonal 3/-3 it is set to -c15). Unit
+term (in trigonal it is set to -c15). Unit
 GPa (stiffness) or GPa^-1 (compliance).</value>
   </data>
   <data name="numericBox26.ToolTip" xml:space="preserve">
@@ -244,7 +244,7 @@ GPa (stiffness) or GPa^-1 (compliance).</value>
     <value>Set the c46 elastic constant (Voigt notation):
 stiffness Cij or compliance Sij depending on the
 selected mode. Off-diagonal shear-shear coupling
-term (in trigonal 3/-3 it is set to -c15). Unit
+term (in trigonal: -c15; compliance: -2·s15). Unit
 GPa (stiffness) or GPa^-1 (compliance).</value>
   </data>
   <data name="numericBox55.ToolTip" xml:space="preserve">
@@ -259,7 +259,7 @@ derived from c44 and disabled. Unit GPa
     <value>Set the c56 elastic constant (Voigt notation):
 stiffness Cij or compliance Sij depending on
 the selected mode. Off-diagonal shear-shear
-coupling term (in trigonal it is set to c14).
+coupling term (in trigonal: c14; compliance: 2·s14).
 Unit GPa (stiffness) or GPa^-1 (compliance).</value>
   </data>
   <data name="numericBox66.ToolTip" xml:space="preserve">
@@ -267,7 +267,7 @@ Unit GPa (stiffness) or GPa^-1 (compliance).</value>
 notation): stiffness Cij or compliance Sij
 depending on the selected mode. Diagonal
 shear term; in hexagonal/trigonal it is
-(c11-c12)/2 and in cubic equals c44. Unit
+(c11-c12)/2 (compliance: 2(s11-s12)) and in cubic equals c44. Unit
 GPa (stiffness) or GPa^-1 (compliance).</value>
   </data>
   <data name="radioButtonCompliance.ToolTip" xml:space="preserve">
@@ -288,7 +288,7 @@ with 'Elastic compliance constant'.</value>
     <value>Set the c46 elastic constant (Voigt notation):
 stiffness Cij or compliance Sij depending on the
 selected mode. Off-diagonal shear-shear coupling
-term (in trigonal 3/-3 it is set to -c15). Unit
+term (in trigonal: -c15; compliance: -2·s15). Unit
 GPa (stiffness) or GPa^-1 (compliance).</value>
   </data>
   <data name="label100.ToolTip" xml:space="preserve">
@@ -304,7 +304,7 @@ c11 also seeds equivalent terms such as c22/c33.</value>
 notation): stiffness Cij or compliance Sij
 depending on the selected mode. Diagonal
 shear term; in hexagonal/trigonal it is
-(c11-c12)/2 and in cubic equals c44. Unit
+(c11-c12)/2 (compliance: 2(s11-s12)) and in cubic equals c44. Unit
 GPa (stiffness) or GPa^-1 (compliance).</value>
   </data>
   <data name="label12.ToolTip" xml:space="preserve">
@@ -333,7 +333,7 @@ derived from c44 and disabled. Unit GPa
     <value>Set the c25 elastic constant (Voigt notation):
 stiffness Cij or compliance Sij depending on the
 selected mode. Off-diagonal normal-shear coupling
-term (in trigonal 3/-3 it is set to -c15). Unit
+term (in trigonal it is set to -c15). Unit
 GPa (stiffness) or GPa^-1 (compliance).</value>
   </data>
   <data name="label16.ToolTip" xml:space="preserve">
@@ -427,7 +427,7 @@ GPa (stiffness) or GPa^-1 (compliance).</value>
     <value>Set the c56 elastic constant (Voigt notation):
 stiffness Cij or compliance Sij depending on
 the selected mode. Off-diagonal shear-shear
-coupling term (in trigonal it is set to c14).
+coupling term (in trigonal: c14; compliance: 2·s14).
 Unit GPa (stiffness) or GPa^-1 (compliance).</value>
   </data>
   <data name="label9.ToolTip" xml:space="preserve">
@@ -436,5 +436,17 @@ stiffness Cij or compliance Sij depending on the
 selected mode. Off-diagonal normal-shear coupling
 term (in tetragonal 4/-4/4/m it is set to -c16).
 Unit GPa (stiffness) or GPa^-1 (compliance).</value>
+  </data>
+  <data name="labelConstraint.ToolTip" xml:space="preserve">
+    <value>Symmetry constraint on the elastic constants (Laue class of the
+crystal) in ReciPro's Cartesian axes: x ∥ a*, z ∥ c, y = z × x
+(y ∥ b for hexagonal and trigonal crystals). Greyed-out constants
+are 0 or follow from the others and are filled in when you edit a
+constant; loaded values are kept as they are until then.
+In trigonal 32, 3m and -3m the 2-fold axis is along x (312, 31m,
+-31m: c14 type) or along y (321, 3m1, -3m1, R32, R3m, R-3m:
+c15 type). For the c15 type, enter the c14 of literature values
+given with x ∥ a (IEEE) as c15 (the others are unchanged).
+No constraint is applied with rhombohedral axes.</value>
   </data>
 </root>

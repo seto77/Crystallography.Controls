@@ -75,6 +75,7 @@
             this.numericBox11 = new Crystallography.Controls.NumericBox();
             this.radioButtonCompliance = new System.Windows.Forms.RadioButton();
             this.radioButtonStiffness = new System.Windows.Forms.RadioButton();
+            this.labelConstraint = new System.Windows.Forms.Label(); // 261105Cl 追加
             this.SuspendLayout();
             // 
             // label100
@@ -775,12 +776,26 @@
             this.radioButtonStiffness.Text = "Elastic stiffness constant";
             this.radioButtonStiffness.UseVisualStyleBackColor = true;
             this.radioButtonStiffness.CheckedChanged += new System.EventHandler(this.radioButtonStiffness_CheckedChanged);
-            // 
+            //
+            // labelConstraint (261105Cl 追加: 結晶系による拘束の注記。文字はコード (SetElasticity) が言語に合わせて入れる)
+            //
+            this.labelConstraint.AutoSize = true;
+            this.labelConstraint.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.labelConstraint.Location = new System.Drawing.Point(3, 49);
+            this.labelConstraint.Margin = new System.Windows.Forms.Padding(0);
+            this.labelConstraint.MaximumSize = new System.Drawing.Size(225, 0);
+            this.labelConstraint.Name = "labelConstraint";
+            this.toolTip.SetToolTip(this.labelConstraint, resources.GetString("labelConstraint.ToolTip"));
+            this.labelConstraint.Size = new System.Drawing.Size(158, 15);
+            this.labelConstraint.TabIndex = 85;
+            this.labelConstraint.Text = "Constraint: none (triclinic)";
+            //
             // ElasticityControl
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoSize = true;
+            this.Controls.Add(this.labelConstraint); // 261105Cl 追加
             this.Controls.Add(this.radioButtonStiffness);
             this.Controls.Add(this.radioButtonCompliance);
             this.Controls.Add(this.numericBox66);
@@ -880,5 +895,6 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.RadioButton radioButtonCompliance;
         private System.Windows.Forms.RadioButton radioButtonStiffness;
+        private System.Windows.Forms.Label labelConstraint; // 261105Cl 追加
     }
 }

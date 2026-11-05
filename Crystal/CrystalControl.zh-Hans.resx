@@ -239,32 +239,32 @@
   </data>
   <data name="numericBoxStress33.ToolTip" xml:space="preserve">
     <value>Reuss模型中所用施加应力张量的
-法向应力分量σ33（沿c轴），
+法向应力分量σ33（沿样品z轴），
 单位与弹性常数相同（GPa）。</value>
   </data>
   <data name="numericBoxStress33.ToolTip1" xml:space="preserve">
     <value>Reuss模型中所用施加应力张量的
-法向应力分量σ33（沿c轴），
+法向应力分量σ33（沿样品z轴），
 单位与弹性常数相同（GPa）。</value>
   </data>
   <data name="numericBoxStress22.ToolTip" xml:space="preserve">
     <value>Reuss模型中所用施加应力张量的
-法向应力分量σ22（沿b轴），
+法向应力分量σ22（沿样品y轴），
 单位与弹性常数相同（GPa）。</value>
   </data>
   <data name="numericBoxStress22.ToolTip1" xml:space="preserve">
     <value>Reuss模型中所用施加应力张量的
-法向应力分量σ22（沿b轴），
+法向应力分量σ22（沿样品y轴），
 单位与弹性常数相同（GPa）。</value>
   </data>
   <data name="numericBoxStress11.ToolTip" xml:space="preserve">
     <value>Reuss模型中所用施加应力张量的
-法向应力分量σ11（沿a轴），
+法向应力分量σ11（沿样品x轴），
 单位与弹性常数相同（GPa）。</value>
   </data>
   <data name="numericBoxStress11.ToolTip1" xml:space="preserve">
     <value>Reuss模型中所用施加应力张量的
-法向应力分量σ11（沿a轴），
+法向应力分量σ11（沿样品x轴），
 单位与弹性常数相同（GPa）。</value>
   </data>
   <data name="numericBoxStress23.ToolTip" xml:space="preserve">
@@ -300,32 +300,32 @@
   <data name="numericBoxStrain33.ToolTip" xml:space="preserve">
     <value>Voigt模型中所用施加的晶格
 应变张量的法向应变分量ε33
-（沿c轴，无量纲）。</value>
+（沿样品z轴，无量纲）。</value>
   </data>
   <data name="numericBoxStrain33.ToolTip1" xml:space="preserve">
     <value>Voigt模型中所用施加的晶格
 应变张量的法向应变分量ε33
-（沿c轴，无量纲）。</value>
+（沿样品z轴，无量纲）。</value>
   </data>
   <data name="numericBoxStrain11.ToolTip" xml:space="preserve">
     <value>Voigt模型中所用施加的晶格
 应变张量的法向应变分量ε11
-（沿a轴，无量纲）。</value>
+（沿样品x轴，无量纲）。</value>
   </data>
   <data name="numericBoxStrain11.ToolTip1" xml:space="preserve">
     <value>Voigt模型中所用施加的晶格
 应变张量的法向应变分量ε11
-（沿a轴，无量纲）。</value>
+（沿样品x轴，无量纲）。</value>
   </data>
   <data name="numericBoxStrain22.ToolTip" xml:space="preserve">
     <value>Voigt模型中所用施加的晶格
 应变张量的法向应变分量ε22
-（沿b轴，无量纲）。</value>
+（沿样品y轴，无量纲）。</value>
   </data>
   <data name="numericBoxStrain22.ToolTip1" xml:space="preserve">
     <value>Voigt模型中所用施加的晶格
 应变张量的法向应变分量ε22
-（沿b轴，无量纲）。</value>
+（沿样品y轴，无量纲）。</value>
   </data>
   <data name="numericBoxStrain12.ToolTip" xml:space="preserve">
     <value>Voigt模型中所用施加的晶格
@@ -381,12 +381,16 @@
   </data>
   <data name="label109.ToolTip" xml:space="preserve">
     <value>Reuss（均匀应力）模型所用的施加应力
-张量；输入六个独立分量（GPa）。</value>
+张量；输入六个独立分量（GPa）。
+分量采用样品坐标：x 为探测器上向右，y 为向上，
+z 沿束流方向。</value>
   </data>
   <data name="label102.ToolTip" xml:space="preserve">
     <value>Voigt（均匀应变）模型所用施加的
 晶格应变张量；输入六个
-独立分量（无量纲）。</value>
+独立分量（无量纲）。
+分量采用样品坐标：x 为探测器上向右，y 为向上，
+z 沿束流方向。</value>
   </data>
   <data name="buttonGenerateRandomOrientations.ToolTip" xml:space="preserve">
     <value>生成一组随机取向的晶粒，

@@ -166,7 +166,7 @@ Sij。垂直-剪断結合の非対角成分(三方系では -c14 に
   <data name="numericBox25.ToolTip" xml:space="preserve">
     <value>弾性定数行列(Voigt表記)の c25 成分を設定します。
 モードに応じてスティフネスCijまたはコンプライアンス
-Sij。垂直-剪断結合の非対角成分(三方 3/-3 では -c15
+Sij。垂直-剪断結合の非対角成分(三方系では -c15
 に自動設定)で、単位はGPa/GPa^-1。</value>
   </data>
   <data name="numericBox26.ToolTip" xml:space="preserve">
@@ -214,8 +214,8 @@ c55=c66 の生成元になります。単位はGPa/GPa^-1。</value>
   <data name="numericBox46.ToolTip" xml:space="preserve">
     <value>弾性定数行列(Voigt表記)の c46 成分を設定します。
 モードに応じてスティフネスCijまたはコンプライアンス
-Sij。剪断同士を結合する非対角成分(三方 3/-3 では
--c15 に自動設定)で、単位はGPa/GPa^-1。</value>
+Sij。剪断同士を結合する非対角成分(三方系では
+-c15、コンプライアンスでは -2·s15 に自動設定)で、単位はGPa/GPa^-1。</value>
   </data>
   <data name="numericBox55.ToolTip" xml:space="preserve">
     <value>弾性定数行列(Voigt表記)の c55 成分を設定します。
@@ -226,13 +226,13 @@ Sij。剪断対角成分で、正方/六方/三方/立方系では c44 か
   <data name="numericBox56.ToolTip" xml:space="preserve">
     <value>弾性定数行列(Voigt表記)の c56 成分を設定します。
 モードに応じてスティフネスCijまたはコンプライアンス
-Sij。剪断同士を結合する非対角成分(三方系では c14 に
+Sij。剪断同士を結合する非対角成分(三方系では c14、コンプライアンスでは 2·s14 に
 自動設定)で、単位はGPa/GPa^-1。</value>
   </data>
   <data name="numericBox66.ToolTip" xml:space="preserve">
     <value>弾性定数行列(Voigt表記)の c66 成分を設定します。
 モードに応じてスティフネスCijまたはコンプライアンス
-Sij。剪断対角成分で、六方/三方系では (c11-c12)/2、
+Sij。剪断対角成分で、六方/三方系では (c11-c12)/2 (コンプライアンスでは 2(s11-s12))、
 立方系では c44 に自動設定されます。単位はGPa/GPa^-1。</value>
   </data>
   <data name="radioButtonCompliance.ToolTip" xml:space="preserve">
@@ -250,8 +250,8 @@ Sij。剪断対角成分で、六方/三方系では (c11-c12)/2、
   <data name="label10.ToolTip" xml:space="preserve">
     <value>弾性定数行列(Voigt表記)の c46 成分を設定します。
 モードに応じてスティフネスCijまたはコンプライアンス
-Sij。剪断同士を結合する非対角成分(三方 3/-3 では
--c15 に自動設定)で、単位はGPa/GPa^-1。</value>
+Sij。剪断同士を結合する非対角成分(三方系では
+-c15、コンプライアンスでは -2·s15 に自動設定)で、単位はGPa/GPa^-1。</value>
   </data>
   <data name="label100.ToolTip" xml:space="preserve">
     <value>弾性定数行列(Voigt表記)の c11 成分を設定します。
@@ -264,7 +264,7 @@ Sij。剪断同士を結合する非対角成分(三方 3/-3 では
   <data name="label11.ToolTip" xml:space="preserve">
     <value>弾性定数行列(Voigt表記)の c66 成分を設定します。
 モードに応じてスティフネスCijまたはコンプライアンス
-Sij。剪断対角成分で、六方/三方系では (c11-c12)/2、
+Sij。剪断対角成分で、六方/三方系では (c11-c12)/2 (コンプライアンスでは 2(s11-s12))、
 立方系では c44 に自動設定されます。単位はGPa/GPa^-1。</value>
   </data>
   <data name="label12.ToolTip" xml:space="preserve">
@@ -288,7 +288,7 @@ Sij。剪断対角成分で、正方/六方/三方/立方系では c44 か
   <data name="label15.ToolTip" xml:space="preserve">
     <value>弾性定数行列(Voigt表記)の c25 成分を設定します。
 モードに応じてスティフネスCijまたはコンプライアンス
-Sij。垂直-剪断結合の非対角成分(三方 3/-3 では -c15
+Sij。垂直-剪断結合の非対角成分(三方系では -c15
 に自動設定)で、単位はGPa/GPa^-1。</value>
   </data>
   <data name="label16.ToolTip" xml:space="preserve">
@@ -365,7 +365,7 @@ Sij。2軸方向の対角成分で、多くの結晶系では c11 から
   <data name="label8.ToolTip" xml:space="preserve">
     <value>弾性定数行列(Voigt表記)の c56 成分を設定します。
 モードに応じてスティフネスCijまたはコンプライアンス
-Sij。剪断同士を結合する非対角成分(三方系では c14 に
+Sij。剪断同士を結合する非対角成分(三方系では c14、コンプライアンスでは 2·s14 に
 自動設定)で、単位はGPa/GPa^-1。</value>
   </data>
   <data name="label9.ToolTip" xml:space="preserve">
@@ -373,5 +373,15 @@ Sij。剪断同士を結合する非対角成分(三方系では c14 に
 モードに応じてスティフネスCijまたはコンプライアンス
 Sij。垂直-剪断結合の非対角成分(正方 4/-4/4/m では
 -c16 に自動設定)で、単位はGPa/GPa^-1。</value>
+  </data>
+  <data name="labelConstraint.ToolTip" xml:space="preserve">
+    <value>弾性定数に掛ける対称性の拘束 (結晶のラウエ群)。座標は ReciPro の
+直交座標: x ∥ a*、z ∥ c、y = z × x (六方晶・三方晶では y ∥ b)。
+灰色の定数は 0 か他の定数から決まり、定数を編集したときに埋まり
+ます。読み込んだ値はそれまでそのまま保ちます。
+三方晶 32・3m・-3m の 2 回軸は x 方向 (312・31m・-31m: c14 型) か
+y 方向 (321・3m1・-3m1・R32・R3m・R-3m: c15 型)。c15 型で x ∥ a
+(IEEE) の文献値を使うときは、文献の c14 を c15 に入れます (他は
+そのまま)。菱面体の軸では拘束しません。</value>
   </data>
 </root>

@@ -231,7 +231,9 @@ public partial class CrystalControl : UserControlBase
             (textBoxMemo.Text, textBoxAuthor.Text, textBoxJournal.Text, textBoxTitle.Text),
             bondControl.GetAll(), boundControl.GetAll(), latticePlaneControl.GetAll(), eosControl.EOScondition);
 
-        crystal.ElasticStiffness = elasticityControl1.Stiffness.ToArray();
+        //crystal.ElasticStiffness = elasticityControl1.Stiffness.ToArray(); // 261105Cl 変更前
+        // 261105Cl 変更: コンプライアンスで入力中に逆行列が無い (独立な定数が欠けている) と Stiffness が null で例外になっていた。そのときは 0 (未設定) にする
+        crystal.ElasticStiffness = (elasticityControl1.Stiffness ?? new DenseMatrix(6, 6)).ToArray();
         crystal.ElementValences = [.. valences]; // 261025Cl 追加 (上の valences を複製して持たせる)
 
         crystal.AngleResolution = (double)numericUpDownAngleResolution.Value;
@@ -245,6 +247,13 @@ public partial class CrystalControl : UserControlBase
             numericBoxStrain12.Value, numericBoxStrain22.Value, numericBoxStrain23.Value,
             numericBoxStrain13.Value, numericBoxStrain23.Value, numericBoxStrain33.Value);
         crystal.HillCoefficient = numericBoxHill.Value;
+        // 261105Cl 追加 (監査 A19、作者の決定「弾性定数の修正と一緒に配線する」): 応力の欄を読む (2020 年以前から読まれず、入れても無視されていた)。
+        // 欄は SetToInterface が結晶の値にしておくので、欄が隠れている画面 (主画面・PDIndexer など) でも結晶の応力はそのまま引き継がれる。
+        // 単位は弾性定数と同じ (GPa)。座標は歪みと同じ試料 (多結晶) の座標で、多結晶回折の計算 (Crystallite.SetDiffractedPixels) が結晶子ごとに回して使う
+        crystal.Stress = new Matrix3D(
+            numericBoxStress11.Value, numericBoxStress12.Value, numericBoxStress13.Value,
+            numericBoxStress12.Value, numericBoxStress22.Value, numericBoxStress23.Value,
+            numericBoxStress13.Value, numericBoxStress23.Value, numericBoxStress33.Value);
 
         if (previous != null)
         {
@@ -252,7 +261,7 @@ public partial class CrystalControl : UserControlBase
             (crystal.InitialA, crystal.InitialB, crystal.InitialC, crystal.InitialAlpha, crystal.InitialBeta, crystal.InitialGamma) = (previous.InitialA, previous.InitialB, previous.InitialC, previous.InitialAlpha, previous.InitialBeta, previous.InitialGamma);
             (crystal.InitialA_err, crystal.InitialB_err, crystal.InitialC_err, crystal.InitialAlpha_err, crystal.InitialBeta_err, crystal.InitialGamma_err) = (previous.InitialA_err, previous.InitialB_err, previous.InitialC_err, previous.InitialAlpha_err, previous.InitialBeta_err, previous.InitialGamma_err);
             // 261105Cl 追加 (監査 A19): 応力は画面の欄から読んでいない (欄は配線されていない) ので、結晶の値を消さないよう引き継ぐ
-            crystal.Stress = new Matrix3D(previous.Stress ?? new Matrix3D(0, 0, 0, 0, 0, 0, 0, 0, 0));
+            //crystal.Stress = new Matrix3D(previous.Stress ?? new Matrix3D(0, 0, 0, 0, 0, 0, 0, 0, 0)); // 261105Cl 変更前 (上で応力の欄を読むようにしたので不要)
         }
 
         SkipEvent = false;
@@ -319,6 +328,9 @@ public partial class CrystalControl : UserControlBase
         latticePlaneControl.Crystal = crystal;
         eosControl.Crystal = crystal;
 
+        // 261105Cl 追加 (監査 B1): 弾性定数の欄に結晶系を渡す (以前は渡しておらず、ずっと三斜晶扱いで拘束が働かなかった)。
+        // 欄は値を変えずに入力の可否と注記だけを更新し、拘束は利用者が値を編集したときに掛ける (保存済みの値を黙って 0 にしない)
+        elasticityControl1.SymmetrySeriesNumber = crystal.SymmetrySeriesNumber;
         elasticityControl1.Stiffness = DenseMatrix.OfArray(crystal.ElasticStiffness);
 
         numericUpDownAngleResolution.Value = Math.Min((decimal)crystal.AngleResolution, numericUpDownAngleResolution.Maximum);
@@ -332,6 +344,10 @@ public partial class CrystalControl : UserControlBase
         (numericBoxStrain22.Value, numericBoxStrain23.Value, numericBoxStrain33.Value) = (strain.E22, strain.E23, strain.E33);
         numericBoxHill.Value = crystal.HillCoefficient;
         numericUpDownCrystallineSize.Value = Math.Clamp((decimal)crystal.GrainSize, numericUpDownCrystallineSize.Minimum, numericUpDownCrystallineSize.Maximum);
+        // 261105Cl 追加 (監査 A19): 応力の欄も結晶の値にする (GenerateFromInterface が欄を読むので、これが無いと欄の値で結晶の応力を上書きする)
+        var stress = crystal.Stress ?? new Matrix3D(0, 0, 0, 0, 0, 0, 0, 0, 0);
+        (numericBoxStress11.Value, numericBoxStress12.Value, numericBoxStress13.Value) = (stress.E11, stress.E12, stress.E13);
+        (numericBoxStress22.Value, numericBoxStress23.Value, numericBoxStress33.Value) = (stress.E22, stress.E23, stress.E33);
 
         SkipEvent = false;
         ResumeLayout();
@@ -1042,7 +1058,42 @@ public partial class CrystalControl : UserControlBase
     }
     #endregion
 
-    private void buttonStressSet_Click(object sender, EventArgs e) => GenerateFromInterface();
+    //private void buttonStressSet_Click(object sender, EventArgs e) => GenerateFromInterface(); // 261105Cl 変更前
+    /// <summary>261105Cl 変更: 歪み・応力・Hill 係数を結晶に入れたあと、応力が歪みに効かない場合 (弾性定数が未設定で剛性行列の逆行列が無い・Hill 係数が 0) に知らせる。
+    /// 計算は止めない (弾性定数が無いとき応力からの歪みは 0。<see cref="Elasticity.GetStrainTriclinic"/>)</summary>
+    private void buttonStressSet_Click(object sender, EventArgs e)
+    {
+        GenerateFromInterface();
+        if (crystal?.Stress == null || crystal.Stress.IsZero()) return;
+        if (DenseMatrix.OfArray(crystal.ElasticStiffness).TryInverse() == null)
+            MessageBox.Show(Crystallography.Localization.Loc(
+                en: "The elastic constants are not set (the stiffness matrix cannot be inverted), so the stress is not converted to strain: the strain from the stress is 0 until they are entered.",
+                ja: "弾性定数が未設定 (剛性行列の逆行列がない) のため、応力を歪みに換算できません。弾性定数を入れるまで、応力による歪みは 0 です。",
+                de: "Die elastischen Konstanten sind nicht gesetzt (die Steifigkeitsmatrix ist nicht invertierbar), daher wird die Spannung nicht in Dehnung umgerechnet: Die Dehnung aus der Spannung ist 0, bis sie eingegeben werden.",
+                fr: "Les constantes élastiques ne sont pas définies (la matrice de rigidité n'est pas inversible) ; la contrainte n'est donc pas convertie en déformation : la déformation due à la contrainte reste 0 jusqu'à leur saisie.",
+                es: "Las constantes elásticas no están definidas (la matriz de rigidez no es invertible), por lo que la tensión no se convierte en deformación: la deformación debida a la tensión es 0 hasta que se introduzcan.",
+                pt: "As constantes elásticas não estão definidas (a matriz de rigidez não é invertível), por isso a tensão não é convertida em deformação: a deformação devida à tensão é 0 até que sejam introduzidas.",
+                it: "Le costanti elastiche non sono impostate (la matrice di rigidezza non è invertibile), quindi lo sforzo non viene convertito in deformazione: la deformazione dovuta allo sforzo è 0 finché non vengono inserite.",
+                ru: "Упругие константы не заданы (матрица жёсткости необратима), поэтому напряжение не пересчитывается в деформацию: деформация от напряжения равна 0, пока они не введены.",
+                zhHans: "弹性常数未设置 (刚度矩阵不可逆)，因此无法将应力换算为应变：在输入弹性常数之前，由应力产生的应变为 0。",
+                zhHant: "彈性常數未設定 (勁度矩陣不可逆)，因此無法將應力換算為應變：在輸入彈性常數之前，由應力產生的應變為 0。",
+                ko: "탄성 상수가 설정되지 않아 (강성 행렬의 역행렬이 없음) 응력을 변형으로 환산할 수 없습니다. 탄성 상수를 입력할 때까지 응력에 의한 변형은 0입니다."),
+                Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        else if (crystal.HillCoefficient == 0)
+            MessageBox.Show(Crystallography.Localization.Loc(
+                en: "The Hill coefficient is 0, so the stress is not used (only the imposed strain is). Set it to 1 to use the strain from the stress.",
+                ja: "Hill 係数が 0 のため、応力は使われません (入力した歪みだけが使われます)。応力からの歪みを使うには 1 にしてください。",
+                de: "Der Hill-Koeffizient ist 0, daher wird die Spannung nicht verwendet (nur die vorgegebene Dehnung). Setzen Sie ihn auf 1, um die Dehnung aus der Spannung zu verwenden.",
+                fr: "Le coefficient de Hill vaut 0 ; la contrainte n'est donc pas utilisée (seule la déformation imposée l'est). Mettez-le à 1 pour utiliser la déformation issue de la contrainte.",
+                es: "El coeficiente de Hill es 0, por lo que la tensión no se usa (solo la deformación impuesta). Póngalo en 1 para usar la deformación obtenida de la tensión.",
+                pt: "O coeficiente de Hill é 0, por isso a tensão não é usada (apenas a deformação imposta). Defina-o como 1 para usar a deformação obtida da tensão.",
+                it: "Il coefficiente di Hill è 0, quindi lo sforzo non viene usato (solo la deformazione imposta). Impostalo a 1 per usare la deformazione ricavata dallo sforzo.",
+                ru: "Коэффициент Хилла равен 0, поэтому напряжение не используется (только заданная деформация). Установите 1, чтобы использовать деформацию от напряжения.",
+                zhHans: "Hill 系数为 0，因此不使用应力 (只使用输入的应变)。要使用由应力得到的应变，请设为 1。",
+                zhHant: "Hill 係數為 0，因此不使用應力 (只使用輸入的應變)。要使用由應力得到的應變，請設為 1。",
+                ko: "Hill 계수가 0이므로 응력은 사용되지 않습니다 (입력한 변형만 사용됩니다). 응력으로부터의 변형을 사용하려면 1로 설정하십시오."),
+                Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+    }
 
     /// <summary>Miller-Bravais 指数を有効化</summary>
     [Browsable(false)]

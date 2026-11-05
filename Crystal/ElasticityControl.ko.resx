@@ -184,13 +184,13 @@ c13(입방계에서는 c12)으로부터 자동 산출됩니다. 단위는 GPa
   <data name="numericBox25.ToolTip" xml:space="preserve">
     <value>c25 탄성 상수(Voigt 표기)를 설정합니다:
 선택된 모드에 따라 강성 Cij 또는 컴플라이언스 Sij입니다.
-수직-전단 결합 비대각 성분(삼방 3/-3에서는 -c15로
+수직-전단 결합 비대각 성분(삼방계에서는 -c15로
 자동 설정)이며, 단위는 GPa(강성) 또는 GPa^-1(컴플라이언스)입니다.</value>
   </data>
   <data name="label15.ToolTip" xml:space="preserve">
     <value>c25 탄성 상수(Voigt 표기)를 설정합니다:
 선택된 모드에 따라 강성 Cij 또는 컴플라이언스 Sij입니다.
-수직-전단 결합 비대각 성분(삼방 3/-3에서는 -c15로
+수직-전단 결합 비대각 성분(삼방계에서는 -c15로
 자동 설정)이며, 단위는 GPa(강성) 또는 GPa^-1(컴플라이언스)입니다.</value>
   </data>
   <data name="numericBox26.ToolTip" xml:space="preserve">
@@ -286,13 +286,13 @@ GPa(강성) 또는 GPa^-1(컴플라이언스)입니다.</value>
   <data name="numericBox46.ToolTip" xml:space="preserve">
     <value>c46 탄성 상수(Voigt 표기)를 설정합니다:
 선택된 모드에 따라 강성 Cij 또는 컴플라이언스 Sij입니다.
-전단-전단 결합 비대각 성분(삼방 3/-3에서는 -c15로 자동 설정)이며, 단위는
+전단-전단 결합 비대각 성분(삼방계에서는 -c15, 컴플라이언스는 -2·s15로 자동 설정)이며, 단위는
 GPa(강성) 또는 GPa^-1(컴플라이언스)입니다.</value>
   </data>
   <data name="label10.ToolTip" xml:space="preserve">
     <value>c46 탄성 상수(Voigt 표기)를 설정합니다:
 선택된 모드에 따라 강성 Cij 또는 컴플라이언스 Sij입니다.
-전단-전단 결합 비대각 성분(삼방 3/-3에서는 -c15로 자동 설정)이며, 단위는
+전단-전단 결합 비대각 성분(삼방계에서는 -c15, 컴플라이언스는 -2·s15로 자동 설정)이며, 단위는
 GPa(강성) 또는 GPa^-1(컴플라이언스)입니다.</value>
   </data>
   <data name="numericBox55.ToolTip" xml:space="preserve">
@@ -314,13 +314,13 @@ GPa(강성) 또는 GPa^-1(컴플라이언스)입니다.</value>
   <data name="numericBox56.ToolTip" xml:space="preserve">
     <value>c56 탄성 상수(Voigt 표기)를 설정합니다:
 선택된 모드에 따라 강성 Cij 또는 컴플라이언스 Sij입니다.
-전단-전단 결합 비대각 성분(삼방계에서는 c14로
+전단-전단 결합 비대각 성분(삼방계에서는 c14, 컴플라이언스는 2·s14로
 자동 설정)이며, 단위는 GPa(강성) 또는 GPa^-1(컴플라이언스)입니다.</value>
   </data>
   <data name="label8.ToolTip" xml:space="preserve">
     <value>c56 탄성 상수(Voigt 표기)를 설정합니다:
 선택된 모드에 따라 강성 Cij 또는 컴플라이언스 Sij입니다.
-전단-전단 결합 비대각 성분(삼방계에서는 c14로
+전단-전단 결합 비대각 성분(삼방계에서는 c14, 컴플라이언스는 2·s14로
 자동 설정)이며, 단위는 GPa(강성) 또는 GPa^-1(컴플라이언스)입니다.</value>
   </data>
   <data name="numericBox66.ToolTip" xml:space="preserve">
@@ -328,7 +328,7 @@ GPa(강성) 또는 GPa^-1(컴플라이언스)입니다.</value>
 표기)를 설정합니다: 선택된 모드에 따라
 강성 Cij 또는 컴플라이언스 Sij입니다. 전단
 대각 성분이며, 육방/삼방계에서는
-(c11-c12)/2이고 입방계에서는 c44와 같습니다. 단위는
+(c11-c12)/2(컴플라이언스는 2(s11-s12))이고 입방계에서는 c44와 같습니다. 단위는
 GPa(강성) 또는 GPa^-1(컴플라이언스)입니다.</value>
   </data>
   <data name="label11.ToolTip" xml:space="preserve">
@@ -336,7 +336,7 @@ GPa(강성) 또는 GPa^-1(컴플라이언스)입니다.</value>
 표기)를 설정합니다: 선택된 모드에 따라
 강성 Cij 또는 컴플라이언스 Sij입니다. 전단
 대각 성분이며, 육방/삼방계에서는
-(c11-c12)/2이고 입방계에서는 c44와 같습니다. 단위는
+(c11-c12)/2(컴플라이언스는 2(s11-s12))이고 입방계에서는 c44와 같습니다. 단위는
 GPa(강성) 또는 GPa^-1(컴플라이언스)입니다.</value>
   </data>
   <data name="radioButtonCompliance.ToolTip" xml:space="preserve">
@@ -352,5 +352,15 @@ GPa(강성) 또는 GPa^-1(컴플라이언스)입니다.</value>
 텐서로 해석합니다. 컴플라이언스 행렬
 S는 그 역행렬로 유지됩니다. 'Elastic compliance
 constant' 선택과는 상호 배타적입니다.</value>
+  </data>
+  <data name="labelConstraint.ToolTip" xml:space="preserve">
+    <value>탄성 상수에 적용하는 대칭성 제약(결정의 라우에 군)이며, ReciPro의
+직교 좌표를 씁니다: x ∥ a*, z ∥ c, y = z × x(육방·삼방정에서는
+y ∥ b). 회색 상수는 0이거나 다른 상수로 정해지며, 상수를 편집할
+때 채워집니다. 읽어 들인 값은 그때까지 그대로 둡니다. 삼방정
+32, 3m, -3m의 2회축은 x 방향(312, 31m, -31m: c14 형) 또는
+y 방향(321, 3m1, -3m1, R32, R3m, R-3m: c15 형)입니다. c15 형에
+x ∥ a(IEEE)의 문헌값을 쓸 때는 문헌의 c14를 c15에 넣습니다(나머지는
+그대로). 능면체 축에서는 제약을 적용하지 않습니다.</value>
   </data>
 </root>

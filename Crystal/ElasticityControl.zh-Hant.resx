@@ -195,14 +195,14 @@ c11 亦作為 c22/c33 等等效項的生成元。</value>
     <value>設定 c25 彈性常數（Voigt 表示法）：
 依所選模式為勁度 Cij 或柔量 Sij。
 正向–剪切耦合的非對角項
-（三方 3/-3 中設為 -c15）。
+（三方晶系中設為 -c15）。
 單位 GPa（勁度）或 GPa^-1（柔量）。</value>
   </data>
   <data name="label15.ToolTip" xml:space="preserve">
     <value>設定 c25 彈性常數（Voigt 表示法）：
 依所選模式為勁度 Cij 或柔量 Sij。
 正向–剪切耦合的非對角項
-（三方 3/-3 中設為 -c15）。
+（三方晶系中設為 -c15）。
 單位 GPa（勁度）或 GPa^-1（柔量）。</value>
   </data>
   <data name="numericBox26.ToolTip" xml:space="preserve">
@@ -309,14 +309,14 @@ c11 亦作為 c22/c33 等等效項的生成元。</value>
     <value>設定 c46 彈性常數（Voigt 表示法）：
 依所選模式為勁度 Cij 或柔量 Sij。
 剪切–剪切耦合的非對角項
-（三方 3/-3 中設為 -c15）。
+（三方晶系中設為 -c15，柔量為 -2·s15）。
 單位 GPa（勁度）或 GPa^-1（柔量）。</value>
   </data>
   <data name="label10.ToolTip" xml:space="preserve">
     <value>設定 c46 彈性常數（Voigt 表示法）：
 依所選模式為勁度 Cij 或柔量 Sij。
 剪切–剪切耦合的非對角項
-（三方 3/-3 中設為 -c15）。
+（三方晶系中設為 -c15，柔量為 -2·s15）。
 單位 GPa（勁度）或 GPa^-1（柔量）。</value>
   </data>
   <data name="numericBox55.ToolTip" xml:space="preserve">
@@ -339,21 +339,21 @@ c11 亦作為 c22/c33 等等效項的生成元。</value>
     <value>設定 c56 彈性常數（Voigt 表示法）：
 依所選模式為勁度 Cij 或柔量 Sij。
 剪切–剪切耦合的非對角項
-（三方晶系中設為 c14）。
+（三方晶系中設為 c14，柔量為 2·s14）。
 單位 GPa（勁度）或 GPa^-1（柔量）。</value>
   </data>
   <data name="label8.ToolTip" xml:space="preserve">
     <value>設定 c56 彈性常數（Voigt 表示法）：
 依所選模式為勁度 Cij 或柔量 Sij。
 剪切–剪切耦合的非對角項
-（三方晶系中設為 c14）。
+（三方晶系中設為 c14，柔量為 2·s14）。
 單位 GPa（勁度）或 GPa^-1（柔量）。</value>
   </data>
   <data name="numericBox66.ToolTip" xml:space="preserve">
     <value>設定 c66 彈性常數（Voigt
 表示法）：依所選模式為勁度 Cij 或柔量 Sij。
 剪切對角項；在六方／三方晶系中為
-(c11-c12)/2，
+(c11-c12)/2（柔量為 2(s11-s12)），
 立方晶系中等於 c44。
 單位 GPa（勁度）或 GPa^-1（柔量）。</value>
   </data>
@@ -361,7 +361,7 @@ c11 亦作為 c22/c33 等等效項的生成元。</value>
     <value>設定 c66 彈性常數（Voigt
 表示法）：依所選模式為勁度 Cij 或柔量 Sij。
 剪切對角項；在六方／三方晶系中為
-(c11-c12)/2，
+(c11-c12)/2（柔量為 2(s11-s12)），
 立方晶系中等於 c44。
 單位 GPa（勁度）或 GPa^-1（柔量）。</value>
   </data>
@@ -378,5 +378,14 @@ c11 亦作為 c22/c33 等等效項的生成元。</value>
 柔量矩陣 S 以其逆矩陣
 保存。與
 「彈性柔量常數」互斥。</value>
+  </data>
+  <data name="labelConstraint.ToolTip" xml:space="preserve">
+    <value>對彈性常數施加的對稱性約束（晶體的勞厄群），採用 ReciPro 的
+直角座標：x ∥ a*，z ∥ c，y = z × x（六方、三方晶體中 y ∥ b）。
+灰色的常數為 0 或由其他常數決定，在編輯某個常數時填入；
+讀入的值在此之前保持原樣。三方 32、3m、-3m 的二次軸沿 x
+（312、31m、-31m：c14 型）或沿 y（321、3m1、-3m1、R32、R3m、
+R-3m：c15 型）。對 c15 型使用 x ∥ a（IEEE）的文獻值時，把文獻的
+c14 填入 c15（其他不變）。菱面體軸不施加約束。</value>
   </data>
 </root>

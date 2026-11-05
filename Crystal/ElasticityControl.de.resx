@@ -195,14 +195,14 @@ Einheit GPa (Steifigkeit) oder GPa^-1 (Nachgiebigkeit).</value>
     <value>Setzt die elastische Konstante c25 (Voigt-Notation):
 Steifigkeit Cij oder Nachgiebigkeit Sij je nach
 gewähltem Modus. Außerdiagonaler Normal-Scher-Kopplungs-
-term (im trigonalen 3/-3 wird er auf -c15 gesetzt). Einheit
+term (im trigonalen wird er auf -c15 gesetzt). Einheit
 GPa (Steifigkeit) oder GPa^-1 (Nachgiebigkeit).</value>
   </data>
   <data name="label15.ToolTip" xml:space="preserve">
     <value>Setzt die elastische Konstante c25 (Voigt-Notation):
 Steifigkeit Cij oder Nachgiebigkeit Sij je nach
 gewähltem Modus. Außerdiagonaler Normal-Scher-Kopplungs-
-term (im trigonalen 3/-3 wird er auf -c15 gesetzt). Einheit
+term (im trigonalen wird er auf -c15 gesetzt). Einheit
 GPa (Steifigkeit) oder GPa^-1 (Nachgiebigkeit).</value>
   </data>
   <data name="numericBox26.ToolTip" xml:space="preserve">
@@ -309,14 +309,14 @@ GPa (Steifigkeit) oder GPa^-1 (Nachgiebigkeit).</value>
     <value>Setzt die elastische Konstante c46 (Voigt-Notation):
 Steifigkeit Cij oder Nachgiebigkeit Sij je nach
 gewähltem Modus. Außerdiagonaler Scher-Scher-Kopplungs-
-term (im trigonalen 3/-3 wird er auf -c15 gesetzt). Einheit
+term (trigonal: -c15; Nachgiebigkeit: -2·s15). Einheit
 GPa (Steifigkeit) oder GPa^-1 (Nachgiebigkeit).</value>
   </data>
   <data name="label10.ToolTip" xml:space="preserve">
     <value>Setzt die elastische Konstante c46 (Voigt-Notation):
 Steifigkeit Cij oder Nachgiebigkeit Sij je nach
 gewähltem Modus. Außerdiagonaler Scher-Scher-Kopplungs-
-term (im trigonalen 3/-3 wird er auf -c15 gesetzt). Einheit
+term (trigonal: -c15; Nachgiebigkeit: -2·s15). Einheit
 GPa (Steifigkeit) oder GPa^-1 (Nachgiebigkeit).</value>
   </data>
   <data name="numericBox55.ToolTip" xml:space="preserve">
@@ -339,14 +339,14 @@ aus c44 abgeleitet und deaktiviert. Einheit GPa
     <value>Setzt die elastische Konstante c56 (Voigt-Notation):
 Steifigkeit Cij oder Nachgiebigkeit Sij je nach
 gewähltem Modus. Außerdiagonaler Scher-Scher-
-Kopplungsterm (im trigonalen wird er auf c14 gesetzt).
+Kopplungsterm (trigonal: c14; Nachgiebigkeit: 2·s14).
 Einheit GPa (Steifigkeit) oder GPa^-1 (Nachgiebigkeit).</value>
   </data>
   <data name="label8.ToolTip" xml:space="preserve">
     <value>Setzt die elastische Konstante c56 (Voigt-Notation):
 Steifigkeit Cij oder Nachgiebigkeit Sij je nach
 gewähltem Modus. Außerdiagonaler Scher-Scher-
-Kopplungsterm (im trigonalen wird er auf c14 gesetzt).
+Kopplungsterm (trigonal: c14; Nachgiebigkeit: 2·s14).
 Einheit GPa (Steifigkeit) oder GPa^-1 (Nachgiebigkeit).</value>
   </data>
   <data name="numericBox66.ToolTip" xml:space="preserve">
@@ -354,7 +354,7 @@ Einheit GPa (Steifigkeit) oder GPa^-1 (Nachgiebigkeit).</value>
 Notation): Steifigkeit Cij oder Nachgiebigkeit Sij
 je nach gewähltem Modus. Diagonaler
 Scherterm; im hexagonalen/trigonalen ist er
-(c11-c12)/2 und im kubischen gleich c44. Einheit
+(c11-c12)/2 (Nachgiebigkeit: 2(s11-s12)) und im kubischen gleich c44. Einheit
 GPa (Steifigkeit) oder GPa^-1 (Nachgiebigkeit).</value>
   </data>
   <data name="label11.ToolTip" xml:space="preserve">
@@ -362,7 +362,7 @@ GPa (Steifigkeit) oder GPa^-1 (Nachgiebigkeit).</value>
 Notation): Steifigkeit Cij oder Nachgiebigkeit Sij
 je nach gewähltem Modus. Diagonaler
 Scherterm; im hexagonalen/trigonalen ist er
-(c11-c12)/2 und im kubischen gleich c44. Einheit
+(c11-c12)/2 (Nachgiebigkeit: 2(s11-s12)) und im kubischen gleich c44. Einheit
 GPa (Steifigkeit) oder GPa^-1 (Nachgiebigkeit).</value>
   </data>
   <data name="radioButtonCompliance.ToolTip" xml:space="preserve">
@@ -378,5 +378,18 @@ konstanten Cij interpretieren (Spannung = C x Dehnung), d. h. der
 Steifigkeitstensor in GPa. Die Nachgiebigkeitsmatrix
 S wird als ihr Inverses gehalten. Schließt sich gegenseitig
 mit 'Elastische Nachgiebigkeitskonstante' aus.</value>
+  </data>
+  <data name="labelConstraint.ToolTip" xml:space="preserve">
+    <value>Symmetriebedingung für die elastischen Konstanten (Laue-Klasse
+des Kristalls) in den kartesischen Achsen von ReciPro: x ∥ a*,
+z ∥ c, y = z × x (y ∥ b bei hexagonalen und trigonalen Kristallen).
+Ausgegraute Konstanten sind 0 oder folgen aus den anderen und
+werden beim Bearbeiten einer Konstante ergänzt; geladene Werte
+bleiben bis dahin unverändert. Bei trigonal 32, 3m und -3m liegt
+die 2-zählige Achse entlang x (312, 31m, -31m: c14-Typ) oder
+entlang y (321, 3m1, -3m1, R32, R3m, R-3m: c15-Typ). Für den
+c15-Typ das c14 von Literaturwerten mit x ∥ a (IEEE) als c15
+eingeben (die übrigen bleiben gleich). Bei rhomboedrischen
+Achsen wird keine Bedingung angewendet.</value>
   </data>
 </root>

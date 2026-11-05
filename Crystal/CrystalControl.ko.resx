@@ -240,32 +240,32 @@
   </data>
   <data name="numericBoxStress33.ToolTip" xml:space="preserve">
     <value>Reuss 모델에 사용하는 응력 텐서의 법선 응력
-성분 σ33(c축 방향)으로, 탄성 상수와 동일한
+성분 σ33(시료 z축 방향)으로, 탄성 상수와 동일한
 단위(GPa)입니다.</value>
   </data>
   <data name="numericBoxStress33.ToolTip1" xml:space="preserve">
     <value>Reuss 모델에 사용하는 응력 텐서의 법선 응력
-성분 σ33(c축 방향)으로, 탄성 상수와 동일한
+성분 σ33(시료 z축 방향)으로, 탄성 상수와 동일한
 단위(GPa)입니다.</value>
   </data>
   <data name="numericBoxStress22.ToolTip" xml:space="preserve">
     <value>Reuss 모델에 사용하는 응력 텐서의 법선 응력
-성분 σ22(b축 방향)으로, 탄성 상수와 동일한
+성분 σ22(시료 y축 방향)으로, 탄성 상수와 동일한
 단위(GPa)입니다.</value>
   </data>
   <data name="numericBoxStress22.ToolTip1" xml:space="preserve">
     <value>Reuss 모델에 사용하는 응력 텐서의 법선 응력
-성분 σ22(b축 방향)으로, 탄성 상수와 동일한
+성분 σ22(시료 y축 방향)으로, 탄성 상수와 동일한
 단위(GPa)입니다.</value>
   </data>
   <data name="numericBoxStress11.ToolTip" xml:space="preserve">
     <value>Reuss 모델에 사용하는 응력 텐서의 법선 응력
-성분 σ11(a축 방향)으로, 탄성 상수와 동일한
+성분 σ11(시료 x축 방향)으로, 탄성 상수와 동일한
 단위(GPa)입니다.</value>
   </data>
   <data name="numericBoxStress11.ToolTip1" xml:space="preserve">
     <value>Reuss 모델에 사용하는 응력 텐서의 법선 응력
-성분 σ11(a축 방향)으로, 탄성 상수와 동일한
+성분 σ11(시료 x축 방향)으로, 탄성 상수와 동일한
 단위(GPa)입니다.</value>
   </data>
   <data name="numericBoxStress23.ToolTip" xml:space="preserve">
@@ -300,32 +300,32 @@
   </data>
   <data name="numericBoxStrain33.ToolTip" xml:space="preserve">
     <value>Voigt 모델에 사용하는 부과된 격자 변형 텐서의
-법선 변형 성분 ε33(c축 방향)입니다
+법선 변형 성분 ε33(시료 z축 방향)입니다
 (무차원).</value>
   </data>
   <data name="numericBoxStrain33.ToolTip1" xml:space="preserve">
     <value>Voigt 모델에 사용하는 부과된 격자 변형 텐서의
-법선 변형 성분 ε33(c축 방향)입니다
+법선 변형 성분 ε33(시료 z축 방향)입니다
 (무차원).</value>
   </data>
   <data name="numericBoxStrain11.ToolTip" xml:space="preserve">
     <value>Voigt 모델에 사용하는 부과된 격자 변형 텐서의
-법선 변형 성분 ε11(a축 방향)입니다
+법선 변형 성분 ε11(시료 x축 방향)입니다
 (무차원).</value>
   </data>
   <data name="numericBoxStrain11.ToolTip1" xml:space="preserve">
     <value>Voigt 모델에 사용하는 부과된 격자 변형 텐서의
-법선 변형 성분 ε11(a축 방향)입니다
+법선 변형 성분 ε11(시료 x축 방향)입니다
 (무차원).</value>
   </data>
   <data name="numericBoxStrain22.ToolTip" xml:space="preserve">
     <value>Voigt 모델에 사용하는 부과된 격자 변형 텐서의
-법선 변형 성분 ε22(b축 방향)입니다
+법선 변형 성분 ε22(시료 y축 방향)입니다
 (무차원).</value>
   </data>
   <data name="numericBoxStrain22.ToolTip1" xml:space="preserve">
     <value>Voigt 모델에 사용하는 부과된 격자 변형 텐서의
-법선 변형 성분 ε22(b축 방향)입니다
+법선 변형 성분 ε22(시료 y축 방향)입니다
 (무차원).</value>
   </data>
   <data name="numericBoxStrain12.ToolTip" xml:space="preserve">
@@ -382,12 +382,16 @@
   </data>
   <data name="label109.ToolTip" xml:space="preserve">
     <value>Reuss(균일 응력) 모델에 적용하는 응력 텐서입니다.
-독립적인 6개 성분을 입력합니다(GPa).</value>
+독립적인 6개 성분을 입력합니다(GPa).
+성분은 시료 좌표입니다. x는 검출기의 오른쪽, y는 위쪽,
+z는 빔 방향입니다.</value>
   </data>
   <data name="label102.ToolTip" xml:space="preserve">
     <value>Voigt(균일 변형) 모델에 부과하는 격자 변형
 텐서입니다. 독립적인 6개 성분을 입력합니다
-(무차원).</value>
+(무차원).
+성분은 시료 좌표입니다. x는 검출기의 오른쪽, y는 위쪽,
+z는 빔 방향입니다.</value>
   </data>
   <data name="buttonGenerateRandomOrientations.ToolTip" xml:space="preserve">
     <value>무작위로 배향된 결정자 집단을 생성하여
