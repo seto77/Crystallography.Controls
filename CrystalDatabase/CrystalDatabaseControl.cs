@@ -197,7 +197,11 @@ public partial class CrystalDatabaseControl : UserControlBase
                 {
                     while (fs.Length != fs.Position)
                     {
-                        foreach (var r in deserialize(fs).AsParallel().Select(r => Table.CreateRow(r, Crystal2.Serialize(r))))
+                        // 261105Cl 修正: AsParallel() だけでは結果の順番が保たれず、行がファイルと違う順 (実行ごとに違う) で入っていた
+                        //  (同梱の AMCSD.cdb3 で 21,588 行中 21,000 行以上)。そのまま保存し直すと、圧縮のために雑誌名順に並べてあるファイルの順番が崩れる。
+                        //  AsOrdered() でファイルの順に入れる。読み込み時間は誤差の範囲 (AMCSD.cdb3 の実測で中央値 713 → 639 ms)。読み込んでそのまま保存すると元のファイルと同じバイト列になる。
+                        //foreach (var r in deserialize(fs).AsParallel().Select(r => Table.CreateRow(r, Crystal2.Serialize(r)))) // 261105Cl 変更前
+                        foreach (var r in deserialize(fs).AsParallel().AsOrdered().Select(r => Table.CreateRow(r, Crystal2.Serialize(r)))) // 261105Cl
                             Table.Rows.Add(r);
                         ReadDatabaseWorker.ReportProgress(0, report(Table.Rows.Count, total, sw.ElapsedMilliseconds, "Loading database..."));
                     }
@@ -215,7 +219,8 @@ public partial class CrystalDatabaseControl : UserControlBase
                         while (stream.Length != stream.Position)
                         {
                             //deserialize(stream).AsParallel().Select(Table.CreateRow).ToList().ForEach(Table.Rows.Add);//この書き方だとメモリ使用量が増える
-                            foreach (var row in deserialize(stream).AsParallel().Select(r => Table.CreateRow(r, Crystal2.Serialize(r))))
+                            //foreach (var row in deserialize(stream).AsParallel().Select(r => Table.CreateRow(r, Crystal2.Serialize(r)))) // 261105Cl 変更前
+                            foreach (var row in deserialize(stream).AsParallel().AsOrdered().Select(r => Table.CreateRow(r, Crystal2.Serialize(r)))) // 261105Cl: 上と同じくファイルの順に入れる
                                 Table.Add(row);
 
                             ReadDatabaseWorker.ReportProgress(0, report(Table.Rows.Count, total, sw.ElapsedMilliseconds, "Loading database..."));
@@ -684,7 +689,8 @@ public partial class CrystalDatabaseControl : UserControlBase
         dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
 
         // foreach (var c in crystal2.Where(e => e != null))
-        foreach (var r in crystal2.AsParallel().Where(e => e != null).Select(e => Table.CreateRow(e, Crystal2.Serialize(e))))
+        //foreach (var r in crystal2.AsParallel().Where(e => e != null).Select(e => Table.CreateRow(e, Crystal2.Serialize(e)))) // 261105Cl 変更前
+        foreach (var r in crystal2.AsParallel().AsOrdered().Where(e => e != null).Select(e => Table.CreateRow(e, Crystal2.Serialize(e)))) // 261105Cl 修正: ReadDatabase と同じく、渡された順に入れる (CSManager の一括取り込みで順番が実行ごとに変わっていた)
             Table.Rows.Add(r);
 
         dataGridView.DataMember = originalDataMember;
