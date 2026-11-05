@@ -364,6 +364,7 @@
             indexControl.SubScript = "";
             indexControl.UpDownWidth = 17;
             indexControl.Values = ((int, int, int))resources.GetObject("indexControl1.Values");
+            indexControl.ValueChanged += numericBoxDistance_ValueChanged; // 261105Cl 追加: (hkl) を変えたら距離 (Å) を保って面間隔の倍数 (d×) を計算し直す (以前は未配線で古い d の倍数のまま)。即時更新もここから
             // 
             // BoundControl
             // 
