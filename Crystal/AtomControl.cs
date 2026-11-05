@@ -279,6 +279,9 @@ public partial class AtomControl : UserControlBase
         comboBoxScatteringFactorElectron.SelectedIndex = 0;
 
         // 中性子散乱長
+        // 261105Cl 追加 (監査 A18): 元素を変えたら、前の元素のカスタムの同位体組成を捨てる (以前は残り、同位体の数が同じ元素では
+        // 「Custom」にすると前の元素の組成がそのまま使われた)。SetToInterface では元素を入れた後に原子の組成を入れ直すので影響しない
+        isotopicComposition = null;
         comboBoxNeutron.SelectedIndex = 0;
         comboBoxNeutron_SelectedIndexChanged(this, EventArgs.Empty);
 
@@ -482,7 +485,10 @@ public partial class AtomControl : UserControlBase
         var dsf = GetDsfFromInterface(UseTypeU); // 261105Cl 変更
         var material = new Material(AtomColor.ToArgb(), (Ambient, Diffusion, Specular, Shininess, Emission), Alpha);
 
-        return new Atoms(Label, AtomNo, AtomSubNoXray, AtomSubNoElectron, IsotopicComposition,
+        //return new Atoms(Label, AtomNo, AtomSubNoXray, AtomSubNoElectron, IsotopicComposition, // 261105Cl 変更前
+        // 261105Cl 変更 (監査 A18): 「Natural isotope abundance」を選んでいるときは、前に設定したカスタムの同位体組成を渡さない
+        // (以前は渡していたので、Natural に戻しても中性子の散乱長にカスタムの組成が使われ続けた)
+        return new Atoms(Label, AtomNo, AtomSubNoXray, AtomSubNoElectron, comboBoxNeutron.SelectedIndex == 1 ? IsotopicComposition : null,
             SymmetrySeriesNumber, new Vector3D(X, Y, Z), new Vector3D(XErr, YErr, ZErr), Occ, OccErr, dsf,
             material, (float)Radius, true, ShowLabel);
     }
