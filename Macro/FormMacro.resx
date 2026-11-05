@@ -1072,7 +1072,7 @@
     <value>True</value>
   </metadata>
   <data name="Column1.HeaderText" xml:space="preserve">
-    <value>Built-in functions or propeties</value>
+    <value>Built-in functions or properties</value>
   </data>
   <data name="Column1.Width" type="System.Int32, mscorlib">
     <value>250</value>
