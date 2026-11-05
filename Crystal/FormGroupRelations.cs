@@ -717,7 +717,8 @@ public partial class FormGroupRelations : FormBase
             //    sb.AppendLine(Loc(en: "Operations below are expressed in the supergroup's own setting.", ja: "以下の操作は超群自身の設定で表示しています。", de: "Die Operationen unten sind in der eigenen Aufstellung der Obergruppe angegeben.", fr: "Les opérations ci-dessous sont exprimées dans le repère propre du supergroupe.", es: "Las operaciones siguientes se expresan en el propio ajuste del supergrupo.", pt: "As operações abaixo são expressas na própria configuração do supergrupo.", it: "Le operazioni sottostanti sono espresse nella impostazione propria del supergruppo.", ru: "Операции ниже приведены в собственной установке надгруппы.", zhHans: "以下操作以超群自身的设置表示。", zhHant: "以下操作以超群自身的設定表示。", ko: "아래 연산은 초군 자체의 설정으로 표시됩니다."));
             //}
             labelLatex2.Text = BuildTransformationLatex(viewFromChild);
-            labelLatex3.Text = BuildMatrixLatex(P, p);
+            //labelLatex3.Text = BuildMatrixLatex(P, p); // 261105Cl 変更前: 超群側では値が P⁻¹ なのに見出しが「P=」だった
+            labelLatex3.Text = BuildMatrixLatex(P, p, viewFromChild); // 261105Cl 変更
         }
         else
         {
@@ -2068,7 +2069,10 @@ public partial class FormGroupRelations : FormBase
             ? @"\mathrm{Transformation\,to\,supergroup\,basis}\,\, (a',b',c')=(a,b,c)P^{-1}"
             : @"\mathrm{Transformation\,to\,subgroup\,basis}\,\, (a',b',c')=(a,b,c)P";
 
-    private static string BuildMatrixLatex(double[] P, double[] p)
+    //private static string BuildMatrixLatex(double[] P, double[] p) // 261105Cl 変更前のシグネチャ
+    /// <param name="inverse">261105Cl 追加: true のとき P・p は (P,p)⁻¹ = (P⁻¹, −P⁻¹p) の値 (Minimal supergroups 側)。見出しを P⁻¹・−P⁻¹p にする
+    /// (上の行の「(a',b',c')=(a,b,c)P⁻¹」と合わせる)。</param>
+    private static string BuildMatrixLatex(double[] P, double[] p, bool inverse = false) // 261105Cl 変更
     {
         // 260717Cl: LatexFrac は 260706Ch の横方向分数化以降 Frac への素通しだったためインライン化。
         string[] rows =
@@ -2083,7 +2087,9 @@ public partial class FormGroupRelations : FormBase
             p?.Length > 1 ? Frac(p[1]) : "?",
             p?.Length > 2 ? Frac(p[2]) : "?",
         ];
-        return $@"P=\left(\matrix{{{string.Join(@" \\ ", rows)}}}\right)\,\,\,\, p=\left(\matrix{{{string.Join(@" \\ ", shift)}}}\right)";
+        //return $@"P=\left(\matrix{{{string.Join(@" \\ ", rows)}}}\right)\,\,\,\, p=\left(\matrix{{{string.Join(@" \\ ", shift)}}}\right)"; // 261105Cl 変更前
+        var (nameP, nameShift) = inverse ? (@"P^{-1}", @"-P^{-1}p") : ("P", "p"); // 261105Cl 追加
+        return $@"{nameP}=\left(\matrix{{{string.Join(@" \\ ", rows)}}}\right)\,\,\,\, {nameShift}=\left(\matrix{{{string.Join(@" \\ ", shift)}}}\right)"; // 261105Cl 変更
     }
 
     // 260706Ch: FormSymmetryInformation.ToLatex と同種の変換 (sub->下付き・-N->\bar{N}) を独自実装していたが、
