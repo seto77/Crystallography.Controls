@@ -269,7 +269,14 @@ public partial class CrystalDatabaseControl : UserControlBase
 
         var fn = (string)e.Argument;
 
-        var total = Table.Count;
+        //var total = Table.Count; // 261105Cl 変更前
+        // 261105Cl 修正: 検索で絞り込み中 (bindingSource.Filter = "Flag = true") に保存すると、件数は全行 (Table.Count) なのに行は絞り込み後の
+        //  bindingSource[j] から読んでいたため範囲外の例外になり、ヘッダ (5 バイト) だけのファイルが残ったうえ成功と表示されていた。
+        //  絞り込みに関わらず全行を書く。並び順は従来どおり表示中の並べ替え (列見出しのクリック等) に従う。行のバイト列は参照を集めるだけ (複製しない)。
+        byte[][] rows; // 261105Cl 追加
+        using (var view = new DataView(Table, "", (bindingSource.List as DataView)?.Sort ?? "", DataViewRowState.CurrentRows)) // 261105Cl 追加
+            rows = [.. view.Cast<DataRowView>().Select(r => (byte[])r.Row[0])]; // 261105Cl 追加
+        var total = rows.Length; // 261105Cl
 
         var thresholdBytes = 35_000_000;
         var division = 2500;//分割単位 たぶんパフォーマンスに効く
@@ -293,7 +300,8 @@ public partial class CrystalDatabaseControl : UserControlBase
             var crystal2List = new List<Crystal2>();
             for (int j = i * division; j < total && j < (i + 1) * division; j++)
             {
-                var c = Crystal2.Deserialize((byte[])((DataRowView)bindingSource[j]).Row[0]);
+                //var c = Crystal2.Deserialize((byte[])((DataRowView)bindingSource[j]).Row[0]); // 261105Cl 変更前
+                var c = Crystal2.Deserialize(rows[j]); // 261105Cl
                 //c.datatype = (byte)Crystal2.DataType.COD;
                 crystal2List.Add(c);
             }
@@ -380,6 +388,13 @@ public partial class CrystalDatabaseControl : UserControlBase
     private void SaveDatabaseWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
     {
         this.Enabled = true;
+        // 261105Cl 修正: DoWork の例外 (e.Error) を見ずに常に成功と表示していた。失敗は進捗メッセージとダイアログで知らせる (読み込み失敗時と同じ形)。
+        if (e.Error != null) // 261105Cl 追加
+        {
+            ProgressChanged?.Invoke(sender, 1, $"Failed to save database: {e.Error.GetBaseException().Message}"); // 261105Cl 追加
+            MessageBox.Show($"{e.Error}\r\nFailed to save database. Sorry."); // 261105Cl 追加
+            return; // 261105Cl 追加
+        }
         ProgressChanged?.Invoke(sender, 1, $"Total saving time: {sw.ElapsedMilliseconds / 1E3:f1} sec.");
         // 260428Cl Application.DoEvents() を削除 (RunWorkerCompleted は UI スレッドで動作するため不要)
     }
