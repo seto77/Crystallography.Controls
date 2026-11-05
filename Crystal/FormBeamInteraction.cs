@@ -200,7 +200,9 @@ public partial class FormBeamInteraction : FormBase
     // CrystalControl で Crystal が変更されたとき
     private void crystalControl_CrystalChanged(object sender, EventArgs e)
     {
-        numericBoxCutoffD.Minimum = (Crystal.A + Crystal.B + Crystal.C) / 20;
+        //numericBoxCutoffD.Minimum = (Crystal.A + Crystal.B + Crystal.C) / 20; // 261105Cl 変更前
+        // 261105Cl 変更 (監査 J8): 欄の表示単位に合わせる (Crystal.A などは nm)。以前は Å 表示 (既定) のとき下限が 1/10 になっていた
+        numericBoxCutoffD.Minimum = (Crystal.A + Crystal.B + Crystal.C) / 20 * (LengthUnit == LengthUnitEnum.Angstrom ? 10 : 1); // 261105Cl
         attenMc = null;//260606Cl 結晶変更で電子輸送 MonteCarlo を無効化(組成変化で ElasticComponents が古くなるため)
         if (Visible)
         {
@@ -240,7 +242,9 @@ public partial class FormBeamInteraction : FormBase
         foreach (DataGridViewRow row in dataGridView.Rows)
         {
             foreach (var column in columns)
-                sb.Append(row.Cells[column.Index].Value).Append('\t');
+                //sb.Append(row.Cells[column.Index].Value).Append('\t'); // 261105Cl 変更前
+                // 261105Cl 変更 (監査 J9): 六方晶の i 列は CellFormatting で −(h+k) を出すだけの列 (Value は空) なので、表示している値を写す。他の列は従来どおり生の値
+                sb.Append(column == dataGridViewTextBoxColumnI ? row.Cells[column.Index].FormattedValue : row.Cells[column.Index].Value).Append('\t'); // 261105Cl
             sb.AppendLine();
         }
         Clipboard.SetText(sb.ToString());
@@ -311,6 +315,8 @@ public partial class FormBeamInteraction : FormBase
 
                     max = Math.Max(max, c.VectorOfG[i].RawIntensity);
                 }
+                else // 261105Cl 追加 (監査 J25): 届かない反射 (d < λ/2) と代表でない等価面は粉末の強度 0。以前は |F|² のまま残り、BB の強度の最大で割った意味のない相対強度が表に出ていた
+                    c.VectorOfG[i].RawIntensity = 0; // 261105Cl
             }
 
             for (int i = 0; i < c.VectorOfG.Length; i++)
@@ -443,7 +449,9 @@ public partial class FormBeamInteraction : FormBase
                     var twoTheta = 2 * Math.Asin(gLength * waveLength / 2) / Math.PI * 180;
                     var f = Crystal.GetStructureFactor(waveSource, c.Atoms, (h, k, l), 1 / d / d / 4.0, xrayEnergyKeV: waveLengthControl.Energy);//260606Cl 異常分散を本表(SetSortedPlanes)と整合させる(X線時のみ有効, 既定ON)
 
-                    dataSet.DataTableScatteringFactor.Add(h, k, l, 1, d, twoTheta, f, f.MagnitudeSquared(), []);
+                    //dataSet.DataTableScatteringFactor.Add(h, k, l, 1, d, twoTheta, f, f.MagnitudeSquared(), []); // 261105Cl 変更前
+                    // 261105Cl 変更 (監査 J10): 表の d は列の見出し (d (Å) / d (nm)) の単位で入れる (SetSortedPlanes と同じ)。以前は見出しが Å でも nm の値だった
+                    dataSet.DataTableScatteringFactor.Add(h, k, l, 1, LengthUnit == LengthUnitEnum.NanoMeter ? d : d * 10, twoTheta, f, f.MagnitudeSquared(), []); // 261105Cl
                     peaks.Add((twoTheta, f.MagnitudeSquared(), 0, 0, 0));//260607Cl 強度=|F|² (指数は未使用)
                 }
         dataGridView.DefaultCellStyle.Format = "g8";
@@ -466,7 +474,18 @@ public partial class FormBeamInteraction : FormBase
     {
         dataGridViewTextBoxColumnD.HeaderText = LengthUnit == LengthUnitEnum.Angstrom ? "d (Å)" : "d (nm)";
         numericBoxCutoffD.FooterText = LengthUnit == LengthUnitEnum.Angstrom ? "Å" : "nm";
-        numericBoxCutoffD.Value = LengthUnit == LengthUnitEnum.Angstrom ? numericBoxCutoffD.Value * 10 : numericBoxCutoffD.Value / 10;
+        //numericBoxCutoffD.Value = LengthUnit == LengthUnitEnum.Angstrom ? numericBoxCutoffD.Value * 10 : numericBoxCutoffD.Value / 10; // 261105Cl 変更前
+        // 261105Cl 変更 (監査 J8): 下限も単位と一緒に換算する。値が下限で切られないよう、nm→Å は値を先に、Å→nm は下限を先に変える
+        if (LengthUnit == LengthUnitEnum.Angstrom) // 261105Cl
+        {
+            numericBoxCutoffD.Value *= 10; // 261105Cl
+            numericBoxCutoffD.Minimum *= 10; // 261105Cl
+        }
+        else
+        {
+            numericBoxCutoffD.Minimum /= 10; // 261105Cl
+            numericBoxCutoffD.Value /= 10; // 261105Cl
+        }
     }
 
     private void dataGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -1469,7 +1488,9 @@ public partial class FormBeamInteraction : FormBase
             scalarRows.Add([$"ω_K ({AtomStatic.AtomicName(z)})", double.IsNaN(wk) ? "N/A" : wk.ToString("g3")]);
         }
         scalarRows.Add([Loc("strongest line", "最強線"), strongest]);  //260608Cl ラベルを Loc() 化 (ω_K は記号で据置)
-        scalarRows.Add([Loc("source", "出典"), xrl ? "internal (E) / xraylib (I, ω)" : "internal (E only)"]);
+        //scalarRows.Add([Loc("source", "出典"), xrl ? "internal (E) / xraylib (I, ω)" : "internal (E only)"]); // 261105Cl 変更前
+        // 261105Cl 変更 (監査 J13): xraylib が有効なときは線のエネルギーも xraylib から取っている (上のループの LineEnergyKeV)。以前の表示は「E は内蔵」だった
+        scalarRows.Add([Loc("source", "出典"), xrl ? "xraylib (E, I, ω)" : "internal (E only)"]); // 261105Cl
         miniTableFluorScalars.SetRows(scalarRows);
 
         // EDX スティック: 各線を (E,0)-(E,h) の 2 点プロファイルで描く (高さは最大で正規化)
