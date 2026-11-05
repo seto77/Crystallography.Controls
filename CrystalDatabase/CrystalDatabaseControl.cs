@@ -281,7 +281,17 @@ public partial class CrystalDatabaseControl : UserControlBase
         var thresholdBytes = 35_000_000;
         var division = 2500;//分割単位 たぶんパフォーマンスに効く
 
-        using var fs = new FileStream(fn, FileMode.Create, FileAccess.Write);
+        //using var fs = new FileStream(fn, FileMode.Create, FileAccess.Write); // 261105Cl 変更前
+        // 261105Cl 修正: 対象を先に FileMode.Create で切り詰めてから書いていたため、途中で失敗すると (容量不足、行の読み出しの例外など)
+        //  壊れたデータベース (ヘッダだけ、または書きかけ) が残った。同じフォルダの一時ファイル (本体 "<fn>.tmp"、分割ファイルも各 ".tmp") へ書き、
+        //  全部書けてから名前を付け替えて置き換える (分割ファイル → 本体の順)。失敗したら一時ファイルを消し、元のファイルはそのまま残す。
+        //  例外はそのまま投げ直し、従来どおり RunWorkerCompleted (e.Error) で知らせる。
+        var tmpFn = fn + ".tmp"; // 261105Cl 追加
+        var parts = new List<(string Tmp, string Final)>(); // 261105Cl 追加: 書いた分割ファイル (一時ファイル名, 置き換え先)
+        try // 261105Cl 追加
+        { // 261105Cl 追加
+        using (var fs = new FileStream(tmpFn, FileMode.Create, FileAccess.Write)) // 261105Cl
+        { // 261105Cl 追加
 
         writeByte(fs, 100);//とりあえず先頭に100 (分割なし)を書き込む
         writeInt(fs, total);//データの個数を書き込む
@@ -326,7 +336,9 @@ public partial class CrystalDatabaseControl : UserControlBase
             {
                 if (fileCounter == 0)
                     Directory.CreateDirectory(fn[..^5]);
-                using (var fs1 = new FileStream(header + fileCounter.ToString("000"), FileMode.Create, FileAccess.Write))
+                //using (var fs1 = new FileStream(header + fileCounter.ToString("000"), FileMode.Create, FileAccess.Write)) // 261105Cl 変更前
+                parts.Add((header + fileCounter.ToString("000") + ".tmp", header + fileCounter.ToString("000"))); // 261105Cl 追加
+                using (var fs1 = new FileStream(parts[^1].Tmp, FileMode.Create, FileAccess.Write)) // 261105Cl
                     // 260712Cl 変更: 上記と同じく全コピーを避けて内部配列を直接書き込み
                     // fs1.Write([.. byteList], 0, byteList.Count); // 260712Cl 変更前
                     fs1.Write(CollectionsMarshal.AsSpan(byteList));
@@ -375,11 +387,24 @@ public partial class CrystalDatabaseControl : UserControlBase
                 writeLong(fs, fileSize[i]);
             //チェックサムを書き込み
             for (int i = 0; i < fileCounter; i++)
-                writeBytes(fs, getMD5(header + i.ToString("000")));
+                //writeBytes(fs, getMD5(header + i.ToString("000"))); // 261105Cl 変更前
+                writeBytes(fs, getMD5(parts[i].Tmp)); // 261105Cl: 一時ファイルの MD5 (置き換え後も同じ内容)
             //最後に先頭に戻って200を書き込み
             fs.Position = 0;
             writeByte(fs, 200);
         }
+        } // 261105Cl 追加: ここで一時ファイルを閉じる
+
+        foreach (var (tmp, final) in parts) // 261105Cl 追加: 全部書けたので置き換える (同じフォルダ内の名前の付け替え)
+            File.Move(tmp, final, true); // 261105Cl 追加
+        File.Move(tmpFn, fn, true); // 261105Cl 追加
+        } // 261105Cl 追加
+        catch // 261105Cl 追加: 一時ファイルを消して投げ直す。置き換えの前に失敗したときは、元のファイルは触っていない
+        { // 261105Cl 追加
+            foreach (var t in parts.Select(p => p.Tmp).Append(tmpFn)) // 261105Cl 追加
+                try { File.Delete(t); } catch (IOException) { } catch (UnauthorizedAccessException) { } // 261105Cl 追加: 後始末の失敗で元の例外を隠さない
+            throw; // 261105Cl 追加
+        } // 261105Cl 追加
     }
 
     // 260717Cl: worker_ProgressChanged へ統合 (本体が完全同一だった)。
