@@ -24,9 +24,21 @@ public partial class FormCrystalSelection : FormBase
         set
         {
             saveMode = value; loadMode = !value;
-            buttonLoadOrSave.Text = saveMode ? "Save" : "Load";
+            //buttonLoadOrSave.Text = saveMode ? "Save" : "Load"; // 261105Cl 変更前
+            // 261105Cl 変更 (監査 J7): 表示言語の訳にする (訳は LocalizationData の buttonLoadOrSave・buttonSaveBackGround と同じ語)
+            buttonLoadOrSave.Text = saveMode
+                ? Localization.Loc(en: "Save", ja: "保存", de: "Speichern", fr: "Enregistrer", es: "Guardar", pt: "Salvar", it: "Salva", ru: "Сохранить", zhHans: "保存", zhHant: "儲存", ko: "저장")
+                : Localization.Loc(en: "Load", ja: "開く", de: "Laden", fr: "Charger", es: "Cargar", pt: "Carregar", it: "Carica", ru: "Загрузить", zhHans: "载入", zhHant: "載入", ko: "불러오기");
         }
         get => saveMode;
+    }
+
+    // 261105Cl 追加 (監査 J7): FormBase.OnLoad の CodeLocalizer が buttonLoadOrSave に表の「Load / 開く」を当てるので、
+    //  保存のダイアログでもボタンが「開く」になっていた。表の適用の後で、モードに合う文字に戻す
+    protected override void OnLoad(EventArgs e)
+    {
+        base.OnLoad(e);
+        SaveMode = saveMode;
     }
 
     private bool loadMode = false;
@@ -105,8 +117,10 @@ public partial class FormCrystalSelection : FormBase
 
     private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
     {
-        var list = CheckedCrystalList; // 260717Cl: 呼ぶたび配列を再構築する getter の二重評価を 1 回に
-        if (list.Length > e.Index && list[e.Index].Reserved)
+        //var list = CheckedCrystalList; // 260717Cl: 呼ぶたび配列を再構築する getter の二重評価を 1 回に // 261105Cl 変更前
+        //if (list.Length > e.Index && list[e.Index].Reserved) // 261105Cl 変更前
+        // 261105Cl 変更 (監査 J22): e.Index は全項目の中の番号。以前はチェック済みの項目だけの配列をその番号で引いたので、別の結晶の Reserved を見ていた
+        if (e.Index >= 0 && e.Index < checkedListBox1.Items.Count && checkedListBox1.Items[e.Index] is Crystal { Reserved: true }) // 261105Cl
             e.NewValue = CheckState.Checked;
     }
 
