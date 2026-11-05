@@ -113,7 +113,68 @@ public partial class FormBeamInteraction : FormBase
     }
 
     /// <summary>UIカルチャ(ja)に応じてグラフ見出し・ツールチップ・コンボ項目の日本語/英語を返す。260607Cl 追加。</summary>
-    private static string Loc(string en, string ja) => System.Globalization.CultureInfo.CurrentUICulture.Name == "ja" ? ja : en;
+    //private static string Loc(string en, string ja) => System.Globalization.CultureInfo.CurrentUICulture.Name == "ja" ? ja : en; // 261105Cl 変更前
+    // 261105Cl 変更 (監査 J11): ja 以外の 9 言語も訳す (以前はグラフの見出し・表の行名が 9 言語で英語のままだった)。
+    //  呼び出し側はそのまま (en, ja) を渡し、他の言語の訳は下の locTable を英語の文字列で引いて Localization.Loc で選ぶ。表に無い文字列 (IMFP など、ラジオの訳も英語のもの) は英語
+    private static string Loc(string en, string ja)
+        => locTable.TryGetValue(en, out var t)
+            ? Localization.Loc(en: en, ja: ja, de: t.de, fr: t.fr, es: t.es, pt: t.pt, it: t.it, ru: t.ru, zhHans: t.zhHans, zhHant: t.zhHant, ko: t.ko)
+            : Localization.Loc(en: en, ja: ja);
+
+    // 261105Cl 追加 (監査 J11): Loc(en, ja) の 9 言語の訳 (英語の文字列で引く)。用語はこのフォームの resx (ラジオ・タブ・ツールチップ) の訳に合わせた
+    private static readonly Dictionary<string, (string de, string fr, string es, string pt, string it, string ru, string zhHans, string zhHant, string ko)> locTable = new()
+    {
+        // --- 軸ラベル・凡例ラベル・単位 ---
+        ["Elastic MFP (nm)"] = ("Elastische MFP (nm)", "MFP élastique (nm)", "MFP elástico (nm)", "MFP elástico (nm)", "MFP elastico (nm)", "Упругий MFP (nm)", "弹性 MFP (nm)", "彈性 MFP (nm)", "탄성 MFP (nm)"),
+        ["F(q), S(q) (electrons)"] = ("F(q), S(q) (Elektronen)", "F(q), S(q) (électrons)", "F(q), S(q) (electrones)", "F(q), S(q) (elétrons)", "F(q), S(q) (elettroni)", "F(q), S(q) (электроны)", "F(q), S(q) (电子数)", "F(q), S(q) (電子數)", "F(q), S(q) (전자 수)"),
+        ["Normalized"] = ("Normiert", "Normalisé", "Normalizado", "Normalizado", "Normalizzato", "Нормированное", "归一化", "正規化", "정규화"),
+        ["Range CSDA (µm)"] = ("Reichweite CSDA (µm)", "Portée CSDA (µm)", "Alcance CSDA (µm)", "Alcance CSDA (µm)", "Percorso CSDA (µm)", "Пробег CSDA (µm)", "射程 CSDA (µm)", "射程 CSDA (µm)", "비정 CSDA (µm)"),
+        ["Relative intensity"] = ("Relative Intensität", "Intensité relative", "Intensidad relativa", "Intensidade relativa", "Intensità relativa", "Относительная интенсивность", "相对强度", "相對強度", "상대 강도"),
+        ["σ elastic (nm²)"] = ("σ elastisch (nm²)", "σ élastique (nm²)", "σ elástica (nm²)", "σ elástica (nm²)", "σ elastica (nm²)", "σ упругое (nm²)", "σ 弹性 (nm²)", "σ 彈性 (nm²)", "σ 탄성 (nm²)"),
+        ["Transmission (%)"] = ("Transmission (%)", "Transmission (%)", "Transmisión (%)", "Transmissão (%)", "Trasmissione (%)", "Пропускание (%)", "透射率 (%)", "透射率 (%)", "투과율 (%)"),
+        ["f (electrons)"] = ("f (Elektronen)", "f (électrons)", "f (electrones)", "f (elétrons)", "f (elettroni)", "f (электроны)", "f (电子数)", "f (電子數)", "f (전자 수)"),
+        ["norm:"] = ("norm.:", "norm.:", "norm.:", "norm.:", "norm.:", "норм.:", "归一化:", "正規化:", "정규화:"),
+        ["Range:"] = ("Reichweite:", "Portée:", "Alcance:", "Alcance:", "Percorso:", "Пробег:", "射程:", "射程:", "비정:"),
+        [" electrons"] = (" Elektronen", " électrons", " electrones", " elétrons", " elettroni", " электронов", " 个电子", " 個電子", " 전자"),
+        // --- グラフのタイトル ---
+        ["EDX requires xraylib"] = ("EDX erfordert xraylib", "EDX nécessite xraylib", "EDX requiere xraylib", "EDX requer xraylib", "EDX richiede xraylib", "Для EDX требуется xraylib", "EDX 需要 xraylib", "EDX 需要 xraylib", "EDX에는 xraylib가 필요합니다"),
+        ["EDX emission lines"] = ("EDX-Emissionslinien", "Raies d'émission EDX", "Líneas de emisión EDX", "Linhas de emissão EDX", "Righe di emissione EDX", "Линии излучения EDX", "EDX 发射谱线", "EDX 發射譜線", "EDX 방출선"),
+        ["Electron transport"] = ("Elektronentransport", "Transport des électrons", "Transporte de electrones", "Transporte de elétrons", "Trasporto degli elettroni", "Перенос электронов", "电子输运", "電子輸運", "전자 수송"),
+        ["F(q) coherent and S(q) incoherent scattering"] = ("F(q) kohärente und S(q) inkohärente Streuung", "Diffusion cohérente F(q) et incohérente S(q)", "Dispersión coherente F(q) e incoherente S(q)", "Espalhamento coerente F(q) e incoerente S(q)", "Diffusione coerente F(q) e incoerente S(q)", "Когерентное F(q) и некогерентное S(q) рассеяние", "F(q) 相干与 S(q) 非相干散射", "F(q) 同調與 S(q) 非同調散射", "F(q) 가간섭성 및 S(q) 비간섭성 산란"),
+        ["F(q)+S(q) requires xraylib"] = ("F(q)+S(q) erfordert xraylib", "F(q)+S(q) nécessite xraylib", "F(q)+S(q) requiere xraylib", "F(q)+S(q) requer xraylib", "F(q)+S(q) richiede xraylib", "Для F(q)+S(q) требуется xraylib", "F(q)+S(q) 需要 xraylib", "F(q)+S(q) 需要 xraylib", "F(q)+S(q)에는 xraylib가 필요합니다"),
+        ["Linear attenuation coefficient µ (photoabsorption only)"] = ("Linearer Schwächungskoeffizient µ (nur Photoabsorption)", "Coefficient d'atténuation linéaire µ (photoabsorption seule)", "Coeficiente de atenuación lineal µ (solo fotoabsorción)", "Coeficiente de atenuação linear µ (apenas fotoabsorção)", "Coefficiente di attenuazione lineare µ (solo fotoassorbimento)", "Линейный коэффициент ослабления µ (только фотопоглощение)", "线性衰减系数 µ（仅光电吸收）", "線性衰減係數 µ（僅光電吸收）", "선형 감쇠 계수 µ (광전 흡수만)"),
+        ["Mass attenuation coefficient µ/ρ (photoabsorption only)"] = ("Massenschwächungskoeffizient µ/ρ (nur Photoabsorption)", "Coefficient d'atténuation massique µ/ρ (photoabsorption seule)", "Coeficiente de atenuación másico µ/ρ (solo fotoabsorción)", "Coeficiente de atenuação de massa µ/ρ (apenas fotoabsorção)", "Coefficiente di attenuazione di massa µ/ρ (solo fotoassorbimento)", "Массовый коэффициент ослабления µ/ρ (только фотопоглощение)", "质量衰减系数 µ/ρ（仅光电吸收）", "質量衰減係數 µ/ρ（僅光電吸收）", "질량 감쇠 계수 µ/ρ (광전 흡수만)"),
+        ["Mass attenuation coefficient µ/ρ"] = ("Massenschwächungskoeffizient µ/ρ", "Coefficient d'atténuation massique µ/ρ", "Coeficiente de atenuación másico µ/ρ", "Coeficiente de atenuação de massa µ/ρ", "Coefficiente di attenuazione di massa µ/ρ", "Массовый коэффициент ослабления µ/ρ", "质量衰减系数 µ/ρ", "質量衰減係數 µ/ρ", "질량 감쇠 계수 µ/ρ"),
+        ["Linear attenuation coefficient µ"] = ("Linearer Schwächungskoeffizient µ", "Coefficient d'atténuation linéaire µ", "Coeficiente de atenuación lineal µ", "Coeficiente de atenuação linear µ", "Coefficiente di attenuazione lineare µ", "Линейный коэффициент ослабления µ", "线性衰减系数 µ", "線性衰減係數 µ", "선형 감쇠 계수 µ"),
+        ["Neutron cross sections are listed in the table (no energy graph)"] = ("Neutronen-Wirkungsquerschnitte stehen in der Tabelle (keine Energiekurve)", "Les sections efficaces neutroniques figurent dans le tableau (pas de courbe en énergie)", "Las secciones eficaces de neutrones se muestran en la tabla (sin gráfica de energía)", "As seções de choque de nêutrons estão na tabela (sem gráfico de energia)", "Le sezioni d'urto neutroniche sono elencate nella tabella (nessun grafico in energia)", "Нейтронные сечения приведены в таблице (график по энергии не строится)", "中子截面列于表中（无能量曲线）", "中子截面列於表中（無能量曲線）", "중성자 단면적은 표에 나와 있습니다 (에너지 그래프 없음)"),
+        ["Neutron scattering length b does not depend on s (no curve)"] = ("Die Neutronen-Streulänge b hängt nicht von s ab (keine Kurve)", "La longueur de diffusion neutronique b ne dépend pas de s (pas de courbe)", "La longitud de dispersión de neutrones b no depende de s (sin curva)", "O comprimento de espalhamento de nêutrons b não depende de s (sem curva)", "La lunghezza di diffusione neutronica b non dipende da s (nessuna curva)", "Длина рассеяния нейтронов b не зависит от s (кривая не строится)", "中子散射长度 b 与 s 无关（无曲线）", "中子散射長度 b 與 s 無關（無曲線）", "중성자 산란 길이 b는 s에 의존하지 않습니다 (곡선 없음)"),
+        ["{0} vs electron energy"] = ("{0} über der Elektronenenergie", "{0} en fonction de l'énergie des électrons", "{0} frente a la energía del electrón", "{0} em função da energia do elétron", "{0} in funzione dell'energia dell'elettrone", "{0} в зависимости от энергии электронов", "{0} 随电子能量的变化", "{0} 隨電子能量的變化", "{0} 대 전자 에너지"),
+        ["Electron scattering factor fe(s)"] = ("Elektronen-Streufaktor fe(s)", "Facteur de diffusion des électrons fe(s)", "Factor de dispersión de electrones fe(s)", "Fator de espalhamento de elétrons fe(s)", "Fattore di diffusione per elettroni fe(s)", "Электронный фактор рассеяния fe(s)", "电子散射因子 fe(s)", "電子散射因子 fe(s)", "전자 산란 인자 fe(s)"),
+        ["X-ray atomic scattering factor f(s)"] = ("Atomarer Röntgen-Streufaktor f(s)", "Facteur de diffusion atomique des rayons X f(s)", "Factor de dispersión atómica de rayos X f(s)", "Fator de espalhamento atômico de raios X f(s)", "Fattore di diffusione atomica per raggi X f(s)", "Рентгеновский атомный фактор рассеяния f(s)", "X射线原子散射因子 f(s)", "X 射線原子散射因子 f(s)", "X선 원자 산란 인자 f(s)"),
+        ["Transmission for thickness t = {0}"] = ("Transmission bei Dicke t = {0}", "Transmission pour une épaisseur t = {0}", "Transmisión para un espesor t = {0}", "Transmissão para espessura t = {0}", "Trasmissione per spessore t = {0}", "Пропускание при толщине t = {0}", "厚度 t = {0} 时的透射率", "厚度 t = {0} 時的透射率", "두께 t = {0}에서의 투과율"),
+        // --- スカラ表の行名 ---
+        ["µ/ρ (total)"] = ("µ/ρ (gesamt)", "µ/ρ (total)", "µ/ρ (total)", "µ/ρ (total)", "µ/ρ (totale)", "µ/ρ (полный)", "µ/ρ (总)", "µ/ρ (總)", "µ/ρ (전체)"),
+        ["µ (linear)"] = ("µ (linear)", "µ (linéaire)", "µ (lineal)", "µ (linear)", "µ (lineare)", "µ (линейный)", "µ (线性)", "µ (線性)", "µ (선형)"),
+        ["Attenuation length"] = ("Schwächungslänge", "Longueur d'atténuation", "Longitud de atenuación", "Comprimento de atenuação", "Lunghezza di attenuazione", "Длина ослабления", "衰减长度", "衰減長度", "감쇠 길이"),
+        ["Transmission"] = ("Transmission", "Transmission", "Transmisión", "Transmissão", "Trasmissione", "Пропускание", "透射率", "透射率", "투과율"),
+        ["θc (critical)"] = ("θc (kritisch)", "θc (critique)", "θc (crítico)", "θc (crítico)", "θc (critico)", "θc (критический)", "θc (临界角)", "θc (臨界角)", "θc (임계각)"),
+        ["X-ray SLD (Re)"] = ("Röntgen-SLD (Re)", "SLD rayons X (Re)", "SLD de rayos X (Re)", "SLD de raios X (Re)", "SLD raggi X (Re)", "Рентгеновская SLD (Re)", "X射线 SLD (实部)", "X 射線 SLD (實部)", "X선 SLD (실수부)"),
+        ["source"] = ("Quelle", "source", "fuente", "fonte", "fonte", "источник", "来源", "來源", "출처"),
+        ["λ (electron)"] = ("λ (Elektron)", "λ (électron)", "λ (electrón)", "λ (elétron)", "λ (elettrone)", "λ (электрон)", "λ (电子)", "λ (電子)", "λ (전자)"),
+        ["σ elastic"] = ("σ elastisch", "σ élastique", "σ elástica", "σ elástica", "σ elastica", "σ упругое", "σ 弹性", "σ 彈性", "σ 탄성"),
+        ["Elastic MFP"] = ("Elastische MFP", "MFP élastique", "MFP elástico", "MFP elástico", "MFP elastico", "Упругий MFP", "弹性 MFP", "彈性 MFP", "탄성 MFP"),
+        ["|dE/ds| (loss)"] = ("|dE/ds| (Verlust)", "|dE/ds| (perte)", "|dE/ds| (pérdida)", "|dE/ds| (perda)", "|dE/ds| (perdita)", "|dE/ds| (потери)", "|dE/ds| (损失)", "|dE/ds| (損失)", "|dE/ds| (손실)"),
+        ["Plasma E"] = ("Plasma-E", "E plasma", "E de plasma", "E de plasma", "E di plasma", "Плазменная E", "等离子体 E", "電漿 E", "플라스마 E"),
+        ["J (mean exc.)"] = ("J (mittl. Anregung)", "J (excit. moyenne)", "J (excit. media)", "J (excit. média)", "J (eccit. media)", "J (сред. возбужд.)", "J (平均激发)", "J (平均激發)", "J (평균 여기)"),
+        ["Range (Kanaya-Okayama)"] = ("Reichweite (Kanaya-Okayama)", "Portée (Kanaya-Okayama)", "Alcance (Kanaya-Okayama)", "Alcance (Kanaya-Okayama)", "Percorso (Kanaya-Okayama)", "Пробег (Kanaya-Okayama)", "射程 (Kanaya-Okayama)", "射程 (Kanaya-Okayama)", "비정 (Kanaya-Okayama)"),
+        ["Range (CSDA path)"] = ("Reichweite (CSDA-Weg)", "Portée (parcours CSDA)", "Alcance (trayectoria CSDA)", "Alcance (trajetória CSDA)", "Percorso (cammino CSDA)", "Пробег (путь CSDA)", "射程 (CSDA 路径)", "射程 (CSDA 路徑)", "비정 (CSDA 경로)"),
+        ["mean Z, A"] = ("mittl. Z, A", "Z, A moyens", "Z, A medios", "Z, A médios", "Z, A medi", "сред. Z, A", "平均 Z, A", "平均 Z, A", "평균 Z, A"),
+        ["b̄ (coherent)"] = ("b̄ (kohärent)", "b̄ (cohérent)", "b̄ (coherente)", "b̄ (coerente)", "b̄ (coerente)", "b̄ (когерентная)", "b̄ (相干)", "b̄ (同調)", "b̄ (가간섭성)"),
+        ["Coherent SLD"] = ("Kohärente SLD", "SLD cohérente", "SLD coherente", "SLD coerente", "SLD coerente", "Когерентная SLD", "相干 SLD", "同調 SLD", "가간섭성 SLD"),
+        ["Σ_total (macro)"] = ("Σ_total (makroskopisch)", "Σ_total (macro)", "Σ_total (macro)", "Σ_total (macro)", "Σ_total (macro)", "Σ_total (макро)", "Σ_total (宏观)", "Σ_total (巨觀)", "Σ_total (거시)"),
+        ["Atten. length (1/Σ)"] = ("Schwächungslänge (1/Σ)", "Long. d'atténuation (1/Σ)", "Long. de atenuación (1/Σ)", "Compr. de atenuação (1/Σ)", "Lungh. di attenuazione (1/Σ)", "Длина ослабления (1/Σ)", "衰减长度 (1/Σ)", "衰減長度 (1/Σ)", "감쇠 길이 (1/Σ)"),
+        ["strongest line"] = ("stärkste Linie", "raie la plus intense", "línea más intensa", "linha mais intensa", "riga più intensa", "самая сильная линия", "最强谱线", "最強譜線", "최강선"),
+    };
     // 260608Cl 変更: グラフ見出し文字列を resx から「コード内テーブル」へ移行。
     // 理由: これらは FormBeamInteraction.resx に手書きで追加していたが、VS デザイナでフォームを
     //       編集すると resx 再シリアライズ時に巻き込まれて消える事故が起きたため (260607Ch の resx 化を撤回)。
