@@ -124,9 +124,14 @@ public partial class SearchCrystalControl : UserControlBase
             includes: formPeriodicTable.Includes,
             excludes: formPeriodicTable.Excludes,
             lengthErr: numericBoxCellLengthErr.Value / 100,
-            angleErr: numericBoxCellAngleErr.Value,
-            a: numericBoxCellA.Value, b: numericBoxCellB.Value, c: numericBoxCellC.Value,
-            alpha: numericBoxCellAlpha.Value, beta: numericBoxCellBeta.Value, gamma: numericBoxCellGamma.Value,
+            // 261105Cl 修正: 入力欄は Å と度だが、DoWork で比べる相手 cry.CellOnlyValue_nm_radian は nm と radian なので、格子定数の検索が一切当たらなかった。
+            //  d 値 (numericBoxD1.Value / 10) と同じく nm・radian に換算して渡す。長さの許容誤差は比率 (%) なので換算不要、角度の許容誤差は度→radian。
+            //angleErr: numericBoxCellAngleErr.Value, // 261105Cl 変更前
+            //a: numericBoxCellA.Value, b: numericBoxCellB.Value, c: numericBoxCellC.Value, // 261105Cl 変更前
+            //alpha: numericBoxCellAlpha.Value, beta: numericBoxCellBeta.Value, gamma: numericBoxCellGamma.Value, // 261105Cl 変更前
+            angleErr: numericBoxCellAngleErr.RadianValue, // 261105Cl
+            a: numericBoxCellA.Value / 10, b: numericBoxCellB.Value / 10, c: numericBoxCellC.Value / 10, // 261105Cl
+            alpha: numericBoxCellAlpha.RadianValue, beta: numericBoxCellBeta.RadianValue, gamma: numericBoxCellGamma.RadianValue, // 261105Cl
             density: checkBoxDensity.Checked ? numericBoxDensity.Value : 0,
             densityErr: numericBoxDensityErr.Value / 100,
             d1: checkBoxD1.Checked ? numericBoxD1.Value / 10 : 0,
@@ -147,6 +152,7 @@ public partial class SearchCrystalControl : UserControlBase
         public string Reference = reference;
         public int System = system;
         public byte[] Includes = includes, Excludes = excludes;
+        // 261105Cl 追加: 単位は 長さ nm・角度 radian (Crystal2.CellOnlyValue_nm_radian と比べる)。LengthErr は比率、AngleErr は radian。
         public double LengthErr = lengthErr, AngleErr = angleErr;
         public double A = a, B = b, C = c, Alpha = alpha, Beta = beta, Gamma = gamma;
         public double density = density, densityErr = densityErr;
