@@ -41,42 +41,53 @@ public partial class CrystalControl : UserControlBase
     #region Tab ページの表示/非表示
 
     [DefaultValue(true)] // 260607Cl
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] public bool VisibleBasicInfoTab { get => visibleBasicInfoTab; set { visibleBasicInfoTab = value; setTabPages(); } }
-    private bool visibleBasicInfoTab = true;
+    //[DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] public bool VisibleBasicInfoTab { get => visibleBasicInfoTab; set { visibleBasicInfoTab = value; setTabPages(); } }
+    //private bool visibleBasicInfoTab = true;
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] public bool VisibleBasicInfoTab { get; set { field = value; setTabPages(); } } = true; // (261106Ch) field へ集約
     [DefaultValue(true)] // 260607Cl
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] public bool VisibleAtomTab { get => visibleAtomTab; set { visibleAtomTab = value; setTabPages(); } }
-    private bool visibleAtomTab = true;
+    //[DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] public bool VisibleAtomTab { get => visibleAtomTab; set { visibleAtomTab = value; setTabPages(); } }
+    //private bool visibleAtomTab = true;
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] public bool VisibleAtomTab { get; set { field = value; setTabPages(); } } = true; // (261106Ch) field へ集約
     [DefaultValue(true)] // 260607Cl
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] public bool VisibleElasticityTab { get => visibleElasticityTab; set { visibleElasticityTab = value; setTabPages(); } }
-    private bool visibleElasticityTab = true;
+    //[DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] public bool VisibleElasticityTab { get => visibleElasticityTab; set { visibleElasticityTab = value; setTabPages(); } }
+    //private bool visibleElasticityTab = true;
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] public bool VisibleElasticityTab { get; set { field = value; setTabPages(); } } = true; // (261106Ch) field へ集約
     [DefaultValue(true)] // 260607Cl
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] public bool VisibleBondsPolyhedraTab { get => visibleBondsPolyhedraTab; set { visibleBondsPolyhedraTab = value; setTabPages(); } }
-    private bool visibleBondsPolyhedraTab = true;
+    //[DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] public bool VisibleBondsPolyhedraTab { get => visibleBondsPolyhedraTab; set { visibleBondsPolyhedraTab = value; setTabPages(); } }
+    //private bool visibleBondsPolyhedraTab = true;
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] public bool VisibleBondsPolyhedraTab { get; set { field = value; setTabPages(); } } = true; // (261106Ch) field へ集約
     [DefaultValue(true)] // 260607Cl
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] public bool VisibleReferenceTab { get => visibleReferenceTab; set { visibleReferenceTab = value; setTabPages(); } }
-    private bool visibleReferenceTab = true;
+    //[DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] public bool VisibleReferenceTab { get => visibleReferenceTab; set { visibleReferenceTab = value; setTabPages(); } }
+    //private bool visibleReferenceTab = true;
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] public bool VisibleReferenceTab { get; set { field = value; setTabPages(); } } = true; // (261106Ch) field へ集約
     [DefaultValue(true)] // 260607Cl
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] public bool VisibleEOSTab { get => visibleEOSTab; set { visibleEOSTab = value; setTabPages(); } }
-    private bool visibleEOSTab = true;
+    //[DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] public bool VisibleEOSTab { get => visibleEOSTab; set { visibleEOSTab = value; setTabPages(); } }
+    //private bool visibleEOSTab = true;
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] public bool VisibleEOSTab { get; set { field = value; setTabPages(); } } = true; // (261106Ch) field へ集約
     [DefaultValue(false)] // 260607Cl
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] public bool VisibleStressStrainTab { get => visibleStressStrainTab; set { visibleStressStrainTab = value; setTabPages(); } }
-    private bool visibleStressStrainTab = false;
+    //[DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] public bool VisibleStressStrainTab { get => visibleStressStrainTab; set { visibleStressStrainTab = value; setTabPages(); } }
+    //private bool visibleStressStrainTab = false;
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] public bool VisibleStressStrainTab { get; set { field = value; setTabPages(); } } = false; // (261106Ch) field へ集約
     [DefaultValue(false)] // 260607Cl
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] public bool VisiblePolycrystallineTab { get => visiblePolycrystallineTab; set { visiblePolycrystallineTab = value; setTabPages(); } }
-    private bool visiblePolycrystallineTab = false;
+    //[DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] public bool VisiblePolycrystallineTab { get => visiblePolycrystallineTab; set { visiblePolycrystallineTab = value; setTabPages(); } }
+    //private bool visiblePolycrystallineTab = false;
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] public bool VisiblePolycrystallineTab { get; set { field = value; setTabPages(); } } = false; // (261106Ch) field へ集約
     [DefaultValue(false)] // 260607Cl
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] public bool VisibleBoundTab { get => visibleBoundTab; set { visibleBoundTab = value; setTabPages(); } }
-    private bool visibleBoundTab = false;
+    //[DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] public bool VisibleBoundTab { get => visibleBoundTab; set { visibleBoundTab = value; setTabPages(); } }
+    //private bool visibleBoundTab = false;
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] public bool VisibleBoundTab { get; set { field = value; setTabPages(); } } = false; // (261106Ch) field へ集約
     [DefaultValue(false)] // 260607Cl
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] public bool VisibleLatticePlaneTab { get => visibleLatticePlaneTab; set { visibleLatticePlaneTab = value; setTabPages(); } }
-    private bool visibleLatticePlaneTab = false;
+    //[DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] public bool VisibleLatticePlaneTab { get => visibleLatticePlaneTab; set { visibleLatticePlaneTab = value; setTabPages(); } }
+    //private bool visibleLatticePlaneTab = false;
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] public bool VisibleLatticePlaneTab { get; set { field = value; setTabPages(); } } = false; // (261106Ch) field へ集約
 
     private void setTabPages()
     {
         tabControl.TabPages.Clear();
         if (VisibleBasicInfoTab) tabControl.TabPages.Add(tabPageBasicInfo);
         if (VisibleAtomTab) tabControl.TabPages.Add(tabPageAtom);
-        if (visibleBondsPolyhedraTab) tabControl.TabPages.Add(tabPageBondsPolyhedra);
+        //if (visibleBondsPolyhedraTab) tabControl.TabPages.Add(tabPageBondsPolyhedra);
+        if (VisibleBondsPolyhedraTab) tabControl.TabPages.Add(tabPageBondsPolyhedra); // (261106Ch) field を保持するプロパティから読む
         if (VisibleBoundTab) tabControl.TabPages.Add(tabPageBounds);
         if (VisibleLatticePlaneTab) tabControl.TabPages.Add(tabPageLatticePlane);
         if (VisibleReferenceTab) tabControl.TabPages.Add(tabPageReference);

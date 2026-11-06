@@ -520,7 +520,8 @@ public partial class NumericBox : UserControlBase
         set
         {
             textBox.ReadOnly = value;
-            if (spinButton != null) spinButton.Enabled = !value;
+            //if (spinButton != null) spinButton.Enabled = !value;
+            spinButton?.Enabled = !value; // (261106Ch) デザイン時の null ガードを代入式へ集約
         }
         get => textBox.ReadOnly;
     }

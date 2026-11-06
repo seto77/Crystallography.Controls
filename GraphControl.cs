@@ -63,57 +63,65 @@ public partial class GraphControl : UserControlBase
     [Category(" 3. 描画範囲・操作")]
     [Description("X軸の描画範囲")]
     [DefaultValue(1.0)] //260607Cl 追加: 既定値と一致する冗長なデザイナ初期化を抑制
-    public double UpperX { get => upperX; set { if (double.IsFinite(value)) upperX = value; } }
-    private double upperX = 1;
+    //public double UpperX { get => upperX; set { if (double.IsFinite(value)) upperX = value; } }
+    //private double upperX = 1;
+    public double UpperX { get; set { if (double.IsFinite(value)) field = value; } } = 1; // (261106Ch) 有限値の検証と初期値を維持
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 3. 描画範囲・操作")]
     [Description("X軸の描画範囲")]
     [DefaultValue(0.0)] //260607Cl 追加
-    public double LowerX { get => lowerX; set { if (double.IsFinite(value)) lowerX = value; } }
-    private double lowerX = 0;
+    //public double LowerX { get => lowerX; set { if (double.IsFinite(value)) lowerX = value; } }
+    //private double lowerX = 0;
+    public double LowerX { get; set { if (double.IsFinite(value)) field = value; } } = 0; // (261106Ch) 有限値の検証と初期値を維持
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 3. 描画範囲・操作")]
     [Description("Y軸の描画範囲")]
     [DefaultValue(1.0)] //260607Cl 追加
-    public double UpperY { get => upperY; set { if (double.IsFinite(value)) upperY = value; } }
-    private double upperY = 1;
+    //public double UpperY { get => upperY; set { if (double.IsFinite(value)) upperY = value; } }
+    //private double upperY = 1;
+    public double UpperY { get; set { if (double.IsFinite(value)) field = value; } } = 1; // (261106Ch) 有限値の検証と初期値を維持
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 3. 描画範囲・操作")]
     [Description("Y軸の描画範囲")]
     [DefaultValue(0.0)] //260607Cl 追加
-    public double LowerY { get => lowerY; set { if (double.IsFinite(value)) lowerY = value; } }
-    private double lowerY = 0;
+    //public double LowerY { get => lowerY; set { if (double.IsFinite(value)) lowerY = value; } }
+    //private double lowerY = 0;
+    public double LowerY { get; set { if (double.IsFinite(value)) field = value; } } = 0; // (261106Ch) 有限値の検証と初期値を維持
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 3. 描画範囲・操作")]
     [Description("X軸の上下限")]
     [DefaultValue(1.0)] //260607Cl 追加
-    public double MaximalX { get => maximalX; set { if (double.IsFinite(value)) maximalX = value; } }
-    private double maximalX = 1;
+    //public double MaximalX { get => maximalX; set { if (double.IsFinite(value)) maximalX = value; } }
+    //private double maximalX = 1;
+    public double MaximalX { get; set { if (double.IsFinite(value)) field = value; } } = 1; // (261106Ch) 有限値の検証と初期値を維持
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 3. 描画範囲・操作")]
     [Description("X軸の上下限")]
     [DefaultValue(0.0)] //260607Cl 追加
-    public double MinimalX { get => minimalX; set { if (double.IsFinite(value)) minimalX = value; } }
-    private double minimalX = 0;
+    //public double MinimalX { get => minimalX; set { if (double.IsFinite(value)) minimalX = value; } }
+    //private double minimalX = 0;
+    public double MinimalX { get; set { if (double.IsFinite(value)) field = value; } } = 0; // (261106Ch) 有限値の検証と初期値を維持
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 3. 描画範囲・操作")]
     [Description("Y軸の上下限")]
     [DefaultValue(1.0)] //260607Cl 追加
-    public double MaximalY { get => maximalY; set { if (double.IsFinite(value)) maximalY = value; } }
-    private double maximalY = 1;
+    //public double MaximalY { get => maximalY; set { if (double.IsFinite(value)) maximalY = value; } }
+    //private double maximalY = 1;
+    public double MaximalY { get; set { if (double.IsFinite(value)) field = value; } } = 1; // (261106Ch) 有限値の検証と初期値を維持
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 3. 描画範囲・操作")]
     [Description("Y軸の上下限")]
     [DefaultValue(0.0)] //260607Cl 追加
-    public double MinimalY { get => minimalY; set { if (double.IsFinite(value)) minimalY = value; } }
-    private double minimalY = 0;
+    //public double MinimalY { get => minimalY; set { if (double.IsFinite(value)) minimalY = value; } }
+    //private double minimalY = 0;
+    public double MinimalY { get; set { if (double.IsFinite(value)) field = value; } } = 0; // (261106Ch) 有限値の検証と初期値を維持
 
     /// <summary>描画範囲の矩形</summary>
    // [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -535,16 +543,18 @@ public partial class GraphControl : UserControlBase
     [Category(" 1. プロファイル・表示")]
     [Description("共通のプロファイル描画線の太さ (UseLineWidthがtrueの場合に有効)")]
     [DefaultValue(1f)] //260607Cl 追加
-    public float LineWidth { set { lineWidth = value; Draw(); } get => lineWidth; }
-    private float lineWidth = 1f;
+    //public float LineWidth { set { lineWidth = value; Draw(); } get => lineWidth; }
+    //private float lineWidth = 1f;
+    public float LineWidth { set { field = value; Draw(); } get; } = 1f; // (261106Ch) 保存してから描画する順序を維持
 
     /// <summary>共通のプロファイル描画線太さを使うか (使わない場合は各ProfileのlineWidthを使う)</summary>
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [Category(" 1. プロファイル・表示")]
     [Description("共通のプロファイル描画線太さを使うか (使わない場合は各ProfileのlineWidthを使う))")]
     [DefaultValue(true)] //260607Cl 追加
-    public bool UseLineWidth { set { useLineWidth = value; Draw(); } get => useLineWidth; }
-    private bool useLineWidth = true;
+    //public bool UseLineWidth { set { useLineWidth = value; Draw(); } get => useLineWidth; }
+    //private bool useLineWidth = true;
+    public bool UseLineWidth { set { field = value; Draw(); } get; } = true; // (261106Ch) 保存してから描画する順序を維持
 
     #endregion
 

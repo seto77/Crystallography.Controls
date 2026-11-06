@@ -7,6 +7,8 @@ namespace Crystallography.Controls;
 [ToolboxItem(true)] // 260605Cl 追加: 基底 UserControlBase の [ToolboxItem(false)] 継承を打ち消しデザイナのツールボックスに表示
 public partial class ChemicalFormulaInputControl : UserControlBase
 {
+    #region (261106Ch) 変更前: モード設定の backing field
+    /*
     private bool standardMode = true;
 
     [DefaultValue(true)]
@@ -33,6 +35,32 @@ public partial class ChemicalFormulaInputControl : UserControlBase
         }
         get { return weightMode; }
     }
+    */
+    #endregion
+
+    // (261106Ch) field で状態を保持。初期化では setter を呼ばず、Visible の更新順を維持する。
+    [DefaultValue(true)]
+    public bool StandardMode
+    {
+        set
+        {
+            field = value;
+            flowLayoutPanelComposition.Visible = value;
+        }
+        get;
+    } = true;
+
+    [DefaultValue(true)]
+    public bool WeightMode
+    {
+        set
+        {
+            field = value;
+            flowLayoutPanelMolarRatio.Visible = !value;
+            flowLayoutPanelWeight.Visible = value;
+        }
+        get;
+    } = true;
 
     public ChemicalFormulaInputControl()
     {
