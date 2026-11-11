@@ -38,6 +38,10 @@ public partial class CrystalDatabaseControl : UserControlBase
     private const string CodUrlHeader = "https://github.com/seto77/CSManager/raw/master/COD/";
     private static string CodDatabasePath => UserAppDataPath + "COD.cdb3";
 
+    // 261111Cl 追加: 読み込み・保存・COD の取得のどれかが進行中なら true (再入防止)。UI スレッドでだけ読み書きする。
+    //  従来の BackgroundWorker では、読み込み中の ReadDatabase は黙って戻り、保存中の SaveDatabase は InvalidOperationException、読み込みと保存は同時に走れた。
+    private bool busy;
+
     #region フィールド、メソッド、イベント
     // (260322Ch) WFO1000 対応: WinForms アナライザが、コントロールの public プロパティにデザイナ直列化の方針 (DesignerSerializationVisibility / Browsable / DefaultValue 等) を明示するよう要求するため。〔260726Cl: 元の日本語が文字化けで失われていたので書き直した〕
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
@@ -168,19 +172,68 @@ public partial class CrystalDatabaseControl : UserControlBase
     #endregion
 
     #region データベース読み込み
-    public void ReadDatabase(string filename)
-    {
-        if (ReadDatabaseWorker.IsBusy) return;
+    //public void ReadDatabase(string filename) // 261111Cl 変更前: BackgroundWorker で読み込んでいた
+    //{
+    //    if (ReadDatabaseWorker.IsBusy) return;
+    //
+    //    Suspend();
+    //    this.Enabled = false;
+    //    ReadDatabaseWorker.RunWorkerAsync(filename);
+    //}
 
+    /// <summary>データベース (*.cdb3) の読み込みを始めて、すぐに戻る (完了は待たない。従来と同じ)。
+    /// 261111Cl 変更: 互換のための薄い包み。本体は <see cref="ReadDatabaseAsync"/>。完了を待つときは ReadDatabaseAsync を await する。
+    /// async void なので、ProgressChanged の受け手などで起きた例外は、従来 (RunWorkerCompleted) と同じく UI スレッドの未処理例外になる。</summary>
+    public async void ReadDatabase(string filename) => await ReadDatabaseAsync(filename);
+
+    /// <summary>261111Cl 追加: データベース (*.cdb3) を読み込む。ファイルの読み込みと行の追加はワーカースレッドで行い、その間は束縛を止めて (Suspend) コントロールを無効にする。
+    /// 進捗は ProgressChanged で知らせ、progress を渡せばそこへも送る。読み込みの失敗はダイアログで知らせる (従来と同じ)。</summary>
+    /// <returns>読み込めたら true。失敗した、*.cdb3 でない、または別の読み込み・保存・COD の取得が進行中 (このときは何もしない) なら false。</returns>
+    public async Task<bool> ReadDatabaseAsync(string filename, IProgress<(double Progress, string Message)> progress = null)
+    {
+        if (busy) return false; // 再入防止 (従来の ReadDatabase も読み込み中は黙って戻っていた)
+        busy = true;
+        try { return await readDatabaseCoreAsync(filename, progress); }
+        finally { busy = false; }
+    }
+
+    /// <summary>261111Cl 追加: 旧 ReadDatabase と ReadDatabaseWorker_RunWorkerCompleted の本体。UI スレッドで呼ぶ。再入防止 (busy) は呼び出し側で行う。</summary>
+    private async Task<bool> readDatabaseCoreAsync(string filename, IProgress<(double Progress, string Message)> progress)
+    {
         Suspend();
-        this.Enabled = false;
-        ReadDatabaseWorker.RunWorkerAsync(filename);
+        Enabled = false;
+        // Progress<T> は作ったスレッド (UI) の SynchronizationContext へ送る。従来の ReportProgress と同じく、ワーカーからの進捗は UI スレッドで ProgressChanged になる
+        var reporter = new Progress<(double Progress, string Message)>(v => notifyProgress(progress, v.Progress, v.Message));
+        Exception error = null;
+        var read = false;
+        try { read = await Task.Run(() => readDatabaseCore(filename, reporter)); }
+        catch (Exception ex) { error = ex; }
+
+        // 以下は旧 ReadDatabaseWorker_RunWorkerCompleted と同じ処理を同じ順で行う
+        if (error != null)
+            MessageBox.Show($"{error}\r\nFailed to load database. Sorry.");
+        if (error != null || read)
+            bindingSource.Position = 0; // Resume() より前 (従来と同じく束縛の停止中) に行う
+        Enabled = true;
+        Resume();
+        notifyProgress(progress, 1, $"Total loading time: {sw.ElapsedMilliseconds / 1E3:f1} sec."); // PDIndexer はこの "Total" で初回の読み込みの完了を判定している
+        return error == null && read;
+    }
+
+    /// <summary>261111Cl 追加: 進捗を ProgressChanged で知らせ、progress があればそこへも送る (sender はこのコントロール。従来は BackgroundWorker だった)。</summary>
+    private void notifyProgress(IProgress<(double Progress, string Message)> progress, double value, string message)
+    {
+        ProgressChanged?.Invoke(this, value, message);
+        progress?.Report((value, message));
     }
 
     //readonly Lock lockObj = new();
-    private void ReadDatabaseWorker_DoWork(object sender, DoWorkEventArgs e)
+    //private void ReadDatabaseWorker_DoWork(object sender, DoWorkEventArgs e) // 261111Cl 変更前
+    /// <summary>261111Cl 変更: 旧 ReadDatabaseWorker_DoWork の本体。ワーカースレッド (Task.Run) で動く。失敗は例外で返す (従来の e.Error)。</summary>
+    /// <returns>*.cdb3 を読んだら true (従来の e.Result = true)。それ以外のファイルは何もせず false。</returns>
+    private bool readDatabaseCore(string filename, IProgress<(double Progress, string Message)> progress)
     {
-        var filename = (string)e.Argument;
+        //var filename = (string)e.Argument; // 261111Cl 変更前
         //try // 261111Cl 変更前: 例外はワーカーで MessageBox を出さず、RunWorkerCompleted の e.Error で UI スレッドから知らせる
         { // 261111Cl (旧 try の中身。インデントは据え置き)
             sw.Restart();
@@ -204,7 +257,8 @@ public partial class CrystalDatabaseControl : UserControlBase
                         //foreach (var r in deserialize(fs).AsParallel().AsOrdered().Select(r => Table.CreateRow(r, Crystal2.Serialize(r)))) // 261105Cl // 261111Cl 変更前
                         //    Table.Rows.Add(r); // 261111Cl 変更前
                         addRowsInOrder(deserialize(fs)); // 261111Cl 変更: 並列は Serialize だけ。行の作成と追加は直列 (DataTable はスレッド非安全)
-                        ReadDatabaseWorker.ReportProgress(0, report(Table.Rows.Count, total, sw.ElapsedMilliseconds, "Loading database..."));
+                        //ReadDatabaseWorker.ReportProgress(0, report(Table.Rows.Count, total, sw.ElapsedMilliseconds, "Loading database...")); // 261111Cl 変更前
+                        progress.Report(report(Table.Rows.Count, total, sw.ElapsedMilliseconds, "Loading database...")); // 261111Cl
                     }
                     GC.Collect();
                 }
@@ -225,7 +279,8 @@ public partial class CrystalDatabaseControl : UserControlBase
                             //    Table.Add(row); // 261111Cl 変更前
                             addRowsInOrder(deserialize(stream)); // 261111Cl 変更: 上と同じ
 
-                            ReadDatabaseWorker.ReportProgress(0, report(Table.Rows.Count, total, sw.ElapsedMilliseconds, "Loading database..."));
+                            //ReadDatabaseWorker.ReportProgress(0, report(Table.Rows.Count, total, sw.ElapsedMilliseconds, "Loading database...")); // 261111Cl 変更前
+                            progress.Report(report(Table.Rows.Count, total, sw.ElapsedMilliseconds, "Loading database...")); // 261111Cl
                         }
                         GC.Collect();
                     });
@@ -235,7 +290,8 @@ public partial class CrystalDatabaseControl : UserControlBase
                 finally { Table.EndLoadData(); } //260322Cl 追加
             }
             else
-                return;
+                //return; // 261111Cl 変更前
+                return false; // 261111Cl
         }
         //catch (Exception ex) // 261111Cl 変更前: ワーカースレッドから MessageBox を出していた
         //{
@@ -243,11 +299,13 @@ public partial class CrystalDatabaseControl : UserControlBase
         //}
 
         //bindingSource.Position = 0; // 261111Cl 変更前: ワーカースレッドから BindingSource を触っていた
-        e.Result = true; // 261111Cl 追加: Position = 0 を UI スレッドで行う印 (従来どおり cdb3 以外のファイルでは行わない)
+        //e.Result = true; // 261111Cl 追加: Position = 0 を UI スレッドで行う印 (従来どおり cdb3 以外のファイルでは行わない) // 261111Cl 変更前 (BackgroundWorker の廃止)
+        return true; // 261111Cl: Position = 0 を UI スレッドで行う印 (従来どおり cdb3 以外のファイルでは行わない)
     }
 
     /// <summary>260717Cl 統合 (旧: ReadDatabaseWorker_/SaveDatabaseWorker_/DownloadCodWorker_ProgressChanged):
-    /// 3 つの BackgroundWorker で本体が完全同一だったため 1 ハンドラへ (Designer 側 3 箇所の配線も付け替え)。</summary>
+    /// 3 つの BackgroundWorker で本体が完全同一だったため 1 ハンドラへ (Designer 側 3 箇所の配線も付け替え)。
+    /// 261111Cl: BackgroundWorker を使わなくなったので呼ばれない (進捗は notifyProgress)。Designer.cs の配線のためだけに残す。</summary>
     private void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
     {
         (double progress, string message) = ((double Progress, string Message))e.UserState;
@@ -255,40 +313,80 @@ public partial class CrystalDatabaseControl : UserControlBase
         // 260428Cl Application.DoEvents() を削除 (BackgroundWorker の ProgressChanged は UI スレッドで動作するため不要)
     }
 
-    private void ReadDatabaseWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-    {
-        // 261111Cl 追加: 従来 DoWork の catch でワーカースレッドから出していた失敗のダイアログと、DoWork の最後の Position = 0 (失敗時も行っていた) を UI スレッドで行う。
-        //  e.Error があるときに e.Result を読むと例外になるので、先に e.Error を見る。
-        if (e.Error != null) // 261111Cl 追加
-            MessageBox.Show($"{e.Error}\r\nFailed to load database. Sorry."); // 261111Cl 追加
-        if (e.Error != null || e.Result is true) // 261111Cl 追加
-            bindingSource.Position = 0; // 261111Cl 追加: Resume() より前 (従来と同じく束縛の停止中) に行う
-        this.Enabled = true;
-        Resume();
-        ProgressChanged?.Invoke(sender, 1, $"Total loading time: {sw.ElapsedMilliseconds / 1E3:f1} sec.");
-        // 260428Cl Application.DoEvents() を削除 (RunWorkerCompleted は UI スレッドで動作するため不要)
-    }
+    #region 261111Cl 変更前: 読み込みの完了処理 (本体は readDatabaseCoreAsync の await の後へ移した。Designer.cs の配線用の空のハンドラは末尾)
+    //private void ReadDatabaseWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+    //{
+    //    // 261111Cl 追加: 従来 DoWork の catch でワーカースレッドから出していた失敗のダイアログと、DoWork の最後の Position = 0 (失敗時も行っていた) を UI スレッドで行う。
+    //    //  e.Error があるときに e.Result を読むと例外になるので、先に e.Error を見る。
+    //    if (e.Error != null) // 261111Cl 追加
+    //        MessageBox.Show($"{e.Error}\r\nFailed to load database. Sorry."); // 261111Cl 追加
+    //    if (e.Error != null || e.Result is true) // 261111Cl 追加
+    //        bindingSource.Position = 0; // 261111Cl 追加: Resume() より前 (従来と同じく束縛の停止中) に行う
+    //    this.Enabled = true;
+    //    Resume();
+    //    ProgressChanged?.Invoke(sender, 1, $"Total loading time: {sw.ElapsedMilliseconds / 1E3:f1} sec.");
+    //    // 260428Cl Application.DoEvents() を削除 (RunWorkerCompleted は UI スレッドで動作するため不要)
+    //}
+    #endregion
 
     #endregion
 
     #region データベース書き込み
-    public void SaveDatabase(string fn)
+    //public void SaveDatabase(string fn) // 261111Cl 変更前: BackgroundWorker で保存していた
+    //{
+    //    Enabled = false;
+    //    SaveDatabaseWorker.RunWorkerAsync(fn);
+    //}
+
+    /// <summary>データベースの保存を始めて、すぐに戻る (完了は待たない。従来と同じ)。
+    /// 261111Cl 変更: 互換のための薄い包み。本体は <see cref="SaveDatabaseAsync"/>。完了を待つときは SaveDatabaseAsync を await する。</summary>
+    public async void SaveDatabase(string fn) => await SaveDatabaseAsync(fn);
+
+    /// <summary>261111Cl 追加: データベースを保存する (検索の絞り込みに関わらず全行。並び順は表示中の並べ替え)。書き出しはワーカースレッドで行い、その間はコントロールを無効にする。
+    /// 進捗は ProgressChanged で知らせ、progress を渡せばそこへも送る。保存の失敗はダイアログで知らせる (従来と同じ)。</summary>
+    /// <returns>保存できたら true。失敗した、または別の読み込み・保存・COD の取得が進行中 (このときは何もしない) なら false。</returns>
+    public async Task<bool> SaveDatabaseAsync(string fn, IProgress<(double Progress, string Message)> progress = null)
     {
-        Enabled = false;
-        SaveDatabaseWorker.RunWorkerAsync(fn);
+        if (busy) return false; // 再入防止 (従来は保存中に SaveDatabase を呼ぶと RunWorkerAsync が InvalidOperationException を投げた)
+        busy = true;
+        try
+        {
+            Enabled = false;
+            var reporter = new Progress<(double Progress, string Message)>(v => notifyProgress(progress, v.Progress, v.Message));
+            var sort = (bindingSource.List as DataView)?.Sort ?? ""; // 表示中の並べ替え。従来はワーカースレッドで bindingSource から読んでいた
+            Exception error = null;
+            try { await Task.Run(() => saveDatabaseCore(fn, sort, reporter)); }
+            catch (Exception ex) { error = ex; }
+
+            // 以下は旧 SaveDatabaseWorker_RunWorkerCompleted と同じ処理を同じ順で行う
+            Enabled = true;
+            if (error != null)
+            {
+                notifyProgress(progress, 1, $"Failed to save database: {error.GetBaseException().Message}");
+                MessageBox.Show($"{error}\r\nFailed to save database. Sorry.");
+                return false;
+            }
+            notifyProgress(progress, 1, $"Total saving time: {sw.ElapsedMilliseconds / 1E3:f1} sec.");
+            return true;
+        }
+        finally { busy = false; }
     }
-    private void SaveDatabaseWorker_DoWork(object sender, DoWorkEventArgs e)
+
+    //private void SaveDatabaseWorker_DoWork(object sender, DoWorkEventArgs e) // 261111Cl 変更前
+    /// <summary>261111Cl 変更: 旧 SaveDatabaseWorker_DoWork の本体。ワーカースレッド (Task.Run) で動く。失敗は例外で返す (従来の e.Error)。sort は表示中の並べ替え。</summary>
+    private void saveDatabaseCore(string fn, string sort, IProgress<(double Progress, string Message)> progress)
     {
         sw.Restart();
 
-        var fn = (string)e.Argument;
+        //var fn = (string)e.Argument; // 261111Cl 変更前
 
         //var total = Table.Count; // 261105Cl 変更前
         // 261105Cl 修正: 検索で絞り込み中 (bindingSource.Filter = "Flag = true") に保存すると、件数は全行 (Table.Count) なのに行は絞り込み後の
         //  bindingSource[j] から読んでいたため範囲外の例外になり、ヘッダ (5 バイト) だけのファイルが残ったうえ成功と表示されていた。
         //  絞り込みに関わらず全行を書く。並び順は従来どおり表示中の並べ替え (列見出しのクリック等) に従う。行のバイト列は参照を集めるだけ (複製しない)。
         byte[][] rows; // 261105Cl 追加
-        using (var view = new DataView(Table, "", (bindingSource.List as DataView)?.Sort ?? "", DataViewRowState.CurrentRows)) // 261105Cl 追加
+        //using (var view = new DataView(Table, "", (bindingSource.List as DataView)?.Sort ?? "", DataViewRowState.CurrentRows)) // 261105Cl 追加 // 261111Cl 変更前
+        using (var view = new DataView(Table, "", sort, DataViewRowState.CurrentRows)) // 261111Cl 変更: 並べ替えは UI スレッドで読んで受け取る (SaveDatabaseAsync)
             rows = [.. view.Cast<DataRowView>().Select(r => (byte[])r.Row[0])]; // 261105Cl 追加
         var total = rows.Length; // 261105Cl
 
@@ -318,7 +416,8 @@ public partial class CrystalDatabaseControl : UserControlBase
 
         var counter = 0;
         var bytes = new byte[total / division + 1][];
-        SaveDatabaseWorker.ReportProgress(0, report(counter, bytes.Length, sw.ElapsedMilliseconds, "Saving database..."));
+        //SaveDatabaseWorker.ReportProgress(0, report(counter, bytes.Length, sw.ElapsedMilliseconds, "Saving database...")); // 261111Cl 変更前
+        progress.Report(report(counter, bytes.Length, sw.ElapsedMilliseconds, "Saving database...")); // 261111Cl
         Parallel.For(0, bytes.Length, /*new ParallelOptions() { MaxDegreeOfParallelism = 8 },*/ i =>
         {
             var crystal2List = new List<Crystal2>();
@@ -331,7 +430,8 @@ public partial class CrystalDatabaseControl : UserControlBase
             }
             bytes[i] = serialize([.. crystal2List]);
 
-            SaveDatabaseWorker.ReportProgress(0, report(Interlocked.Increment(ref counter), bytes.Length, sw.ElapsedMilliseconds, "Saving database..."));
+            //SaveDatabaseWorker.ReportProgress(0, report(Interlocked.Increment(ref counter), bytes.Length, sw.ElapsedMilliseconds, "Saving database...")); // 261111Cl 変更前
+            progress.Report(report(Interlocked.Increment(ref counter), bytes.Length, sw.ElapsedMilliseconds, "Saving database...")); // 261111Cl
         });
 
         #region 261111Cl 変更前: チャンクを List<byte> (最大 35 MB) へ写してから書いていた
@@ -455,19 +555,21 @@ public partial class CrystalDatabaseControl : UserControlBase
     // 260717Cl: worker_ProgressChanged へ統合 (本体が完全同一だった)。
     //private void SaveDatabaseWorker_ProgressChanged(object sender, ProgressChangedEventArgs e) { … }
 
-    private void SaveDatabaseWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-    {
-        this.Enabled = true;
-        // 261105Cl 修正: DoWork の例外 (e.Error) を見ずに常に成功と表示していた。失敗は進捗メッセージとダイアログで知らせる (読み込み失敗時と同じ形)。
-        if (e.Error != null) // 261105Cl 追加
-        {
-            ProgressChanged?.Invoke(sender, 1, $"Failed to save database: {e.Error.GetBaseException().Message}"); // 261105Cl 追加
-            MessageBox.Show($"{e.Error}\r\nFailed to save database. Sorry."); // 261105Cl 追加
-            return; // 261105Cl 追加
-        }
-        ProgressChanged?.Invoke(sender, 1, $"Total saving time: {sw.ElapsedMilliseconds / 1E3:f1} sec.");
-        // 260428Cl Application.DoEvents() を削除 (RunWorkerCompleted は UI スレッドで動作するため不要)
-    }
+    #region 261111Cl 変更前: 保存の完了処理 (本体は SaveDatabaseAsync の await の後へ移した。Designer.cs の配線用の空のハンドラは末尾)
+    //private void SaveDatabaseWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+    //{
+    //    this.Enabled = true;
+    //    // 261105Cl 修正: DoWork の例外 (e.Error) を見ずに常に成功と表示していた。失敗は進捗メッセージとダイアログで知らせる (読み込み失敗時と同じ形)。
+    //    if (e.Error != null) // 261105Cl 追加
+    //    {
+    //        ProgressChanged?.Invoke(sender, 1, $"Failed to save database: {e.Error.GetBaseException().Message}"); // 261105Cl 追加
+    //        MessageBox.Show($"{e.Error}\r\nFailed to save database. Sorry."); // 261105Cl 追加
+    //        return; // 261105Cl 追加
+    //    }
+    //    ProgressChanged?.Invoke(sender, 1, $"Total saving time: {sw.ElapsedMilliseconds / 1E3:f1} sec.");
+    //    // 260428Cl Application.DoEvents() を削除 (RunWorkerCompleted は UI スレッドで動作するため不要)
+    //}
+    #endregion
 
     #endregion
 
@@ -552,71 +654,147 @@ public partial class CrystalDatabaseControl : UserControlBase
 
     #region CODデータベースのダウロード、読み込み
 
-    /// <summary>CODデータベースのダウンロードや読み込み.</summary>
-    /// <returns>正常に読み込めた場合はtrue, 途中キャンセルされたりした場合はfalse</returns>
+    #region 261111Cl 変更前: ReadCOD (ダウンロードの完了を Sleep + DoEvents で待ち、UI スレッドで .Result を呼んでいた)
+    ///// <summary>CODデータベースのダウンロードや読み込み.</summary>
+    ///// <returns>正常に読み込めた場合はtrue, 途中キャンセルされたりした場合はfalse</returns>
+    //public bool ReadCOD()
+    //{
+    //    var (Valid, DataNum, FileNum, FileSizes, CheckSums) = CheckDatabaseFiles(CodDatabasePath, true); // 260717Cl: パス連結を CodDatabasePath へ集約
+    //    string urlHeader = CodUrlHeader; // 260717Cl: 同一リテラル 2 箇所を定数へ集約
+    //    if (Valid)
+    //    {//適切にダウンロードされている場合
+    //        try//web上に新しいデータがあるかどうかをチェック
+    //        {
+    //            //260317Cl WebClient→HttpClient
+    //            //if (new WebClient().DownloadData(new Uri(urlHeader + "COD.cdb3")).SequenceEqual(File.ReadAllBytes(CodDatabasePath)))
+    //            if (httpClient.GetByteArrayAsync(urlHeader + "COD.cdb3").Result.SequenceEqual(File.ReadAllBytes(CodDatabasePath)))
+    //            {//ローカルのCODが最新版の場合
+    //                ReadDatabase(CodDatabasePath);
+    //                return true;
+    //            }
+    //            else
+    //            {//更新版が存在する場合
+    //                var result = MessageBox.Show("Now, new database is available.\r\n  Download and load the new database: YES\r\n" +
+    //                    "  Use the current database: No\r\n  Cancel database loading: Cancel", "  New database is available", MessageBoxButtons.YesNoCancel);
+    //
+    //                if (result == DialogResult.No) //Noの場合 (更新せずに現状を読み込む場合)
+    //                    ReadDatabase(CodDatabasePath);
+    //
+    //                if (result == DialogResult.No || result == DialogResult.Cancel)//NoかCancelの場合
+    //                    return false;
+    //            }
+    //
+    //        }
+    //        catch //WEBが落ちている場合は、現状のCODを読み込む
+    //        {
+    //            ReadDatabase(CodDatabasePath);
+    //            return true;
+    //        }
+    //    }
+    //    else//CODデータが存在しないか、適切でない場合
+    //    {
+    //        if (MessageBox.Show("Local COD database is missing.\r\n  Do you download the new database now ?", "Local COD database is missing.",
+    //            MessageBoxButtons.YesNo) == DialogResult.No)
+    //            return false;
+    //    }
+    //
+    //    //ここまでくる場合は、CODデータが存在しない場合
+    //    //CODをダウンロードする
+    //    if (DownloadCodWorker.IsBusy) return false;
+    //    DownloadCodWorker.RunWorkerAsync(UserAppDataPath);
+    //
+    //    while (DownloadCodWorker.IsBusy)//ダウンロードが完了するまで待つ
+    //    {
+    //        Thread.Sleep(100);
+    //        Application.DoEvents();
+    //    }
+    //    //this.Enabled = true;
+    //    ReadDatabase(CodDatabasePath);
+    //    return true;
+    //}
+    #endregion
+
+    /// <summary>CODデータベースのダウンロードや読み込みを始めて、すぐに戻る。
+    /// 261111Cl 変更: 互換のための薄い包み。本体は <see cref="ReadCODAsync"/>。結果が要るときは ReadCODAsync を await する。
+    /// ⚠ 戻り値の意味が変わった。従来は「(ダウンロードの完了を DoEvents で待ってから) 読み込みを始めたら true、キャンセル等なら false」、
+    /// 今は「始めたら true、別の読み込み・保存・COD の取得が進行中で始めなかったら false」。4 アプリに呼び出しは無い (261111Cl に確認。CSManager の旧コードはコメントアウト済み)。</summary>
     public bool ReadCOD()
     {
-        var (Valid, DataNum, FileNum, FileSizes, CheckSums) = CheckDatabaseFiles(CodDatabasePath, true); // 260717Cl: パス連結を CodDatabasePath へ集約
-        string urlHeader = CodUrlHeader; // 260717Cl: 同一リテラル 2 箇所を定数へ集約
-        if (Valid)
-        {//適切にダウンロードされている場合
-            try//web上に新しいデータがあるかどうかをチェック
-            {
-                //260317Cl WebClient→HttpClient
-                //if (new WebClient().DownloadData(new Uri(urlHeader + "COD.cdb3")).SequenceEqual(File.ReadAllBytes(CodDatabasePath)))
-                if (httpClient.GetByteArrayAsync(urlHeader + "COD.cdb3").Result.SequenceEqual(File.ReadAllBytes(CodDatabasePath)))
-                {//ローカルのCODが最新版の場合
-                    ReadDatabase(CodDatabasePath);
+        if (busy) return false;
+        run();
+        return true;
+        async void run() => await ReadCODAsync(); // async void: 例外は従来 (RunWorkerCompleted) と同じく UI スレッドの未処理例外になる
+    }
+
+    /// <summary>261111Cl 追加: CODデータベースのダウンロードや読み込み (旧 ReadCOD の async 版)。読み込みの完了まで待つ。
+    /// ローカルの COD が無いか壊れていれば、ダウンロードするか尋ねる。ローカルの COD が web 上と違えば、更新するか尋ねる。</summary>
+    /// <returns>読み込んだら true。キャンセルされた、ダウンロードに失敗した、または別の読み込み・保存・COD の取得が進行中 (このときは何もしない) なら false。</returns>
+    public async Task<bool> ReadCODAsync(IProgress<(double Progress, string Message)> progress = null)
+    {
+        if (busy) return false; // 再入防止
+        busy = true;
+        try
+        {
+            // 全分割ファイルの MD5 を計算するので重い (従来は UI スレッドで計算していた)
+            var (Valid, DataNum, FileNum, FileSizes, CheckSums) = await Task.Run(() => CheckDatabaseFiles(CodDatabasePath, true));
+            string urlHeader = CodUrlHeader;
+            if (Valid)
+            {//適切にダウンロードされている場合
+                bool? isLatest; //web上に新しいデータがあるかどうか。null は確かめられなかった場合 (WEB が落ちている等)
+                try { isLatest = (await httpClient.GetByteArrayAsync(urlHeader + "COD.cdb3")).SequenceEqual(File.ReadAllBytes(CodDatabasePath)); } // ローカルは見出しだけの小さいファイル (従来と同じく同期で読む)
+                catch { isLatest = null; }
+
+                if (isLatest != false)
+                {//ローカルのCODが最新版の場合か、WEBが落ちている場合は、現状のCODを読み込む
+                    await readDatabaseCoreAsync(CodDatabasePath, progress);
                     return true;
                 }
-                else
-                {//更新版が存在する場合
-                    var result = MessageBox.Show("Now, new database is available.\r\n  Download and load the new database: YES\r\n" +
-                        "  Use the current database: No\r\n  Cancel database loading: Cancel", "  New database is available", MessageBoxButtons.YesNoCancel);
+                //更新版が存在する場合
+                var result = MessageBox.Show("Now, new database is available.\r\n  Download and load the new database: YES\r\n" +
+                    "  Use the current database: No\r\n  Cancel database loading: Cancel", "  New database is available", MessageBoxButtons.YesNoCancel);
 
-                    if (result == DialogResult.No) //Noの場合 (更新せずに現状を読み込む場合)
-                        ReadDatabase(CodDatabasePath);
-
-                    if (result == DialogResult.No || result == DialogResult.Cancel)//NoかCancelの場合
-                        return false;
+                if (result == DialogResult.No) //Noの場合 (更新せずに現状を読み込む場合)
+                {
+                    await readDatabaseCoreAsync(CodDatabasePath, progress);
+                    // 261111Cl 修正: 従来は読み込んだのに false を返していた。呼び出し元 (COD のチェックボックス) がチェックを外して COD_Has_Read も立てず、
+                    //  COD の行は表に入ったまま検索では隠れ、もう一度チェックすると同じ行が二重に読み込まれた。
+                    return true;
                 }
-
+                if (result == DialogResult.Cancel)
+                    return false;
             }
-            catch //WEBが落ちている場合は、現状のCODを読み込む 
+            else//CODデータが存在しないか、適切でない場合
             {
-                ReadDatabase(CodDatabasePath);
-                return true;
+                if (MessageBox.Show("Local COD database is missing.\r\n  Do you download the new database now ?", "Local COD database is missing.",
+                    MessageBoxButtons.YesNo) == DialogResult.No)
+                    return false;
             }
-        }
-        else//CODデータが存在しないか、適切でない場合
-        {
-            if (MessageBox.Show("Local COD database is missing.\r\n  Do you download the new database now ?", "Local COD database is missing.",
-                MessageBoxButtons.YesNo) == DialogResult.No)
+
+            //ここまでくる場合は、CODデータが存在しないか、更新する場合。CODをダウンロードする
+            var reporter = new Progress<(double Progress, string Message)>(v => notifyProgress(progress, v.Progress, v.Message));
+            try { await Task.Run(() => downloadCodCoreAsync(reporter)); }
+            catch
+            {
+                MessageBox.Show("Failed to download new COD database. Sorry.", "Error", MessageBoxButtons.OK);
+                // 261111Cl 修正: 従来はダウンロードに失敗しても続けて COD を読み込み (無い・書きかけのファイルなので多くは読み込みの失敗のダイアログも出た)、true を返して COD_Has_Read を立てていた。
+                //  読み込まずに false を返す (チェックが外れ、もう一度チェックすればやり直せる)。
                 return false;
+            }
+            await readDatabaseCoreAsync(CodDatabasePath, progress);
+            return true;
         }
-
-        //ここまでくる場合は、CODデータが存在しない場合
-        //CODをダウンロードする
-        if (DownloadCodWorker.IsBusy) return false;
-        DownloadCodWorker.RunWorkerAsync(UserAppDataPath);
-
-        while (DownloadCodWorker.IsBusy)//ダウンロードが完了するまで待つ
-        {
-            Thread.Sleep(100);
-            Application.DoEvents();
-        }
-        //this.Enabled = true;
-        ReadDatabase(CodDatabasePath);
-        return true;
+        finally { busy = false; }
     }
 
     //260317Cl WebClient→HttpClient
     //private static readonly HttpClient httpClient = new(); は上部で定義
-    private void DownloadCodWorker_DoWork(object sender, DoWorkEventArgs e)
+    //private void DownloadCodWorker_DoWork(object sender, DoWorkEventArgs e) // 261111Cl 変更前
+    /// <summary>261111Cl 変更: 旧 DownloadCodWorker_DoWork の本体。Task.Run の中で呼ぶ (UI の SynchronizationContext に戻らない)。失敗は例外で返す (従来の e.Error)。</summary>
+    private async Task downloadCodCoreAsync(IProgress<(double Progress, string Message)> progress)
     {
 
         string urlHeader = CodUrlHeader; // 260717Cl: 同一リテラル 2 箇所を定数へ集約
-        var UserAppDataPath = (string)e.Argument;
+        //var UserAppDataPath = (string)e.Argument; // 261111Cl 変更前: 引数はいつも静的プロパティ UserAppDataPath だったので、それを直接使う
 
         //ここからCODをダウンロード
         //try // 261111Cl 変更前: 例外はワーカーで MessageBox を出さず、RunWorkerCompleted の e.Error で UI スレッドから知らせる
@@ -624,7 +802,8 @@ public partial class CrystalDatabaseControl : UserControlBase
             sw.Restart();
             //260317Cl WebClient→HttpClient
             //new WebClient().DownloadFile(new Uri(urlHeader + "COD.cdb3"), CodDatabasePath);
-            var cdb3Data = httpClient.GetByteArrayAsync(urlHeader + "COD.cdb3").Result;
+            //var cdb3Data = httpClient.GetByteArrayAsync(urlHeader + "COD.cdb3").Result; // 261111Cl 変更前
+            var cdb3Data = await httpClient.GetByteArrayAsync(urlHeader + "COD.cdb3"); // 261111Cl
             File.WriteAllBytes(CodDatabasePath, cdb3Data);
 
             Directory.CreateDirectory(UserAppDataPath + "COD");
@@ -658,14 +837,16 @@ public partial class CrystalDatabaseControl : UserControlBase
                         bytesRead += read;
                         current[_i] = bytesRead;
                         if (Interlocked.Increment(ref n) % 100 == 0)
-                            DownloadCodWorker.ReportProgress(0, report(current.Sum(), total, sw.ElapsedMilliseconds,
+                            //DownloadCodWorker.ReportProgress(0, report(current.Sum(), total, sw.ElapsedMilliseconds, // 261111Cl 変更前
+                            progress.Report(report(current.Sum(), total, sw.ElapsedMilliseconds, // 261111Cl
                             $"Downloading COD database ({current.Sum() / 1E6:f0} MB / {total / 1E6:f0} MB) ..."));
                     }
                     Interlocked.Increment(ref completedCount);
                 });
             }
 
-            Task.WaitAll(tasks);
+            //Task.WaitAll(tasks); // 261111Cl 変更前
+            await Task.WhenAll(tasks); // 261111Cl
         }
         //catch // 261111Cl 変更前: ワーカースレッドから MessageBox を出していた
         //{
@@ -676,12 +857,14 @@ public partial class CrystalDatabaseControl : UserControlBase
     // 260717Cl: worker_ProgressChanged へ統合 (本体が完全同一だった)。
     //private void DownloadCodWorker_ProgressChanged(object sender, ProgressChangedEventArgs e) { … }
 
-    private void DownloadCodWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-    {
-        // 261111Cl 追加: 従来 DoWork の catch でワーカースレッドから出していたダイアログ。ReadCOD の待ちループ (DoEvents) の中で、読み込みの前に出る (従来と同じ順)
-        if (e.Error != null) // 261111Cl 追加
-            MessageBox.Show("Failed to download new COD database. Sorry.", "Error", MessageBoxButtons.OK); // 261111Cl 追加
-    }
+    #region 261111Cl 変更前: ダウンロードの完了処理 (失敗のダイアログは ReadCODAsync へ移した。Designer.cs の配線用の空のハンドラは末尾)
+    //private void DownloadCodWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+    //{
+    //    // 261111Cl 追加: 従来 DoWork の catch でワーカースレッドから出していたダイアログ。ReadCOD の待ちループ (DoEvents) の中で、読み込みの前に出る (従来と同じ順)
+    //    if (e.Error != null) // 261111Cl 追加
+    //        MessageBox.Show("Failed to download new COD database. Sorry.", "Error", MessageBoxButtons.OK); // 261111Cl 追加
+    //}
+    #endregion
 
     //260317Cl 削除 MyWebClient : WebClient (HttpClientに移行)
     //private class MyWebClient : WebClient { ... }
@@ -821,43 +1004,116 @@ public partial class CrystalDatabaseControl : UserControlBase
     #endregion
 
 
-    private void checkBoxAMCSD_CheckedChanged(object sender, EventArgs e)
-    {
-        Enabled = false;
-        if (checkBoxAMCSD.Checked && !AMCSD_Has_Read)
-        {
-            ReadDatabase(UserAppDataPath + "AMCSD.cdb3");
-            AMCSD_Has_Read = true;
-        }
+    #region 261111Cl 変更前: チェックボックスのハンドラ (COD は ReadCOD の中と完了待ちで Sleep + DoEvents を回していた)
+    //private void checkBoxAMCSD_CheckedChanged(object sender, EventArgs e)
+    //{
+    //    Enabled = false;
+    //    if (checkBoxAMCSD.Checked && !AMCSD_Has_Read)
+    //    {
+    //        ReadDatabase(UserAppDataPath + "AMCSD.cdb3");
+    //        AMCSD_Has_Read = true;
+    //    }
+    //
+    //    DataBaseChanged?.Invoke(sender, e);
+    //    Enabled = true;
+    //}
+    //
+    //private void checkBoxCOD_CheckedChanged(object sender, EventArgs e)
+    //{
+    //    Enabled = false;
+    //    var text = textBox1.Text;
+    //    if (checkBoxCOD.Checked)
+    //    {
+    //        textBox1.Text = "Now, loading COD database...";
+    //        Application.DoEvents();
+    //        if (!COD_Has_Read)
+    //        {
+    //            if (ReadCOD())
+    //            {
+    //                COD_Has_Read = true;
+    //                do { Thread.Sleep(100); Application.DoEvents(); } while (!Enabled);
+    //            }
+    //            else
+    //            { checkBoxCOD.Checked = false; Enabled = true; }
+    //        }
+    //    }
+    //    DataBaseChanged?.Invoke(sender, e);
+    //    textBox1.Text = text;
+    //    Enabled = true;
+    //
+    //}
+    #endregion
 
-        DataBaseChanged?.Invoke(sender, e);
-        Enabled = true;
-    }
-
-    private void checkBoxCOD_CheckedChanged(object sender, EventArgs e)
+    // 261111Cl 変更: async void + try/catch。DataBaseChanged (= SearchCrystalControl の検索のやり直し) を出す時機は次のとおり。
+    //  ・表が空のとき: 従来どおり、読み込みを始めた直後に出す (表が空なので検索は何もしない)。読み込みの完了後に出すと検索が走って CrystalChanged が 2 回余分に出て、
+    //    PDIndexer (読み込み完了の "Total" の後に CrystalChanged を購読する) では編集中の結晶が DB の先頭の結晶に置き換わる (261111Cl ハーネスで確認)。
+    //  ・表に行があるとき (COD を読み込み済みなど): 読み込みの完了を待ってから出す。⚠ 挙動の変化: 従来は読み込み中の表を検索が並列に読み、
+    //    検索の完了 (Resume) で束縛が、ワーカーが行を追加している最中に戻っていた (DataTable はスレッド非安全)。COD のチェックと同じ順になる。
+    //  ・⚠ 挙動の変化: 従来は読み込み中もコントロールを有効へ戻していた。今は読み込みが終わるまで無効のまま。
+    private async void checkBoxAMCSD_CheckedChanged(object sender, EventArgs e)
     {
-        Enabled = false;
-        var text = textBox1.Text;
-        if (checkBoxCOD.Checked)
+        try
         {
-            textBox1.Text = "Now, loading COD database...";
-            Application.DoEvents();
-            if (!COD_Has_Read)
+            Enabled = false;
+            var loading = Task.CompletedTask;
+            if (checkBoxAMCSD.Checked && !AMCSD_Has_Read && !busy) // 別の読み込み等が進行中なら読まない (AMCSD_Has_Read も立てない。チェックを付け直せば読める)
             {
-                if (ReadCOD())
-                {
-                    COD_Has_Read = true;
-                    do { Thread.Sleep(100); Application.DoEvents(); } while (!Enabled);
-                }
-                else
-                { checkBoxCOD.Checked = false; Enabled = true; }
+                AMCSD_Has_Read = true; // 従来どおり、読み込みを始めた時点で立てる (失敗しても読み直さない)
+                var searchAfterLoading = Table.Rows.Count > 0; // ワーカーが動く前に UI スレッドで数える
+                loading = ReadDatabaseAsync(UserAppDataPath + "AMCSD.cdb3");
+                if (searchAfterLoading)
+                    await loading;
             }
-        }
-        DataBaseChanged?.Invoke(sender, e);
-        textBox1.Text = text;
-        Enabled = true;
 
+            DataBaseChanged?.Invoke(sender, e);
+            await loading;
+        }
+        catch (Exception ex) { MessageBox.Show($"{ex}\r\nFailed to load database. Sorry."); }
+        finally { Enabled = true; }
     }
+
+    // 261111Cl 変更: async void + try/catch。ReadCOD (Sleep + DoEvents の待ち) の代わりに ReadCODAsync を await する。
+    private async void checkBoxCOD_CheckedChanged(object sender, EventArgs e)
+    {
+        var text = textBox1.Text;
+        try
+        {
+            Enabled = false;
+            if (checkBoxCOD.Checked)
+            {
+                textBox1.Text = "Now, loading COD database...";
+                //Application.DoEvents(); // 261111Cl 削除: 最初の await で UI スレッドに戻るので、表示はそこで更新される
+                if (!COD_Has_Read)
+                {
+                    if (await ReadCODAsync()) // 読み込みの完了まで待つ (従来の do { Sleep; DoEvents } while (!Enabled) の役目)
+                        COD_Has_Read = true;
+                    else
+                        checkBoxCOD.Checked = false; // このハンドラがもう一度 (チェックなしで) 呼ばれる。従来と同じ
+                }
+            }
+            // 別の読み込み・保存が進行中なら出さない (ReadCODAsync が断ってチェックを外した場合。COD は何も変わっていないので検索し直す必要が無く、
+            //  出すと検索が読み込み中の表を並列に読む)。従来はこの場合、AMCSD の読み込みの完了を DoEvents で待ち、COD を読まないまま COD_Has_Read を立てていた
+            if (!busy)
+                DataBaseChanged?.Invoke(sender, e);
+        }
+        catch (Exception ex) { MessageBox.Show($"{ex}\r\nFailed to load COD database. Sorry."); }
+        finally
+        {
+            textBox1.Text = text;
+            Enabled = true;
+        }
+    }
+
+    #region 261111Cl 追加: 使わなくなった BackgroundWorker のハンドラ
+    // Designer.cs の ReadDatabaseWorker / SaveDatabaseWorker / DownloadCodWorker の配線 (DoWork・RunWorkerCompleted) のためだけに残す空のハンドラ。
+    //  これらの BackgroundWorker はもう使わない (RunWorkerAsync を呼ばない)。部品を VS のデザイナーで消したら、ここと worker_ProgressChanged も消してよい。
+    private void ReadDatabaseWorker_DoWork(object sender, DoWorkEventArgs e) { }
+    private void ReadDatabaseWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) { }
+    private void SaveDatabaseWorker_DoWork(object sender, DoWorkEventArgs e) { }
+    private void SaveDatabaseWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) { }
+    private void DownloadCodWorker_DoWork(object sender, DoWorkEventArgs e) { }
+    private void DownloadCodWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) { }
+    #endregion
 }
 
 
