@@ -20,7 +20,7 @@ public static class StatusBarHelper
             : $"{elapsed.TotalSeconds:0.0} s";
 
     /// <summary>
-    /// 進捗バーとステータスラベルを統一書式で更新する。ワーカースレッドから呼ばれた場合は自動で Invoke する。
+    /// 進捗バーとステータスラベルを統一書式で更新する。ワーカースレッドから呼ばれた場合は自動で BeginInvoke する (261111Cl: 旧 Invoke)。
     /// 表示書式: "{stage}  {pct:0.0}%  ({elapsed})  remaining ~{rem}" (各要素は引数で省略可)。
     /// </summary>
     /// <param name="bar">進捗バー (null 可)。Maximum は内部で正規化するので呼び出し側は意識不要</param>
@@ -72,7 +72,8 @@ public static class StatusBarHelper
         // 進捗バー/ラベルを載せている StatusStrip 経由でスレッドマーシャリング
         var owner = bar?.GetCurrentParent() ?? label?.GetCurrentParent();
         if (owner != null && owner.InvokeRequired)
-            owner.Invoke((Action)apply);
+            //owner.Invoke((Action)apply); // 261111Cl 変更前: ワーカーが UI の更新を待っていた
+            owner.BeginInvoke(apply); // 261111Cl 変更: 待たずに UI スレッドへ投げる (同じスレッドへ投げた更新は投げた順に処理される。呼び出し側は戻り値・完了を使っていない。4 アプリの呼び出し元は Progress<T>/ProgressChanged 経由の UI スレッドが大半で、その場合は従来どおり直接 apply)
         else
             apply();
     }

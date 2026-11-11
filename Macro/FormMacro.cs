@@ -231,7 +231,8 @@ public partial class FormMacro : FormBase
         if (this.InvokeRequired)
         {
             // 260414Cl 旧: setDebugInfoCallBack delegate を経由していた。
-            this.Invoke((Action)(() => setDebugInfo(frame, result)));
+            //this.Invoke((Action)(() => setDebugInfo(frame, result))); // 261111Cl 変更前
+            this.Invoke(() => setDebugInfo(frame, result)); // 261111Cl 変更: キャスト不要の Invoke(Action) (意味は同じ)
             return;
         }
         if (!stepByStepMode)
@@ -458,7 +459,8 @@ public partial class FormMacro : FormBase
     private void FormMacro_DragDrop(object sender, DragEventArgs e)
     {
         // 260414Cl null チェックを追加 (旧: 直接キャストで NRE 可能性)。
-        if (e.Data.GetData(DataFormats.FileDrop) is string[] files
+        //if (e.Data.GetData(DataFormats.FileDrop) is string[] files // 261111Cl 変更前
+        if (e.Data.TryGetData<string[]>(DataFormats.FileDrop, out var files) // 261111Cl 変更: 型付きの TryGetData
             && files.Length == 1
             && files[0].EndsWith(".mcr"))
         {

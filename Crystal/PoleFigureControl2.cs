@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks; // 261111Cl 追加: Parallel.For (GeneratePixels)
 using System.Windows.Forms;
 using V4 = OpenTK.Mathematics.Vector4d;
 
@@ -114,10 +115,11 @@ public partial class PoleFigureControl2 : UserControlBase
             DrawOutline(g);
             DrawSymbols(g);
         }
-        Clipboard.SetDataObject(bmp);
+        //Clipboard.SetDataObject(bmp); // 261111Cl 変更前: copy:false のまま using で破棄した Bitmap をクリップボードに置いていた
+        Clipboard.SetImage(bmp); // 261111Cl 変更: SetImage は copy:true でクリップボードへ書き写すので、直後の破棄で壊れない
     }
 
-    private readonly Lock lockObj = new();
+    //private readonly Lock lockObj = new(); // 261111Cl 変更前: GeneratePixels の加算を直列にしたので不要
 
     /// <summary>Vectors[] から Pixels[][] を生成</summary>
     private void GeneratePixels()
@@ -148,13 +150,23 @@ public partial class PoleFigureControl2 : UserControlBase
             return (i, j);
         }
 
+        // 261111Cl 追加: 各ベクトルの画素の添字だけを並列に求め (Z < 0 と NaN は -1)、加算は直列にベクトルの順で行う。
+        //  従来は要素ごとに lock して並列に加算していたため、加算の順が実行ごとに変わり、結果が丸め誤差の範囲で毎回揺れていた。
+        var index = new (int i, int j)[vectors.Length]; // 261111Cl 追加
+        Parallel.For(0, vectors.Length, k => index[k] = vectors[k].Z >= 0 ? ToIndex(vectors[k]) : (-1, -1)); // 261111Cl 追加
+
         if (DrawingMode == DrawingModeEnum.Histogram)
         {
-            vectors.AsParallel().Where(v => v.Z >= 0).ForAll(v =>
+            //vectors.AsParallel().Where(v => v.Z >= 0).ForAll(v => // 261111Cl 変更前
+            //{
+            //    var (i, j) = ToIndex(v);
+            //    lock (lockObj) Pixels[i][j] += 1 / areas[i];
+            //});
+            for (int k = 0; k < vectors.Length; k++) // 261111Cl 変更
             {
-                var (i, j) = ToIndex(v);
-                lock (lockObj) Pixels[i][j] += 1 / areas[i];
-            });
+                var (i, j) = index[k];
+                if (i >= 0) Pixels[i][j] += 1 / areas[i];
+            }
         }
         else if (DrawingMode == DrawingModeEnum.Average)
         {
@@ -162,15 +174,22 @@ public partial class PoleFigureControl2 : UserControlBase
             for (int i = 0; i < count.Length; i++)
                 count[i] = new int[Pixels[i].Length];
 
-            vectors.AsParallel().Where(v => v.Z >= 0).ForAll(v =>
+            //vectors.AsParallel().Where(v => v.Z >= 0).ForAll(v => // 261111Cl 変更前
+            //{
+            //    var (i, j) = ToIndex(v);
+            //    lock (lockObj)
+            //    {
+            //        Pixels[i][j] += v.W;
+            //        count[i][j]++;
+            //    }
+            //});
+            for (int k = 0; k < vectors.Length; k++) // 261111Cl 変更
             {
-                var (i, j) = ToIndex(v);
-                lock (lockObj)
-                {
-                    Pixels[i][j] += v.W;
-                    count[i][j]++;
-                }
-            });
+                var (i, j) = index[k];
+                if (i < 0) continue;
+                Pixels[i][j] += vectors[k].W;
+                count[i][j]++;
+            }
 
             for (int i = 0; i < div1; i++)
                 for (int j = 0; j < Pixels[i].Length; j++)
@@ -187,11 +206,16 @@ public partial class PoleFigureControl2 : UserControlBase
                     tmp[i][j] = [];
             }
 
-            vectors.AsParallel().Where(v => v.Z >= 0).ForAll(v =>
+            //vectors.AsParallel().Where(v => v.Z >= 0).ForAll(v => // 261111Cl 変更前
+            //{
+            //    var (i, j) = ToIndex(v);
+            //    lock (lockObj) tmp[i][j].Add(v.W);
+            //});
+            for (int k = 0; k < vectors.Length; k++) // 261111Cl 変更
             {
-                var (i, j) = ToIndex(v);
-                lock (lockObj) tmp[i][j].Add(v.W);
-            });
+                var (i, j) = index[k];
+                if (i >= 0) tmp[i][j].Add(vectors[k].W);
+            }
 
             for (int i = 0; i < div1; i++)
                 for (int j = 0; j < Pixels[i].Length; j++)

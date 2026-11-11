@@ -253,7 +253,8 @@ public partial class WaveLengthControl : UserControlBase
         {
             // 260426Cl 整理: Invoke の args 引数 (null) を省略
             if (InvokeRequired)
-                return (int)Invoke(new Func<int>(() => XrayWaveSourceElementNumber));
+                //return (int)Invoke(new Func<int>(() => XrayWaveSourceElementNumber)); // 261111Cl 変更前
+                return Invoke(() => XrayWaveSourceElementNumber); // 261111Cl 変更: 型付きの Invoke<T>(Func<T>) (意味は同じ)
             else
                 return comboBoxXRayElement.SelectedIndex;
         }

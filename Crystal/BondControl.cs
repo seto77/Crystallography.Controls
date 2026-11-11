@@ -117,7 +117,16 @@ public partial class BondInputControl : UserControlBase
     {
         if (bonds == null) return;
         SkipEvent = true;
-        foreach (var b in bonds) table.Add(b);
+        //foreach (var b in bonds) table.Add(b); // 261111Cl 変更前
+        // 261111Cl 追加: 1 行ごとの ListChanged (表の行の追加とレイアウト) をやめ、追加し終えてから表を 1 回作り直す。呼び出し元は全部 table.Clear() の直後なので、選択行は従来どおり先頭 (CurrencyManager は Reset で空→0 行目)。
+        var raise = bindingSource.RaiseListChangedEvents; // 261111Cl 追加
+        bindingSource.RaiseListChangedEvents = false; // 261111Cl 追加
+        try { foreach (var b in bonds) table.Add(b); } // 261111Cl
+        finally // 261111Cl 追加
+        {
+            bindingSource.RaiseListChangedEvents = raise;
+            if (raise) bindingSource.ResetBindings(false);
+        }
         crystal.Bonds = GetAll();
         SkipEvent = false;
         ItemsChanged?.Invoke(this, EventArgs.Empty);

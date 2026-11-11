@@ -32,6 +32,8 @@ public partial class SymmetryControl : UserControlBase
             var (cs, pg, sg) = SymmetryStatic.GetSystemAndGroupFromSeriesNumber(value);
             SkipEvent = true;
             SuspendLayout();
+            try // 261111Cl 追加: 例外時も SkipEvent と SuspendLayout を必ず戻す
+            { // 261111Cl 追加
 
             comboBoxCrystalSystem.SelectedIndex = cs;
             comboBoxPointGroup.Items.Clear();
@@ -41,8 +43,10 @@ public partial class SymmetryControl : UserControlBase
             comboBoxSpaceGroup.Items.AddRange(spaceGroupArray(cs, pg));
             comboBoxSpaceGroup.SelectedIndex = sg;
 
-            SkipEvent = false;
-            ResumeLayout();
+            //SkipEvent = false; // 261111Cl 変更前
+            //ResumeLayout(); // 261111Cl 変更前
+            } // 261111Cl 追加
+            finally { SkipEvent = false; ResumeLayout(); } // 261111Cl 変更: finally へ (順序は同じ)
             SetCellConstantsBySymmetry();
         }
     }
@@ -77,14 +81,18 @@ public partial class SymmetryControl : UserControlBase
         {
             SuspendLayout();
             SkipEvent = true;
+            try // 261111Cl 追加
+            { // 261111Cl 追加
             numericBoxA.Value = value.A / LengthScale;
             numericBoxB.Value = value.B / LengthScale;
             numericBoxC.Value = value.C / LengthScale;
             numericBoxAlpha.RadianValue = value.Alpha;
             numericBoxBeta.RadianValue = value.Beta;
             numericBoxGamma.RadianValue = value.Gamma;
-            SkipEvent = false;
-            ResumeLayout();
+            //SkipEvent = false; // 261111Cl 変更前
+            //ResumeLayout(); // 261111Cl 変更前
+            } // 261111Cl 追加
+            finally { SkipEvent = false; ResumeLayout(); } // 261111Cl 変更: finally へ (順序は同じ)
         }
     }
 
@@ -122,13 +130,17 @@ public partial class SymmetryControl : UserControlBase
         set
         {
             SuspendLayout();
+            try // 261111Cl 追加
+            { // 261111Cl 追加
             numericBoxAErr.Value = value.AErr / LengthScale;
             numericBoxBErr.Value = value.BErr / LengthScale;
             numericBoxCErr.Value = value.CErr / LengthScale;
             numericBoxAlphaErr.RadianValue = value.AlphaErr;
             numericBoxBetaErr.RadianValue = value.BetaErr;
             numericBoxGammaErr.RadianValue = value.GammaErr;
-            ResumeLayout();
+            //ResumeLayout(); // 261111Cl 変更前
+            } // 261111Cl 追加
+            finally { ResumeLayout(); } // 261111Cl 変更: finally へ
         }
     }
 

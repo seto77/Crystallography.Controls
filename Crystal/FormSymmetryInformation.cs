@@ -822,7 +822,11 @@ public partial class FormSymmetryInformation : FormBase
         if (radioButtonEmf.Checked)
             CopyAsMetafile(g => SymmetryDiagramElements.DrawSymmetryElements(g, size, sn, axis));
         else
-            Clipboard.SetDataObject(SymmetryDiagramElements.RenderSymmetryElements(sn, size, axis), true);
+        {
+            //Clipboard.SetDataObject(SymmetryDiagramElements.RenderSymmetryElements(sn, size, axis), true); // 261111Cl 変更前: Bitmap を破棄していなかった
+            using var bmp = SymmetryDiagramElements.RenderSymmetryElements(sn, size, axis); // 261111Cl 変更
+            Clipboard.SetImage(bmp); // 261111Cl 変更: copy:true で書き写すので直後に破棄してよい
+        }
     }
 
     private void buttonCopyGeneralPositions_Click(object sender, EventArgs e)
@@ -834,7 +838,11 @@ public partial class FormSymmetryInformation : FormBase
         if (radioButtonEmf.Checked)
             CopyAsMetafile(g => SymmetryDiagramPositions.DrawGeneralPositions(g, size, sn, axis, testPoint));
         else
-            Clipboard.SetDataObject(SymmetryDiagramPositions.RenderGeneralPositions(sn, size, axis, testPoint), true);
+        {
+            //Clipboard.SetDataObject(SymmetryDiagramPositions.RenderGeneralPositions(sn, size, axis, testPoint), true); // 261111Cl 変更前: Bitmap を破棄していなかった
+            using var bmp = SymmetryDiagramPositions.RenderGeneralPositions(sn, size, axis, testPoint); // 261111Cl 変更
+            Clipboard.SetImage(bmp); // 261111Cl 変更
+        }
     }
 
     /// <summary>EMF+ クリップボードコピーの共通設定 (背景・AntiAlias) を済ませてから <paramref name="drawDiagram"/> を呼ぶ。</summary> //260731Cl 変更: 「背景白」→「背景」(ダーク対応)

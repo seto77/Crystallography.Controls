@@ -16,6 +16,7 @@ namespace Crystallography.Controls;
 public partial class ScalablePictureBox : UserControlBase
 {
     private static readonly string SymbolFontName = WineCompat.Resolve("Arial"); // (260322Ch) overlay 描画で使うフォント名を一箇所へ集約する 260610Cl const→readonly化: Wine時フォント切替
+    private static readonly FontFamily SymbolFontFamily = new(SymbolFontName); // 261111Cl 追加: Paint のたびに new FontFamily していたのを 1 つにする (名前は static readonly で変わらない)
     public bool SkipEvent = false;
     public bool SkipDrawing = false;
     public enum SymbolShape { Circle, Cross, Line, CircleAndCross };
@@ -536,8 +537,17 @@ public partial class ScalablePictureBox : UserControlBase
         //if(showAreaRectangle)
         //    DrawAreaRectangle();
 
-        this.Refresh();
+        //this.Refresh(); // 261111Cl 変更前
+        // 261111Cl 変更: パン (マウスのドラッグ) 中は同期の Refresh をせず、PictureBox の再描画を予約するだけにする (連続するマウス移動で描画がまとまる)。
+        //  それ以外 (外部からの呼び出し・ズーム・画像の差し替えなど) は従来どおり同期で描画する。
+        if (deferRefreshWhilePanning) // 261111Cl 追加
+            pictureBox.Invalidate(); // 261111Cl 追加
+        else // 261111Cl 追加
+            this.Refresh();
     }
+
+    /// <summary>261111Cl 追加: true の間、drawPictureBox の最後の Refresh を pictureBox.Invalidate に替える (パン中のマウス移動だけで使う)。</summary>
+    private bool deferRefreshWhilePanning = false;
 
     #region マウスイベント
     private void pictureBox_MouseWheel(object sender, MouseEventArgs e)
@@ -609,12 +619,22 @@ public partial class ScalablePictureBox : UserControlBase
 
         if (MouseRangeMode)
         {
-            mouseRangeEnd = e.Location;
-            pictureBox.Refresh();
+            //mouseRangeEnd = e.Location; // 261111Cl 変更前
+            //pictureBox.Refresh(); // 261111Cl 変更前: マウス移動ごとに画像全体を同期で再描画していた
+            // 261111Cl 変更: 前回と今回のラバーバンドを含む範囲だけ再描画を予約する (前回の枠を消すため両方を含める。線幅と AntiAlias のにじみの分だけ広げる)
+            var oldRect = Rectangle.FromLTRB(Math.Min(mouseRangeStart.X, mouseRangeEnd.X), Math.Min(mouseRangeStart.Y, mouseRangeEnd.Y), Math.Max(mouseRangeStart.X, mouseRangeEnd.X), Math.Max(mouseRangeStart.Y, mouseRangeEnd.Y)); // 261111Cl 追加
+            mouseRangeEnd = e.Location; // 261111Cl
+            var newRect = Rectangle.FromLTRB(Math.Min(mouseRangeStart.X, mouseRangeEnd.X), Math.Min(mouseRangeStart.Y, mouseRangeEnd.Y), Math.Max(mouseRangeStart.X, mouseRangeEnd.X), Math.Max(mouseRangeStart.Y, mouseRangeEnd.Y)); // 261111Cl 追加
+            var dirty = Rectangle.Union(oldRect, newRect); // 261111Cl 追加
+            dirty.Inflate(3, 3); // 261111Cl 追加
+            pictureBox.Invalidate(dirty); // 261111Cl 追加
         }
         else if ((e.Button == MouseButtons.Left || e.Button == MouseButtons.Middle) && MouseTranslation && justBeforePoint != e.Location)
         {
-            Center = new PointD(Center.X + (justBeforePoint.X - e.Location.X) / Zoom, Center.Y + (justBeforePoint.Y - e.Location.Y) / Zoom);
+            //Center = new PointD(Center.X + (justBeforePoint.X - e.Location.X) / Zoom, Center.Y + (justBeforePoint.Y - e.Location.Y) / Zoom); // 261111Cl 変更前
+            deferRefreshWhilePanning = true; // 261111Cl 追加: パン中は再描画を予約だけにする (drawPictureBox 参照)
+            try { Center = new PointD(Center.X + (justBeforePoint.X - e.Location.X) / Zoom, Center.Y + (justBeforePoint.Y - e.Location.Y) / Zoom); } // 261111Cl
+            finally { deferRefreshWhilePanning = false; } // 261111Cl 追加
             justBeforePoint = e.Location;
         }
     }
@@ -703,7 +723,93 @@ public partial class ScalablePictureBox : UserControlBase
         //drawSymbols(e)
         if (!DesignMode)
         {
-            using var symbolFontFamily = new FontFamily(SymbolFontName); // (260322Ch) symbol label 用 FontFamily を Paint ごとに再利用する
+            #region 261111Cl 変更前: Paint のたびに FontFamily を、記号ごとに Brush 2 個と Pen 2 個を作っていた
+            //using var symbolFontFamily = new FontFamily(SymbolFontName); // (260322Ch) symbol label 用 FontFamily を Paint ごとに再利用する
+            //if (Symbols != null)
+            //    foreach (var s in Symbols)
+            //    {
+            //        if (s.SymbolVisible)
+            //        {
+            //            if (s.Shape == SymbolShape.Cross || s.Shape == SymbolShape.CircleAndCross)
+            //            {
+            //                using var brush1 = new SolidBrush(s.CrossColor1);
+            //                using var brush2 = new SolidBrush(s.CrossColor2);
+            //                using Pen pen1 = new(brush1), pen2 = new(brush2);
+            //                pen1.Width = pen2.Width = s.Bold ? 2f : 1f;
+            //                var pt = ConvertToClientPt(s.CrossPosition).ToPointF();
+            //                if (IsPointInExtendedClientArea(pt))
+            //                {
+            //                    g.DrawLine(pen2, new PointF(pt.X - s.CrossSize + 1, pt.Y - s.CrossSize - 1), new PointF(pt.X + s.CrossSize + 1, pt.Y + s.CrossSize - 1));
+            //                    g.DrawLine(pen2, new PointF(pt.X - s.CrossSize - 1, pt.Y - s.CrossSize + 1), new PointF(pt.X + s.CrossSize - 1, pt.Y + s.CrossSize + 1));
+            //                    g.DrawLine(pen2, new PointF(pt.X + s.CrossSize - 1, pt.Y - s.CrossSize - 1), new PointF(pt.X - s.CrossSize - 1, pt.Y + s.CrossSize - 1));
+            //                    g.DrawLine(pen2, new PointF(pt.X + s.CrossSize + 1, pt.Y - s.CrossSize + 1), new PointF(pt.X - s.CrossSize + 1, pt.Y + s.CrossSize + 1));
+            //
+            //                    g.DrawLine(pen1, new PointF(pt.X - s.CrossSize, pt.Y - s.CrossSize), new PointF(pt.X + s.CrossSize, pt.Y + s.CrossSize));
+            //                    g.DrawLine(pen1, new PointF(pt.X + s.CrossSize, pt.Y - s.CrossSize), new PointF(pt.X - s.CrossSize, pt.Y + s.CrossSize));
+            //                    pen1.Width = pen2.Width = 1f;
+            //                    if (s.LabelVisible)
+            //                    {
+            //                        using var gp = new GraphicsPath();
+            //                        gp.AddString(s.Label, symbolFontFamily, (int)FontStyle.Bold, s.Bold ? 18f : 16f, new PointF(pt.X + 5, pt.Y + 5), StringFormat.GenericDefault);
+            //
+            //                        if (s.Bold)
+            //                        {
+            //                            g.FillPath(brush2, gp);
+            //                            g.DrawPath(pen1, gp);
+            //                        }
+            //                        else
+            //                        {
+            //                            g.FillPath(brush1, gp);
+            //                            g.DrawPath(pen2, gp);
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //            if (s.Shape == SymbolShape.Circle || s.Shape == SymbolShape.CircleAndCross)
+            //            {
+            //                using var pen1 = new Pen(Color.FromArgb(128, s.CircleColor)) { Width = s.Bold ? 2f : 1f };
+            //
+            //                var pt = ConvertToClientPt(s.CircleCenter).ToPointF();
+            //                if (IsPointInExtendedClientArea(pt))
+            //                {
+            //                    var rect = ConvertToClientRect(new RectangleD(s.CircleCenter.X - s.CircleRadius, s.CircleCenter.Y - s.CircleRadius, s.CircleRadius * 2, s.CircleRadius * 2)).ToRectangleF();
+            //                    g.DrawEllipse(pen1, rect);
+            //                }
+            //            }
+            //            if (s.Shape == SymbolShape.Line)
+            //            {
+            //                using var pen1 = new Pen(Color.FromArgb(128, s.LineColor)) { Width = 2f };
+            //                var pt1 = ConvertToClientPt(s.LinePosition1).ToPointF();
+            //                var pt2 = ConvertToClientPt(s.LinePosition2).ToPointF();
+            //                if (IsPointInExtendedClientArea(pt1))
+            //                {
+            //                    g.DrawLine(pen1, pt1, pt2);
+            //                }
+            //            }
+            //        }
+            //    }
+            #endregion
+            // 261111Cl 変更: FontFamily は static に 1 つ (SymbolFontFamily)。Brush/Pen は、この Paint の中で色 (と線幅) が同じものを使い回し、最後にまとめて破棄する。
+            //  描く内容・順序・色・線幅は従来と同じ (Pen(SolidBrush) と Pen(Color) はどちらも単色のペン)。点が描画範囲外の記号では作らない。
+            var symbolFontFamily = SymbolFontFamily; // 261111Cl
+            Dictionary<int, SolidBrush> brushCache = null; // 261111Cl 追加
+            Dictionary<(int Argb, float Width), Pen> penCache = null; // 261111Cl 追加
+            SolidBrush brushOf(Color c) // 261111Cl 追加
+            {
+                brushCache ??= [];
+                if (!brushCache.TryGetValue(c.ToArgb(), out var b))
+                    brushCache[c.ToArgb()] = b = new SolidBrush(c);
+                return b;
+            }
+            Pen penOf(Color c, float width) // 261111Cl 追加
+            {
+                penCache ??= [];
+                if (!penCache.TryGetValue((c.ToArgb(), width), out var pen))
+                    penCache[(c.ToArgb(), width)] = pen = new Pen(c, width);
+                return pen;
+            }
+            try // 261111Cl 追加
+            {
             if (Symbols != null)
                 foreach (var s in Symbols)
                 {
@@ -711,13 +817,10 @@ public partial class ScalablePictureBox : UserControlBase
                     {
                         if (s.Shape == SymbolShape.Cross || s.Shape == SymbolShape.CircleAndCross)
                         {
-                            using var brush1 = new SolidBrush(s.CrossColor1);
-                            using var brush2 = new SolidBrush(s.CrossColor2);
-                            using Pen pen1 = new(brush1), pen2 = new(brush2);
-                            pen1.Width = pen2.Width = s.Bold ? 2f : 1f;
                             var pt = ConvertToClientPt(s.CrossPosition).ToPointF();
                             if (IsPointInExtendedClientArea(pt))
                             {
+                                Pen pen1 = penOf(s.CrossColor1, s.Bold ? 2f : 1f), pen2 = penOf(s.CrossColor2, s.Bold ? 2f : 1f);
                                 g.DrawLine(pen2, new PointF(pt.X - s.CrossSize + 1, pt.Y - s.CrossSize - 1), new PointF(pt.X + s.CrossSize + 1, pt.Y + s.CrossSize - 1));
                                 g.DrawLine(pen2, new PointF(pt.X - s.CrossSize - 1, pt.Y - s.CrossSize + 1), new PointF(pt.X + s.CrossSize - 1, pt.Y + s.CrossSize + 1));
                                 g.DrawLine(pen2, new PointF(pt.X + s.CrossSize - 1, pt.Y - s.CrossSize - 1), new PointF(pt.X - s.CrossSize - 1, pt.Y + s.CrossSize - 1));
@@ -725,48 +828,51 @@ public partial class ScalablePictureBox : UserControlBase
 
                                 g.DrawLine(pen1, new PointF(pt.X - s.CrossSize, pt.Y - s.CrossSize), new PointF(pt.X + s.CrossSize, pt.Y + s.CrossSize));
                                 g.DrawLine(pen1, new PointF(pt.X + s.CrossSize, pt.Y - s.CrossSize), new PointF(pt.X - s.CrossSize, pt.Y + s.CrossSize));
-                                pen1.Width = pen2.Width = 1f;
                                 if (s.LabelVisible)
                                 {
                                     using var gp = new GraphicsPath();
                                     gp.AddString(s.Label, symbolFontFamily, (int)FontStyle.Bold, s.Bold ? 18f : 16f, new PointF(pt.X + 5, pt.Y + 5), StringFormat.GenericDefault);
 
+                                    //ラベルの縁取りは線幅 1 (従来は pen1/pen2 の Width を 1 に戻してから描いていた)
                                     if (s.Bold)
                                     {
-                                        g.FillPath(brush2, gp);
-                                        g.DrawPath(pen1, gp);
+                                        g.FillPath(brushOf(s.CrossColor2), gp);
+                                        g.DrawPath(penOf(s.CrossColor1, 1f), gp);
                                     }
                                     else
                                     {
-                                        g.FillPath(brush1, gp);
-                                        g.DrawPath(pen2, gp);
+                                        g.FillPath(brushOf(s.CrossColor1), gp);
+                                        g.DrawPath(penOf(s.CrossColor2, 1f), gp);
                                     }
                                 }
                             }
                         }
                         if (s.Shape == SymbolShape.Circle || s.Shape == SymbolShape.CircleAndCross)
                         {
-                            using var pen1 = new Pen(Color.FromArgb(128, s.CircleColor)) { Width = s.Bold ? 2f : 1f };
-
                             var pt = ConvertToClientPt(s.CircleCenter).ToPointF();
                             if (IsPointInExtendedClientArea(pt))
                             {
                                 var rect = ConvertToClientRect(new RectangleD(s.CircleCenter.X - s.CircleRadius, s.CircleCenter.Y - s.CircleRadius, s.CircleRadius * 2, s.CircleRadius * 2)).ToRectangleF();
-                                g.DrawEllipse(pen1, rect);
+                                g.DrawEllipse(penOf(Color.FromArgb(128, s.CircleColor), s.Bold ? 2f : 1f), rect);
                             }
                         }
                         if (s.Shape == SymbolShape.Line)
                         {
-                            using var pen1 = new Pen(Color.FromArgb(128, s.LineColor)) { Width = 2f };
                             var pt1 = ConvertToClientPt(s.LinePosition1).ToPointF();
                             var pt2 = ConvertToClientPt(s.LinePosition2).ToPointF();
                             if (IsPointInExtendedClientArea(pt1))
                             {
-                                g.DrawLine(pen1, pt1, pt2);
+                                g.DrawLine(penOf(Color.FromArgb(128, s.LineColor), 2f), pt1, pt2);
                             }
                         }
                     }
                 }
+            } // 261111Cl 追加
+            finally // 261111Cl 追加
+            {
+                if (brushCache != null) foreach (var b in brushCache.Values) b.Dispose();
+                if (penCache != null) foreach (var pen in penCache.Values) pen.Dispose();
+            }
 
             //if (TitleVisible) // 260813Cl 旧: Title 未設定 (Font=null) のまま TitleVisible だけ true だと Paint で NullReferenceException (SpotID v2 で Show zone axis が復元 checked のとき、画像読込直後〜Identify 前に発生)
             if (TitleVisible && Title.Font != null) // 260813Cl
@@ -1078,7 +1184,9 @@ public partial class ScalablePictureBox : UserControlBase
 
     public void CopyAsBitmap()
     {
-        Clipboard.SetDataObject(GetBitmapImage(), true);
+        //Clipboard.SetDataObject(GetBitmapImage(), true); // 261111Cl 変更前: Bitmap を破棄していなかった
+        using var bmp = GetBitmapImage(); // 261111Cl 変更
+        Clipboard.SetImage(bmp); // 261111Cl 変更: copy:true で書き写すので直後に破棄してよい
     }
 
     public void SaveAsMetafile() => metafile(true);

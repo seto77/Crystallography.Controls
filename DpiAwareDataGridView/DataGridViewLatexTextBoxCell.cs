@@ -20,7 +20,20 @@ public enum LatexFractionStyle
 public partial class DataGridViewLatexTextBoxCell : DataGridViewTextBoxCell
 {
     private Bitmap cachedBitmap;
-    private string cachedKey;
+    //private string cachedKey; // 261111Cl 変更前
+    private LatexCacheKey? cachedKey; // 261111Cl 変更
+
+    /// <summary>261111Cl 追加: <see cref="TryGetBitmap"/> のキャッシュキー。従来は 9 項目の補間文字列を Paint のたびに作り、FontFamily.Name も読んでいた。
+    /// フォントは参照で比べる (Font は不変なので、同じインスタンスなら名前・大きさ・スタイルも同じ。別インスタンスなら描き直すだけで結果は正しい)。
+    /// DPI は従来のキー ("{dpi:0.##}") と同じく小数 2 桁に丸めた値で比べる。</summary>
+    private readonly record struct LatexCacheKey(string Text, Font BaseFont, float SizeInPoints, int Argb, double Dpi, double Thickness, TexStyle TexStyle, LatexFractionStyle FractionStyle)
+    {
+        public bool Equals(LatexCacheKey other)
+            => Text == other.Text && ReferenceEquals(BaseFont, other.BaseFont) && SizeInPoints == other.SizeInPoints && Argb == other.Argb
+            && Dpi == other.Dpi && Thickness == other.Thickness && TexStyle == other.TexStyle && FractionStyle == other.FractionStyle;
+        public override int GetHashCode()
+            => HashCode.Combine(Text, System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(BaseFont), SizeInPoints, Argb, Dpi, Thickness, TexStyle, FractionStyle);
+    }
 
     public double Thickness { get; set; } = 0.6;
     public float FontSizeInPoints { get; set; } // 260707Ch 追加
@@ -147,7 +160,8 @@ public partial class DataGridViewLatexTextBoxCell : DataGridViewTextBoxCell
         // 260708Ch: FontSizeInPoints 指定時の複製 Font 生成 (ResolveFont) はキャッシュヒットでも毎回発生していたため、
         // FormatFractions と同様にキー確定 (miss 判定) 後まで遅延する。キーには実フォントでなく希望サイズの値を使う。
         var sizeInPoints = desiredSizeInPoints > 0f ? desiredSizeInPoints : baseFont.SizeInPoints;
-        var key = $"{text}\n{baseFont.FontFamily.Name}|{sizeInPoints}|{(int)baseFont.Style}|{color.ToArgb()}|{dpi:0.##}|{Thickness}|{TexStyle}|{FractionStyle}";
+        //var key = $"{text}\n{baseFont.FontFamily.Name}|{sizeInPoints}|{(int)baseFont.Style}|{color.ToArgb()}|{dpi:0.##}|{Thickness}|{TexStyle}|{FractionStyle}"; // 261111Cl 変更前
+        var key = new LatexCacheKey(text, baseFont, sizeInPoints, color.ToArgb(), Math.Round(dpi, 2, MidpointRounding.AwayFromZero), Thickness, TexStyle, FractionStyle); // 261111Cl 変更: 文字列を作らない構造体キー
         // 260706Ch: key が一致すれば cachedBitmap が null (=前回パース失敗) でもそのまま返す。
         // 以前は失敗時に cachedKey を null に戻していたため、同じ不正な LaTeX 文字列を持つセルは
         // 再描画のたびに RenderLatexBitmap を呼び直し、例外を繰り返していた。

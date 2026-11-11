@@ -409,7 +409,8 @@ public partial class NumericBox : UserControlBase
         {
             // 260426Cl 整理: Invoke の args 引数 (null) を省略, EventArgs.Empty を使用
             if (InvokeRequired)
-                Invoke(new Action(() => Value = value));
+                //Invoke(new Action(() => Value = value)); // 261111Cl 変更前
+                Invoke(() => { Value = value; }); // 261111Cl 変更: Invoke(Action) (ブロック本体にして Func<double> 版に解決されないようにする)
             else if (this.numericalValue != value)
             {
                 if (RoundErrorAccuracy > 0)
@@ -1073,7 +1074,8 @@ public partial class NumericBox : UserControlBase
 
         // 260426Cl 整理: Invoke の args 引数 (null) を省略
         if (InvokeRequired)
-            return (string)Invoke(new Func<string>(GetString));
+            //return (string)Invoke(new Func<string>(GetString)); // 261111Cl 変更前
+            return Invoke(GetString); // 261111Cl 変更: 型付きの Invoke<T>(Func<T>) (意味は同じ)
 
         string text = "";
         if (double.IsNaN(numericalValue))

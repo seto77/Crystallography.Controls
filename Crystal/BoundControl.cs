@@ -104,8 +104,21 @@ public partial class BoundControl : UserControlBase
     {
         if (bounds == null) return;
         SkipEvent = true;
-        foreach (var b in bounds.Where(b => b.Index != (0, 0, 0)))
-            table.Add(b);
+        //foreach (var b in bounds.Where(b => b.Index != (0, 0, 0))) // 261111Cl 変更前
+        //    table.Add(b);
+        // 261111Cl 追加: 1 行ごとの ListChanged (表の行の追加とレイアウト) をやめ、追加し終えてから表を 1 回作り直す。呼び出し元は全部 table.Clear() の直後なので、選択行は従来どおり先頭 (CurrencyManager は Reset で空→0 行目)。
+        var raise = bindingSource.RaiseListChangedEvents; // 261111Cl 追加
+        bindingSource.RaiseListChangedEvents = false; // 261111Cl 追加
+        try // 261111Cl 追加
+        {
+            foreach (var b in bounds.Where(b => b.Index != (0, 0, 0)))
+                table.Add(b);
+        }
+        finally // 261111Cl 追加
+        {
+            bindingSource.RaiseListChangedEvents = raise;
+            if (raise) bindingSource.ResetBindings(false);
+        }
         SkipEvent = false;
         NotifyChanged();
         bindingSource_PositionChanged(this, EventArgs.Empty);

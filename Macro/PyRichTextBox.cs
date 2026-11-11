@@ -173,6 +173,9 @@ public partial class PyRichTextBox : RichTextBox
 
     #region "イベント"
 
+    /// <summary>261111Cl 追加: 入力中の単語の区切り文字 (半角空白・全角空白・タブ・改行)</summary>
+    private static readonly System.Buffers.SearchValues<char> WordSeparators = System.Buffers.SearchValues.Create(" 　\t\n");
+
     private void PyRichTextBox_TextChanged(object sender, EventArgs e)
     {
         // 260414Cl 追加 プログラマティックなテキスト差し替え中はポップアップを出さない
@@ -182,14 +185,19 @@ public partial class PyRichTextBox : RichTextBox
             return;
         }
         int i = this.SelectionStart; //カレット位置
-        string s = Text[..i]; //カレット位置までの文字列取得
-        int c = -1; //区切り開始位置取得用
-        //単語の区切り位置を取得する処理
-
-        if (c < s.LastIndexOf(' ')) c = s.LastIndexOf(' '); //半角空白位置取得
-        if (c < s.LastIndexOf('　')) c = s.LastIndexOf('　'); //全角空白位置取得
-        if (c < s.LastIndexOf('\t')) c = s.LastIndexOf('\t'); //空白タブ位置取得
-        if (c < s.LastIndexOf('\n')) c = s.LastIndexOf('\n'); //改行(ラインフィールド)位置取得
+        #region 261111Cl 変更前: キーを打つたびにカレットまでの部分文字列を作り、LastIndexOf を最大 8 回呼んでいた
+        //string s = Text[..i]; //カレット位置までの文字列取得
+        //int c = -1; //区切り開始位置取得用
+        ////単語の区切り位置を取得する処理
+        //
+        //if (c < s.LastIndexOf(' ')) c = s.LastIndexOf(' '); //半角空白位置取得
+        //if (c < s.LastIndexOf('　')) c = s.LastIndexOf('　'); //全角空白位置取得
+        //if (c < s.LastIndexOf('\t')) c = s.LastIndexOf('\t'); //空白タブ位置取得
+        //if (c < s.LastIndexOf('\n')) c = s.LastIndexOf('\n'); //改行(ラインフィールド)位置取得
+        #endregion
+        // 261111Cl 変更: Text は 1 回だけ取り、カレットまでの範囲で区切り文字 (半角空白・全角空白・タブ・改行) の最後の位置を 1 回で探す (4 つの最後の位置の最大と同じ)
+        string s = Text; // 261111Cl
+        int c = s.AsSpan(0, i).LastIndexOfAny(WordSeparators); // 261111Cl: 区切り開始位置 (無ければ -1)
 
         if (c < i)
         { //カレットの位置が前回の区切り位置より後なら
@@ -499,8 +507,11 @@ public partial class PyRichTextBox : RichTextBox
     //    }
     //}
 
-    [System.Runtime.InteropServices.DllImport("user32.dll")]
-    private static extern int SendMessage(IntPtr hWnd, int msg, int wParam, int lParam);
+    //[System.Runtime.InteropServices.DllImport("user32.dll")] // 261111Cl 変更前 (CharSet 既定 Ansi のため実体は SendMessageA)
+    //private static extern int SendMessage(IntPtr hWnd, int msg, int wParam, int lParam);
+    // 261111Cl 変更: ソース生成の P/Invoke。LibraryImport は A/W の自動探索をしないので入口名を明示する (EM_GETFIRSTVISIBLELINE は文字列を扱わないので A/W で結果は同じ)
+    [System.Runtime.InteropServices.LibraryImport("user32.dll", EntryPoint = "SendMessageW")]
+    private static partial int SendMessage(IntPtr hWnd, int msg, int wParam, int lParam);
     private const int EM_GETFIRSTVISIBLELINE = 0xCE;
 
     private Panel _gutterPanel;
@@ -583,7 +594,9 @@ public partial class PyRichTextBox : RichTextBox
     {
         int caret = this.SelectionStart;
         int lineIdx = this.GetLineFromCharIndex(caret);
-        var line = lineIdx < this.Lines.Length ? this.Lines[lineIdx] : "";
+        //var line = lineIdx < this.Lines.Length ? this.Lines[lineIdx] : ""; // 261111Cl 変更前: Lines (全文を Split した配列) を 2 回作っていた
+        var lines = this.Lines; // 261111Cl 変更: 1 回だけ取得
+        var line = lineIdx < lines.Length ? lines[lineIdx] : ""; // 261111Cl
         int ws = 0;
         while (ws < line.Length && (line[ws] == ' ' || line[ws] == '\t')) ws++;
         var indent = line[..ws];

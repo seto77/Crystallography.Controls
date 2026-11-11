@@ -34,7 +34,8 @@ namespace Crystallography.Controls;
 /// 方針の下でキャプチャ対象に Controls 自身のフォームが含まれるという矛盾の産物)。
 /// 各メソッド先頭の日付コメント (260521Cl〜260807Cl) は ReciPro/GuiCapture.cs にあった当時のまま残している。
 /// </summary>
-public abstract class GuiCaptureHarness
+//public abstract class GuiCaptureHarness // 261111Cl 変更前
+public abstract partial class GuiCaptureHarness // 261111Cl 変更: LibraryImport (ソース生成) のため partial に
 {
     #region ホストアプリが設定/override する部分
 
@@ -785,11 +786,16 @@ public abstract class GuiCaptureHarness
     [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
     private struct RECT { public int Left, Top, Right, Bottom; }
 
-    [System.Runtime.InteropServices.DllImport("dwmapi.dll")]
-    private static extern int DwmGetWindowAttribute(IntPtr hwnd, int attr, out RECT rect, int size);
+    //[System.Runtime.InteropServices.DllImport("dwmapi.dll")] // 261111Cl 変更前
+    //private static extern int DwmGetWindowAttribute(IntPtr hwnd, int attr, out RECT rect, int size);
+    [System.Runtime.InteropServices.LibraryImport("dwmapi.dll")] // 261111Cl 変更: ソース生成の P/Invoke (RECT は int 4 つの blittable)
+    private static partial int DwmGetWindowAttribute(IntPtr hwnd, int attr, out RECT rect, int size);
 
-    [System.Runtime.InteropServices.DllImport("user32.dll")]
-    private static extern bool SetForegroundWindow(IntPtr hWnd); // 260524Cl: CopyFromScreen 前に対象ウィンドウを確実に前面へ
+    //[System.Runtime.InteropServices.DllImport("user32.dll")] // 261111Cl 変更前
+    //private static extern bool SetForegroundWindow(IntPtr hWnd); // 260524Cl: CopyFromScreen 前に対象ウィンドウを確実に前面へ
+    [System.Runtime.InteropServices.LibraryImport("user32.dll")] // 261111Cl 変更: ソース生成の P/Invoke。BOOL は従来の既定 (4 バイト) と同じく明示
+    [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
+    private static partial bool SetForegroundWindow(IntPtr hWnd); // 260524Cl: CopyFromScreen 前に対象ウィンドウを確実に前面へ
 
     private const int DWMWA_EXTENDED_FRAME_BOUNDS = 9;
 

@@ -579,7 +579,7 @@ public partial class ScalablePictureBoxAdvanced : UserControlBase
     private bool scalablePictureBox1_MouseMove2(object sender, MouseEventArgs e, PointD pt)
     {
         UpdateMousePositionInfo(pt); // (260322Ch) マウス位置ラベル更新を helper へまとめる
-        scalablePictureBox.Refresh();
+        //scalablePictureBox.Refresh(); // 261111Cl 変更前: ホバーのマウス移動ごとに画像全体を同期で再描画していた。描画内容はマウス位置に依らず (ラバーバンドは内側の ScalablePictureBox が自分で再描画する)、ラベルの更新には不要。MouseMove2/Paint2 の購読者は 4 アプリに無い
         return InvokeMouseEventHandler(MouseMove2, sender, e, pt); // (260322Ch) event 中継の null 判定を helper 化する
     }
 

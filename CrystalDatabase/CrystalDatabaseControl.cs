@@ -181,8 +181,8 @@ public partial class CrystalDatabaseControl : UserControlBase
     private void ReadDatabaseWorker_DoWork(object sender, DoWorkEventArgs e)
     {
         var filename = (string)e.Argument;
-        try
-        {
+        //try // 261111Cl 変更前: 例外はワーカーで MessageBox を出さず、RunWorkerCompleted の e.Error で UI スレッドから知らせる
+        { // 261111Cl (旧 try の中身。インデントは据え置き)
             sw.Restart();
             // 260712Cl 変更: ToLower() の一時文字列生成+CurrentCulture 依存を避け、序数比較の EndsWith に置換
             // if (filename.ToLower().EndsWith("cdb3")) // 260712Cl 変更前
@@ -201,8 +201,9 @@ public partial class CrystalDatabaseControl : UserControlBase
                         //  (同梱の AMCSD.cdb3 で 21,588 行中 21,000 行以上)。そのまま保存し直すと、圧縮のために雑誌名順に並べてあるファイルの順番が崩れる。
                         //  AsOrdered() でファイルの順に入れる。読み込み時間は誤差の範囲 (AMCSD.cdb3 の実測で中央値 713 → 639 ms)。読み込んでそのまま保存すると元のファイルと同じバイト列になる。
                         //foreach (var r in deserialize(fs).AsParallel().Select(r => Table.CreateRow(r, Crystal2.Serialize(r)))) // 261105Cl 変更前
-                        foreach (var r in deserialize(fs).AsParallel().AsOrdered().Select(r => Table.CreateRow(r, Crystal2.Serialize(r)))) // 261105Cl
-                            Table.Rows.Add(r);
+                        //foreach (var r in deserialize(fs).AsParallel().AsOrdered().Select(r => Table.CreateRow(r, Crystal2.Serialize(r)))) // 261105Cl // 261111Cl 変更前
+                        //    Table.Rows.Add(r); // 261111Cl 変更前
+                        addRowsInOrder(deserialize(fs)); // 261111Cl 変更: 並列は Serialize だけ。行の作成と追加は直列 (DataTable はスレッド非安全)
                         ReadDatabaseWorker.ReportProgress(0, report(Table.Rows.Count, total, sw.ElapsedMilliseconds, "Loading database..."));
                     }
                     GC.Collect();
@@ -220,8 +221,9 @@ public partial class CrystalDatabaseControl : UserControlBase
                         {
                             //deserialize(stream).AsParallel().Select(Table.CreateRow).ToList().ForEach(Table.Rows.Add);//この書き方だとメモリ使用量が増える
                             //foreach (var row in deserialize(stream).AsParallel().Select(r => Table.CreateRow(r, Crystal2.Serialize(r)))) // 261105Cl 変更前
-                            foreach (var row in deserialize(stream).AsParallel().AsOrdered().Select(r => Table.CreateRow(r, Crystal2.Serialize(r)))) // 261105Cl: 上と同じくファイルの順に入れる
-                                Table.Add(row);
+                            //foreach (var row in deserialize(stream).AsParallel().AsOrdered().Select(r => Table.CreateRow(r, Crystal2.Serialize(r)))) // 261105Cl: 上と同じくファイルの順に入れる // 261111Cl 変更前
+                            //    Table.Add(row); // 261111Cl 変更前
+                            addRowsInOrder(deserialize(stream)); // 261111Cl 変更: 上と同じ
 
                             ReadDatabaseWorker.ReportProgress(0, report(Table.Rows.Count, total, sw.ElapsedMilliseconds, "Loading database..."));
                         }
@@ -235,12 +237,13 @@ public partial class CrystalDatabaseControl : UserControlBase
             else
                 return;
         }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"{ex}\r\nFailed to load database. Sorry.");
-        }
+        //catch (Exception ex) // 261111Cl 変更前: ワーカースレッドから MessageBox を出していた
+        //{
+        //    MessageBox.Show($"{ex}\r\nFailed to load database. Sorry.");
+        //}
 
-        bindingSource.Position = 0;
+        //bindingSource.Position = 0; // 261111Cl 変更前: ワーカースレッドから BindingSource を触っていた
+        e.Result = true; // 261111Cl 追加: Position = 0 を UI スレッドで行う印 (従来どおり cdb3 以外のファイルでは行わない)
     }
 
     /// <summary>260717Cl 統合 (旧: ReadDatabaseWorker_/SaveDatabaseWorker_/DownloadCodWorker_ProgressChanged):
@@ -254,6 +257,12 @@ public partial class CrystalDatabaseControl : UserControlBase
 
     private void ReadDatabaseWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
     {
+        // 261111Cl 追加: 従来 DoWork の catch でワーカースレッドから出していた失敗のダイアログと、DoWork の最後の Position = 0 (失敗時も行っていた) を UI スレッドで行う。
+        //  e.Error があるときに e.Result を読むと例外になるので、先に e.Error を見る。
+        if (e.Error != null) // 261111Cl 追加
+            MessageBox.Show($"{e.Error}\r\nFailed to load database. Sorry."); // 261111Cl 追加
+        if (e.Error != null || e.Result is true) // 261111Cl 追加
+            bindingSource.Position = 0; // 261111Cl 追加: Resume() より前 (従来と同じく束縛の停止中) に行う
         this.Enabled = true;
         Resume();
         ProgressChanged?.Invoke(sender, 1, $"Total loading time: {sw.ElapsedMilliseconds / 1E3:f1} sec.");
@@ -305,7 +314,7 @@ public partial class CrystalDatabaseControl : UserControlBase
         var subDir = fn[..^5] + "\\";
         var header = $"{subDir}{Path.GetFileNameWithoutExtension(fn)}.";
         var fileSize = new List<long>();
-        var byteList = new List<byte>();
+        //var byteList = new List<byte>(); // 261111Cl 変更前: チャンクを最大 35 MB までここへ写していた
 
         var counter = 0;
         var bytes = new byte[total / division + 1][];
@@ -325,30 +334,61 @@ public partial class CrystalDatabaseControl : UserControlBase
             SaveDatabaseWorker.ReportProgress(0, report(Interlocked.Increment(ref counter), bytes.Length, sw.ElapsedMilliseconds, "Saving database..."));
         });
 
+        #region 261111Cl 変更前: チャンクを List<byte> (最大 35 MB) へ写してから書いていた
+        //for (int i = 0; i < bytes.Length; i++)
+        //{
+        //    byteList.AddRange(bytes[i]);
+
+        //    //最後まで来ている時で、かつ閾値以下の容量で、かつこれまで一度も分割もしていない場合
+        //    if (i == bytes.Length - 1 && byteList.Count <= thresholdBytes && fileCounter == 0)
+        //        // 260712Cl 変更: [.. byteList] は最大 thresholdBytes(~35MB) の List<byte> を毎回 byte[] へ全コピーする。
+        //        // CollectionsMarshal.AsSpan で内部配列を直接書き込み、余分な確保+コピーを排除 (同期 Write 中に byteList は不変)。
+        //        // fs.Write([.. byteList], 0, byteList.Count);//最初のファイルに書き込んで終了 // 260712Cl 変更前
+        //        fs.Write(CollectionsMarshal.AsSpan(byteList));//最初のファイルに書き込んで終了
+
+        //    //最後まで来ている時か、閾値以上の容量の場合
+        //    else if (i == bytes.Length - 1 || byteList.Count > thresholdBytes)
+        //    {
+        //        if (fileCounter == 0)
+        //            Directory.CreateDirectory(fn[..^5]);
+        //        //using (var fs1 = new FileStream(header + fileCounter.ToString("000"), FileMode.Create, FileAccess.Write)) // 261105Cl 変更前
+        //        parts.Add((header + fileCounter.ToString("000") + ".tmp", header + fileCounter.ToString("000"))); // 261105Cl 追加
+        //        using (var fs1 = new FileStream(parts[^1].Tmp, FileMode.Create, FileAccess.Write)) // 261105Cl
+        //            // 260712Cl 変更: 上記と同じく全コピーを避けて内部配列を直接書き込み
+        //            // fs1.Write([.. byteList], 0, byteList.Count); // 260712Cl 変更前
+        //            fs1.Write(CollectionsMarshal.AsSpan(byteList));
+        //        fileSize.Add(byteList.Count);
+        //        byteList.Clear();
+
+        //        fileCounter++;
+        //    }
+        //}
+        #endregion
+        // 261111Cl 変更: 各チャンクを FileStream へ直接書く。分割の規則 (累計が閾値を超えたら、そこまでで 1 ファイル。全体が閾値以下なら本体に書く) と
+        //  出力のバイト列は従来と同じ。groupBytes が旧 byteList.Count、groupStart はそのファイルの最初のチャンク。
+        long groupBytes = 0; // 261111Cl 追加
+        int groupStart = 0; // 261111Cl 追加
         for (int i = 0; i < bytes.Length; i++)
         {
-            byteList.AddRange(bytes[i]);
+            groupBytes += bytes[i].Length;
 
             //最後まで来ている時で、かつ閾値以下の容量で、かつこれまで一度も分割もしていない場合
-            if (i == bytes.Length - 1 && byteList.Count <= thresholdBytes && fileCounter == 0)
-                // 260712Cl 変更: [.. byteList] は最大 thresholdBytes(~35MB) の List<byte> を毎回 byte[] へ全コピーする。
-                // CollectionsMarshal.AsSpan で内部配列を直接書き込み、余分な確保+コピーを排除 (同期 Write 中に byteList は不変)。
-                // fs.Write([.. byteList], 0, byteList.Count);//最初のファイルに書き込んで終了 // 260712Cl 変更前
-                fs.Write(CollectionsMarshal.AsSpan(byteList));//最初のファイルに書き込んで終了
+            if (i == bytes.Length - 1 && groupBytes <= thresholdBytes && fileCounter == 0)
+                for (int k = groupStart; k <= i; k++)
+                    fs.Write(bytes[k]);//最初のファイルに書き込んで終了
 
             //最後まで来ている時か、閾値以上の容量の場合
-            else if (i == bytes.Length - 1 || byteList.Count > thresholdBytes)
+            else if (i == bytes.Length - 1 || groupBytes > thresholdBytes)
             {
                 if (fileCounter == 0)
                     Directory.CreateDirectory(fn[..^5]);
-                //using (var fs1 = new FileStream(header + fileCounter.ToString("000"), FileMode.Create, FileAccess.Write)) // 261105Cl 変更前
                 parts.Add((header + fileCounter.ToString("000") + ".tmp", header + fileCounter.ToString("000"))); // 261105Cl 追加
                 using (var fs1 = new FileStream(parts[^1].Tmp, FileMode.Create, FileAccess.Write)) // 261105Cl
-                    // 260712Cl 変更: 上記と同じく全コピーを避けて内部配列を直接書き込み
-                    // fs1.Write([.. byteList], 0, byteList.Count); // 260712Cl 変更前
-                    fs1.Write(CollectionsMarshal.AsSpan(byteList));
-                fileSize.Add(byteList.Count);
-                byteList.Clear();
+                    for (int k = groupStart; k <= i; k++)
+                        fs1.Write(bytes[k]);
+                fileSize.Add(groupBytes);
+                groupBytes = 0;
+                groupStart = i + 1;
 
                 fileCounter++;
             }
@@ -579,8 +619,8 @@ public partial class CrystalDatabaseControl : UserControlBase
         var UserAppDataPath = (string)e.Argument;
 
         //ここからCODをダウンロード
-        try
-        {
+        //try // 261111Cl 変更前: 例外はワーカーで MessageBox を出さず、RunWorkerCompleted の e.Error で UI スレッドから知らせる
+        { // 261111Cl (旧 try の中身。インデントは据え置き)
             sw.Restart();
             //260317Cl WebClient→HttpClient
             //new WebClient().DownloadFile(new Uri(urlHeader + "COD.cdb3"), CodDatabasePath);
@@ -627,10 +667,10 @@ public partial class CrystalDatabaseControl : UserControlBase
 
             Task.WaitAll(tasks);
         }
-        catch
-        {
-            MessageBox.Show("Failed to download new COD database. Sorry.", "Error", MessageBoxButtons.OK);
-        }
+        //catch // 261111Cl 変更前: ワーカースレッドから MessageBox を出していた
+        //{
+        //    MessageBox.Show("Failed to download new COD database. Sorry.", "Error", MessageBoxButtons.OK);
+        //}
     }
 
     // 260717Cl: worker_ProgressChanged へ統合 (本体が完全同一だった)。
@@ -638,6 +678,9 @@ public partial class CrystalDatabaseControl : UserControlBase
 
     private void DownloadCodWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
     {
+        // 261111Cl 追加: 従来 DoWork の catch でワーカースレッドから出していたダイアログ。ReadCOD の待ちループ (DoEvents) の中で、読み込みの前に出る (従来と同じ順)
+        if (e.Error != null) // 261111Cl 追加
+            MessageBox.Show("Failed to download new COD database. Sorry.", "Error", MessageBoxButtons.OK); // 261111Cl 追加
     }
 
     //260317Cl 削除 MyWebClient : WebClient (HttpClientに移行)
@@ -672,6 +715,16 @@ public partial class CrystalDatabaseControl : UserControlBase
     #endregion
 
     #region 結晶の追加、削除、変更
+    /// <summary>261111Cl 追加: 重い Crystal2.Serialize だけを並列に行い、行の作成 (NewRow・列の設定) と Rows.Add は直列に、配列の順で行う。
+    /// 従来は PLINQ のスレッドが CreateRow (列への設定) を並列に、同時に消費側が Rows.Add をしていた (DataTable はスレッド非安全)。</summary>
+    private void addRowsInOrder(Crystal2[] crystals)
+    {
+        var serialized = new byte[crystals.Length][];
+        Parallel.For(0, crystals.Length, i => serialized[i] = Crystal2.Serialize(crystals[i]));
+        for (int i = 0; i < crystals.Length; i++)
+            Table.Rows.Add(Table.CreateRow(crystals[i], serialized[i]));
+    }
+
     public void AddCrystal(Crystal2 crystal2)
     {
         Table.Add(crystal2);
@@ -690,8 +743,9 @@ public partial class CrystalDatabaseControl : UserControlBase
 
         // foreach (var c in crystal2.Where(e => e != null))
         //foreach (var r in crystal2.AsParallel().Where(e => e != null).Select(e => Table.CreateRow(e, Crystal2.Serialize(e)))) // 261105Cl 変更前
-        foreach (var r in crystal2.AsParallel().AsOrdered().Where(e => e != null).Select(e => Table.CreateRow(e, Crystal2.Serialize(e)))) // 261105Cl 修正: ReadDatabase と同じく、渡された順に入れる (CSManager の一括取り込みで順番が実行ごとに変わっていた)
-            Table.Rows.Add(r);
+        //foreach (var r in crystal2.AsParallel().AsOrdered().Where(e => e != null).Select(e => Table.CreateRow(e, Crystal2.Serialize(e)))) // 261105Cl 修正: ReadDatabase と同じく、渡された順に入れる (CSManager の一括取り込みで順番が実行ごとに変わっていた) // 261111Cl 変更前
+        //    Table.Rows.Add(r); // 261111Cl 変更前
+        addRowsInOrder([.. crystal2.Where(e => e != null)]); // 261111Cl 変更: 渡された順のまま。並列は Serialize だけ
 
         dataGridView.DataMember = originalDataMember;
         dataGridView.AutoSizeColumnsMode = originalAutoSizeColumnsMode;

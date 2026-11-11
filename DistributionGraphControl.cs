@@ -202,6 +202,11 @@ namespace Crystallography.Controls
 
         private Bitmap Bmp;
         private Graphics G;
+        // 261111Cl 追加: 表示から外れた前回の Bitmap とその Graphics。大きさが同じなら次の Draw の描画先として使い回す (表示中の Bmp には描かない)。
+        private Bitmap backBmp;
+        private Graphics backG;
+        // 261111Cl 追加: 目盛りの文字のフォント。DrawDivision のたびに new Font していたのを 1 つにする
+        private static readonly Font divisionFont = new(WineCompat.Resolve("tahoma"), 8);
         public double UpperX, LowerX;
         public double UpperY, LowerY;
         public double MaximalX, MinimalX;
@@ -357,8 +362,22 @@ namespace Crystallography.Controls
             //Bmp = new Bitmap(pictureBox.Width, pictureBox.Height); // (260611Ch) 旧: 再描画ごとに古い Bitmap/Graphics が未解放
             var oldBmp = Bmp; // (260611Ch)
             var oldG = G; // (260611Ch)
-            Bmp = new Bitmap(pictureBox.Width, pictureBox.Height); // (260611Ch)
-            G = Graphics.FromImage(Bmp); // (260611Ch)
+            //Bmp = new Bitmap(pictureBox.Width, pictureBox.Height); // (260611Ch) // 261111Cl 変更前
+            //G = Graphics.FromImage(Bmp); // (260611Ch) // 261111Cl 変更前
+            // 261111Cl 変更: 前回表示していた Bitmap が同じ大きさなら、それを次の描画先に使い回す (表示中の Bitmap には描かない)。
+            //  下の G.Clear から描き直し、Graphics の状態は SmoothingMode しか変えないので、描画結果は新しい Bitmap と同じ
+            if (backBmp != null && backBmp.Width == pictureBox.Width && backBmp.Height == pictureBox.Height) // 261111Cl 追加
+            {
+                (Bmp, G) = (backBmp, backG);
+                G.SmoothingMode = SmoothingMode.Default; // 新しい Graphics の既定値に戻す (destData が少ないときは AntiAlias にしない従来の分岐を保つ)
+            }
+            else // 261111Cl 追加
+            {
+                backG?.Dispose(); backBmp?.Dispose();
+                Bmp = new Bitmap(pictureBox.Width, pictureBox.Height); // (260611Ch)
+                G = Graphics.FromImage(Bmp); // (260611Ch)
+            }
+            (backBmp, backG) = (null, null); // 261111Cl 追加
             G.Clear(BackgroundColor);
 
             if (destData != null && destData.Length > 2)
@@ -370,8 +389,15 @@ namespace Crystallography.Controls
                 DrawEllipses();
             }
             pictureBox.Image = Bmp;
-            oldG?.Dispose(); // (260611Ch)
-            oldBmp?.Dispose(); // (260611Ch)
+            //oldG?.Dispose(); // (260611Ch) // 261111Cl 変更前
+            //oldBmp?.Dispose(); // (260611Ch) // 261111Cl 変更前
+            if (oldBmp != null && oldG != null && oldBmp.Width == Bmp.Width && oldBmp.Height == Bmp.Height) // 261111Cl 追加: 表示から外れた前回の Bitmap は次の描画先に取っておく
+                (backBmp, backG) = (oldBmp, oldG);
+            else // 261111Cl 追加
+            {
+                oldG?.Dispose(); // (260611Ch)
+                oldBmp?.Dispose(); // (260611Ch)
+            }
         }
 
         private void DrawEllipses()
@@ -410,7 +436,8 @@ namespace Crystallography.Controls
 
             G.DrawLine(divisionPen, OriginPosition.X, pictureBox.Height - OriginPosition.Y, pictureBox.Width, pictureBox.Height - OriginPosition.Y);
             //using var strFont = new Font(new FontFamily(WineCompat.Resolve("tahoma")), 8); //260610Cl Wine時フォント切替 // (260611Ch) 旧: FontFamily 一時生成が不要
-            using var strFont = new Font(WineCompat.Resolve("tahoma"), 8); //260610Cl Wine時フォント切替 // (260611Ch)
+            //using var strFont = new Font(WineCompat.Resolve("tahoma"), 8); //260610Cl Wine時フォント切替 // (260611Ch) // 261111Cl 変更前: 描画のたびに作っていた
+            var strFont = divisionFont; // 261111Cl 変更: static に 1 つ (同じ名前・大きさ)
             for (int i = (int)(LowerX / xGradiation) + 1; i < UpperX / xGradiation; i++)
             {
                 //pen = new Pen(DivisionLineColor, 1); // (260611Ch) 旧: ループ内 Pen が未解放
@@ -551,8 +578,15 @@ namespace Crystallography.Controls
 
             if (MouseRangingMode)
             {//範囲選択モードのとき
+                //MouseRangeEnd = new Point(e.X, e.Y); // 261111Cl 変更前
+                //pictureBox.Refresh(); // 261111Cl 変更前: マウス移動ごとに全体を同期で再描画していた
+                // 261111Cl 変更: 前回と今回の選択枠を含む範囲だけ再描画を予約する (前回の枠を消すため両方を含める。線幅の分だけ広げる)
+                var oldRect = Rectangle.FromLTRB(Math.Min(MouseRangeStart.X, MouseRangeEnd.X), Math.Min(MouseRangeStart.Y, MouseRangeEnd.Y), Math.Max(MouseRangeStart.X, MouseRangeEnd.X), Math.Max(MouseRangeStart.Y, MouseRangeEnd.Y));
                 MouseRangeEnd = new Point(e.X, e.Y);
-                pictureBox.Refresh();
+                var newRect = Rectangle.FromLTRB(Math.Min(MouseRangeStart.X, MouseRangeEnd.X), Math.Min(MouseRangeStart.Y, MouseRangeEnd.Y), Math.Max(MouseRangeStart.X, MouseRangeEnd.X), Math.Max(MouseRangeStart.Y, MouseRangeEnd.Y));
+                var dirty = Rectangle.Union(oldRect, newRect);
+                dirty.Inflate(3, 3);
+                pictureBox.Invalidate(dirty);
             }
         }
 

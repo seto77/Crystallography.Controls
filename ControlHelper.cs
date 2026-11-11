@@ -1,6 +1,7 @@
 // 260717Cl 新規 (/simplify): コントロール共通の小ヘルパー置き場。
 using System;
 using System.Reflection;
+using System.Runtime.CompilerServices; // 261111Cl 追加: UnsafeAccessor
 using System.Windows.Forms;
 
 namespace Crystallography.Controls;
@@ -26,5 +27,10 @@ internal static class ControlHelper
     /// FormBeamInteraction/CrystalDatabaseControl) にコピーされていたため集約。DoubleBuffered は Control の
     /// protected プロパティなので typeof(Control) 起点の取得で全派生に効く (旧: typeof(DataGridView)/typeof(UserControl) 起点と同一動作)。</summary>
     internal static void EnableDoubleBuffering(Control control)
-        => typeof(Control).GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(control, true, null);
+        //=> typeof(Control).GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(control, true, null); // 261111Cl 変更前: リフレクション
+        => SetDoubleBuffered(control, true); // 261111Cl 変更: UnsafeAccessor で setter を直接呼ぶ (リフレクションと同じく仮想呼び出し。派生の override も呼ばれることを確認済み)
+
+    /// <summary>261111Cl 追加: Control.DoubleBuffered (protected) の setter。</summary>
+    [UnsafeAccessor(UnsafeAccessorKind.Method, Name = "set_DoubleBuffered")]
+    private static extern void SetDoubleBuffered(Control control, bool value);
 }

@@ -16,7 +16,8 @@ namespace Crystallography.Controls;
 /// 実行時 DPI に応じて物理ピクセル幅をスケールする。
 /// </remarks>
 [ToolboxItem(true)]
-public class DpiAwareDataGridView : DataGridView
+//public class DpiAwareDataGridView : DataGridView // 261111Cl 変更前
+public partial class DpiAwareDataGridView : DataGridView // 261111Cl 変更: LibraryImport (ソース生成) のため partial に
 {
     private readonly Dictionary<DataGridViewColumn, ColumnMetrics> columnMetrics = new();
     private int? logicalRowHeadersWidth;
@@ -291,6 +292,8 @@ public class DpiAwareDataGridView : DataGridView
 
     private readonly record struct ColumnMetrics(int Width, int MinimumWidth);
 
-    [DllImport("user32.dll")]
-    private static extern int GetDpiForWindow(IntPtr hwnd);
+    //[DllImport("user32.dll")] // 261111Cl 変更前
+    //private static extern int GetDpiForWindow(IntPtr hwnd);
+    [LibraryImport("user32.dll")] // 261111Cl 変更: ソース生成の P/Invoke (引数・戻り値とも int/IntPtr なので変換は同じ)
+    private static partial int GetDpiForWindow(IntPtr hwnd);
 }

@@ -7,6 +7,8 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Buffers; // 261111Cl 追加: ArrayPool (DrawProfileLine)
+using System.Runtime.InteropServices; // 261111Cl 追加: CollectionsMarshal (DrawProfilePoint/Histogram)
 
 namespace Crystallography.Controls;
 
@@ -18,6 +20,7 @@ public partial class GraphControl : UserControlBase
     public GraphControl()
     {
         InitializeComponent();
+        this.DoubleBuffered = true; // 261111Cl 追加: 従来は Draw のたびに代入していた (Draw 内の 1 行をここへ移した)
         //260607Ch 仕様変更: 上部/下部パネルは公開プロパティではなく、タイトル/マウス位置/範囲/Copy の表示状態から自動判定する。
 
         //260731Cl 追加: ダークモード時の既定配色。SystemColors はダーク値へ再マップ済み (Control=#202020, ControlText=#FFFFFF)。
@@ -57,6 +60,9 @@ public partial class GraphControl : UserControlBase
 
     private Bitmap Bmp;
     private Graphics G;
+    // 261111Cl 追加: 表示から外れた前回の Bitmap とその Graphics。大きさが同じなら次の Draw の描画先として使い回す (表示中の Bmp には描かない)。
+    private Bitmap backBmp;
+    private Graphics backG;
 
     #region 描画囲プロパティ
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
@@ -1108,25 +1114,67 @@ public partial class GraphControl : UserControlBase
         if (destProfileList == null || destProfileList.Count == 0 || destProfileList[0].Pt == null || destProfileList[0].Pt.Count == 0) return;
         if (PictureBoxSize.Width <= 0 || PictureBoxSize.Height <= 0) return;
 
+        #region 261111Cl 変更前: Draw のたびに Bitmap と Graphics を new していた
+        //var oldBmp = Bmp; // (260611Ch)
+        //var oldG = G; // (260611Ch)
+        //Bitmap newBmp = null; // (260611Ch)
+        //Graphics newG = null; // (260611Ch)
+        //try
+        //{
+        //    //260603Cl レビューメモ: GDIリーク。旧 Bmp / G / pictureBox.Image を Dispose していない。高頻度再描画(縦線ドラッグ等)でハンドル/メモリが積み上がる。using化 or フィールド再利用+Dispose を検討。DrawDivision/DrawProfileLine 等の new Pen/SolidBrush/Font も都度生成・未Disposeで同様。
+        //    //Bmp = new Bitmap(PictureBoxSize.Width, PictureBoxSize.Height); // (260611Ch) 旧: 再描画ごとに古い Bitmap/Graphics が未解放
+        //    newBmp = new Bitmap(PictureBoxSize.Width, PictureBoxSize.Height); // (260611Ch)
+        //    newG = Graphics.FromImage(newBmp); // (260611Ch)
+        //    Bmp = newBmp; // (260611Ch)
+        //    G = newG; // (260611Ch)
+        //    this.DoubleBuffered = true;
+        //    renderGraph(G);//260607Cl: 描画本体を共通メソッド化 (Copy ボタンの metafile 出力と共用)
+        //    pictureBox.Image = Bmp;
+        //    oldG?.Dispose(); // (260611Ch)
+        //    oldBmp?.Dispose(); // (260611Ch)
+        //}
+        //catch { newG?.Dispose(); newBmp?.Dispose(); G = oldG; Bmp = oldBmp; }//260603Cl レビューメモ: 全例外を握り潰しているため描画不具合が無言で「真っ白」になり追跡困難。最低限 Debug.WriteLine を出すべき。 // (260611Ch) 描画失敗時は旧表示を維持
+        #endregion
+        // 261111Cl 変更: 前回表示していた Bitmap が同じ大きさなら、それを次の描画先に使い回す (表示中の Bitmap には描かないので、描画失敗時に旧表示を維持する意味は従来と同じ)。
+        //  renderGraph は G.Clear(BackgroundColor) から描き、G の Save/Restore は対になっているので、使い回しても描画結果は新しい Bitmap と同じ。
         var oldBmp = Bmp; // (260611Ch)
         var oldG = G; // (260611Ch)
+        var size = PictureBoxSize; // 261111Cl 追加
         Bitmap newBmp = null; // (260611Ch)
         Graphics newG = null; // (260611Ch)
+        if (backBmp != null && backBmp.Size == size) // 261111Cl 追加
+        {
+            (newBmp, newG) = (backBmp, backG);
+            (backBmp, backG) = (null, null);
+        }
+        else // 261111Cl 追加: 大きさが変わった
+        {
+            backG?.Dispose(); backBmp?.Dispose();
+            (backBmp, backG) = (null, null);
+        }
         try
         {
-            //260603Cl レビューメモ: GDIリーク。旧 Bmp / G / pictureBox.Image を Dispose していない。高頻度再描画(縦線ドラッグ等)でハンドル/メモリが積み上がる。using化 or フィールド再利用+Dispose を検討。DrawDivision/DrawProfileLine 等の new Pen/SolidBrush/Font も都度生成・未Disposeで同様。
-            //Bmp = new Bitmap(PictureBoxSize.Width, PictureBoxSize.Height); // (260611Ch) 旧: 再描画ごとに古い Bitmap/Graphics が未解放
-            newBmp = new Bitmap(PictureBoxSize.Width, PictureBoxSize.Height); // (260611Ch)
-            newG = Graphics.FromImage(newBmp); // (260611Ch)
+            if (newBmp == null) // 261111Cl 追加
+            {
+                newBmp = new Bitmap(size.Width, size.Height); // (260611Ch)
+                newG = Graphics.FromImage(newBmp); // (260611Ch)
+            }
             Bmp = newBmp; // (260611Ch)
             G = newG; // (260611Ch)
-            this.DoubleBuffered = true;
+            //this.DoubleBuffered = true; // 261111Cl 変更前: コンストラクタで 1 回だけ設定する
             renderGraph(G);//260607Cl: 描画本体を共通メソッド化 (Copy ボタンの metafile 出力と共用)
-            pictureBox.Image = Bmp;
-            oldG?.Dispose(); // (260611Ch)
-            oldBmp?.Dispose(); // (260611Ch)
+            pictureBox.Image = Bmp; // 表示を差し替える (PictureBox が再描画を予約する)
+            //oldG?.Dispose(); // (260611Ch) // 261111Cl 変更前
+            //oldBmp?.Dispose(); // (260611Ch) // 261111Cl 変更前
+            if (oldBmp != null && oldG != null && oldBmp.Size == size) // 261111Cl 追加: 表示から外れた前回の Bitmap は次の描画先に取っておく
+                (backBmp, backG) = (oldBmp, oldG);
+            else // 261111Cl 追加
+            {
+                oldG?.Dispose(); // (260611Ch)
+                oldBmp?.Dispose(); // (260611Ch)
+            }
         }
-        catch { newG?.Dispose(); newBmp?.Dispose(); G = oldG; Bmp = oldBmp; }//260603Cl レビューメモ: 全例外を握り潰しているため描画不具合が無言で「真っ白」になり追跡困難。最低限 Debug.WriteLine を出すべき。 // (260611Ch) 描画失敗時は旧表示を維持
+        catch { newG?.Dispose(); newBmp?.Dispose(); G = oldG; Bmp = oldBmp; }//260603Cl レビューメモ: 全例外を握り潰しているため描画不具合が無言で「真っ白」になり追跡困難。最低限 Debug.WriteLine を出すべき。 // (260611Ch) 描画失敗時は旧表示を維持 (261111Cl: 描きかけの Bitmap は Graphics の状態が崩れている恐れがあるので使い回さず破棄)
     }
 
     /// <summary>グラフ本体を描画する共通シーケンス。画面表示用 Bitmap と Copy 用 Metafile の双方から呼ぶ。</summary>
@@ -1256,8 +1304,13 @@ public partial class GraphControl : UserControlBase
         //labelXValue.Text = realX.ToString((xLog ? "E" : "g") + (MousePositionXDigit == -1 ? "" : MousePositionXDigit.ToString())) + UnitX;//260607Cl: 数値の後ろに単位(UnitX)を連結
         labelXValue.Text = realX.ToString(resolveXFormat(xLog)) + UnitX; // 260608Cl 変更: FormatSpecifier 優先 //260607Cl: 数値の後ろに単位(UnitX)を連結
         //labelYValue.Text = string.Join(", ", yValues) + UnitY;//260611Ch 旧: 長い値列の折り返し幅が未設定だった
-        labelYValue.MaximumSize = new Size(Math.Max(60, flowLayoutPanelMousePosition.ClientSize.Width - labelYValue.Left - 6), 0);//260611Ch 整理: 旧 setLabelYValueText をインライン化
-        labelYValue.Text = string.Join(", ", yValues) + UnitY;//260607Cl: 末尾に単位(UnitY)を連結
+        //labelYValue.MaximumSize = new Size(Math.Max(60, flowLayoutPanelMousePosition.ClientSize.Width - labelYValue.Left - 6), 0);//260611Ch 整理: 旧 setLabelYValueText をインライン化 // 261111Cl 変更前
+        //labelYValue.Text = string.Join(", ", yValues) + UnitY;//260607Cl: 末尾に単位(UnitY)を連結 // 261111Cl 変更前
+        // 261111Cl 変更: 値が変わったときだけ代入する (Draw のたびに無条件で代入していた)
+        var maxSizeY = new Size(Math.Max(60, flowLayoutPanelMousePosition.ClientSize.Width - labelYValue.Left - 6), 0);
+        if (labelYValue.MaximumSize != maxSizeY) labelYValue.MaximumSize = maxSizeY;
+        var textY = string.Join(", ", yValues) + UnitY;//260607Cl: 末尾に単位(UnitY)を連結
+        if (labelYValue.Text != textY) labelYValue.Text = textY;
     }
 
     /// <summary>グラフ中にpeaksで定義された釣鐘型曲線を描く</summary>
@@ -1283,7 +1336,8 @@ public partial class GraphControl : UserControlBase
         float maxX = PictureBoxSize.Width, minX = originPosition.X, maxY = PictureBoxSize.Height - originPosition.Y, minY = 0;
         for (int j = 0; j < destProfileList.Count; j++)
         {
-            PointD[] pt = [.. destProfileList[j].Pt];
+            //PointD[] pt = [.. destProfileList[j].Pt]; // 261111Cl 変更前: 描画のたびに点列を配列へ写していた
+            ReadOnlySpan<PointD> pt = CollectionsMarshal.AsSpan(destProfileList[j].Pt); // 261111Cl 変更: 写さずに読む
             if (pt.Length > 0)
             {
                 //Brush brush = new SolidBrush(srcProfileList[j].Color); // (260611Ch) 旧: SolidBrush が未解放
@@ -1304,7 +1358,8 @@ public partial class GraphControl : UserControlBase
         var sort = new List<PointD>();
         for (int j = 0; j < destProfileList.Count; j++)
         {
-            var pt = destProfileList[j].Pt.ToArray();
+            //var pt = destProfileList[j].Pt.ToArray(); // 261111Cl 変更前
+            ReadOnlySpan<PointD> pt = CollectionsMarshal.AsSpan(destProfileList[j].Pt); // 261111Cl 変更: 写さずに読む
             double sum = 0;
             for (int i = 0; i < pt.Length; i++)
                 sum += pt[i].Y;
@@ -1317,7 +1372,8 @@ public partial class GraphControl : UserControlBase
         float zeroY = ConvToPicBoxCoord(0, 0).Y;
         for (int j = 0; j < sort.Count; j++)
         {
-            var pt = destProfileList[(int)sort[j].Y].Pt.ToArray();
+            //var pt = destProfileList[(int)sort[j].Y].Pt.ToArray(); // 261111Cl 変更前
+            ReadOnlySpan<PointD> pt = CollectionsMarshal.AsSpan(destProfileList[(int)sort[j].Y].Pt); // 261111Cl 変更: 写さずに読む
             if (pt.Length > 0)
             {
                 //var brush = new SolidBrush(srcProfileList[(int)sort[j].Y].Color); // (260611Ch) 旧: SolidBrush が未解放
@@ -1351,6 +1407,14 @@ public partial class GraphControl : UserControlBase
         var rect = new RectangleD(LowerX, LowerY, UpperX - LowerX, UpperY - LowerY);
         if (rect.Width * rect.Height == 0)
             return;
+        // 261111Cl 追加: ConvToPicBoxCoord(PointD) と同じ式を、係数だけ先に 1 回計算して使う (型と演算順も同じなので値は一致する)。
+        //  X = (float)(kx * (p.X - LowerX)) + originPosition.X、Y = (float)(hy - ky * (p.Y - LowerY))。kx = (W - ox) / (UpperX - LowerX)、hy = H - oy、ky = hy / (UpperY - LowerY)
+        var size = PictureBoxSize; // 261111Cl 追加
+        double kx = (size.Width - originPosition.X) / (UpperX - LowerX); // 261111Cl 追加
+        int hy = size.Height - originPosition.Y; // 261111Cl 追加
+        double ky = hy / (UpperY - LowerY); // 261111Cl 追加
+        int ox = originPosition.X; // 261111Cl 追加
+        double lowerX = LowerX, lowerY = LowerY; // 261111Cl 追加
         for (int j = 0; j < destProfileList.Count; j++)
         {
             if (srcProfileList[j] != null)
@@ -1360,9 +1424,25 @@ public partial class GraphControl : UserControlBase
                 //var pen = new Pen(srcProfileList[j].Color, UseLineWidth ? LineWidth : srcProfileList[j].LineWidth) { LineJoin = LineJoin.Round }; // (260611Ch) 旧: Pen が未解放
                 using var pen = new Pen(srcProfileList[j].Color, UseLineWidth ? LineWidth : srcProfileList[j].LineWidth) { LineJoin = LineJoin.Round }; // (260611Ch)
                 var pts = destProfileList[j].GetPointsWithinRectangle(rect);
-                for (int i = 0; i < pts.Length; i++)
-                    if (pts[i].Length > 1)
-                        G.DrawLines(pen, pts[i].Select(p => ConvToPicBoxCoord(p)).ToArray());
+                //for (int i = 0; i < pts.Length; i++) // 261111Cl 変更前: 区間ごとに Select(ConvToPicBoxCoord).ToArray() で PointF[] を作っていた
+                //    if (pts[i].Length > 1)
+                //        G.DrawLines(pen, pts[i].Select(p => ConvToPicBoxCoord(p)).ToArray());
+                // 261111Cl 変更: 変換した点は ArrayPool の配列に書き、span 版の DrawLines で描く
+                var maxLen = 0;
+                foreach (var seg in pts) maxLen = Math.Max(maxLen, seg.Length);
+                if (maxLen < 2) continue;
+                var buffer = ArrayPool<PointF>.Shared.Rent(maxLen);
+                try
+                {
+                    foreach (var seg in pts)
+                        if (seg.Length > 1)
+                        {
+                            for (int k = 0; k < seg.Length; k++)
+                                buffer[k] = new PointF((float)(kx * (seg[k].X - lowerX)) + ox, (float)(hy - ky * (seg[k].Y - lowerY)));
+                            G.DrawLines(pen, new ReadOnlySpan<PointF>(buffer, 0, seg.Length));
+                        }
+                }
+                finally { ArrayPool<PointF>.Shared.Return(buffer); }
                 //}
                 //else//補間モードの時
                 //{
@@ -1726,8 +1806,13 @@ public partial class GraphControl : UserControlBase
             labelXValue.Text = x.ToString(resolveXFormat(XLog)) + UnitX; // 260608Cl 変更: FormatSpecifier 優先 //260607Cl: 数値の後ろに単位(UnitX)を連結
             //labelYValue.Text = y.ToString((YLog ? "E" : "g") + (MousePositionYDigit == -1 ? "" : MousePositionXDigit.ToString()));//260603Cl 修正: Y桁は MousePositionYDigit を使うべき
             //labelYValue.Text = y.ToString(resolveYFormat(YLog)) + UnitY; // 260611Ch 旧: 折り返し幅が未設定だった
-            labelYValue.MaximumSize = new Size(Math.Max(60, flowLayoutPanelMousePosition.ClientSize.Width - labelYValue.Left - 6), 0);//260611Ch 整理: 旧 setLabelYValueText をインライン化
-            labelYValue.Text = y.ToString(resolveYFormat(YLog)) + UnitY; // 260608Cl 変更: FormatSpecifier 優先 //260603Cl //260607Cl: 数値の後ろに単位(UnitY)を連結
+            //labelYValue.MaximumSize = new Size(Math.Max(60, flowLayoutPanelMousePosition.ClientSize.Width - labelYValue.Left - 6), 0);//260611Ch 整理: 旧 setLabelYValueText をインライン化 // 261111Cl 変更前
+            //labelYValue.Text = y.ToString(resolveYFormat(YLog)) + UnitY; // 260608Cl 変更: FormatSpecifier 優先 //260603Cl //260607Cl: 数値の後ろに単位(UnitY)を連結 // 261111Cl 変更前
+            // 261111Cl 変更: 値が変わったときだけ代入する (マウス移動のたびに無条件で代入していた)
+            var maxSizeY = new Size(Math.Max(60, flowLayoutPanelMousePosition.ClientSize.Width - labelYValue.Left - 6), 0);
+            if (labelYValue.MaximumSize != maxSizeY) labelYValue.MaximumSize = maxSizeY;
+            var textY = y.ToString(resolveYFormat(YLog)) + UnitY;
+            if (labelYValue.Text != textY) labelYValue.Text = textY;
         }
 
         if (MouseMovingMode)
@@ -1757,8 +1842,15 @@ public partial class GraphControl : UserControlBase
 
         if (MouseRangingMode)
         {//範囲選択モードのとき
+            //MouseRangeEnd = new Point(e.X, e.Y); // 261111Cl 変更前
+            //pictureBox.Refresh(); // 261111Cl 変更前: マウス移動ごとにグラフ全体を同期で再描画していた
+            // 261111Cl 変更: 前回と今回の選択枠を含む範囲だけ再描画を予約する (前回の枠を消すため両方を含める。線幅の分だけ広げる)
+            var oldRect = Rectangle.FromLTRB(Math.Min(MouseRangeStart.X, MouseRangeEnd.X), Math.Min(MouseRangeStart.Y, MouseRangeEnd.Y), Math.Max(MouseRangeStart.X, MouseRangeEnd.X), Math.Max(MouseRangeStart.Y, MouseRangeEnd.Y));
             MouseRangeEnd = new Point(e.X, e.Y);
-            pictureBox.Refresh();
+            var newRect = Rectangle.FromLTRB(Math.Min(MouseRangeStart.X, MouseRangeEnd.X), Math.Min(MouseRangeStart.Y, MouseRangeEnd.Y), Math.Max(MouseRangeStart.X, MouseRangeEnd.X), Math.Max(MouseRangeStart.Y, MouseRangeEnd.Y));
+            var dirty = Rectangle.Union(oldRect, newRect);
+            dirty.Inflate(3, 3);
+            pictureBox.Invalidate(dirty);
             return;
         }
 
@@ -1773,7 +1865,7 @@ public partial class GraphControl : UserControlBase
 
                     Draw();
                     LinePositionChanged?.Invoke();
-                    Refresh();
+                    //Refresh(); // 261111Cl 変更前: Draw が表示の Bitmap を差し替えるので、PictureBox は再描画を予約済み。マウス移動ごとの同期の全体再描画をやめる
                 }
             }
         }

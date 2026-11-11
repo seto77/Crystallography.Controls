@@ -291,6 +291,8 @@ public partial class CrystalControl : UserControlBase
         if (SkipEvent) return;
         SkipEvent = true;
         SuspendLayout();
+        try // 261111Cl 追加: 例外時も SkipEvent と SuspendLayout を必ず戻す
+        { // 261111Cl 追加
 
         colorControl.Color = Color.FromArgb(Crystal.Argb);
         textBoxName.Text = Crystal.Name;
@@ -376,8 +378,10 @@ public partial class CrystalControl : UserControlBase
         (numericBoxStress11.Value, numericBoxStress12.Value, numericBoxStress13.Value) = (stress.E11, stress.E12, stress.E13);
         (numericBoxStress22.Value, numericBoxStress23.Value, numericBoxStress33.Value) = (stress.E22, stress.E23, stress.E33);
 
-        SkipEvent = false;
-        ResumeLayout();
+        //SkipEvent = false; // 261111Cl 変更前
+        //ResumeLayout(); // 261111Cl 変更前
+        } // 261111Cl 追加
+        finally { SkipEvent = false; ResumeLayout(); } // 261111Cl 変更: finally へ (順序は同じ)
     }
 
     /// <summary>260731Cl 追加 (GitHub issue #65): 色ボックスの変更をその場で Crystal.Argb に書き戻し、CrystalChanged で各ビューへ通知する。
@@ -483,14 +487,16 @@ public partial class CrystalControl : UserControlBase
     #region ドラッグドロップ
     public void FormCrystal_DragDrop(object sender, DragEventArgs e)
     {
-        var fileName = (string[])e.Data.GetData(DataFormats.FileDrop, false);
-        if (fileName.Length == 1)
+        //var fileName = (string[])e.Data.GetData(DataFormats.FileDrop, false); // 261111Cl 変更前: 取れないと null で次行が NullReferenceException
+        //if (fileName.Length == 1)
+        if (e.Data.TryGetData<string[]>(DataFormats.FileDrop, autoConvert: false, out var fileName) && fileName.Length == 1) // 261111Cl 変更: 型付きの TryGetData (取れなければ何もしない)
             //ReadCrystal(fileName[0]); // 261105Cl 変更前
             ReadCrystal(fileName[0], showError: true); // 261105Cl 変更
     }
 
     private void FormCrystal_DragEnter(object sender, DragEventArgs e) =>
-        e.Effect = e.Data.GetData(DataFormats.FileDrop) != null ? DragDropEffects.Copy : DragDropEffects.None;
+        //e.Effect = e.Data.GetData(DataFormats.FileDrop) != null ? DragDropEffects.Copy : DragDropEffects.None; // 261111Cl 変更前
+        e.Effect = e.Data.TryGetData<string[]>(DataFormats.FileDrop, out _) ? DragDropEffects.Copy : DragDropEffects.None; // 261111Cl 変更: 型付きの TryGetData
     #endregion
 
     //260801Cl 削除: Ctrl+Shift+R (crystal.Reserved のトグル) を廃止 (作者判断)。

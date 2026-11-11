@@ -152,13 +152,24 @@ public partial class UserControlBase : UserControl
     /// (ToolTip のほか、FormBase.ApplyShowToolTips がコンテキストメニュー (ContextMenuStrip) を見つけるのに使う)。</summary>
     internal static IEnumerable<Component> enumContainerComponents(Control host)
     {
-        FieldInfo fi = null;
-        for (var t = host.GetType(); fi == null && t != null && t != typeof(object); t = t.BaseType)
-            fi = t.GetField("components", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+        //FieldInfo fi = null; // 261111Cl 変更前: 呼ばれるたびに (ハンドル生成のたびに祖先それぞれについて) 型階層をリフレクションで探していた
+        //for (var t = host.GetType(); fi == null && t != null && t != typeof(object); t = t.BaseType)
+        //    fi = t.GetField("components", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+        // 261111Cl 変更: 探し方は同じ (派生側から最初に見つかった components)。結果 (無ければ null) を型ごとに覚える
+        var fi = componentsFieldCache.GetOrAdd(host.GetType(), static type =>
+        {
+            FieldInfo found = null;
+            for (var t = type; found == null && t != null && t != typeof(object); t = t.BaseType)
+                found = t.GetField("components", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+            return found;
+        });
         if (fi != null && fi.GetValue(host) is IContainer cont)
             foreach (Component comp in cont.Components)
                 yield return comp;
     }
+
+    /// <summary>261111Cl 追加: 型 → designer 生成の components フィールド (無ければ null)。UI スレッドが複数でもよいよう ConcurrentDictionary</summary>
+    private static readonly System.Collections.Concurrent.ConcurrentDictionary<Type, FieldInfo> componentsFieldCache = new();
 
     #endregion
 }

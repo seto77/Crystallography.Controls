@@ -46,6 +46,11 @@ public partial class FormBase : Form
     private const int HelpFallbackPad = 6;            //260605Cl 追加: 右寄せ量を計算できない時の固定全角スペース数
     private const int HelpMinPad = 2;                 //260605Cl 追加: タイトルと案内が接触しないための最小詰め数
     private bool isUpdatingHelpSuffix = false;        //260604Cl 追加: 自分の Text 書換で再入する TextChanged を弾くフラグ
+    //261111Cl 追加: ComputeRightAlignPad の計測結果のキャッシュ。Resize のたびに CreateGraphics と MeasureString を 4 回していたのを、
+    //  全角スペースの幅と案内文字列の幅は (DPI, フォント, 案内文字列) ごとに全フォームで共有し、タイトル本体の幅はタイトル・DPI・フォントが変わったときだけ測る。
+    private static readonly System.Collections.Concurrent.ConcurrentDictionary<(int Dpi, string FontName, float FontSize, FontStyle FontStyle, string Core), (float PadW, float CoreW)> helpSuffixWidthCache = new(); //261111Cl 追加
+    private (int Dpi, string FontName, float FontSize, FontStyle FontStyle, string Text) measuredTitleKey; //261111Cl 追加: 前回測ったタイトル本体
+    private float measuredTitleWidth;                 //261111Cl 追加: その幅
 
     //260604Cl 追加: タイトルに F1 ヘルプ案内を付けるか。出したくない派生フォーム (CommonDialog 等) は override で false にする。
     protected virtual bool ShowHelpSuffix => true;
@@ -152,7 +157,16 @@ public partial class FormBase : Form
         try { base.OnLoad(e); }
         finally
         {
-            try { UiFont.Apply(this); } catch { /* フォント適用失敗で Load を止めない */ }
+            //try { UiFont.Apply(this); } catch { /* フォント適用失敗で Load を止めない */ } // 261111Cl 変更前
+            // 261111Cl 変更: フォントを 1 つずつ差し替えるたびにフォームの再レイアウトが走っていたので、適用の間はフォームのレイアウトを止め、最後に 1 回だけ行う
+            //  (InitializeComponent と同じ SuspendLayout/ResumeLayout の形。入れ子のパネルの中のレイアウトは従来どおり)
+            try
+            {
+                SuspendLayout();
+                try { UiFont.Apply(this); }
+                finally { ResumeLayout(); }
+            }
+            catch { /* フォント適用失敗で Load を止めない */ }
             // 260621Cl 追加 (§2.5): Localizable=false ラベルをコード側テーブルで多言語化 (動的追加分も base.OnLoad 後に確実)。
             try { CodeLocalizer.Apply(this); } catch { /* 多言語化失敗で Load を止めない */ }
             // 260731Cl 追加: ダークモード時、FlatStyle.Standard の Button は明示 BackColor を無視してテーマ描画される
@@ -281,7 +295,8 @@ public partial class FormBase : Form
                 return -1;
 
             //タイトルバーと各ボタンの矩形 (スクリーン座標, 物理px) を取得
-            var info = new TITLEBARINFOEX { cbSize = Marshal.SizeOf<TITLEBARINFOEX>(), rgstate = new int[6], rgrect = new RECT[6] };
+            //var info = new TITLEBARINFOEX { cbSize = Marshal.SizeOf<TITLEBARINFOEX>(), rgstate = new int[6], rgrect = new RECT[6] }; // 261111Cl 変更前
+            var info = new TITLEBARINFOEX { cbSize = Unsafe.SizeOf<TITLEBARINFOEX>() }; // 261111Cl 変更: 配列は構造体の中 (InlineArray)。大きさは従来と同じ 140 バイト
             SendMessage(Handle, WM_GETTITLEBARINFOEX, IntPtr.Zero, ref info);
 
             int titleLeft = info.rcTitleBar.Left, titleRight = info.rcTitleBar.Right;
@@ -312,17 +327,41 @@ public partial class FormBase : Form
             if (font == null)
                 return -1;
 
-            //実描画(DWM)と一致する GenericTypographic の MeasureString で計測 (計測単位はフォームの DPI = 物理px で右端境界と整合)。
-            using var g = CreateGraphics();
-            float Measure(string s) => g.MeasureString(s, font, int.MaxValue, StringFormat.GenericTypographic).Width;
+            #region 261111Cl 変更前: 呼ばれるたびに CreateGraphics して 4 回 MeasureString していた
+            ////実描画(DWM)と一致する GenericTypographic の MeasureString で計測 (計測単位はフォームの DPI = 物理px で右端境界と整合)。
+            //using var g = CreateGraphics();
+            //float Measure(string s) => g.MeasureString(s, font, int.MaxValue, StringFormat.GenericTypographic).Width;
+            //
+            //float padW = (Measure("x" + new string(HelpPadChar, 50) + "x") - Measure("xx")) / 50f; //全角スペース1個の幅
+            //if (padW <= 0.1f)
+            //    return -1;
+            //padW *= 1.02f; //安全側: わずかに左に余らせて右のボタンに被らせない
+            //
+            //float baseW = Measure(baseText);
+            //float coreW = Measure(core);
+            #endregion
+            // 261111Cl 変更: 計測は従来と同じ式。結果をキャッシュし、無いときだけ CreateGraphics して測る
+            var widthKey = (DeviceDpi, font.Name, font.Size, font.Style, core);
+            var titleKey = (DeviceDpi, font.Name, font.Size, font.Style, baseText);
+            bool hasWidths = helpSuffixWidthCache.TryGetValue(widthKey, out var widths);
+            if (!hasWidths || measuredTitleKey != titleKey)
+            {
+                //実描画(DWM)と一致する GenericTypographic の MeasureString で計測 (計測単位はフォームの DPI = 物理px で右端境界と整合)。
+                using var g = CreateGraphics();
+                float Measure(string s) => g.MeasureString(s, font, int.MaxValue, StringFormat.GenericTypographic).Width;
+                if (!hasWidths)
+                    helpSuffixWidthCache[widthKey] = widths = ((Measure("x" + new string(HelpPadChar, 50) + "x") - Measure("xx")) / 50f, Measure(core)); //全角スペース1個の幅, 案内文字列の幅
+                if (measuredTitleKey != titleKey)
+                    (measuredTitleKey, measuredTitleWidth) = (titleKey, Measure(baseText));
+            }
 
-            float padW = (Measure("x" + new string(HelpPadChar, 50) + "x") - Measure("xx")) / 50f; //全角スペース1個の幅
+            float padW = widths.PadW; //全角スペース1個の幅 // 261111Cl
             if (padW <= 0.1f)
                 return -1;
             padW *= 1.02f; //安全側: わずかに左に余らせて右のボタンに被らせない
 
-            float baseW = Measure(baseText);
-            float coreW = Measure(core);
+            float baseW = measuredTitleWidth; // 261111Cl
+            float coreW = widths.CoreW; // 261111Cl
             int pad = (int)((availRight - (textStart + baseW) - coreW) / padW);
 
             //255 文字描画上限ガード: 総文字数 (baseText + pad + core) を HelpCharLimit 以下にクランプ
@@ -346,12 +385,20 @@ public partial class FormBase : Form
     {
         public int cbSize;
         public RECT rcTitleBar;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)] public int[] rgstate;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)] public RECT[] rgrect;
+        //[MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)] public int[] rgstate; // 261111Cl 変更前
+        //[MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)] public RECT[] rgrect; // 261111Cl 変更前
+        public Int6 rgstate; // 261111Cl 変更: 固定長 6 の配列を構造体の中に持つ (blittable にして LibraryImport で渡せるように)
+        public Rect6 rgrect; // 261111Cl 変更
     }
 
-    [DllImport("user32.dll")]
-    private static extern IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, ref TITLEBARINFOEX lParam);
+    [InlineArray(6)] private struct Int6 { private int element0; } // 261111Cl 追加
+    [InlineArray(6)] private struct Rect6 { private RECT element0; } // 261111Cl 追加
+
+    //[DllImport("user32.dll")] // 261111Cl 変更前 (CharSet 既定 Ansi のため実体は SendMessageA)
+    //private static extern IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, ref TITLEBARINFOEX lParam);
+    // 261111Cl 変更: ソース生成の P/Invoke。入口名を明示 (WM_GETTITLEBARINFOEX は文字列を扱わないので A/W で結果は同じ)
+    [LibraryImport("user32.dll", EntryPoint = "SendMessageW")]
+    private static partial IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, ref TITLEBARINFOEX lParam);
     #endregion
 
     //260529Cl 追加: F1 押下時に HelpUrlResolver が返す URL を既定ブラウザで開く

@@ -173,6 +173,8 @@ public partial class SearchCrystalControl : UserControlBase
         var ignoreScatteringFactor = checkBoxIgnoreScatteringFactor.Checked;
 
         bool amcsd_checked = CrystalDatabaseControl.AMCSD_Checked, cod_checked = CrystalDatabaseControl.COD_Checked;
+        // 261111Cl 追加: 以下のチェックボックスは Parallel.For の中で行ごとに読んでいた。検索の前に 1 回だけ読む
+        bool searchElements = checkBoxSearchElements.Checked, searchCellParameter = checkBoxSearchCellParameter.Checked, searchDspacing = checkBoxDspacing.Checked;
 
         long time = 0;
         int count = 0;
@@ -210,7 +212,8 @@ public partial class SearchCrystalControl : UserControlBase
                     flag = false;
 
                 //元素
-                if (flag && checkBoxSearchElements.Checked)
+                //if (flag && checkBoxSearchElements.Checked) // 261111Cl 変更前
+                if (flag && searchElements) // 261111Cl 変更
                 {
                     //var elements = cry.atoms.Select(a => a.AtomNo).Distinct().ToArray(); // 261105Cl 変更前
                     // 261105Cl 変更 (監査 J23): AtomNo 255 は重水素 D (Crystal2.GetCrystal で H + 同位体に戻す約束)。周期表のボタンは H (1) なので H として比べる。
@@ -226,7 +229,8 @@ public partial class SearchCrystalControl : UserControlBase
                 }
 
                 //格子定数
-                if (flag && checkBoxSearchCellParameter.Checked)
+                //if (flag && checkBoxSearchCellParameter.Checked) // 261111Cl 変更前
+                if (flag && searchCellParameter) // 261111Cl 変更
                 {
                     var Values = cry.CellOnlyValue_nm_radian;
                     if (!double.IsNaN(Values.A))
@@ -251,7 +255,8 @@ public partial class SearchCrystalControl : UserControlBase
                     flag = false;
 
                 //d値のフィルター
-                if (flag && checkBoxDspacing.Checked)
+                //if (flag && checkBoxDspacing.Checked) // 261111Cl 変更前
+                if (flag && searchDspacing) // 261111Cl 変更
                 {
                     var dArray = cry.d;
                     if (ignoreScatteringFactor)
@@ -381,7 +386,7 @@ public partial class SearchCrystalControl : UserControlBase
 
         this.Enabled = true;
 
-        Thread.Sleep(100);
+        //Thread.Sleep(100); // 261111Cl 変更前: UI スレッドを 0.1 秒止めるだけだった
         ProgressChanged?.Invoke(sender, 1.0, $"Completion of search. {sw.ElapsedMilliseconds / 1000.0:f2} sec.");// 260712Cl 修正: 秒値なのに "msec." だった単位表記を修正
         // 260428Cl Application.DoEvents() を削除 (RunWorkerCompleted は UI スレッドで動作するため不要)
 

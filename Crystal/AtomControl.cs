@@ -1,4 +1,4 @@
-﻿using Microsoft.Scripting.Utils;
+﻿//using Microsoft.Scripting.Utils; // 261111Cl 変更前: 未使用 (Split は Crystallography の拡張、Select/Cast は System.Linq。ビルドで確認)
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -23,11 +23,15 @@ public partial class AtomControl : UserControlBase
             crystal = value;
             if (crystal == null) return;
             SuspendLayout();
+            try // 261111Cl 追加: 例外時も ResumeLayout を必ず呼ぶ
+            { // 261111Cl 追加
             table.Clear();
             AddRange(Crystal.Atoms);
             // enabledColumn の Visible が予期せず変わることがあるので appearanceTabVisible で再設定
             dataGridView.Columns["enabledColumn"].Visible = appearanceTabVisible;
-            ResumeLayout();
+            //ResumeLayout(); // 261111Cl 変更前
+            } // 261111Cl 追加
+            finally { ResumeLayout(); } // 261111Cl 変更: finally へ
         }
     }
     private Crystal crystal = null;
@@ -357,7 +361,17 @@ public partial class AtomControl : UserControlBase
         if (atoms == null) return;
         SkipEvent = true;
         dataGridView.SuspendLayout();
-        foreach (var a in atoms) table.Add(a);
+        //foreach (var a in atoms) table.Add(a); // 261111Cl 変更前
+        // 261111Cl 追加: 1 行ごとの ListChanged (表の行の追加とレイアウト) をやめ、追加し終えてから表を 1 回作り直す。呼び出し元は全部 table.Clear() の直後なので、選択行は従来どおり先頭 (CurrencyManager は Reset で空→0 行目)。
+        //  ResetBindings は SkipEvent の間に行い、その PositionChanged では SetToInterface しない (最後の明示の呼び出しが 1 回だけ行う。従来と同じ)
+        var raise = bindingSource.RaiseListChangedEvents; // 261111Cl 追加
+        bindingSource.RaiseListChangedEvents = false; // 261111Cl 追加
+        try { foreach (var a in atoms) table.Add(a); } // 261111Cl
+        finally // 261111Cl 追加
+        {
+            bindingSource.RaiseListChangedEvents = raise;
+            if (raise) bindingSource.ResetBindings(false);
+        }
         dataGridView.ResumeLayout();
         SkipEvent = false;
         ItemsChanged?.Invoke(this, EventArgs.Empty);

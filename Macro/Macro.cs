@@ -76,7 +76,7 @@ public class MacroTrigger : DataObject
     }
 }
 
-[Serializable]
+//[Serializable] // 261111Cl 変更前: BinaryFormatter 用の印。.NET 9+ では BinaryFormatter が無く、この型を直列化する経路も無い (マクロの保存は XmlSerializer の List<string>、送信は MacroTrigger の JSON)
 public class MacroBase
 {
     // mainObject は派生クラス側 (PDIndexer / ReciPro / IPAnalyzer の Macro) から
@@ -103,7 +103,7 @@ public class MacroBase
     public virtual (string name, string body)[] SampleMacros => [];
 }
 
-[Serializable]
+//[Serializable] // 261111Cl 変更前: BinaryFormatter 用の印。.NET 9+ では BinaryFormatter が無く、この型を直列化する経路も無い (マクロの保存は XmlSerializer の List<string>、送信は MacroTrigger の JSON)。MacroSub は Control を持つのでそもそも直列化できない
 public class MacroSub(Control _context)
 {
     private readonly Control context = _context;
@@ -116,7 +116,8 @@ public class MacroSub(Control _context)
     //     Expression 版を撤去し以下 2 つに集約する。
 
     public T Execute<T>(Func<T> func)
-        => context.InvokeRequired ? (T)context.Invoke(func) : func();
+        //=> context.InvokeRequired ? (T)context.Invoke(func) : func(); // 261111Cl 変更前
+        => context.InvokeRequired ? context.Invoke(func) : func(); // 261111Cl 変更: 型付きの Invoke<T>(Func<T>) (中で同じ Invoke を呼んでキャストする。意味は同じ)
 
     public void Execute(Action action)
     {

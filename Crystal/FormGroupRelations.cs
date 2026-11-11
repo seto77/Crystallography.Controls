@@ -471,11 +471,16 @@ public partial class FormGroupRelations : FormBase
     private void BuildTree()
     {
         treeRelations.BeginUpdate();
+        TreeNode subRoot, tNode, superRoot, tsNode; // 261111Cl 追加: EndUpdate を finally で必ず呼ぶため、終了後に Expand するノードを try の外で宣言
+        try // 261111Cl 追加: 例外時もツリーの描画停止を解く
+        { // 261111Cl 追加
         treeRelations.Nodes.Clear();
 
         // --- Maximal subgroups ---
-        var subRoot = treeRelations.Nodes.Add(Loc(en: "Maximal subgroups", ja: "極大部分群", de: "Maximale Untergruppen", fr: "Sous-groupes maximaux", es: "Subgrupos maximales", pt: "Subgrupos maximais", it: "Sottogruppi massimali", ru: "Максимальные подгруппы", zhHans: "极大子群", zhHant: "極大子群", ko: "극대 부분군"));
-        var tNode = subRoot.Nodes.Add("t — translationengleiche");
+        //var subRoot = treeRelations.Nodes.Add(... // 261111Cl 変更前 (var 宣言を try の外へ)
+        subRoot = treeRelations.Nodes.Add(Loc(en: "Maximal subgroups", ja: "極大部分群", de: "Maximale Untergruppen", fr: "Sous-groupes maximaux", es: "Subgrupos maximales", pt: "Subgrupos maximais", it: "Sottogruppi massimali", ru: "Максимальные подгруппы", zhHans: "极大子群", zhHant: "極大子群", ko: "극대 부분군"));
+        //var tNode = subRoot.Nodes.Add("t — translationengleiche"); // 261111Cl 変更前
+        tNode = subRoot.Nodes.Add("t — translationengleiche"); // 261111Cl
         foreach (var s in _subs)
             tNode.Nodes.Add(MakeSubNode(s));
         // 260705Cl 修正 (Phase 2c Step4): k- (klassengleiche) を実データ化。
@@ -537,8 +542,10 @@ public partial class FormGroupRelations : FormBase
         }
 
         // --- Minimal supergroups ---
-        var superRoot = treeRelations.Nodes.Add(Loc(en: "Minimal supergroups", ja: "極小超群", de: "Minimale Obergruppen", fr: "Supergroupes minimaux", es: "Supergrupos minimales", pt: "Supergrupos minimais", it: "Supergruppi minimali", ru: "Минимальные надгруппы", zhHans: "极小超群", zhHant: "極小超群", ko: "극소 초군"));
-        var tsNode = superRoot.Nodes.Add("t — translationengleiche");
+        //var superRoot = treeRelations.Nodes.Add(... // 261111Cl 変更前 (var 宣言を try の外へ)
+        superRoot = treeRelations.Nodes.Add(Loc(en: "Minimal supergroups", ja: "極小超群", de: "Minimale Obergruppen", fr: "Supergroupes minimaux", es: "Supergrupos minimales", pt: "Supergrupos minimais", it: "Supergruppi minimali", ru: "Минимальные надгруппы", zhHans: "极小超群", zhHant: "極小超群", ko: "극소 초군"));
+        //var tsNode = superRoot.Nodes.Add("t — translationengleiche"); // 261111Cl 変更前
+        tsNode = superRoot.Nodes.Add("t — translationengleiche"); // 261111Cl
         if (_supersPending) // 260705Cl 追加: バックグラウンド構築中の表示
             tsNode.Nodes.Add(ComputingNode());
         else if (_supers.Count == 0)
@@ -595,7 +602,9 @@ public partial class FormGroupRelations : FormBase
                     n.Text += $"   · {Loc(en: "class", ja: "類", de: "Klasse", fr: "classe", es: "clase", pt: "classe", it: "classe", ru: "класс", zhHans: "类", zhHant: "類", ko: "클래스")} {i++}";
             }
 
-        treeRelations.EndUpdate();
+        //treeRelations.EndUpdate(); // 261111Cl 変更前
+        } // 261111Cl 追加
+        finally { treeRelations.EndUpdate(); } // 261111Cl 変更: finally へ
         subRoot.Expand(); tNode.Expand(); superRoot.Expand(); tsNode.Expand();
     }
 

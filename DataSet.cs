@@ -1,4 +1,4 @@
-﻿using Microsoft.Scripting.Utils;
+﻿//using Microsoft.Scripting.Utils; // 261111Cl 変更前: DLR の非ジェネリック Select (DataRowCollection 用) にだけ使っていた。System.Linq の Cast<DataRow>() に替えて依存を外した
 using System;
 using System.Buffers;
 using System.Data;
@@ -24,7 +24,8 @@ public partial class DataSet
     public static void MoveItemBase(DataRowCollection rows, int srcIndex, int destIndex)
     {
         if (srcIndex < rows.Count && destIndex < rows.Count)
-            for (int j = 0; j < rows[srcIndex].ItemArray.Length; j++)
+            //for (int j = 0; j < rows[srcIndex].ItemArray.Length; j++) // 261111Cl 変更前: ループ条件で毎回 ItemArray (object[]) を作っていた
+            for (int j = 0; j < rows[srcIndex].Table.Columns.Count; j++) // 261111Cl 変更: ItemArray の長さは列の数と同じ
             {
                 (rows[destIndex][j], rows[srcIndex][j]) = (rows[srcIndex][j], rows[destIndex][j]);
             }
@@ -32,7 +33,8 @@ public partial class DataSet
 
     public static void ReplaceBase(DataRowCollection rows, DataRow r, int i)
     {
-        for (int j = 0; j < rows[i].ItemArray.Length; j++)
+        //for (int j = 0; j < rows[i].ItemArray.Length; j++) // 261111Cl 変更前
+        for (int j = 0; j < rows[i].Table.Columns.Count; j++) // 261111Cl 変更: ItemArray の長さは列の数と同じ
             rows[i][j] = r[j];
     }
     #endregion
@@ -40,7 +42,8 @@ public partial class DataSet
     partial class DataTableBoundDataTable
     {
         public Bound Get(int i) => Rows[i][BoundColumn] as Bound;
-        public Bound[] GetAll() => Rows.Select(r => (r as DataTableBoundRow).Bound as Bound).ToArray();
+        //public Bound[] GetAll() => Rows.Select(r => (r as DataTableBoundRow).Bound as Bound).ToArray(); // 261111Cl 変更前 (DLR の Select)
+        public Bound[] GetAll() => Rows.Cast<DataRow>().Select(r => (r as DataTableBoundRow).Bound as Bound).ToArray(); // 261111Cl 変更: System.Linq (行の順・中身は同じ)
         public void Replace(Bound bound, int i) => ReplaceBase(Rows, createRow(bound), i);
         public void Add(Bound bound) => Rows.Add(createRow(bound));
         public new void Clear() => Rows.Clear();
@@ -67,7 +70,8 @@ public partial class DataSet
     partial class DataTableLatticePlaneDataTable
     {
         public LatticePlane Get(int i) => Rows[i][LatticePlaneColumn] as LatticePlane;
-        public LatticePlane[] GetAll() => Rows.Select(r => (r as DataTableLatticePlaneRow).LatticePlane as LatticePlane).ToArray();
+        //public LatticePlane[] GetAll() => Rows.Select(r => (r as DataTableLatticePlaneRow).LatticePlane as LatticePlane).ToArray(); // 261111Cl 変更前 (DLR の Select)
+        public LatticePlane[] GetAll() => Rows.Cast<DataRow>().Select(r => (r as DataTableLatticePlaneRow).LatticePlane as LatticePlane).ToArray(); // 261111Cl 変更: System.Linq
         public void Replace(LatticePlane bound, int i) => ReplaceBase(Rows, createRow(bound), i);
         public void Add(LatticePlane bound) => Rows.Add(createRow(bound));
         public new void Clear() => Rows.Clear();
@@ -92,7 +96,8 @@ public partial class DataSet
     partial class DataTableBondDataTable
     {
         public Bonds Get(int i) => Rows[i][BondColumn] as Bonds;
-        public Bonds[] GetAll() => Rows.Select(r => (r as DataTableBondRow)[BondColumn] as Bonds).ToArray();
+        //public Bonds[] GetAll() => Rows.Select(r => (r as DataTableBondRow)[BondColumn] as Bonds).ToArray(); // 261111Cl 変更前 (DLR の Select)
+        public Bonds[] GetAll() => Rows.Cast<DataRow>().Select(r => (r as DataTableBondRow)[BondColumn] as Bonds).ToArray(); // 261111Cl 変更: System.Linq
         public void Replace(Bonds bonds, int i) => ReplaceBase(Rows, createRow(bonds), i);
         public void Add(Bonds bonds) => Rows.Add(createRow(bonds));
         public new void Clear() => Rows.Clear();
@@ -117,7 +122,8 @@ public partial class DataSet
     partial class DataTableAtomDataTable
     {
         public Atoms Get(int i) => Rows[i][AtomColumn] as Atoms;
-        public Atoms[] GetAll() => [.. Rows.Select(r => (r as DataTableAtomRow)[AtomColumn] as Atoms)];
+        //public Atoms[] GetAll() => [.. Rows.Select(r => (r as DataTableAtomRow)[AtomColumn] as Atoms)]; // 261111Cl 変更前 (DLR の Select)
+        public Atoms[] GetAll() => [.. Rows.Cast<DataRow>().Select(r => (r as DataTableAtomRow)[AtomColumn] as Atoms)]; // 261111Cl 変更: System.Linq
         public void Replace(Atoms atoms, int i) => ReplaceBase(Rows, createRow(atoms), i);
         public void Add(Atoms atom) => Rows.Add(createRow(atom));
         public new void Clear() => Rows.Clear();
@@ -239,19 +245,22 @@ public partial class DataSet
             if (srcCrystal is DataRowView drv && drv.Row is DataTableCrystalDatabaseRow src)
             {
                 var target = CreateRow(targetCrystal);
-                for (int j = 0; j < drv.Row.ItemArray.Length; j++)
+                //for (int j = 0; j < drv.Row.ItemArray.Length; j++) // 261111Cl 変更前
+                for (int j = 0; j < drv.Row.Table.Columns.Count; j++) // 261111Cl 変更: ItemArray の長さは列の数と同じ
                     src[j] = target[j];
             }
         }
 
-        readonly Lock lockObj = new();
+        //readonly Lock lockObj = new(); // 261111Cl 変更前: CreateRow は直列でだけ呼ぶようにした (CrystalDatabaseControl.addRowsInOrder) ので不要
 
         //public DataTableCrystalDatabaseRow CreateRow(Crystal2 c) => CreateRow(c,null);
         public DataTableCrystalDatabaseRow CreateRow(Crystal2 c, byte[] serializedC = null)
         {
-            DataTableCrystalDatabaseRow dr;
-            lock (lockObj)
-                dr = NewDataTableCrystalDatabaseRow();
+            //DataTableCrystalDatabaseRow dr; // 261111Cl 変更前
+            //lock (lockObj) // 261111Cl 変更前
+            //    dr = NewDataTableCrystalDatabaseRow(); // 261111Cl 変更前
+            // 261111Cl 変更: lock は NewRow だけを守り、列への設定は守っていなかった。DataTable はスレッド非安全なので、CreateRow は 1 スレッドから呼ぶ前提とする
+            var dr = NewDataTableCrystalDatabaseRow();
 
             dr.Crystal2 = serializedC ?? Crystal2.Serialize(c);
 
