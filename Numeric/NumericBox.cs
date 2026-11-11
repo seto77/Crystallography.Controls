@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using ZLinq;
+// using ZLinq; // 261111Cl 削除: ZLinq を外したため
 
 namespace Crystallography.Controls;
 
@@ -1094,7 +1094,8 @@ public partial class NumericBox : UserControlBase
         {
             //sin関数は -89 <= x <= 89の範囲で1刻み (度単位)
             //260317Cl 変更: Enumerable.Range → ValueEnumerable.Range
-            foreach (var a in ValueEnumerable.Range(-89, 179))
+            // foreach (var a in ValueEnumerable.Range(-89, 179)) // 261111Cl 変更前
+            foreach (var a in Enumerable.Range(-89, 179)) // 261111Cl 変更: ZLinq を外したので標準 LINQ
                 if (a != 0 && Math.Abs(numericalValue - Math.Sin(a / 180.0 * Math.PI)) < threshold)
                 {
                     text = $"sin({a})";

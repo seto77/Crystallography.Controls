@@ -608,8 +608,9 @@ public partial class ScalablePictureBoxAdvanced : UserControlBase
     private void Initialize()
     {
         if (PseudoBitmap.SrcValuesGrayOriginal == null || PseudoBitmap.SrcValuesGrayOriginal.Length == 0) return;
-        double max = PseudoBitmap.SrcValuesGrayOriginal.Max();
-        double min = PseudoBitmap.SrcValuesGrayOriginal.Min();
+        // double max = PseudoBitmap.SrcValuesGrayOriginal.Max(); // 261111Cl 変更前 (SimdLinq。NaN の扱いが位置で変わっていた)
+        // double min = PseudoBitmap.SrcValuesGrayOriginal.Min();
+        var (min, max) = PseudoBitmap.SrcValuesGrayOriginal.MinMaxIgnoreNaN(); // 261111Cl 変更: NaN を除いた最小・最大 (作者判断)
 
         //まず、頻度ダイアグラムを作成
         if (FrequencyGraphVisible && PseudoBitmap.FrequencyProfile == null)

@@ -227,7 +227,8 @@ public partial class PoleFigureControl2 : UserControlBase
         var log10 = Math.Floor(Math.Log10(max));
         max = (int)(max / Math.Pow(10, log10 - 3) + 0.5) * Math.Pow(10, log10 - 3);
 
-        var min = Pixels.Min(e => e.Min());
+        // var min = Pixels.Min(e => e.Min()); // 261111Cl 変更前 (内側は SimdLinq)
+        var min = DoubleEx.Min(Pixels); // 261111Cl 変更: NaN を除いた最小 (作者判断。標準の Min は NaN を返すため)
         if (min > 0)
         {
             log10 = Math.Floor(Math.Log10(min));
@@ -242,7 +243,8 @@ public partial class PoleFigureControl2 : UserControlBase
     {
         if (pixels == null) return;
         var max = pixels.Max(e => e.Max());
-        var min = pixels.Min(e => e.Min());
+        // var min = pixels.Min(e => e.Min()); // 261111Cl 変更前 (内側は SimdLinq)
+        var min = DoubleEx.Min(pixels); // 261111Cl 変更: NaN を除いた最小 (作者判断)
         label1.Text = $"Max: {max:g5};   Min: {min:g5}";
 
         var scale = comboBoxColor.SelectedIndex == 0 ? PseudoBitmap.ColorScaleColdWarmLiner : PseudoBitmap.ColorScaleGrayLiner;
