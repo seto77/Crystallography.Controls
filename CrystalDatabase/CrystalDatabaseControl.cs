@@ -955,9 +955,17 @@ public partial class CrystalDatabaseControl : UserControlBase
         //CrystalChanged?.Invoke(sender, e); // 261105Cl 変更前
         // 261105Cl 変更 (監査 J2): 検索の結果が 0 件になって選択行が無くなったときは通知しない。
         //  以前は Crystal (= null) を受け取った ReciPro・PDIndexer が編集中の結晶を null にし、表示は前の結晶のまま、回転などで例外になった (CSManager は受け側で null を無視していた)
-        if (bindingSource.Current != null)
+        //if (bindingSource.Current != null) // 261112Cl 変更前
+        // 261112Cl 変更: 読み込み・保存の最中 (busy) も通知しない。読み込みの終わりに先頭行が「現在の行」になるだけで CrystalChanged が 2 回出て、
+        //  ReciPro の DB 画面 (FormCrystalDatabase) は主画面の結晶を DB の先頭の結晶で黙って置き換えていた (261111Cl 以前からの挙動)。
+        //  DB を足したときの自動の検索のやり直し (SearchCrystalControl が suppressCrystalChanged を立てる) でも出さない。
+        //  利用者が行を選んだとき・検索ボタンで行が変わったときは従来どおり出す。
+        if (bindingSource.Current != null && !busy && !suppressCrystalChanged)
             CrystalChanged?.Invoke(sender, e);
     }
+
+    /// <summary>261112Cl 追加: true の間は CrystalChanged を出さない (SearchCrystalControl の自動の検索のやり直しで使う)。</summary>
+    internal bool suppressCrystalChanged;
 
     public void RecalculateDensityAndFormula()
     {

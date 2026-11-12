@@ -35,8 +35,14 @@ public partial class SearchCrystalControl : UserControlBase
 
     private void CrystalDatabaseControl_DataBaseChanged(object sender, EventArgs e)
     {
+        autoSearch = true; // 261112Cl 追加
         buttonSearch_Click(sender, e);
+        autoSearch = false; // 261112Cl 追加
     }
+
+    // 261112Cl 追加: DB を足したときの自動の検索のやり直しか。そのときは完了時の束縛のつなぎ直しで CrystalChanged を出さない
+    //  (出すと、ReciPro の DB 画面が主画面の結晶を検索結果の先頭で黙って置き換える)。検索ボタンを押したときは従来どおり出す。
+    private bool autoSearch, autoSearchRunning;
 
     public delegate void ProgressChangedEventHandler(object sender, double progress, string message);
     public event ProgressChangedEventHandler ProgressChanged;
@@ -112,6 +118,7 @@ public partial class SearchCrystalControl : UserControlBase
         if (CrystalDatabaseControl == null || backgroundWorkerSearch.IsBusy || CrystalDatabaseControl.Table.Count == 0)
             return;
         sw.Restart();
+        autoSearchRunning = autoSearch; // 261112Cl 追加
         Enabled = false;
         flags = new bool[CrystalDatabaseControl.Table.Count];
         CrystalDatabaseControl.Suspend();//バインディングを切る
@@ -357,9 +364,12 @@ public partial class SearchCrystalControl : UserControlBase
     {
         // 261105Cl 追加 (監査 J21): DoWork が例外で止まったときは、途中までの flags で絞り込まない (以前は未判定の行が黙って「当たらない」扱いになり、結果の一部だけが出ていた)。
         //  絞り込みは前のまま、バインディングをつなぎ直して、失敗したことを状態欄に出す (他の進捗の文と同じく英語)
+        CrystalDatabaseControl.suppressCrystalChanged = autoSearchRunning; // 261112Cl 追加: 自動の検索のやり直しでは、下の Resume() で CrystalChanged を出さない
+        autoSearchRunning = false; // 261112Cl 追加
         if (e.Error != null)
         {
             CrystalDatabaseControl.Resume();
+            CrystalDatabaseControl.suppressCrystalChanged = false; // 261112Cl 追加
             Enabled = true;
             ProgressChanged?.Invoke(sender, 1.0, $"Search failed: {(e.Error is AggregateException ae && ae.InnerException != null ? ae.InnerException.Message : e.Error.Message)}");
             return;
@@ -383,6 +393,7 @@ public partial class SearchCrystalControl : UserControlBase
         //    CrystalDatabaseControl.Suspend();
         //else
         CrystalDatabaseControl.Resume();//バインディングを繋げる
+        CrystalDatabaseControl.suppressCrystalChanged = false; // 261112Cl 追加
 
         this.Enabled = true;
 
