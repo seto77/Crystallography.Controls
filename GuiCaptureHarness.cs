@@ -717,7 +717,21 @@ public abstract partial class GuiCaptureHarness // 261111Cl 変更: LibraryImpor
             form.BringToFront();
             form.Activate();
             if (form.IsHandleCreated)
+            {
                 SetForegroundWindow(form.Handle); // RDP でフォーカスが他へ移っても撮影対象を前面へ取り戻す
+                // 261118Cl 追加: 他のプロセスが前面だと Windows は前面化を拒み、窓は非アクティブの枠 (題名が灰色) のまま撮れる
+                //   (2026-11-18 の /pages で窓全体の図の約 35 枚)。前面のスレッドと入力を結び付けてからもう一度前面化する
+                var fg = GetForegroundWindow();
+                if (fg != form.Handle && fg != IntPtr.Zero)
+                {
+                    uint fgThread = GetWindowThreadProcessId(fg, IntPtr.Zero), self = GetCurrentThreadId();
+                    if (fgThread != 0 && fgThread != self && AttachThreadInput(self, fgThread, true))
+                    {
+                        try { SetForegroundWindow(form.Handle); form.Activate(); }
+                        finally { AttachThreadInput(self, fgThread, false); }
+                    }
+                }
+            }
         }
         catch { /* 表示状態変更時の例外は無視 (撮影は後段で最善努力) */ }
     }
@@ -796,6 +810,17 @@ public abstract partial class GuiCaptureHarness // 261111Cl 変更: LibraryImpor
     [System.Runtime.InteropServices.LibraryImport("user32.dll")] // 261111Cl 変更: ソース生成の P/Invoke。BOOL は従来の既定 (4 バイト) と同じく明示
     [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
     private static partial bool SetForegroundWindow(IntPtr hWnd); // 260524Cl: CopyFromScreen 前に対象ウィンドウを確実に前面へ
+
+    // 261118Cl 追加: 前面化が拒まれたとき (他プロセスが前面) の回避。前面のスレッドと入力を一時的に結び付けてから SetForegroundWindow する
+    [System.Runtime.InteropServices.LibraryImport("user32.dll")]
+    private static partial IntPtr GetForegroundWindow();
+    [System.Runtime.InteropServices.LibraryImport("user32.dll")]
+    private static partial uint GetWindowThreadProcessId(IntPtr hWnd, IntPtr lpdwProcessId);
+    [System.Runtime.InteropServices.LibraryImport("kernel32.dll")]
+    private static partial uint GetCurrentThreadId();
+    [System.Runtime.InteropServices.LibraryImport("user32.dll")]
+    [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
+    private static partial bool AttachThreadInput(uint idAttach, uint idAttachTo, [System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)] bool fAttach);
 
     private const int DWMWA_EXTENDED_FRAME_BOUNDS = 9;
 
