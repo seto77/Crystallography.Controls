@@ -1578,7 +1578,10 @@ public partial class FormBeamInteraction : FormBase
         }
         //scalarRows.Add([Loc("strongest line", "最強線"), strongest]);  //260608Cl ラベルを Loc() 化 (ω_K は記号で据置) // 261105Cl 変更前
         // 261105Cl 変更 (監査 J6): 入射エネルギーを見ず、励起できない線も含めた全部の線から選んでいるので、そう明記する (グラフの題にも書いた)
-        scalarRows.Add([Loc("strongest line (excitation ignored)", "最強線 (励起は考えない)"), strongest]); // 261105Cl
+        // scalarRows.Add([Loc("strongest line (excitation ignored)", "最強線 (励起は考えない)"), strongest]); // 261105Cl // 261118Cl 変更前
+        // 261118Cl 変更: en の見出しが表の列 (幅 310 の表の左列) に収まらず「strongest line (excitation ig...」と切れていた。
+        //   励起を見ないことはグラフの題 (excitation not considered) にも書いてあるので、en だけ「全部の線から」に縮める (ja は収まる)
+        scalarRows.Add([Loc("strongest line (all lines)", "最強線 (励起は考えない)"), strongest]); // 261118Cl
         //scalarRows.Add([Loc("source", "出典"), xrl ? "internal (E) / xraylib (I, ω)" : "internal (E only)"]); // 261105Cl 変更前
         // 261105Cl 変更 (監査 J13): xraylib が有効なときは線のエネルギーも xraylib から取っている (上のループの LineEnergyKeV)。以前の表示は「E は内蔵」だった
         scalarRows.Add([Loc("source", "出典"), xrl ? "xraylib (E, I, ω)" : "internal (E only)"]); // 261105Cl

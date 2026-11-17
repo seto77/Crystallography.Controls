@@ -1110,6 +1110,10 @@ public partial class NumericBox : UserControlBase
             //text = numericalValue.ToString(DecimalPlaces >= 0 ? $"f{DecimalPlaces}" : "");
             var format = formatSpecifierValid ? formatSpecifier : (DecimalPlaces >= 0 ? $"f{DecimalPlaces}" : "");
             text = numericalValue.ToString(format);
+            // 261118Cl 追加: .NET Core 3.0 以降は 0 に丸まる小さな負の値 (-0.0001 など) と負のゼロを "-0.000" と書く。
+            //   主画面の Euler 角 Φ が "-0.000" と出ていた。数字が 0 だけなら符号を外す (指数表記の "-0.00E+000" も同じ)
+            if (text.StartsWith('-') && !text.Any(c => c is >= '1' and <= '9'))
+                text = text[1..];
             if (TrimEndZero && text.Contains('.'))
                 text = text.TrimEnd('0').TrimEnd('.'); // 260717Cl: 配列生成不要の char オーバーロードへ
 

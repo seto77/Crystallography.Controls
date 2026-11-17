@@ -358,7 +358,10 @@ public partial class FormBase : Form
             float padW = widths.PadW; //全角スペース1個の幅 // 261111Cl
             if (padW <= 0.1f)
                 return -1;
-            padW *= 1.02f; //安全側: わずかに左に余らせて右のボタンに被らせない
+            //padW *= 1.02f; //安全側: わずかに左に余らせて右のボタンに被らせない // 261118Cl 変更前
+            // 261118Cl 変更: 1.02 では最も幅の広い窓 (多結晶回折、1540 px・詰め 100 字前後) で 1 字あたりの誤差が積み重なり、
+            //   DWM が案内を「(F1:...」と省略した (2026-11-18 の撮影、en・ja とも。幅 1412 px の EBSD の窓は収まっていた)。安全側を広げる
+            padW *= 1.04f;
 
             float baseW = measuredTitleWidth; // 261111Cl
             float coreW = widths.CoreW; // 261111Cl
