@@ -477,6 +477,9 @@ X射線散射因子條目 (離子荷電狀態與
     <value>顯示或隱藏原子座標與佔有率的
 誤差（標準差）欄位。</value>
   </data>
+  <data name="buttonOriginShiftCustom.Text" xml:space="preserve">
+    <value>套用自訂平移</value>
+  </data>
   <data name="buttonOriginShiftCustom.ToolTip" xml:space="preserve">
     <value>依下方輸入的自訂 (x, y, z) 數值平移所有
 原子的分數座標，然後重新生成對稱等效位置。</value>

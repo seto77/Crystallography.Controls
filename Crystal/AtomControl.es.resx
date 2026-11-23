@@ -489,6 +489,9 @@ desplazamiento isótropo Biso/Uiso (Å²).</value>
     <value>Muestra u oculta los campos de error (desviación estándar)
 de las coordenadas atómicas y la ocupación.</value>
   </data>
+  <data name="buttonOriginShiftCustom.Text" xml:space="preserve">
+    <value>Aplicar desplazamiento personalizado</value>
+  </data>
   <data name="buttonOriginShiftCustom.ToolTip" xml:space="preserve">
     <value>Desplaza las coordenadas fraccionarias de todos los átomos
 según los valores personalizados (x, y, z) introducidos abajo

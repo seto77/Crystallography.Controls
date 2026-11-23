@@ -359,7 +359,15 @@ public abstract partial class GuiCaptureHarness // 261111Cl 変更: LibraryImpor
         using (var probe = CaptureScreen(new Rectangle(0, 0, 8, 8), null, Trace, "screen-probe"))
         {
             if (probe == null)
-                Trace("[CAUTION] Screen capture is currently UNAVAILABLE. Bring the (RDP) session to the foreground now.");
+            {
+                //Trace("[CAUTION] Screen capture is currently UNAVAILABLE. Bring the (RDP) session to the foreground now."); // 261123Cl 変更前: 警告だけで続けていた
+                // 261123Cl 変更 (作者決定 11-23): 画面が取れないまま続けると、各コントロールで 5 回ずつやり直して 2 時間以上空回りする
+                // (11-17 夜、RDP 切断中)。ここで止め、ログを残して終わりのコード 2 を返す。
+                Trace("ABORT: screen capture is UNAVAILABLE (RDP hidden, minimized or disconnected). Bring the session to the foreground and run again.");
+                File.WriteAllLines(Path.Combine(outDir, "_capture-log.tsv"), log);
+                Environment.ExitCode = 2;
+                return;
+            }
         }
 
         // 260602Cl 追加: 環境変数 (<see cref="CaptureOnlyEnvVar"/>、カンマ区切りの型名部分一致) が指定されたら、その対象だけを撮る。

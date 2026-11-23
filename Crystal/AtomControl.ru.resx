@@ -492,6 +492,9 @@ Biso/Uiso (Å²) — величина тепловых колебаний,
     <value>Показать или скрыть поля погрешностей (стандартных
 отклонений) для атомных координат и заселённости.</value>
   </data>
+  <data name="buttonOriginShiftCustom.Text" xml:space="preserve">
+    <value>Применить заданный сдвиг</value>
+  </data>
   <data name="buttonOriginShiftCustom.ToolTip" xml:space="preserve">
     <value>Сдвинуть дробные координаты всех атомов на
 заданные ниже значения (x, y, z), затем

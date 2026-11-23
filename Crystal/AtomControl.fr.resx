@@ -486,6 +486,9 @@ déplacement isotrope Biso/Uiso (Å²).</value>
     <value>Afficher ou masquer les champs d'erreur (écart-type)
 pour les coordonnées atomiques et l'occupation.</value>
   </data>
+  <data name="buttonOriginShiftCustom.Text" xml:space="preserve">
+    <value>Appliquer un décalage personnalisé</value>
+  </data>
   <data name="buttonOriginShiftCustom.ToolTip" xml:space="preserve">
     <value>Décale les coordonnées fractionnaires de tous les atomes
 des valeurs personnalisées (x, y, z) saisies ci-dessous,

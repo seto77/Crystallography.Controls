@@ -489,6 +489,9 @@ di spostamento isotropo Biso/Uiso (Å²).</value>
     <value>Mostra o nasconde i campi dell'errore (deviazione standard)
 per le coordinate atomiche e l'occupazione.</value>
   </data>
+  <data name="buttonOriginShiftCustom.Text" xml:space="preserve">
+    <value>Applica traslazione personalizzata</value>
+  </data>
   <data name="buttonOriginShiftCustom.ToolTip" xml:space="preserve">
     <value>Trasla le coordinate frazionarie di tutti gli atomi
 dei valori personalizzati (x, y, z) inseriti sotto,

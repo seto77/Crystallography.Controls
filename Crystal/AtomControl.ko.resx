@@ -491,6 +491,9 @@ Uiso로 표시됩니다.</value>
     <value>원자 좌표와 점유율의 오차(표준 편차)
 입력란을 표시하거나 숨깁니다.</value>
   </data>
+  <data name="buttonOriginShiftCustom.Text" xml:space="preserve">
+    <value>사용자 지정 이동 적용</value>
+  </data>
   <data name="buttonOriginShiftCustom.ToolTip" xml:space="preserve">
     <value>아래에 입력한 사용자 지정 (x, y, z) 값만큼 모든
 원자의 분율 좌표를 평행 이동한 뒤, 대칭 등가

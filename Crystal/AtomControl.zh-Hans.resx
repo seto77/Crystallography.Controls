@@ -490,6 +490,9 @@ Biso/Uiso的标准偏差（误差，Å²）。</value>
     <value>显示或隐藏原子坐标和占有率的
 误差（标准偏差）字段。</value>
   </data>
+  <data name="buttonOriginShiftCustom.Text" xml:space="preserve">
+    <value>应用自定义平移</value>
+  </data>
   <data name="buttonOriginShiftCustom.ToolTip" xml:space="preserve">
     <value>将所有原子的分数坐标按下方输入的
 自定义(x, y, z)数值平移，

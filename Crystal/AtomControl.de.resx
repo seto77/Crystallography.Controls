@@ -492,6 +492,9 @@ Auslenkungsparameters Biso/Uiso (Å²).</value>
     <value>Die Fehlerfelder (Standardabweichung) für die
 Atomkoordinaten und die Besetzung ein- oder ausblenden.</value>
   </data>
+  <data name="buttonOriginShiftCustom.Text" xml:space="preserve">
+    <value>Benutzerdefinierte Verschiebung anwenden</value>
+  </data>
   <data name="buttonOriginShiftCustom.ToolTip" xml:space="preserve">
     <value>Die fraktionellen Koordinaten aller Atome um die
 unten eingegebenen benutzerdefinierten (x, y, z)-Werte
