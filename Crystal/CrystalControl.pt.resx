@@ -117,7 +117,7 @@
     <value>Importar de CIF ou AMC...</value>
   </data>
   <data name="exportThisCrystalAsCIFToolStripMenuItem.Text" xml:space="preserve">
-    <value>Exportar para CIF</value>
+    <value>Exportar para CIF...</value>
   </data>
   <data name="revertCellConstantsToolStripMenuItem.Text" xml:space="preserve">
     <value>Reverter constantes de célula</value>

@@ -31,6 +31,10 @@ public class GraphicsBox : PictureBox
     /// 倍率の意味 (大きいほど拡大) はホストの表示範囲の持ち方に依存するので、逆数を使うかはホスト側で判断する。</summary>
     public static double GetWheelZoomFactor(int delta) => delta > 0 ? 2.0 : 0.5;
 
+    /// <summary>261124Cl 追加: 右クリック 1 回で縮小する倍率 (表示を 1/ClickZoomOutFactor にする)。ReciPro 作者の決定で全表示を 1.2 に揃えた
+    /// (回折シミュレーター・ステレオネット・EBSD・ScalablePictureBox)。共有部品なので IPAnalyzer・PDIndexer の画像表示も同じになる</summary>
+    public const double ClickZoomOutFactor = 1.2;
+
     /// <summary>GraphicBox の既定コンストラクタ。</summary>
     public GraphicsBox()
     {

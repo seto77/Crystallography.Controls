@@ -117,7 +117,7 @@
     <value>Importer depuis CIF ou AMC...</value>
   </data>
   <data name="exportThisCrystalAsCIFToolStripMenuItem.Text" xml:space="preserve">
-    <value>Exporter en CIF</value>
+    <value>Exporter en CIF...</value>
   </data>
   <data name="revertCellConstantsToolStripMenuItem.Text" xml:space="preserve">
     <value>Rétablir les paramètres de maille</value>

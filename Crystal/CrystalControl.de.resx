@@ -120,7 +120,7 @@
     <value>Aus CIF oder AMC importieren...</value>
   </data>
   <data name="exportThisCrystalAsCIFToolStripMenuItem.Text" xml:space="preserve">
-    <value>Als CIF exportieren</value>
+    <value>Als CIF exportieren...</value>
   </data>
   <data name="revertCellConstantsToolStripMenuItem.Text" xml:space="preserve">
     <value>Gitterkonstanten zurücksetzen</value>

@@ -120,7 +120,7 @@
     <value>Импорт из CIF или AMC...</value>
   </data>
   <data name="exportThisCrystalAsCIFToolStripMenuItem.Text" xml:space="preserve">
-    <value>Экспорт в CIF</value>
+    <value>Экспорт в CIF...</value>
   </data>
   <data name="revertCellConstantsToolStripMenuItem.Text" xml:space="preserve">
     <value>Вернуть параметры ячейки</value>

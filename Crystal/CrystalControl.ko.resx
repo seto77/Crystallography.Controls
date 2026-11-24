@@ -120,7 +120,7 @@
     <value>CIF 또는 AMC에서 가져오기...</value>
   </data>
   <data name="exportThisCrystalAsCIFToolStripMenuItem.Text" xml:space="preserve">
-    <value>CIF로 내보내기</value>
+    <value>CIF로 내보내기...</value>
   </data>
   <data name="revertCellConstantsToolStripMenuItem.Text" xml:space="preserve">
     <value>격자 상수 되돌리기</value>

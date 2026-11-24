@@ -120,7 +120,7 @@
     <value>從 CIF 或 AMC 匯入...</value>
   </data>
   <data name="exportThisCrystalAsCIFToolStripMenuItem.Text" xml:space="preserve">
-    <value>匯出為 CIF</value>
+    <value>匯出為 CIF...</value>
   </data>
   <data name="revertCellConstantsToolStripMenuItem.Text" xml:space="preserve">
     <value>還原晶胞常數</value>

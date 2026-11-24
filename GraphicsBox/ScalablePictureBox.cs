@@ -578,6 +578,7 @@ public partial class ScalablePictureBox : UserControlBase
     private void pictureBox_MouseDown(object sender, MouseEventArgs e)
     {
         pictureBox.Focus();
+        justBeforePoint = e.Location; // 261124Cl 追加: パンの起点は押下を外側 (MouseDown2) が使っても更新する。更新しないと、使われた押下のあとのドラッグで、前の押下の位置からの差だけ画像が跳んでいた
 
         if (MouseDown2 != null && MouseDown2(this, e, ConvertToSrcPt(e.Location)))
             return;
@@ -590,7 +591,8 @@ public partial class ScalablePictureBox : UserControlBase
         else if (e.Button == MouseButtons.Right && e.Clicks == 2 && MouseScaling)
         {
             _Center = ConvertToSrcPt(e.Location);//イベントを起こさないように小文字のcenterに代入
-            Zoom *= 0.5f;
+            //Zoom *= 0.5f; // 261124Cl 変更前
+            Zoom /= (float)GraphicsBox.ClickZoomOutFactor; // 261124Cl 変更 (ReciPro 作者の決定): 右クリックの縮小率を ReciPro の全表示で 1/1.2 に揃える
         }
         else if ((e.Button == MouseButtons.Left || e.Button == MouseButtons.Middle) && e.Clicks == 1)
         {
@@ -655,7 +657,8 @@ public partial class ScalablePictureBox : UserControlBase
                     PointD start = ConvertToSrcPt(mouseRangeStart);
                     PointD end = ConvertToSrcPt(mouseRangeEnd);
                     _Center = new PointD((start.X + end.X) / 2.0, (start.Y + end.Y) / 2.0);//イベントを起こさないように小文字のcenterに代入
-                    Zoom *= 0.5f;
+                    //Zoom *= 0.5f; // 261124Cl 変更前
+                    Zoom /= (float)GraphicsBox.ClickZoomOutFactor; // 261124Cl 変更 (ReciPro 作者の決定): 右クリックの縮小率を 1/1.2 に揃える
                 }
                 else if (Math.Abs(mouseRangeStart.X - mouseRangeEnd.X) > 10 && Math.Abs(mouseRangeStart.Y - mouseRangeEnd.Y) > 10)
                 {//拡大モード

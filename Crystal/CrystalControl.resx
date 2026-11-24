@@ -3558,7 +3558,7 @@ with editable valences.</value>
     <value>262, 22</value>
   </data>
   <data name="exportThisCrystalAsCIFToolStripMenuItem.Text" xml:space="preserve">
-    <value>Export to CIF</value>
+    <value>Export as CIF...</value>
   </data>
   <data name="sendThisCrystalToOtherSoftwareToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>262, 22</value>
