@@ -1114,8 +1114,11 @@ public partial class NumericBox : UserControlBase
             //   主画面の Euler 角 Φ が "-0.000" と出ていた。数字が 0 だけなら符号を外す (指数表記の "-0.00E+000" も同じ)
             if (text.StartsWith('-') && !text.Any(c => c is >= '1' and <= '9'))
                 text = text[1..];
-            if (TrimEndZero && text.Contains('.'))
-                text = text.TrimEnd('0').TrimEnd('.'); // 260717Cl: 配列生成不要の char オーバーロードへ
+            //if (TrimEndZero && text.Contains('.')) // 261124Cl 変更前: 指数表記の指数のゼロまで削り (1.2E-10 → 1.2E-1)、小数点がカンマのカルチャでは削らなかった (codex2 第 2 回 C2-21)
+            //    text = text.TrimEnd('0').TrimEnd('.'); // 260717Cl: 配列生成不要の char オーバーロードへ
+            var decimalSeparator = System.Globalization.NumberFormatInfo.CurrentInfo.NumberDecimalSeparator; // 261124Cl 変更: ToString(format) と同じ現在のカルチャの小数点。指数表記には触れない
+            if (TrimEndZero && text.Contains(decimalSeparator) && text.IndexOfAny(['E', 'e']) < 0)
+                text = text.TrimEnd('0').TrimEnd(decimalSeparator.ToCharArray());
 
             if (thousandsSeparator)                                                                                                                    // 260729Cl 追加: これまでフラグ未参照で常時区切っていた (既定 true なので表示は不変)
                 text = separateThousands(text);
@@ -1128,6 +1131,15 @@ public partial class NumericBox : UserControlBase
 
     private static string separateThousands(string valueString)
     {
+        // 261124Cl 追加: 小数点がカンマのカルチャ (de, fr など) では、小数のカンマを区切りと取り違えて 1234,5 → 1,234,5 としていた。
+        //  また N 書式で区切り済みの文字列 (1,234,567.50) を再び分けて、整数部の 1 しか残らなかった (codex2 第 3 回 C2-21)。
+        //  小数点が '.' のカルチャで、整数部が数字 (と先頭の符号) だけのときに限って区切る。それ以外は触れない
+        if (System.Globalization.NumberFormatInfo.CurrentInfo.NumberDecimalSeparator != ".")
+            return valueString;
+        int point = valueString.IndexOf('.');
+        var integerPart = point >= 0 ? valueString[..point] : valueString;
+        if (integerPart.Length == 0 || !integerPart.All(c => char.IsAsciiDigit(c) || c == '-' || c == '+'))
+            return valueString;
         var decimalPoint = '.';
         if (valueString.Contains(','))
             decimalPoint = ',';
