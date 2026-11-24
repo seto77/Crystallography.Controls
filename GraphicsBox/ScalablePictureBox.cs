@@ -310,6 +310,28 @@ public partial class ScalablePictureBox : UserControlBase
 
     private PseudoBitmap _pseudoBitmap = new();
 
+    /// <summary>261125Cl 追加 (IPAnalyzer の依頼): この画面が所有する描画先。PseudoBitmap の内部キャッシュ (GetImage) を借りると、
+    /// 同じ PseudoBitmap を大きさの違う別の画面 (主画面とサムネイルなど) でも描くたびに作り直し・破棄が起きるので、画面ごとに持つ</summary>
+    private Bitmap ownImage;
+
+    /// <summary>261125Cl 追加: 今の Center・Zoom・大きさで ownImage に描いて返す (大きさか画素形式が変わったときだけ作り直す)。描けなければ null。
+    /// 表示中の ownImage を描き直すときは、呼び出し側が先に pictureBox.Image を外しておく (描画中はロックされる)</summary>
+    private Bitmap renderOwnImage()
+    {
+        var size = pictureBox.ClientSize;
+        if (PseudoBitmap == null || size.Width <= 0 || size.Height <= 0 || Center.IsNaN) return null;
+        var format = PseudoBitmap.ImagePixelFormat;
+        if (ownImage == null || ownImage.Width != size.Width || ownImage.Height != size.Height || ownImage.PixelFormat != format)
+        {
+            var next = new Bitmap(size.Width, size.Height, format); // 先に確保する (失敗しても ownImage は生きたまま)
+            if (ReferenceEquals(pictureBox.Image, ownImage)) pictureBox.Image = null;
+            var previous = ownImage;
+            ownImage = next;
+            previous?.Dispose();
+        }
+        return PseudoBitmap.RenderInto(PseudoBitmap.GetDrawingArea(Center, Zoom, size), ownImage) ? ownImage : null;
+    }
+
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public PseudoBitmap PseudoBitmap
     {
@@ -323,6 +345,7 @@ public partial class ScalablePictureBox : UserControlBase
                 //ここで外さないと「このコントロールは新しい PseudoBitmap を持っているのに、pictureBox.Image は
                 //前の PseudoBitmap のキャッシュを指したまま」になり、前のオブジェクトが他所で再描画された瞬間に
                 //破棄済み Bitmap を描こうとして PictureBox.OnPaint が ArgumentException で落ちる (実機で再現)。
+                //261125Cl 注: 今は標準の描画が自分の ownImage に描く (キャッシュを借りない) ので、この問題は起きない。古い絵を残さないために外すのは続ける
                 if (!ReferenceEquals(_pseudoBitmap, value))
                     pictureBox.Image = null;
                 _pseudoBitmap = value;
@@ -421,7 +444,8 @@ public partial class ScalablePictureBox : UserControlBase
         if (PseudoBitmap == null || pictureBox.ClientSize.Width == 0 || pictureBox.ClientSize.Height == 0 || Center.IsNaN)
             return null;
 
-        return PseudoBitmap.GetImage(Center, Zoom, pictureBox.ClientSize); // (260322Ch) 画面描画前でも現在条件から再構成できるようにする
+        //return PseudoBitmap.GetImage(Center, Zoom, pictureBox.ClientSize); // (260322Ch) 画面描画前でも現在条件から再構成できるようにする // 261125Cl 変更前
+        return renderOwnImage(); // 261125Cl 変更: PseudoBitmap の内部キャッシュではなく、この画面の描画先に描く (pictureBox.Image が null のときだけ来るので、表示中の画像は触らない)
     }
 
     private void PaintPictureBoxOverlay(Graphics graphics)
@@ -529,8 +553,10 @@ public partial class ScalablePictureBox : UserControlBase
         //破棄済み Bitmap を指したままであり、STA スレッドでは GetImage 内部の待機でメッセージがポンプされ得るので、
         //そこへ WM_PAINT が入ると GDI+ が ArgumentException ("Parameter is not valid.") を投げてアプリが落ちる。
         //(実測: dispose から代入までの 20 ms の間に paint が入っていた)
+        //261125Cl 注: 今は ownImage に描く (下)。描画中は ownImage をロックするので、表示から外す理由は今も同じ
         pictureBox.Image = null;
-        pictureBox.Image = PseudoBitmap.GetImage(Center, Zoom, pictureBox.ClientSize);
+        //pictureBox.Image = PseudoBitmap.GetImage(Center, Zoom, pictureBox.ClientSize); // 261125Cl 変更前
+        pictureBox.Image = renderOwnImage(); // 261125Cl 変更: この画面が所有する描画先へ描く (上で外したので描画中のロックと表示が重ならない)
         //if(pictureBox.Image !=null)
         // justBeforeImage = new Bitmap(pictureBox.Image);
 

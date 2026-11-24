@@ -766,7 +766,10 @@ public partial class ScalablePictureBoxAdvanced : UserControlBase
 
     private void buttonCopyToClipBoard_Click(object sender, EventArgs e)
     {
-        Clipboard.SetDataObject(PseudoBitmap.GetImage(new RectangleD(0, 0, PseudoBitmap.Width, PseudoBitmap.Height), new Size(PseudoBitmap.Width, PseudoBitmap.Height)));
+        //Clipboard.SetDataObject(PseudoBitmap.GetImage(new RectangleD(0, 0, PseudoBitmap.Width, PseudoBitmap.Height), new Size(PseudoBitmap.Width, PseudoBitmap.Height))); // 261125Cl 変更前
+        // 261125Cl 変更 (IPAnalyzer の依頼): 内部のキャッシュを貸し出さず (copy: false だと後の描画で中身が変わる・破棄される)、自分の画像を作って書き写す
+        using var bmp = PseudoBitmap.CreateImage(new RectangleD(0, 0, PseudoBitmap.Width, PseudoBitmap.Height), new Size(PseudoBitmap.Width, PseudoBitmap.Height));
+        if (bmp != null) Clipboard.SetImage(bmp); // copy: true で書き写すので直後に破棄してよい (CopyAsBitmap と同じ)
     }
 
     public void ReadImage(string fileName)

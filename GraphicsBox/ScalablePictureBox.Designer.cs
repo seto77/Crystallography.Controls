@@ -16,6 +16,7 @@
                 components.Dispose();
             }
             _pseudoBitmap.Dispose();
+            if (disposing) { pictureBox.Image = null; ownImage?.Dispose(); } // 261125Cl 追加: この画面の描画先
             base.Dispose(disposing);
         }
 
