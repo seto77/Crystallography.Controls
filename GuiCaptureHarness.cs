@@ -2119,6 +2119,10 @@ public abstract partial class GuiCaptureHarness // 261111Cl 変更: LibraryImpor
         //代表状態 (ReciPro なら spinel 選択) を作り、子フォームへ親情報を注入してから PrepareCaptureState を呼ぶ。
         //⚠メインフォーム自体は Close しない (FormClosing がレジストリへ UI 言語を焼き付けるため。Run 末尾の 260726Cl 注記)。
         void Trace(string s) => Console.WriteLine("--capture-form: " + s);
+        // 261126Cl 追加: Run と同じく、UI スレッドの例外は標準のモーダルダイアログ (警告音つき) を出さずにログへ書く。
+        //  無人で走らせるモードなので、ダイアログが出ると誰かが押すまで終わらない。
+        Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+        Application.ThreadException += (_, e) => OnThreadException(e.Exception, Trace);
         Form main = null;
         if (type != MainFormType)
         {

@@ -14,8 +14,10 @@
                 components.Dispose();
             }
             //Bmp.Dispose(); // (260611Ch) 旧: 未描画時 null 例外の可能性 + Graphics G が未解放
+            if (disposing && pictureBox != null) pictureBox.Image = null; // 261126Cl 追加: 表示中の Bmp を破棄する前に外す (GraphControl と同じ。base.Dispose の VisibleChanged で GDI+ ArgumentException になる)
             G?.Dispose(); // (260611Ch)
             Bmp?.Dispose(); // (260611Ch)
+            backG?.Dispose(); backBmp?.Dispose(); // 261126Cl 追加: 使い回し用に取っておいた前回の Bitmap も解放する
             divisionTextBrush?.Dispose(); // (260611Ch)
             base.Dispose(disposing);
         }
