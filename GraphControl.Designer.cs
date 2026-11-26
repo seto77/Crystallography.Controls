@@ -14,8 +14,13 @@
                 components.Dispose();
             }
             //if (Bmp != null) Bmp.Dispose(); // (260611Ch) 旧: Graphics G が未解放
+            // 261126Cl 追加: 表示中の Bmp を破棄する前に PictureBox から外す。外さないと、この後の base.Dispose で
+            //  PictureBox の VisibleChanged → ImageAnimator が破棄済みの Bitmap に触れ、GDI+ の ArgumentException
+            //  ("Parameter is not valid.") が出る (FormMain を Close せずに破棄する --capture-form で再現)
+            if (disposing && pictureBox != null) pictureBox.Image = null;
             G?.Dispose(); // (260611Ch)
             Bmp?.Dispose(); // (260611Ch)
+            backG?.Dispose(); backBmp?.Dispose(); // 261126Cl 追加: 使い回し用に取っておいた前回の Bitmap も解放する (261111Cl の取り置きが破棄されずに残っていた)
             base.Dispose(disposing);
         }
 
