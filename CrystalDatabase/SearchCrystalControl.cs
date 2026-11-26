@@ -293,10 +293,12 @@ public partial class SearchCrystalControl : UserControlBase
     }
 
 
-    static int composeKey(in int h, in int k, in int l) => ((h > 0) || (h == 0 && k > 0) || (h == 0 && k == 0 && l > 0)) ? ((h + 255) << 20) + ((k + 255) << 10) + l + 255 : -1;
-    static (int h, int k, int l) decomposeKey(in int key) => (((key << 2) >> 22) - 255, ((key << 12) >> 22) - 255, ((key << 22) >> 22) - 255);
-
-    static readonly int zeroKey = (255 << 20) + (255 << 10) + 255;
+    // 261126Cl 変更 (codex2 の査読 k1): hkl を 32 bit の鍵に詰めるのをやめ、整数 3 個のまま運ぶ。旧の鍵は k・l の欄が 10 bit しか無く、
+    //  (0,0,257) を (0,0,−767) に復号した (長い軸の結晶で「散乱因子を無視」の d 値の検索が面を落とした)。探索の順 (長さで並べる) は変えない
+    //static int composeKey(in int h, in int k, in int l) => ((h > 0) || (h == 0 && k > 0) || (h == 0 && k == 0 && l > 0)) ? ((h + 255) << 20) + ((k + 255) << 10) + l + 255 : -1; // 261126Cl 変更前 (4 行)
+    //static (int h, int k, int l) decomposeKey(in int key) => (((key << 2) >> 22) - 255, ((key << 12) >> 22) - 255, ((key << 22) >> 22) - 255);
+    //
+    //static readonly int zeroKey = (255 << 20) + (255 << 10) + 255;
     static readonly (int h, int k, int l)[] directions = [(1, 0, 0), (0, 1, 0), (0, -1, 0), (0, 0, 1), (0, 0, -1)];//(-1, 0, 0)は除いておく (260717Cl: collection expression 化)
     static float[] calcDlist(double a, double b, double c, double alpha, double beta, double gamma, double dMin)
     {
@@ -316,8 +318,10 @@ public partial class SearchCrystalControl : UserControlBase
         var gMax = 1 / dMin;
         var shift = directions.Select(dir => (MatrixInverse * dir).Length).Max();
         var maxGnum = 8000;
-        var outer = new List<(int key, double len)>() { (zeroKey, 0) };
-        var gKeys = new HashSet<int>((int)(maxGnum * 1.5)) { zeroKey };
+        //var outer = new List<(int key, double len)>() { (zeroKey, 0) }; // 261126Cl 変更前 (2 行)
+        //var gKeys = new HashSet<int>((int)(maxGnum * 1.5)) { zeroKey };
+        var outer = new List<((int h, int k, int l) key, double len)>() { ((0, 0, 0), 0) }; // 261126Cl
+        var gKeys = new HashSet<(int h, int k, int l)>((int)(maxGnum * 1.5)) { (0, 0, 0) }; // 261126Cl
         var gList = new HashSet<double>((int)(maxGnum * 1.5));
         var minG = 0.0;
 
@@ -326,11 +330,16 @@ public partial class SearchCrystalControl : UserControlBase
             var end = outer.FindLastIndex(o => o.len - minG < shift * 2);
             foreach (var (key1, _) in CollectionsMarshal.AsSpan(outer)[..(end + 1)])
             {
-                var (h1, k1, l1) = decomposeKey(key1);
+                //var (h1, k1, l1) = decomposeKey(key1); // 261126Cl 変更前
+                var (h1, k1, l1) = key1; // 261126Cl
                 foreach ((int h2, int k2, int l2) in directions)
                 {
-                    int h = h1 + h2, k = k1 + k2, l = l1 + l2, key2 = composeKey(h, k, l);
-                    if (key2 > 0 && gKeys.Add(key2))
+                    //int h = h1 + h2, k = k1 + k2, l = l1 + l2, key2 = composeKey(h, k, l); // 261126Cl 変更前 (2 行)
+                    //if (key2 > 0 && gKeys.Add(key2))
+                    int h = h1 + h2, k = k1 + k2, l = l1 + l2; // 261126Cl
+                    var key2 = (h, k, l); // 261126Cl
+                    // 正の半空間 (h > 0、または h = 0 で k > 0、または h = k = 0 で l > 0) だけを数える (旧の composeKey が −1 を返した条件の逆)
+                    if (key2.CompareTo((0, 0, 0)) > 0 && gKeys.Add(key2)) // 261126Cl
                     {
                         double x = h * aX + k * bX + l * cX, y = h * aY + k * bY + l * cY, z = h * aZ + k * bZ + l * cZ;
                         var len = Math.Sqrt(x * x + y * y + z * z);
